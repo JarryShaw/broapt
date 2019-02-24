@@ -1,0 +1,6 @@
+[submodule "vendor/file-extraction"]
+	path = vendor/file-extraction
+	url = https://github.com/hosom/file-extraction.git
+[submodule "vendor/zeek"]
+	path = vendor/zeek
+	url = https://github.com/zeek/zeek.git
