@@ -1,4 +1,11 @@
 
+Pipfile.lock
+
+test/
+sample/
+
+vendor/bro/
+
 # Created by https://www.gitignore.io/api/visualstudiocode,python,macos,linux
 # Edit at https://www.gitignore.io/?templates=visualstudiocode,python,macos,linux
 
