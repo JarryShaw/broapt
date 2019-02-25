@@ -1,4 +1,4 @@
-.PHONY: all
+.PHONY: all file-extration zeek
 
 all: file-extraction zeek
 
