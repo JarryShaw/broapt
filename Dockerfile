@@ -31,6 +31,5 @@ RUN python3 -m pip install --no-deps --cache-dir=/tmp/pip \
 
 # copy source files
 COPY vendor/file-extraction /vendor/file-extraction
-COPY vendor/bro vendor/bro
 COPY sample /sample
 COPY test /test
