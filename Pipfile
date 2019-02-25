@@ -7,9 +7,12 @@ verify_ssl = true
 pep8 = "*"
 autopep8 = "*"
 doc8 = "*"
+ipython = "*"
 
 [packages]
 bro-pkg = "*"
+pypcapkit = "*"
+dpkt = "*"
 
 [requires]
 python_version = "3.7"

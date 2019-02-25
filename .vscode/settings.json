@@ -1,3 +1,6 @@
 {
-    "restructuredtext.confPath": "${workspaceFolder}/docs/conf.py"
+    "restructuredtext.confPath": "${workspaceFolder}/docs/conf.py",
+    "cSpell.words": [
+        "nofile"
+    ]
 }
