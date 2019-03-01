@@ -1,4 +1,4 @@
-.PHONY: docker pipenv download
+.PHONY: docker pipenv download submodule
 
 docker: docker-build docker-run
 pipenv: pipenv-update
@@ -13,25 +13,17 @@ pipenv-update:
 pipenv-remove:
 	pipenv --rm
 
-.ONESHELL:
 requirements-init:
-	cd vendor/python
-	$(MAKE) init
+	cd vendor/python && $(MAKE) init
 
-.ONESHELL:
 requirements-update:
-	cd vendor/python
-	$(MAKE) update
+	cd vendor/python && $(MAKE) update
 
-.ONESHELL:
 requirements-download:
-	cd vendor/python
-	$(MAKE) download
+	cd vendor/python && $(MAKE) download
 
-.ONESHELL:
 requirements-remove:
-	cd vendor/python
-	$(MAKE) remove
+	cd vendor/python && $(MAKE) remove
 
 docker-build:
 	sed "s/LABEL version.*/LABEL version=$(shell date +%Y.%m.%d)/" Dockerfile > Dockerfile.tmp
@@ -41,7 +33,5 @@ docker-build:
 docker-run:
 	docker run -it broapt
 
-.ONESHELL:
 submodule-clone:
-	cd vendor
-	$(MAKE) all
+	cd vendor && $(MAKE) all

@@ -4,6 +4,7 @@ all: file-extraction zeek
 
 .ONESHELL:
 file-extraction:
+	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 	git clone https://github.com/hosom/file-extraction.git
 

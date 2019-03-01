@@ -9,5 +9,5 @@ chardet==3.0.4
 dictdumper==0.7.0.post1
 dpkt==1.9.2
 emoji==0.5.1
-pypcapkit==0.13.2
-tbtrim==0.2.0
+pypcapkit==0.13.3.post2
+tbtrim==0.2.1

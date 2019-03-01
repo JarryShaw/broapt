@@ -7,7 +7,7 @@ verify_ssl = true
 
 [packages]
 dpkt = "*"
-pypcapkit = "*"
+pypcapkit = ">=0.13.3.post2"
 
 [requires]
-python_version = "3.5"
+python_version = "3.6"

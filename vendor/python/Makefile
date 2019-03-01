@@ -2,14 +2,16 @@
 
 .ONESHELL:
 init:
+	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 	mv ../../Pipfile ../../Pipfile.tmp
 	pipenv --python 3.6
-	pipenv install dpkt pypcapkit
+	pipenv install dpkt "pypcapkit>=0.13.3.post2"
 	mv ../../Pipfile.tmp ../../Pipfile
 
 .ONESHELL:
 update:
+	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 	pipenv update
 	pipenv install
@@ -23,7 +25,8 @@ update:
 	pipenv run python -m pip freeze >> requirements.txt
 
 .ONESHELL:
-download: update
+download: update remove
+	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 	pipenv run python -m pip download --requirement=requirements.txt \
                               		  --platform=manylinux1_x86_64 \
@@ -34,5 +37,6 @@ download: update
 
 .ONESHELL:
 remove:
+	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
-	rm -f *.tar.gz *.whl
+	rm -f download/*.tar.gz download/*.whl
