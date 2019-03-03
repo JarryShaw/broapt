@@ -1,5 +1,12 @@
 
-test/  
+*.dat
+Cellar
+
+.state/
+contents/
+extecte_files/
+
+test/
 sample/
 extract_files/
 
