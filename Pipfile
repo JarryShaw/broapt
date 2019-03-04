@@ -12,6 +12,7 @@ pep8 = "*"
 bro-pkg = "*"
 dpkt = "*"
 pypcapkit = ">=0.13.3.post2"
+python-magic = "*"
 
 [requires]
 python_version = "3.7"

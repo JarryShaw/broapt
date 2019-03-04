@@ -8,13 +8,22 @@ __pycache__/
 # test scripts
 dev_*
 test_*
+*~orig*
 
 # Git files
 .git/
 .git*
 
+# Bro files
+.state/
+contents/
+extract_files/
+
 # misc files
-*~orig*
+*.log
 *.egg
 *.whl
 *.tar.gz
+gitlab/
+sample/*-big.pcap
+test/

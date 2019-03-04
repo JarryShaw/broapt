@@ -13,6 +13,21 @@ export {
 	const contents_orig: bool = T &redef;
 	## Reassemble TCP content from responder-side
 	const contents_resp: bool = T &redef;
+
+	redef enum Log::ID += { LOG };
+
+	type Info: record {
+		ts: 	time    &log;
+		id: 	conn_id &log;
+		uid: 	string 	&log;
+		cnt: 	count 	&log &default=0;
+	};
+
+	# Define a logging event. By convention, this is called
+	# "log_<stream>".
+	global log_reass: event(rec: Info);
+
+	redef LogAscii::use_json = T;
 }
 
 @if ( contents_orig )
@@ -34,8 +49,11 @@ function get_count(key: conn_id): count {
 }
 
 event new_connection_contents(c: connection) &priority=5 {
-	print c$id;
 	local cnt: count = get_count(c$id);
+	local rec: Info = [$ts=network_time(), $id=c$id, $uid=c$uid, $cnt=cnt];
+
+	print c$id;
+	Log::write(LOG, rec);
 
 	local orig_file = generate_extraction_filename(reassembly_prefix, c, fmt("orig_%s.dat", cnt));
 	local orig_f = open(fmt("%s/%s", path, orig_file));
@@ -44,4 +62,9 @@ event new_connection_contents(c: connection) &priority=5 {
 	local resp_file = generate_extraction_filename(reassembly_prefix, c, fmt("resp_%s.dat", cnt));
 	local resp_f = open(fmt("%s/%s", path, resp_file));
 	set_contents_file(c$id, CONTENTS_RESP, resp_f);
+}
+
+event bro_init() &priority=5 {
+    # Specify the "log_reass" event here in order for Bro to raise it.
+    Log::create_stream(LOG, [$columns=Info, $ev=log_reass, $path="reass"]);
 }

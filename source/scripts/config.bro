@@ -13,3 +13,6 @@ redef contents_orig = T;
 
 # Configure if reassemble TCP content from responder-side
 redef contents_resp = T;
+
+# Configure if change log files to JSON format.
+redef LogAscii::use_json = T;

@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 dpkt = "*"
 pypcapkit = ">=0.13.3.post2"
+python-magic = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3.5"

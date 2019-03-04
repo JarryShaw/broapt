@@ -1,12 +1,12 @@
-.PHONY: init update download remove
+.PHONY: init update download clean remove
 
 .ONESHELL:
 init:
 	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 	mv ../../Pipfile ../../Pipfile.tmp
-	pipenv --python 3.6
-	pipenv install dpkt "pypcapkit>=0.13.3.post2"
+	pipenv --python 3.5
+	pipenv install dpkt "pypcapkit>=0.13.3.post2" python-magic
 	mv ../../Pipfile.tmp ../../Pipfile
 
 .ONESHELL:
@@ -25,19 +25,25 @@ update:
 	pipenv run python -m pip freeze >> requirements.txt
 
 .ONESHELL:
-download: update remove
+download: update clean
 	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 	pipenv run python -m pip download --requirement=requirements.txt \
                               		  --platform=manylinux1_x86_64 \
-                              		  --python-version=36 \
+                              		  --python-version=35 \
                               		  --implementation=cp \
                               		  --dest=download \
                               		  --no-deps
 
 .ONESHELL:
-remove:
+clean:
 	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 	find download -iname '*.tar.gz' -print0 | xargs -0 rm -f
 	find download -iname '*.whl' -print0 | xargs -0 rm -f
+
+.ONESHELL:
+remove:
+	set -ex
+	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
+	pipenv --rm
