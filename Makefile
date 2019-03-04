@@ -1,6 +1,6 @@
 .PHONY: commit docker gitlab pipenv download submodule
 
-commit: gitlab-commit git-commit
+commit: requirements-download gitlab-commit git-commit
 docker: docker-build docker-run
 gitlab: gitlab-submodule
 pipenv: pipenv-update
