@@ -1,7 +1,8 @@
 {
-    "restructuredtext.confPath": "${workspaceFolder}/docs/conf.py",
     "cSpell.words": [
+        "emsp",
         "nofile",
+        "resp",
         "zeek"
     ]
 }

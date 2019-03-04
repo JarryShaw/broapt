@@ -7,4 +7,4 @@
 - `make docker`: build then run Docker environment (for testing)
 - `make pipenv`: update pipenv on root directory
 - `make download`: update then download Python dependency files into [`vendor/python/download`](vendor/python/download)
-- `make submodule`: clone all submodules
+- `make submodule`: clone all submodules into [`vendor`](vendor)

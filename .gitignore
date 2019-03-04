@@ -1,7 +1,10 @@
 
 *.dat
+*~orig.*
+
 Cellar
 
+logs/
 .state/
 contents/
 extecte_files/

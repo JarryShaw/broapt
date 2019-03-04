@@ -39,4 +39,5 @@ download: update remove
 remove:
 	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
-	rm -f download/*.tar.gz download/*.whl
+	find download -iname '*.tar.gz' -print0 | xargs -0 rm -f
+	find download -iname '*.whl' -print0 | xargs -0 rm -f

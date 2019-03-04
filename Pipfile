@@ -4,15 +4,14 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pep8 = "*"
 autopep8 = "*"
-doc8 = "*"
 ipython = "*"
+pep8 = "*"
 
 [packages]
 bro-pkg = "*"
-pypcapkit = "*"
 dpkt = "*"
+pypcapkit = ">=0.13.3.post2"
 
 [requires]
 python_version = "3.7"
