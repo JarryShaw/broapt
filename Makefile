@@ -37,6 +37,7 @@ docker-run:
 
 git-commit:
 	git pull
+	git add .
 	git commit -a -S
 	git push
 
@@ -48,6 +49,8 @@ gitlab-copy:
 	find . ! -name '.git' \
 	       ! -iname 'gitlab' \
 	       ! -iname 'vendor' -depth 1 -exec cp -rf {} gitlab/xiaojiawei \;
+	sed /lfs/d gitlab/xiaojiawei/.gitattributes > gitlab/xiaojiawei/.gitattributes.tmp
+	mv gitlab/xiaojiawei/.gitattributes.tmp gitlab/xiaojiawei/.gitattributes
 	mkdir -p gitlab/xiaojiawei/vendor
 	find vendor ! -iname 'bro' \
 	            ! -iname 'Cellar' \
