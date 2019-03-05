@@ -34,11 +34,12 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 # build Bro, Broker & its Python binding
-RUN wget -nv https://www.zeek.org/downloads/bro-2.6.1.tar.gz -O /tmp/bro.tar.gz \
+RUN wget -nv https://www.zeek.org/downloads/bro-2.6.1.tar.gz -O /tmp/bro-2.6.1.tar.gz \
+ && wget -nv https://www.zeek.org/downloads/broker-1.1.2.tar.gz -O /tmp/broker-1.1.2.tar.gz \
  && apt-get remove -y \
         wget \
  && apt-get autoremove -y
-RUN tar -xzf /tmp/bro.tar.gz \
+RUN tar -xzf /tmp/bro-2.6.1.tar.gz \
  && cd bro-2.6.1 \
  && ./configure \
  && make \
@@ -53,8 +54,22 @@ RUN tar -xzf /tmp/bro.tar.gz \
         swig \
  && apt-get autoremove -y \
  && rm -rf \
-        /bro \
-        /tmp/bro.tar.gz
+        /bro-2.6.1 \
+        /tmp/bro-2.6.1.tar.gz
+RUN tar -xzf /tmp/broker-1.1.2.tar.gz \
+ && cd broker-1.1.2 \
+ && ./configure --python-prefix=$(python3 -c 'import sys; print(sys.exec_prefix)') \
+ && make install \
+ && apt-get remove -y \
+        cmake \
+        make \
+        gcc \
+        g++ \
+ && apt-get autoremove -y \
+ && rm -rf \
+        /broker-1.1.2 \
+        /tmp/broker-1.1.2.tar.gz
+ENV PATH="/usr/local/bro/bin:${PATH}"
 
 # install Python packages & dependencies
 COPY vendor/python/download /tmp/python
