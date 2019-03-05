@@ -53,7 +53,7 @@ event new_connection_contents(c: connection) &priority=5 {
 	local rec: Info = [$ts=network_time(), $id=c$id, $uid=c$uid, $cnt=cnt];
 
 	print c$id;
-	Log::write(LOG, rec);
+	Log::write(Reass::LOG, rec);
 
 	local orig_file = generate_extraction_filename(reassembly_prefix, c, fmt("orig_%s.dat", cnt));
 	local orig_f = open(fmt("%s/%s", path, orig_file));
@@ -66,5 +66,5 @@ event new_connection_contents(c: connection) &priority=5 {
 
 event bro_init() &priority=5 {
     # Specify the "log_reass" event here in order for Bro to raise it.
-    Log::create_stream(LOG, [$columns=Info, $ev=log_reass, $path="reass"]);
+    Log::create_stream(Reass::LOG, [$columns=Info, $ev=Reass::log_reass, $path="reass"]);
 }

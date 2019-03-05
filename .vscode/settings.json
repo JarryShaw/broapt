@@ -1,8 +1,10 @@
 {
     "cSpell.words": [
+        "Zeek's",
         "emsp",
         "nofile",
         "resp",
         "zeek"
-    ]
+    ],
+    "python.pythonPath": "/Users/jarryshaw/.local/share/virtualenvs/broapt-gvahlmFF/bin/python"
 }

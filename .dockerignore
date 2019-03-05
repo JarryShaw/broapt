@@ -9,6 +9,8 @@ __pycache__/
 dev_*
 test_*
 *~orig*
+sample/
+test/
 
 # Git files
 .git/
@@ -19,11 +21,13 @@ test_*
 contents/
 extract_files/
 
+# submodules
+gitlab/
+vendor/
+!vendor/python
+
 # misc files
 *.log
 *.egg
 *.whl
 *.tar.gz
-gitlab/
-sample/*-big.pcap
-test/

@@ -1,0 +1,15 @@
+# docker-compose version
+version: "3"
+
+# Broapt services
+services:
+  broapt:
+    build: .
+    container_name: broapt
+    entrypoint: ["bash", "/source/init.sh"]
+    image: broapt
+    volumes:
+      - ./sample:/sample
+      - ./source:/source
+      - ./test:/test
+      - ./vendor/file-extraction:/file-extraction

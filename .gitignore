@@ -3,6 +3,7 @@
 *~orig.*
 
 Cellar
+venv
 
 logs/
 .state/
