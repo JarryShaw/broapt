@@ -22,6 +22,7 @@ broker-clean:
 broker-build: broker-recursive
 	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/broker
+	# build & install Broker
 	mkdir -p $(shell pipenv --venv)/broker
 	pipenv run ./configure \
 	    --prefix=$(shell pipenv --venv)/broker \
@@ -29,6 +30,8 @@ broker-build: broker-recursive
 	    --with-python=$(shell pipenv --py) \
 	    --with-openssl=/usr/local/opt/openssl
 	pipenv run make install
+	# reset broker submodule
+	cd ..
 	$(MAKE) broker
 
 .ONESHELL:

@@ -4,18 +4,23 @@
 init:
 	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
+	# remove top-level Pipfile temporarily
 	mv ../../Pipfile ../../Pipfile.tmp
+	# create pipenv
 	pipenv --python 3.5
 	pipenv install dpkt "pypcapkit>=0.13.3.post2" python-magic
+	# reset top-level Pipfile
 	mv ../../Pipfile.tmp ../../Pipfile
 
 .ONESHELL:
 update:
 	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
+	# update pipenv
 	pipenv update
 	pipenv install
 	pipenv clean
+	# create requirements.txt
 	echo "# Python packages" > requirements.txt
 	pipenv run python -m pip show pip        | grep Version | sed "s/Version: \(.*\)*/pip==\1/"        >> requirements.txt
 	pipenv run python -m pip show setuptools | grep Version | sed "s/Version: \(.*\)*/setuptools==\1/" >> requirements.txt

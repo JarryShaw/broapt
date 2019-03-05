@@ -1,6 +1,6 @@
 # basic info
 FROM library/ubuntu:16.04
-LABEL version=2019.03.06
+LABEL version 1.1.2
 
 # set up environment variables
 ENV LANG "C.UTF-8"
@@ -12,11 +12,6 @@ RUN apt-get update \
  && apt-get upgrade -y \
  && apt-get install -y \
         wget \
-        ## python3 is actually dependency of the latters
-        ## but we keep it here as a good remainder
-        python3 \
-        python3-magic \
-        python3-pip \
         ## prerequisites for building Bro & Broker
         ## from https://docs.zeek.org/en/stable/install/install.html#prerequisites
         cmake \
@@ -27,7 +22,7 @@ RUN apt-get update \
         bison \
         libpcap-dev \
         libssl-dev \
-        # python-dev \
+        python-dev \
         swig \
         zlib1g-dev \
  && apt-get autoremove -y \
@@ -67,21 +62,6 @@ RUN tar -xzf /tmp/broker-1.1.2.tar.gz \
         /tmp/broker-1.1.2.tar.gz
 ENV PATH="/usr/local/bro/bin:${PATH}"
 
-# install Python packages & dependencies
-COPY vendor/python/download /tmp/python
-RUN python3 -m pip install --no-deps --cache-dir=/tmp/pip \
-        /tmp/python/pip-* \
-        /tmp/python/setuptools-* \
-        /tmp/python/wheel-* \
- && rm -f \
-        /tmp/python/pip-* \
-        /tmp/python/setuptools-* \
-        /tmp/python/wheel-* \
- && python3 -m pip install --no-deps --cache-dir=/tmp/pip \
-        /tmp/python/* \
- && rm -rf \
-        /tmp/pip \
-        /tmp/python \
- && apt-get remove -y \
-        python3-pip \
- && apt-get autoremove -y
+# set entrypoint
+ENTRYPOINT [ "/usr/local/bro/bin/bro" ]
+CMD [ "--help" ]

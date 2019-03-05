@@ -87,14 +87,20 @@ gitlab-clean:
 	    ! -iname 'zeek' -depth 1 -print0 | xargs -0 rm -rf
 
 gitlab-copy: gitlab-clean
+	# copy top-level files
 	find . -type f -depth 1 -exec cp -rf {} gitlab/xiaojiawei \;
+	# remove git-lfs usage
 	sed -i "" /lfs/d gitlab/xiaojiawei/.gitattributes
+	# copy docker
+	cp -rf docker gitlab/xiaojiawei
+	# copy source
 	mkdir -p gitlab/xiaojiawei/source
 	find source \
 	    ! -iname '*.log' \
 		! -iname '.state' \
 		! -iname 'contents' \
 		! -iname 'extract_files' -depth 1 -exec cp -rf {} gitlab/xiaojiawei/source \;
+	# copy vendor
 	mkdir -p gitlab/xiaojiawei/vendor
 	find vendor \
 	    ! -iname 'bro' \
@@ -103,6 +109,7 @@ gitlab-copy: gitlab-clean
 		! -iname 'file-extraction' \
 		! -iname 'zeek' \
 		! -iname 'venv' -depth 1 -exec cp -rf {} gitlab/xiaojiawei/vendor \;
+	# remove unexpected files
 	find gitlab/xiaojiawei \
 		-iname '__pycache__' -or \
 		-iname '*~orig*' -type fd -print0 | xargs -0 rm -rf
