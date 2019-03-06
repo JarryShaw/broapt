@@ -33,6 +33,10 @@ broker-clean:
 broker-build-nighty: broker-recursive
 	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/broker
+	# modify configure
+	cp ../setup-configure.py setup-configure.py
+	pipenv run python setup-configure.py
+	chmod +x configure
 	# build & install Broker
 	mkdir -p $(shell pipenv --venv)/broker
 	pipenv run ./configure \
@@ -49,9 +53,13 @@ broker-build-nighty: broker-recursive
 broker-build-release:
 	set -ex
 	# download Broker
-	wget https://www.zeek.org/downloads/broker-1.1.2.tar.gz
+	wget https://www.zeek.org/downloads/broker-1.1.2.tar.gz -O broker-1.1.2.tar.gz
 	tar -xzf broker-1.1.2.tar.gz
 	cd broker-1.1.2
+	# modify configure
+	cp ../setup-configure.py setup-configure.py
+	pipenv run python setup-configure.py
+	chmod +x configure
 	# build & install Broker
 	mkdir -p $(shell pipenv --venv)/broker
 	pipenv run ./configure \
@@ -62,8 +70,8 @@ broker-build-release:
 	pipenv run make install
 	# remove arhives
 	rm -rf \
-	    broker-1.1.2
-	    broker-1.1.2.tar.gz
+	    broker\-1.1.2
+	    broker\-1.1.2.tar.gz
 
 .ONESHELL:
 broker-recursive: broker-clean
@@ -115,7 +123,7 @@ zeek-build-nighty: zeek-recursive
 zeek-build-release:
 	set -ex
 	# download Bro
-	wget https://www.zeek.org/downloads/bro-2.6.1.tar.gz
+	wget https://www.zeek.org/downloads/bro-2.6.1.tar.gz -O bro-2.6.1.tar.gz
 	tar -xzf bro-2.6.1.tar.gz
 	cd bro-2.6.1
 	# build & install Bro
@@ -129,8 +137,8 @@ zeek-build-release:
 	pipenv run make install
 	# remove arhives
 	rm -rf \
-	    bro-2.6.1
-	    bro-2.6.1.tar.gz
+	    bro\-2.6.1
+	    bro\-2.6.1.tar.gz
 
 .ONESHELL:
 zeek-recursive: zeek-clean

@@ -32,7 +32,7 @@ def process(entry):
     if isinstance(report, pcapkit.HTTP) and report.info.receipt == 'response':
         data = report.info.raw.body
         if not data:
-            return report
+            return
 
         content_disposition = report.info.header.get('Content-Disposition')
         mime = magic.from_buffer(data, mime=True)
@@ -51,7 +51,6 @@ def process(entry):
 
         with open(os.path.join('extract_files', mime, report.unquote(filename)), 'wb') as file:
             file.write(data)
-    return report
 
 
 def multi_processing():

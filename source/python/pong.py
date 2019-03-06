@@ -6,7 +6,7 @@ import broker
 
 # Setup endpoint and connect to Bro.
 ep = broker.Endpoint()
-sub = ep.make_subscriber("/tmp/test")
+sub = ep.make_subscriber("/topic/test")
 ss = ep.make_status_subscriber(True)
 ep.peer("127.0.0.1", 9999)
 
@@ -20,7 +20,7 @@ if not (type(st) == broker.Status and st.code() == broker.SC.PeerAdded):
 for n in range(5):
     # Send event "ping(n)".
     ping = broker.bro.Event("ping", n)
-    ep.publish("/tmp/test", ping)
+    ep.publish("/topic/test", ping)
 
     # Wait for "pong" reply event.
     (t, d) = sub.get()

@@ -3,8 +3,7 @@
 set -ex
 
 # download Bro
-rm -f bro-2.6.1.tar.gz
-wget https://www.zeek.org/downloads/bro-2.6.1.tar.gz
+wget https://www.zeek.org/downloads/bro-2.6.1.tar.gz -O bro-2.6.1.tar.gz
 tar -xzf bro-2.6.1.tar.gz
 cd bro-2.6.1
 
@@ -19,6 +18,7 @@ pipenv run make
 pipenv run make install
 
 # remove arhives
+cd ..
 if which trash >/dev/null 2>&1 ; then
     trash bro-2.6.1 bro-2.6.1.tar.gz
 else

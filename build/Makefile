@@ -1,6 +1,6 @@
 .PHONY: all bro broker
 
-PYTHON ?= cp36
+PYTHON ?= cp35
 
 all: bro broker
 
