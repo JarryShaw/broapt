@@ -6,8 +6,10 @@ LABEL version 1.1.2
 ENV LANG "C.UTF-8"
 ENV LC_ALL "C.UTF-8"
 ENV PYTHONIOENCODING "UTF-8"
+ENV PATH="/usr/local/bro/bin:${PATH}"
+ENV PYTHONPATH="/usr/lib/python2.7/site-packages"
 
-# install, Bro, Python 3 & all requirements
+# install, Bro, Python & all requirements
 RUN apt-get update \
  && apt-get upgrade -y \
  && apt-get install -y \
@@ -30,37 +32,43 @@ RUN apt-get update \
 
 # build Bro, Broker & its Python binding
 RUN wget -nv https://www.zeek.org/downloads/bro-2.6.1.tar.gz -O /tmp/bro-2.6.1.tar.gz \
- && wget -nv https://www.zeek.org/downloads/broker-1.1.2.tar.gz -O /tmp/broker-1.1.2.tar.gz \
- && apt-get remove -y \
-        wget \
- && apt-get autoremove -y
+ && wget -nv https://www.zeek.org/downloads/broker-1.1.2.tar.gz -O /tmp/broker-1.1.2.tar.gz
 RUN tar -xzf /tmp/bro-2.6.1.tar.gz \
  && cd bro-2.6.1 \
  && ./configure \
  && make \
- && make install \
- && apt-get remove -y \
-        flex \
-        bison \
-        swig \
- && apt-get autoremove -y \
- && rm -rf \
-        /bro-2.6.1 \
-        /tmp/bro-2.6.1.tar.gz
+ && make install
 RUN tar -xzf /tmp/broker-1.1.2.tar.gz \
  && cd broker-1.1.2 \
- && ./configure --python-prefix=$(python3 -c 'import sys; print(sys.exec_prefix)') \
- && make install \
- && apt-get remove -y \
+ && ./configure \
+        --python-prefix=$(python -c 'import sys; print(sys.exec_prefix)') \
+        --with-python=/usr/bin/python \
+ && make install
+
+# cleanup process
+RUN rm -rf \
+        ## apt repository lists
+        /var/lib/apt/lists/* \
+        ## Bro build & archive
+        /bro-2.6.1 \
+        /tmp/bro-2.6.1.tar.gz \
+        ## Broker build & archive
+        /broker-1.1.2 \
+        /tmp/broker-1.1.2.tar.gz \
+ &&  apt-get remove -y \
+        software-properties-common \
+        wget \
+        ## Bro & Broker
         cmake \
         make \
         gcc \
         g++ \
+        flex \
+        bison \
+        swig \
  && apt-get autoremove -y \
- && rm -rf \
-        /broker-1.1.2 \
-        /tmp/broker-1.1.2.tar.gz
-ENV PATH="/usr/local/bro/bin:${PATH}"
+ && apt-get autoclean \
+ && apt-get clean
 
 # set entrypoint
 ENTRYPOINT [ "/usr/local/bro/bin/bro" ]

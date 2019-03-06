@@ -1,13 +1,16 @@
-.PHONY: commit docker docker-compose gitlab pipenv download submodule
+.PHONY: build commit docker docker-compose gitlab link pipenv download submodule
 
+build: build-bro build-broker
 commit: requirements-download gitlab-commit git-commit
 docker: docker-build docker-run
 docker-compose: docker-compose-daemon docker-compose-exec docker-compose-stop
 download: requirements-download
 gitlab: gitlab-submodule
+link: submodule-link
 pipenv: pipenv-init
 submodule: submodule-clone
 update: pipenv-update download submodule-pull
+
 
 pipenv-init:
 	pipenv --python 3.7
@@ -33,7 +36,13 @@ requirements-download:
 requirements-remove:
 	cd vendor/python && $(MAKE) remove
 
-docker-build:
+build-bro:
+	cd build && $(MAKE) bro
+
+build-broker:
+	cd build && $(MAKE) broker
+
+docker-build: requirements-download
 	sed -i "" "s/LABEL version.*/LABEL version=$(shell date +%Y.%m.%d)/" Dockerfile
 	docker build --rm --tag broapt .
 	$(MAKE) docker-prune
@@ -71,6 +80,9 @@ submodule-clone:
 	cd vendor && $(MAKE) all
 	git clone http://202.120.1.158/bysj.git gitlab
 
+submodule-link:
+	cd vendor && $(MAKE) link
+
 submodule-pull:
 	cd vendor/broker && git pull
 	cd vendor/file\-extraction && git pull
@@ -91,28 +103,32 @@ gitlab-copy: gitlab-clean
 	find . -type f -depth 1 -exec cp -rf {} gitlab/xiaojiawei \;
 	# remove git-lfs usage
 	sed -i "" /lfs/d gitlab/xiaojiawei/.gitattributes
+	# copy build
+	mkdir -p gitlab/xiaojiawei/build
+	find build \
+	    ! -iname 'venv' -depth 1 -exec cp -rf {} gitlab/xiaojiawei/build \;
 	# copy docker
 	cp -rf docker gitlab/xiaojiawei
 	# copy source
 	mkdir -p gitlab/xiaojiawei/source
 	find source \
 	    ! -iname '*.log' \
-		! -iname '.state' \
-		! -iname 'contents' \
-		! -iname 'extract_files' -depth 1 -exec cp -rf {} gitlab/xiaojiawei/source \;
+	    ! -iname '.state' \
+	    ! -iname 'contents' \
+	    ! -iname 'extract_files' -depth 1 -exec cp -rf {} gitlab/xiaojiawei/source \;
 	# copy vendor
 	mkdir -p gitlab/xiaojiawei/vendor
 	find vendor \
 	    ! -iname 'bro' \
-		! -iname 'broker' \
-		! -iname 'Cellar' \
-		! -iname 'file-extraction' \
-		! -iname 'zeek' \
-		! -iname 'venv' -depth 1 -exec cp -rf {} gitlab/xiaojiawei/vendor \;
+	    ! -iname 'broker' \
+	    ! -iname 'Cellar' \
+	    ! -iname 'file-extraction' \
+	    ! -iname 'zeek' \
+	    ! -iname 'venv' -depth 1 -exec cp -rf {} gitlab/xiaojiawei/vendor \;
 	# remove unexpected files
 	find gitlab/xiaojiawei \
-		-iname '__pycache__' -or \
-		-iname '*~orig*' -type fd -print0 | xargs -0 rm -rf
+	    -iname '__pycache__' -or \
+	    -iname '*~orig*' -type fd -print0 | xargs -0 rm -rf
 	find gitlab \
 	    -iname '.DS_Store' -print0 | xargs -0 rm -rf
 

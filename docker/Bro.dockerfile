@@ -6,8 +6,9 @@ LABEL version 2.6.1
 ENV LANG "C.UTF-8"
 ENV LC_ALL "C.UTF-8"
 ENV PYTHONIOENCODING "UTF-8"
+ENV PATH="/usr/local/bro/bin:${PATH}"
 
-# install, Bro, Python 3 & all requirements
+# install, Bro & all requirements
 RUN apt-get update \
  && apt-get upgrade -y \
  && apt-get install -y \
@@ -24,21 +25,25 @@ RUN apt-get update \
         libssl-dev \
         python-dev \
         swig \
-        zlib1g-dev \
- && apt-get autoremove -y \
- && rm -rf /var/lib/apt/lists/*
+        zlib1g-dev
 
 # build Bro, Broker & its Python binding
-RUN wget -nv https://www.zeek.org/downloads/bro-2.6.1.tar.gz -O /tmp/bro-2.6.1.tar.gz \
- && apt-get remove -y \
-        wget \
- && apt-get autoremove -y
+RUN wget -nv https://www.zeek.org/downloads/bro-2.6.1.tar.gz -O /tmp/bro-2.6.1.tar.gz
 RUN tar -xzf /tmp/bro-2.6.1.tar.gz \
  && cd bro-2.6.1 \
  && ./configure \
  && make \
- && make install \
- && apt-get remove -y \
+ && make install
+
+RUN rm -rf \
+        ## apt repository lists
+        /var/lib/apt/lists/* \
+        ## Bro build & archive
+        /bro-2.6.1 \
+        /tmp/bro-2.6.1.tar.gz \
+ &&  apt-get remove -y \
+        wget \
+        ## Bro & Broker
         cmake \
         make \
         gcc \
@@ -47,10 +52,8 @@ RUN tar -xzf /tmp/bro-2.6.1.tar.gz \
         bison \
         swig \
  && apt-get autoremove -y \
- && rm -rf \
-        /bro-2.6.1 \
-        /tmp/bro-2.6.1.tar.gz
-ENV PATH="/usr/local/bro/bin:${PATH}"
+ && apt-get autoclean \
+ && apt-get clean
 
 # set entrypoint
 ENTRYPOINT [ "/usr/local/bro/bin/bro" ]

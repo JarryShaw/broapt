@@ -1,9 +1,12 @@
 {
     "cSpell.words": [
+        "NPROCESSORS",
         "Zeek's",
         "emsp",
         "nofile",
         "resp",
+        "sched",
+        "sysconf",
         "zeek"
     ],
     "python.pythonPath": "/Users/jarryshaw/.local/share/virtualenvs/broapt-gvahlmFF/bin/python"

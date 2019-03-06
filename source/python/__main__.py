@@ -15,6 +15,14 @@ import re
 import magic
 import pcapkit
 
+# limit on CPU
+if os.name == 'posix' and 'SC_NPROCESSORS_CONF' in os.sysconf_names:
+    CPU_CNT = os.sysconf('SC_NPROCESSORS_CONF')
+elif 'sched_getaffinity' in os.__all__:
+    CPU_CNT = len(os.sched_getaffinity(0))  # pylint: disable=E1101
+else:
+    CPU_CNT = os.cpu_count() or 1
+
 
 def process(entry):
     with open(entry.path, 'rb') as file:
@@ -51,7 +59,7 @@ def multi_processing():
         path=entry.path,
         name=entry.name,
     ) for entry in os.scandir(os.path.join(ROOT, '../contents')))
-    multiprocessing.Pool().map(process, entries)
+    multiprocessing.Pool(processes=CPU_CNT).map(process, entries)
 
 
 def mono_processing():
