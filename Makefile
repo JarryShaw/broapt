@@ -1,4 +1,4 @@
-.PHONY: build commit docker docker-compose gitlab link pipenv download submodule
+.PHONY: build commit docker docker-compose gitlab link pipenv download submodule update
 
 build: build-bro build-broker
 commit: requirements-download gitlab-commit git-commit
@@ -10,7 +10,6 @@ link: submodule-link
 pipenv: pipenv-init
 submodule: submodule-clone
 update: pipenv-update download submodule-pull
-
 
 pipenv-init:
 	pipenv --python 3.7
@@ -86,6 +85,7 @@ submodule-link:
 submodule-pull:
 	cd vendor/broker && git pull
 	cd vendor/file\-extraction && git pull
+	cd vendor/pypcapkit && git pull
 	cd vendor/zeek && git pull
 
 gitlab-clean:
@@ -96,6 +96,7 @@ gitlab-clean:
 	find gitlab/xiaojiawei/vendor \
 	    ! -iname 'broker' \
 	    ! -iname 'file-extraction' \
+		! -iname 'pypcapkit' \
 	    ! -iname 'zeek' -depth 1 -print0 | xargs -0 rm -rf
 
 gitlab-copy: gitlab-clean
@@ -123,6 +124,7 @@ gitlab-copy: gitlab-clean
 	    ! -iname 'broker' \
 	    ! -iname 'Cellar' \
 	    ! -iname 'file-extraction' \
+		! -iname 'pypcapkit' \
 	    ! -iname 'zeek' \
 	    ! -iname 'venv' -depth 1 -exec cp -rf {} gitlab/xiaojiawei/vendor \;
 	# remove unexpected files
@@ -135,11 +137,13 @@ gitlab-copy: gitlab-clean
 gitlab-commit: gitlab-copy
 	cd gitlab/xiaojiawei/vendor/broker && git pull
 	cd gitlab/xiaojiawei/vendor/file\-extraction && git pull
+	cd gitlab/xiaojiawei/vendor/pypcapkit && git pull
 	cd gitlab/xiaojiawei/vendor/zeek && git pull
 	cd gitlab/xiaojiawei && $(MAKE) git-commit
 
 gitlab-submodule: gitlab-copy
 	rm -rf gitlab/xiaojiawei/vendor/broker \
 	       gitlab/xiaojiawei/vendor/file\-extraction \
+	       gitlab/xiaojiawei/vendor/pypcapkit \
 	       gitlab/xiaojiawei/vendor/zeek
 	cd gitlab/xiaojiawei/vendor && $(MAKE) all

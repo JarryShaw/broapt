@@ -1,57 +1,47 @@
 .PHONY: all build clean link recursive \
-		broker file-extration zeek
+		broker file-extration pypcapkit zeek
 
-all: broker file-extraction zeek
+all: broker file-extraction pypcapkit zeek
 build: broker-build-release zeek-build-release
-clean: broker-clean file-extraction-clean zeek-clean
+clean: broker-clean file-extraction-clean pypcapkit-clean zeek-clean
 link: link-cellar link-venv
 recursive: broker-recursive file-extraction zeek-recursive
 
+.ONESHELL:
 link-cellar:
 	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 	ln -sf $(shell brew --prefix bro) Cellar
 
+.ONESHELL:
 link-venv:
 	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 	ln -sf $(shell pipenv --venv) venv
 
-.ONESHELL:
 broker: broker-clean
-	set -ex
-	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
-	git clone https://github.com/zeek/broker.git
+	git clone https://github.com/zeek/broker.git $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/broker
 
-.ONESHELL:
 broker-clean:
-	set -ex
-	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
-	rm -rf broker
+	rm -rf $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/broker
 
-.ONESHELL:
 broker-build-nighty: broker-recursive
-	set -ex
-	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/broker
-	# modify configure
-	cp ../setup-configure.py setup-configure.py
-	pipenv run python setup-configure.py
-	chmod +x configure
 	# build & install Broker
 	mkdir -p $(shell pipenv --venv)/broker
-	pipenv run ./configure \
+	pipenv run $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/broker/configure \
 	    --prefix=$(shell pipenv --venv)/broker \
 	    --python-prefix=$(shell pipenv run python -c 'import sys; print(sys.exec_prefix)') \
 	    --with-python=$(shell pipenv --py) \
+	    --with-python-config=$(shell pipenv --venv)/bin/python-config \
 	    --with-openssl=$(shell brew --prefix openssl)
-	pipenv run make install
+	pipenv run $(MAKE) -C $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/broker install
 	# reset broker submodule
-	cd ..
-	$(MAKE) broker
+	$(MAKE) -C $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST)))) broker
 
 .ONESHELL:
 broker-build-release:
 	set -ex
+	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 	# download Broker
 	wget https://www.zeek.org/downloads/broker-1.1.2.tar.gz -O broker-1.1.2.tar.gz
 	tar -xzf broker-1.1.2.tar.gz
@@ -67,61 +57,50 @@ broker-build-release:
 	    --python-prefix=$(shell pipenv run python -c 'import sys; print(sys.exec_prefix)') \
 	    --with-python=$(shell pipenv --py) \
 	    --with-openssl=$(shell brew --prefix openssl)
-	pipenv run make install
+	pipenv run $(MAKE) install
 	# remove arhives
 	rm -rf \
 	    broker\-1.1.2
 	    broker\-1.1.2.tar.gz
 
-.ONESHELL:
 broker-recursive: broker-clean
-	set -ex
-	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
-	git clone --recursive https://github.com/zeek/broker.git
+	git clone --recursive https://github.com/zeek/broker.git $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/broker
 
-.ONESHELL:
 file-extraction: file-extraction-clean
-	set -ex
-	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
-	git clone https://github.com/hosom/file-extraction.git
+	git clone https://github.com/hosom/file-extraction.git $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/file-extraction
 
-.ONESHELL:
 file-extraction-clean:
-	set -ex
-	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
-	rm -rf file-extraction
+	rm -rf $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/file\-extraction
 
-.ONESHELL:
+pypcapkit: pypcapkit-clean
+	git clone https://github.com/JarryShaw/PyPCAPKit.git $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/pypcapkit
+
+pypcapkit-clean:
+	rm -rf $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/pypcapkit
+
 zeek: zeek-clean
-	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
-	git clone https://github.com/zeek/zeek.git
+	git clone https://github.com/zeek/zeek.git $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/zeek
 
-.ONESHELL:
 zeek-clean:
-	set -ex
-	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
-	rm -rf zeek
+	rm -rf $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/zeek
 
-.ONESHELL:
 zeek-build-nighty: zeek-recursive
-	set -ex
-	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/zeek
 	# build & install Bro
 	mkdir -p $(shell pipenv --venv)/{bro,var,etc}
-	pipenv run ./configure \
+	pipenv run $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/zeek/configure \
 	    --prefix=$(shell pipenv --venv)/bro \
 	    --localstatedir=$(shell pipenv --venv)/var \
 	    --conf-files-dir=$(shell pipenv --venv)/etc \
 	    --with-openssl=$(shell brew --prefix openssl)
-	pipenv run make
-	pipenv run make install
+	pipenv run $(MAKE) -C $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/zeek
+	pipenv run $(MAKE) -C $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/zeek install
 	# reset broker submodule
-	cd ..
-	$(MAKE) zeek
+	$(MAKE) -C $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST)))) zeek
 
 .ONESHELL:
 zeek-build-release:
 	set -ex
+	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 	# download Bro
 	wget https://www.zeek.org/downloads/bro-2.6.1.tar.gz -O bro-2.6.1.tar.gz
 	tar -xzf bro-2.6.1.tar.gz
@@ -133,14 +112,12 @@ zeek-build-release:
 	    --localstatedir=$(shell pipenv --venv)/var \
 	    --conf-files-dir=$(shell pipenv --venv)/etc \
 	    --with-openssl=$(shell brew --prefix openssl)
-	pipenv run make
-	pipenv run make install
+	pipenv run $(MAKE)
+	pipenv run $(MAKE) install
 	# remove arhives
 	rm -rf \
 	    bro\-2.6.1
 	    bro\-2.6.1.tar.gz
 
-.ONESHELL:
 zeek-recursive: zeek-clean
-	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
-	git clone --recursive https://github.com/zeek/zeek.git
+	git clone --recursive https://github.com/zeek/zeek.git $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/zeek

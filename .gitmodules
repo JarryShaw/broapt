@@ -10,3 +10,6 @@
 [submodule "vendor/broker"]
 	path = vendor/broker
 	url = https://github.com/zeek/broker.git
+[submodule "vendor/pypcapkit"]
+	path = vendor/pypcapkit
+	url = https://github.com/JarryShaw/PyPCAPKit.git
