@@ -15,4 +15,4 @@ redef contents_orig = T;
 redef contents_resp = T;
 
 # Configure if change log files to JSON format.
-redef LogAscii::use_json = T;
+redef use_json = F;

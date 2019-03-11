@@ -6,7 +6,7 @@
 	url = https://github.com/zeek/zeek.git
 [submodule "gitlab"]
 	path = gitlab
-	url = http://202.120.1.158/bysj.git
+	url = http://202.120.1.158/bysj/2019bysj.git
 [submodule "vendor/broker"]
 	path = vendor/broker
 	url = https://github.com/zeek/broker.git
