@@ -27,7 +27,8 @@ export {
     # "log_<stream>".
     global log_conn: event(rec: Info);
 
-    const use_json: bool = F;
+    ## Write logs in JSON format
+    const use_json: bool = F &redef;
 }
 
 @if ( contents_orig )
