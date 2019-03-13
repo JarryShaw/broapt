@@ -93,7 +93,7 @@ event tcp_reassembly(info: Info) {
     if ( DSN >= ISN ) {     # if fragment goes after existing payload
         LEN = BUF[BUFID]$buf[ACK]$len;
         SUM = ISN + LEN;
-        print DSN, ISN, LEN, SUM;
+        # print DSN, ISN, LEN, SUM;
         if ( DSN >= SUM ) {     # if fragment goes after existing payload
             GAP = DSN - (ISN + LEN);        # gap length between payloads
             bytearray_extend(RAW, bytearray_new(GAP));
@@ -103,7 +103,7 @@ event tcp_reassembly(info: Info) {
     } else {
         LEN = info$len;
         SUM = DSN + LEN;
-        print DSN, ISN, LEN, SUM;
+        # print DSN, ISN, LEN, SUM;
         if ( ISN >= SUM ) {     # if fragment exceeds existing payload
             GAP = ISN - SUM;                # gap length between payloads
             TMP = copy(info$payload);
@@ -118,6 +118,7 @@ event tcp_reassembly(info: Info) {
     }
     BUF[BUFID]$buf[ACK]$raw = copy(RAW);    # update payload datagram
     BUF[BUFID]$buf[ACK]$len = |RAW|;        # update payload length
+    # print BUF[BUFID];
 
     local HDL: hdl_t = copy(BUF[BUFID]$hdl);
     local new_hole: hole_t;
