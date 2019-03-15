@@ -34,17 +34,49 @@ export {
     };
 
     ## buffer fields
-    global BUF: buffer;
+    global BUFFER: buffer;
 }
 
 @if ( use_json )
     redef LogAscii::use_json = T;
 @endif
 
-event submit(bufid: string, c: connection) {
-    # print fmt("submit: %s", bufid);
+function make_name(pkt: pkt_t, c: connection): string {
+    local suffix: string = fmt("%s", pkt$ack);
+    local name: string = generate_extraction_filename(pkt$id, c, suffix);
+    return fmt("%s/%s", path, name);
+}
 
-    delete BUF[bufid];
+function submit(bufid: string, c: connection) {
+    # print fmt("submit: %s", bufid);
+    local HDL: hdl_t = BUFFER[bufid]$hdl;
+    local BUF: buf_t = BUFFER[bufid]$buf;
+
+    local data: bytearray;
+    local part: part_t;
+
+    local f: file;
+    local pkt: pkt_t;
+    local filename: string;
+
+    for ( ack in BUF ) {
+        part = BUF[ack];
+        if ( |BUF| <= 1 ) {
+            data = part$raw;
+            if ( |data| > 0 ) {
+                pkt = [$conn=c$id,
+                       $ack=ack,
+                       $id=bufid,
+                       $payload=bytearray_to_string(data)];
+                filename = make_name(pkt, c);
+                f = open(fmt("%s.dat", filename));
+                write_file(f, pkt$payload);
+                close(f);
+            }
+        }
+    }
+
+    delete BUFFER[bufid];
 }
 
 event tcp_reassembly(info: Info) {
@@ -57,25 +89,25 @@ event tcp_reassembly(info: Info) {
     local RST: bool = info$rst;         # Reset Connection Flag (Termination)
 
     # when SYN is set, reset buffer of this session
-    if ( SYN && BUFID in BUF )
-        event submit(BUFID, info$conn);
+    if ( SYN && BUFID in BUFFER )
+        submit(BUFID, info$conn);
 
     # initialise buffer with BUFID & ACK
-    if ( BUFID !in BUF ) {
+    if ( BUFID !in BUFFER ) {
         local hdl: hdl_t;
         local buf: buf_t;
-        hdl += [$first=info$len, $last=0xffffffffffffffff];
+        hdl[0] = [$first=info$len, $last=0xffffffffffffffff];
         buf[ACK] = [
             $isn=info$dsn,
             $len=info$len,
             $raw=info$payload
         ];
-        BUF[BUFID] = [$hdl=hdl, $buf=buf];
+        BUFFER[BUFID] = [$hdl=hdl, $buf=buf];
     }
 
     # initialise buffer with ACK
-    if ( ACK !in BUF[BUFID]$buf )
-        BUF[BUFID]$buf[ACK] = [
+    if ( ACK !in BUFFER[BUFID]$buf )
+        BUFFER[BUFID]$buf[ACK] = [
             $isn=info$dsn,
             $len=info$len,
             $raw=info$payload
@@ -88,10 +120,10 @@ event tcp_reassembly(info: Info) {
     local TMP: bytearray;
 
     # record fragment payload
-    local ISN: count = BUF[BUFID]$buf[ACK]$isn;     # Initial Sequence Number
-    local RAW: bytearray = BUF[BUFID]$buf[ACK]$raw; # Raw Payload Data
+    local ISN: count = BUFFER[BUFID]$buf[ACK]$isn;     # Initial Sequence Number
+    local RAW: bytearray = BUFFER[BUFID]$buf[ACK]$raw; # Raw Payload Data
     if ( DSN >= ISN ) {     # if fragment goes after existing payload
-        LEN = BUF[BUFID]$buf[ACK]$len;
+        LEN = BUFFER[BUFID]$buf[ACK]$len;
         SUM = ISN + LEN;
         # print DSN, ISN, LEN, SUM;
         if ( DSN >= SUM ) {     # if fragment goes after existing payload
@@ -116,46 +148,43 @@ event tcp_reassembly(info: Info) {
             RAW = copy(TMP);
         }
     }
-    BUF[BUFID]$buf[ACK]$raw = copy(RAW);    # update payload datagram
-    BUF[BUFID]$buf[ACK]$len = |RAW|;        # update payload length
-    # print BUF[BUFID];
+    BUFFER[BUFID]$buf[ACK]$raw = copy(RAW); # update payload datagram
+    BUFFER[BUFID]$buf[ACK]$len = |RAW|;     # update payload length
+    # print BUFID;
+    # print BUFFER[BUFID];
+    # print "--------";
 
-    local HDL: hdl_t = copy(BUF[BUFID]$hdl);
+    local HDL: hdl_t = copy(BUFFER[BUFID]$hdl);
     local new_hole: hole_t;
-    local index: count = 0;
     local hole: hole_t;
-    while ( index < |BUF[BUFID]$hdl| ) {                    # step one
-        hole = BUF[BUFID]$hdl[index];
-        if ( info$first > hole$last ) {                     # step two
-            ++ index;
+    for ( index in BUFFER[BUFID]$hdl ) {                    # step one
+        hole = BUFFER[BUFID]$hdl[index];
+        if ( info$first > hole$last )                       # step two
             next;
-        }
-        if ( info$last < hole$first ) {                     # step three
-            ++ index;
+        if ( info$last < hole$first )                       # step three
             next;
-        }
-        HDL = vector_delete(HDL, index);                    # step four
+        table_delete(HDL, index);                           # step four
         if ( info$first > hole$first ) {                    # step five
             new_hole = [
                 $first=hole$first,
                 $last=info$first - 1
             ];
-            vector_insert(HDL, index, new_hole);
+            table_insert(HDL, index, new_hole);
         }
         if ( info$last < hole$last && !FIN && !RST ) {      # step six
             new_hole = [
                 $first=info$last + 1,
                 $last=hole$last
             ];
-            vector_insert(HDL, index+1, new_hole);
+            table_insert(HDL, index+1, new_hole);
         }
         break;                                              # step seven
     }
-    BUF[BUFID]$hdl = copy(HDL);                             # update HDL
+    BUFFER[BUFID]$hdl = copy(HDL);                          # update HDL
 
     # when FIN/RST is set, submit buffer of this session
     if ( FIN || RST )
-        event submit(BUFID, info$conn);
+        submit(BUFID, info$conn);
     # print fmt("reassembled: %s", info$conn$id);
 }
 

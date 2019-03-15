@@ -1,13 +1,13 @@
 # bytearray (from Python, c.f. builtins.bytearray)
 
-type bytearray: vector of string;
+type bytearray: table[count] of string;
 
 function bytearray_new(len: count, element: string &default=""): bytearray {
     # print fmt("bytearray_new(len: %s, element: %s)", len, element);
     local range: count = 0;
     local array: bytearray;
     while ( range < len ) {
-        array += element;
+        array[range] = element;
         ++ range;
     }
     return array;
@@ -15,9 +15,12 @@ function bytearray_new(len: count, element: string &default=""): bytearray {
 
 function string_to_bytearray(s: string): bytearray {
     # print fmt("string_to_bytearray(%s)", |s|);
+    local index: count = 0;
     local array: bytearray;
-    for ( byte in s )
-        array += byte;
+    for ( byte in s ) {
+        array[index] = byte;
+        ++ index;
+    }
     return array;
 }
 
@@ -33,10 +36,12 @@ function bytearray_extend(base: bytearray, iterable: bytearray, start: count &de
 function bytearray_indice(base: bytearray, start: count &default=0): bytearray {
     # print fmt("bytearray_indice(base: %s, start: %s)", |base|, start);
     local array: bytearray;
+    local range: count = 0;
     local index: count = start;
     while ( index < |base| ) {
-        array += base[index];
+        array[range] = base[index];
         ++ index;
+        ++ range;
     }
     return array;
 }

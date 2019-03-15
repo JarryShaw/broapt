@@ -2,9 +2,12 @@
     "cSpell.words": [
         "NPROCESSORS",
         "Zeek's",
+        "bufid",
         "emsp",
         "nofile",
+        "reass",
         "resp",
+        "rsplit",
         "sched",
         "sysconf",
         "zeek"
