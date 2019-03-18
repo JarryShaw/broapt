@@ -17,11 +17,11 @@
   - [`scripts/main.bro`](source/scripts/main.bro) -- main implementation; reassemble TCP datagram in pure Bro script (__DEBUG__)
   - [`scripts/logging.bro`](source/scripts/logging.bro) -- logging implementation (__TESTING__)
   - [`scripts/contents.bro`](source/scripts/contents.bro) -- store reassembled application layer data on demand (__DEPRECATED__)
-  - [`scripts/plugins`](source/scripts/plugins) -- Bro plugins
-    - [`scripts/plugins/__load__.bro`](source/scripts/plugins/__load__.bro) -- module entry
-    - [`scripts/plugins/buffer.bro`](source/scripts/plugins/buffer.bro) -- `buffer` for TCP reassembly (from PyPCAPKit, c.f. `pcapkit.reassembly.tcp.TCP_Reassembly._buffer`)
-    - [`scripts/plugins/bytearray.bro`](source/scripts/plugins/bytearray.bro) -- `bytearray` for TCP reassembly (from Python, c.f. `builtins.bytearray`)
-    - [`scripts/plugins/packet.bro`](source/scripts/plugins/packet.bro) -- `packet` for TCP reassembly (from PyPCAPKit, c.f. `pcapkit.reassembly.tcp.TCP_Reassembly.datagram[...]`)
+  - [`scripts/helpers`](source/scripts/helpers) -- Bro helper scripts
+    - [`scripts/helpers/__load__.bro`](source/scripts/helpers/__load__.bro) -- module entry
+    - [`scripts/helpers/buffer.bro`](source/scripts/helpers/buffer.bro) -- `buffer` for TCP reassembly (from PyPCAPKit, c.f. `pcapkit.reassembly.tcp.TCP_Reassembly._buffer`)
+    - [`scripts/helpers/bytearray.bro`](source/scripts/helpers/bytearray.bro) -- `bytearray` for TCP reassembly (from Python, c.f. `builtins.bytearray`)
+    - [`scripts/helpers/packet.bro`](source/scripts/helpers/packet.bro) -- `packet` for TCP reassembly (from PyPCAPKit, c.f. `pcapkit.reassembly.tcp.TCP_Reassembly.datagram[...]`)
 
 ### Ignored files
 

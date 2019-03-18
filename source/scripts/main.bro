@@ -1,4 +1,4 @@
-@load ./plugins
+@load ./helpers
 @load base/utils/files
 # @load misc/dump-events
 
