@@ -13,7 +13,7 @@ type part_t: record {
     raw:    bytearray;
 };
 
-type hdl_t: table[count] of hole_t;
+type hdl_t: vector of hole_t;
 type buf_t: table[count] of part_t;
 
 type frag_t: record {
@@ -21,22 +21,30 @@ type frag_t: record {
     buf: buf_t;
 };
 
-type buffer: table[string] of frag_t;
+type buffer: table[conn_id] of frag_t;
 
-function table_insert(base: hdl_t, index: count, new: hole_t) {
-    local range: count = index;
-    while ( range < |base| ) {
-        base[range+1] = base[range];
-        ++ range;
+function hdl_insert(base: hdl_t, index: count, new: hole_t) {
+    if ( index >= |base| )
+        base[|base|] = new;
+    else {
+        local range: count = index;
+        while ( range < |base| ) {
+            base[range+1] = base[range];
+            ++ range;
+        }
+        base[index] = new;
     }
-    base[index] = new;
 }
 
-function table_delete(base: hdl_t, index: count) {
-    local range: count = index;
-    while ( range < |base|-1 ) {
-        base[range] = base[range+1];
+function hdl_delete(base: hdl_t, index: count): hdl_t {
+    local new: hdl_t;
+    local range: count = 0;
+    while ( range < |base| ) {
+        if ( range < index )
+            new[range] = base[range];
+        if ( range > index )
+            new[range-1] = base[range];
         ++ range;
     }
-    delete base[|base|-1];
+    return new;
 }

@@ -18,12 +18,16 @@ import magic
 import pcapkit
 
 # limit on CPU
-if os.name == 'posix' and 'SC_NPROCESSORS_CONF' in os.sysconf_names:
-    CPU_CNT = os.sysconf('SC_NPROCESSORS_CONF')
-elif 'sched_getaffinity' in os.__all__:
-    CPU_CNT = len(os.sched_getaffinity(0))  # pylint: disable=E1101
+cpu_count = os.getenv('CPU')
+if cpu_count is None:
+    if os.name == 'posix' and 'SC_NPROCESSORS_CONF' in os.sysconf_names:
+        CPU_CNT = os.sysconf('SC_NPROCESSORS_CONF')
+    elif 'sched_getaffinity' in os.__all__:
+        CPU_CNT = len(os.sched_getaffinity(0))  # pylint: disable=E1101
+    else:
+        CPU_CNT = os.cpu_count() or 1
 else:
-    CPU_CNT = os.cpu_count() or 1
+    CPU_CNT = int(cpu_count)
 
 
 def process(entry):
@@ -90,18 +94,16 @@ def process(entry):
                     file.write(data)
 
 
-def multi_processing():
+def main():
     entries = (pcapkit.corekit.Info(
         path=entry.path,
         name=entry.name,
     ) for entry in os.scandir(os.path.join(ROOT, '../logs')))
-    multiprocessing.Pool(processes=CPU_CNT).map(process, entries)
-
-
-def mono_processing():
-    for entry in os.scandir(os.path.join(ROOT, '../logs')):
-        process(entry)
+    if CPU_CNT > 1:
+        multiprocessing.Pool(processes=CPU_CNT).map(process, sorted(entries, key=lambda info: info.name))
+    else:
+        list(map(process, sorted(entries, key=lambda info: info.name)))
 
 
 if __name__ == '__main__':
-    multi_processing()
+    sys.exit(main())

@@ -3,16 +3,21 @@
 # packet (from PyPCAPKit, c.f. pcapkit.reassembly.tcp.datagram[...])
 
 type pkt_t: record {
-    conn:   conn_id;
-    ack:    count;
-    id:     string;
-    payload: string;
+    id:     conn_id &log;
+    uid:    string  &log;
+    ack:    count   &log;
+    len:    count   &log;
+    start:  count   &log &optional;
+    stop:   count   &log &optional;
 };
 
 function bytearray_to_string(base: bytearray): string {
     # print fmt("bytearray_to_string(%s)", |base|);
     local s: string = "";
-    for ( index in base )
+    local index: count = 0;
+    while ( index < |base| ) {
         s += base[index];
+        ++ index;
+    }
     return s;
 }
