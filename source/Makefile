@@ -1,7 +1,15 @@
-.PHONY: init clean
+.PHONY: init clean test
+
+DIR ?= "random"
 
 init: mkdir-contents mkdir-extract_files mkdir-logs
 clean: clean-contents clean-extract_files clean-logs clean-state
+
+test:
+	mkdir -p ../test
+	mkdir -p ../test/$(DIR)
+	cp Makefile ../test/$(DIR)
+	$(MAKE) -C ../test/$(DIR) init
 
 clean-contents: clean-contents-dat clean-contents-part
 

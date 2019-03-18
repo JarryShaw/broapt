@@ -5,6 +5,7 @@
 - [`Makefile`](source/Makefile)
   - `make init` -- create useful directories
   - `make clean` -- cleanup ignored files
+  - `make test` -- make test directory in `/test/$(DIR)` (`random` in default)
 - [`docs`](source/docs) -- useful documentations
   - [`docs/reass.txt`](source/docs/reass.txt) -- TCP reassembly algorithm
   - [`docs/rfc791.txt`](source/docs/rfc791.txt) -- RFC 791, Internet Protocol
@@ -29,3 +30,20 @@
 - `extract_files` -- directory for extracted files from reassembled application layer data
 - `*.log` -- Bro generated logs
 - `logs` -- directory for logs
+
+### Implementation Comparison
+
+> test file: 1601 packets, ~1.4MB
+
+- Pure Bro Implementation (see `scripts/main.bro`)
+  - real    14m36.081s
+  - user    13m57.274s
+  - sys	    0m28.832s
+- Hybrid Implementation (see `scripts/writer.bro` and `python/reader.py`)
+  - real    0m20.440s
+  - user    0m18.258s
+  - sys	    0m2.018s
+- Pure Python Implementation (based on PyPCAPKit with DPKT engine)
+  - real    0m18.693s
+  - user    0m16.850s
+  - sys	    0m1.211s
