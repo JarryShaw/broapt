@@ -17,7 +17,7 @@ test/
 sample/
 extract_files/
 
-vendor/bro/
+vendor/bro*
 Pipfile.lock
 
 # Created by https://www.gitignore.io/api/visualstudiocode,python,macos,linux

@@ -3,7 +3,9 @@
 set -ex
 
 # download Broker
-wget https://www.zeek.org/downloads/broker-1.1.2.tar.gz -O broker-1.1.2.tar.gz
+if [ ! -f broker-1.1.2.tar.gz ] ; then
+    wget https://www.zeek.org/downloads/broker-1.1.2.tar.gz -O broker-1.1.2.tar.gz
+fi
 tar -xzf broker-1.1.2.tar.gz
 cd broker-1.1.2
 
@@ -31,9 +33,9 @@ chmod +x configure
 mkdir -p $(pipenv --venv)/broker
 pipenv run ./configure \
     --prefix=$(pipenv --venv)/broker \
-    --python-home=$(pipenv --venv) \
     --python-prefix=$(pipenv run python -c 'import sys; print(sys.exec_prefix)') \
     --with-python=$(pipenv --py) \
+    --with-bro=$(brew --prefix bro)/bin/bro \
     --with-openssl=$(brew --prefix openssl)
 pipenv run make install
 

@@ -1,5 +1,7 @@
 .PHONY: init update download clean remove
 
+export PIPENV_VENV_IN_PROJECT=1
+
 .ONESHELL:
 init:
 	set -ex
