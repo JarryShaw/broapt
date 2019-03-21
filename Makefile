@@ -120,11 +120,11 @@ gitlab-copy: gitlab-clean
 	# copy vendor
 	mkdir -p gitlab/xiaojiawei/vendor
 	find vendor \
-	    ! -iname 'bro' \
+	    ! -iname 'bro*' \
 	    ! -iname 'broker' \
 	    ! -iname 'Cellar' \
 	    ! -iname 'file-extraction' \
-		! -iname 'pypcapkit' \
+	    ! -iname 'pypcapkit' \
 	    ! -iname 'zeek' \
 	    ! -iname 'venv' -depth 1 -exec cp -rf {} gitlab/xiaojiawei/vendor \;
 	# remove unexpected files

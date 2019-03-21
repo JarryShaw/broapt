@@ -125,10 +125,7 @@ function submit(bufid: conn_id, c: connection) {
     delete BUFFER[bufid];
 }
 
-event tcp_reassembly(info: Info, c: connection) {
-    conn_table[info$bufid] = c;
-    # print info;
-
+function tcp_reassembly(info: Info, c: connection) {
     local BUFID: conn_id = info$bufid;  # Buffer Identifier
     local DSN: count = info$dsn;        # Data Sequence Number
     local ACK: count = info$ack;        # Acknowledgement Number
@@ -250,7 +247,8 @@ event tcp_reassembly(info: Info, c: connection) {
     # print fmt("reassembled: %s", c$id);
 }
 
-event tcp_packet(c: connection, is_orig: bool, flags: string, seq: count, ack: count, len: count, payload: string) &priority=5 {
+event tcp_packet(c: connection, is_orig: bool, flags: string,
+                 seq: count, ack: count, len: count, payload: string) &priority=5 {
     local flag_orig: bool = contents_orig && is_orig;
     local flag_resp: bool = contents_resp && !is_orig;
 
@@ -276,7 +274,9 @@ event tcp_packet(c: connection, is_orig: bool, flags: string, seq: count, ack: c
                                 $first=seq,                             # this sequence number
                                 $last=seq+len,                          # next (wanted) sequence number
                                 $payload=string_to_bytearray(payload)]; # raw bytearray type payload
-            event tcp_reassembly(info, conn);
+
+            conn_table[info$bufid] = c;
+            tcp_reassembly(info, c);
         }
     }
 }
