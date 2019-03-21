@@ -7,8 +7,6 @@ module Reass;
 export {
     ## Path to store files
     const path: string = "contents" &redef;
-    ## Prefix of reassembled files
-    const reassembly_prefix: string = "" &redef;
 
     ## Reassemble TCP content from originator-side
     const contents_orig: bool = T &redef;
@@ -119,7 +117,8 @@ function submit(bufid: conn_id, c: connection) {
                 start = hole$last;
             }
             data = bytearray_indice(part$raw, start);
-            write_data(data, c, ack, T, start, |part$raw|);
+            if ( |data| > 0 )
+                write_data(data, c, ack, T, start, |part$raw|);
         }
     }
     delete BUFFER[bufid];
