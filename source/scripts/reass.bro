@@ -1,4 +1,5 @@
 @load ./custom/buffer.bro
+@load ./helpers/packet.bro
 @load base/utils/files
 # @load misc/dump-events
 
@@ -13,8 +14,14 @@ export {
     ## Reassemble TCP content from responder-side
     const contents_resp: bool = T &redef;
 
+    redef enum Log::ID += { LOG_PKT };
+
+    # Define a logging event. By convention, this is called
+    # "log_<stream>".
+    global log_pkt: event(pkt: pkt_t);
+
     ## Record all reassembled payload (even though in parts)
-    const strict_mode: bool = F &redef;
+    const verbose_mode: bool = F &redef;
 
     ## Predicators of app-layer protocols
     global predicate: hook (s: string);
@@ -37,8 +44,7 @@ type context: record {
 };
 
 global db: table[conn_id] of table[count] of vector of context;
-global ws: set[string];
-global ex: set[string];
+global en: set[string];
 
 function frag_comp(a: context, b: context): int {
     return ( a$ts > b$ts ) ? 1 : -1;
@@ -50,9 +56,11 @@ function make_name(c: connection, ack: count &default=0): string {
     return fmt("%s/%s", path, name);
 }
 
-hook write_data(data: string, c: connection, ack: count, is_part: bool &default=F,
-                 start: count &default=0, stop: count &default=0) {
+function write_data(data: string, c: connection, ack: count, is_part: bool &default=F,
+                    start: count &default=0, stop: count &default=0) {
     local filename: string;
+    local pkt: pkt_t;
+
     if ( is_part )
         filename = fmt("%s_%s-%s.part", make_name(c, ack), start, stop);
     else
@@ -63,6 +71,20 @@ hook write_data(data: string, c: connection, ack: count, is_part: bool &default=
 
     write_file(f, payload);
     close(f);
+
+    if ( is_part )
+        pkt = [$id=c$id,
+               $uid=c$uid,
+               $ack=ack,
+               $len=|payload|,
+               $start=start,
+               $stop=stop];
+    else
+        pkt = [$id=c$id,
+               $uid=c$uid,
+               $ack=ack,
+               $len=|payload|];
+    Log::write(LOG_PKT, pkt);
     print filename;
 }
 
@@ -90,7 +112,6 @@ event tcp_reassembly(vec: vector of context, ack: count) {
     local frag: context;
     local conn: connection;
 
-    local index: count = 0;
     local first: count;         # this sequence number
     local last: count;          # next (wanted) sequence number
 
@@ -98,7 +119,6 @@ event tcp_reassembly(vec: vector of context, ack: count) {
     local hole: hole_t;
 
     for ( f in sorted_vec ) {
-        print fmt("f: %s", f), |sorted_vec|;
         frag = sorted_vec[f];
         DSN = frag$seq;
         PLD = frag$payload;
@@ -107,10 +127,11 @@ event tcp_reassembly(vec: vector of context, ack: count) {
 
         # initialise buffers with first fragment
         if ( FLAG ) {
-            HDL[0] = [$first=frag$len, $last=0xffffffffffffffff];
             BUF = [$isn=DSN, $len=frag$len, $raw=PLD];
             ISN = DSN;
             FLAG = F;
+
+            add HDL[[$first=frag$len, $last=0xffffffffffffffff]];
             conn = frag$conn;
             next;
         }
@@ -139,27 +160,21 @@ event tcp_reassembly(vec: vector of context, ack: count) {
 
         first = frag$seq;
         last = first + frag$len;
-        while ( index < |HDL| ) {                       # step one
-            print fmt("index: %s", index), |HDL|;
-            hole = HDL[index];
-            if ( first > hole$last ) {                  # step two
-                ++ index;
+        for ( hole in HDL ) {                           # step one
+            if ( first > hole$last )                    # step two
                 next;
-            }
-            if ( last < hole$first ) {                  # step three
-                ++ index;
+            if ( last < hole$first )                    # step three
                 next;
-            }
-            HDL = hdl_delete(HDL, index);               # step four
+            delete HDL[hole];                           # step four
             if ( first > hole$first ) {                 # step five
                 new_hole = [$first=hole$first,
                             $last=first - 1];
-                hdl_insert(HDL, index, new_hole);
+                add HDL[new_hole];
             }
             if ( last < hole$last && !FIN && !RST ) {   # step six
                 new_hole = [$first=last + 1,
                             $last=hole$last];
-                hdl_insert(HDL, index + 1, new_hole);
+                add HDL[new_hole];
             }
             break;                                      # step seven
         }
@@ -169,22 +184,21 @@ event tcp_reassembly(vec: vector of context, ack: count) {
     local stop: count = 0;
 
     local data: string;
-    if ( ( |HDL| > 1 ) && strict_mode ) {
-        for ( h in HDL ) {
-            hole = HDL[h];
+    if ( ( |HDL| > 1 ) && verbose_mode ) {
+        for ( hole in HDL ) {
             stop = hole$first;
             data = BUF$raw[start:stop];
             if ( |data| > 0 )
-                hook write_data(data, conn, ack, T, start, stop);
+                write_data(data, conn, ack, T, start, stop);
             start = hole$last;
         }
         data = BUF$raw[start:];
         if ( |data| > 0 )
-            hook write_data(data, conn, ack, T, start, |BUF$raw|);
+            write_data(data, conn, ack, T, start, |BUF$raw|);
     } else {
         data = BUF$raw;
         if ( |data| > 0 )
-            hook write_data(data, conn, ack);
+            write_data(data, conn, ack);
     }
 }
 
@@ -200,17 +214,10 @@ function submit(id: conn_id) {
 event tcp_packet(c: connection, is_orig: bool, flags: string,
                  seq: count, ack: count, len: count, payload: string) &priority=5 {
     local uid: string = c$uid;
-    if ( uid !in ex && uid !in ws )
-        if ( hook predicate(payload) )
-            add ws[uid];
-        else
-            add ex[uid];
+    if ( uid !in en && hook predicate(payload) )
+        add en[uid];
 
-    if ( uid in ex )
-        print fmt("ignored: %s", c$uid);
-    else {
-        print fmt("working: %s", c$uid);
-
+    if ( uid in en ) {
         local flag_orig: bool = contents_orig && is_orig;
         local flag_resp: bool = contents_resp && !is_orig;
 
@@ -250,6 +257,11 @@ event tcp_packet(c: connection, is_orig: bool, flags: string,
             }
         }
     }
+}
+
+event bro_init() &priority=5 {
+    # Specify the "log_pkt" event here in order for Bro to raise it.
+    Log::create_stream(Reass::LOG_PKT, [$columns=pkt_t, $ev=Reass::log_pkt, $path="reass_pkt"]);
 }
 
 event bro_done() {

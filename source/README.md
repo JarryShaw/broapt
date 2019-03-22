@@ -2,27 +2,32 @@
 
 ### Source files
 
-- [`Makefile`](source/Makefile)
+- `Makefile`
   - `make init` -- create useful directories
   - `make clean` -- cleanup ignored files
   - `make test` -- make test directory in `/test/$(DIR)` (`random` in default)
-- [`docs`](source/docs) -- useful documentations
-  - [`docs/reass.txt`](source/docs/reass.txt) -- TCP reassembly algorithm
-  - [`docs/rfc791.txt`](source/docs/rfc791.txt) -- RFC 791, Internet Protocol
-  - [`docs/rfc815.txt`](source/docs/rfc815.txt) -- RFC 815, IP Datagram Reassembly Algorithm
-- [`python`](source/python) -- Python source files
-  - [`python/__main__.py`](source/python/__main__.py) -- module entry; test file for extracting files from reassembled application layer data
-- [`scripts`](source/scripts) -- Bro policy scripts
-  - [`scripts/__load__.bro`](source/scripts/__load__.bro) -- module entry
-  - [`scripts/config.bro`](source/scripts/config.bro) -- configuration
-  - [`scripts/main.bro`](source/scripts/main.bro) -- main implementation; reassemble TCP datagram in pure Bro script (__DEBUG__)
-  - [`scripts/logging.bro`](source/scripts/logging.bro) -- logging implementation (__TESTING__)
-  - [`scripts/contents.bro`](source/scripts/contents.bro) -- store reassembled application layer data on demand (__DEPRECATED__)
-  - [`scripts/helpers`](source/scripts/helpers) -- Bro helper scripts
-    - [`scripts/helpers/__load__.bro`](source/scripts/helpers/__load__.bro) -- module entry
-    - [`scripts/helpers/buffer.bro`](source/scripts/helpers/buffer.bro) -- `buffer` for TCP reassembly (from PyPCAPKit, c.f. `pcapkit.reassembly.tcp.TCP_Reassembly._buffer`)
-    - [`scripts/helpers/bytearray.bro`](source/scripts/helpers/bytearray.bro) -- `bytearray` for TCP reassembly (from Python, c.f. `builtins.bytearray`)
-    - [`scripts/helpers/packet.bro`](source/scripts/helpers/packet.bro) -- `packet` for TCP reassembly (from PyPCAPKit, c.f. `pcapkit.reassembly.tcp.TCP_Reassembly.datagram[...]`)
+- `docs` -- useful documentations
+  - `docs/reass.txt` -- TCP reassembly algorithm
+  - `docs/rfc791.txt` -- RFC 791, Internet Protocol
+  - `docs/rfc815.txt` -- RFC 815, IP Datagram Reassembly Algorithm
+- `python` -- Python source files
+  - `python/__main__.py` -- module entry; test file for extracting files from reassembled application layer data
+- `scripts` -- Bro policy scripts
+  - `scripts/__load__.bro` -- module entry
+  - `scripts/config.bro` -- configuration
+  - `scripts/contents.bro` -- store reassembled application layer data on demand (__DEPRECATED__)
+  - `scripts/logging.bro` -- logging implementation (__STALE__)
+  - `scripts/main.bro` -- main implementation; reassemble TCP datagram in pure Bro script (__DEBUG__)
+  - `scripts/reass.bro` -- final implementation (__DIST__)
+  - `scripts/telepathy.bro` -- Broker sample code
+  - `scripts/writer.bro` -- another logging implementation (__TESTING__)
+  - `scripts/custom` -- customised helper scripts
+  - `scripts/helpers` -- Bro helper scripts
+    - `scripts/helpers/__load__.bro` -- module entry
+    - `scripts/helpers/buffer.bro` -- `buffer` for TCP reassembly (from PyPCAPKit, c.f. `pcapkit.reassembly.tcp.TCP_Reassembly._buffer`)
+    - `scripts/helpers/bytearray.bro` -- `bytearray` for TCP reassembly (from Python, c.f. `builtins.bytearray`)
+    - `scripts/helpers/packet.bro` -- `packet` for TCP reassembly (from PyPCAPKit, c.f. `pcapkit.reassembly.tcp.TCP_Reassembly.datagram[...]`)
+  - `scripts/plugins` -- Bro hook plugins
 
 ### Ignored files
 
@@ -31,7 +36,24 @@
 - `*.log` -- Bro generated logs
 - `logs` -- directory for logs
 
-### Implementation Comparison
+### Mode Comparison
+
+> test file: 1601 packets, ~1.4MB
+
+- verbose mode (see `scripts/reass.bro`, set `verbose_mode = T`)
+  - real    0m4.759s
+  - user    0m2.031s
+  - sys     0m1.969s
+- all protocols (see `scripts/reass.bro`)
+  - real    0m3.451s
+  - user    0m1.883s
+  - sys     0m0.950s
+- HTTP only (see `scripts/plugins/http.bro`)
+  - real    0m2.991s
+  - user    0m1.924s
+  - sys     0m0.786s
+
+### Implementation Comparison (__OUTDATED__)
 
 > test file: 1601 packets, ~1.4MB
 
