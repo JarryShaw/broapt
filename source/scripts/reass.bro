@@ -1,4 +1,4 @@
-@load ./helpers
+@load ./custom/buffer.bro
 @load base/utils/files
 # @load misc/dump-events
 
@@ -17,7 +17,7 @@ export {
     const strict_mode: bool = F &redef;
 
     ## Predicators of app-layer protocols
-    # const predicator: set[function] &redef;
+    global predicate: hook (s: string);
 }
 
 type fragment: record {
@@ -32,9 +32,13 @@ type context: record {
     seq:        count;      # data sequence number
     len:        count;      # payload length, header excludes
     payload:    string;     # raw bytearray type payload
+    fin:        bool;
+    rst:        bool;
 };
 
 global db: table[conn_id] of table[count] of vector of context;
+global ws: set[string];
+global ex: set[string];
 
 function frag_comp(a: context, b: context): int {
     return ( a$ts > b$ts ) ? 1 : -1;
@@ -46,7 +50,7 @@ function make_name(c: connection, ack: count &default=0): string {
     return fmt("%s/%s", path, name);
 }
 
-event write_data(data: bytearray, c: connection, ack: count, is_part: bool &default=F,
+hook write_data(data: string, c: connection, ack: count, is_part: bool &default=F,
                  start: count &default=0, stop: count &default=0) {
     local filename: string;
     if ( is_part )
@@ -54,7 +58,7 @@ event write_data(data: bytearray, c: connection, ack: count, is_part: bool &defa
     else
         filename = fmt("%s.dat", make_name(c, ack));
 
-    local payload: string = bytearray_to_string(data);
+    local payload: string = data;
     local f: file = open(filename);
 
     write_file(f, payload);
@@ -63,26 +67,27 @@ event write_data(data: bytearray, c: connection, ack: count, is_part: bool &defa
 }
 
 event tcp_reassembly(vec: vector of context, ack: count) {
-    local HDL: hdl_t;           # Hole Descriptor List
-    local BUF: part_t;          # Buffer
+    local HDL: hdl_t;       # Hole Descriptor List
+    local BUF: part_t;      # Buffer
 
-    local ISN: count;           # Initial Sequence Number
-    local LEN: count;           # Fragment Length
-    local RAW: bytearray;       # Raw Payload Data
+    local ISN: count;       # Initial Sequence Number
+    local LEN: count;       # Fragment Length
+    local RAW: string;      # Raw Payload Data
 
-    local DSN: count;           # Data Sequence Number
-    local PLD: bytearray;       # Fragment Payload
+    local DSN: count;       # Data Sequence Number
+    local PLD: string;      # Fragment Payload
 
-    local SUM: count;           # SUM = ISN + LEN
-    local GAP: count;           # gap length between payloads; GAP = DSN - SUM
+    local SUM: count;       # SUM = ISN + LEN
+    local GAP: count;       # gap length between payloads; GAP = DSN - SUM
 
     local sorted_vec: vector of context = sort(vec, frag_comp);
-    local FLAG_FIRST: bool = T; # is first fragment?
+    local FLAG: bool = T; # is first fragment?
 
-    local VEC_LAST: count = |vec| - 1;
-    local FLAG_LAST: bool = F;  # is last fragment?
+    local FIN: bool;
+    local RST: bool;
 
-    local TMP: bytearray;
+    local TMP: string;
+    local frag: context;
     local conn: connection;
 
     local index: count = 0;
@@ -93,18 +98,20 @@ event tcp_reassembly(vec: vector of context, ack: count) {
     local hole: hole_t;
 
     for ( f in sorted_vec ) {
-        print fmt("f: %s", f);
-        DSN = sorted_vec[f]$seq;
-        PLD = string_to_bytearray(sorted_vec[f]$payload);
+        print fmt("f: %s", f), |sorted_vec|;
+        frag = sorted_vec[f];
+        DSN = frag$seq;
+        PLD = frag$payload;
+        FIN = frag$fin;
+        RST = frag$rst;
 
         # initialise buffers with first fragment
-        if ( FLAG_FIRST ) {
-            HDL[0] = [$first=sorted_vec[f]$len, $last=0xffffffffffffffff];
-            BUF = [$isn=DSN, $len=sorted_vec[f]$len, $raw=PLD];
+        if ( FLAG ) {
+            HDL[0] = [$first=frag$len, $last=0xffffffffffffffff];
+            BUF = [$isn=DSN, $len=frag$len, $raw=PLD];
             ISN = DSN;
-
-            conn = sorted_vec[f]$conn;
-            FLAG_FIRST = F;
+            FLAG = F;
+            conn = frag$conn;
             next;
         }
 
@@ -115,32 +122,25 @@ event tcp_reassembly(vec: vector of context, ack: count) {
             SUM = ISN + LEN;
             if ( DSN >= SUM ) {     # if fragment goes after existing payload
                 GAP = DSN - SUM;                # gap length between payloads
-                bytearray_extend(RAW, bytearray_new(GAP));
-                bytearray_extend(RAW, PLD);
+                RAW += string_fill(GAP, "\x00") + PLD;
             } else                  # if fragment partially overlaps existing payload
-                bytearray_extend(RAW, PLD, DSN-ISN);
+                RAW = RAW[:DSN-ISN] + PLD;
         } else {
-            LEN = sorted_vec[f]$len;
+            LEN = frag$len;
             SUM = DSN + LEN;
             if ( ISN >= SUM ) {     # if fragment exceeds existing payload
                 GAP = ISN - SUM;                # gap length between payloads
-                TMP = copy(PLD);
-                bytearray_extend(TMP, bytearray_new(GAP));
-                bytearray_extend(TMP, RAW);
-                RAW = copy(TMP);
-            } else {                # if fragment partially overlaps existing payload
-                TMP = copy(PLD);
-                bytearray_extend(TMP, RAW, SUM);
-                RAW = copy(TMP);
-            }
+                RAW = PLD + string_fill(GAP, "\x00") + RAW;
+            } else                  # if fragment partially overlaps existing payload
+                RAW = PLD[:SUM] + RAW;
         }
         BUF$raw = copy(RAW);
         BUF$len = |RAW|;
 
-        first = sorted_vec[f]$seq;
-        last = first + sorted_vec[f]$len;
+        first = frag$seq;
+        last = first + frag$len;
         while ( index < |HDL| ) {                       # step one
-            print fmt("index: %s", index);
+            print fmt("index: %s", index), |HDL|;
             hole = HDL[index];
             if ( first > hole$last ) {                  # step two
                 ++ index;
@@ -156,8 +156,7 @@ event tcp_reassembly(vec: vector of context, ack: count) {
                             $last=first - 1];
                 hdl_insert(HDL, index, new_hole);
             }
-            FLAG_LAST = f < VEC_LAST;
-            if ( last < hole$last && FLAG_LAST ) {      # step six
+            if ( last < hole$last && !FIN && !RST ) {   # step six
                 new_hole = [$first=last + 1,
                             $last=hole$last];
                 hdl_insert(HDL, index + 1, new_hole);
@@ -169,23 +168,23 @@ event tcp_reassembly(vec: vector of context, ack: count) {
     local start: count = 0;
     local stop: count = 0;
 
-    local data: bytearray;
+    local data: string;
     if ( ( |HDL| > 1 ) && strict_mode ) {
         for ( h in HDL ) {
             hole = HDL[h];
             stop = hole$first;
-            data = bytearray_indice(BUF$raw, start, stop);
+            data = BUF$raw[start:stop];
             if ( |data| > 0 )
-                event write_data(data, conn, ack, T, start, stop);
+                hook write_data(data, conn, ack, T, start, stop);
             start = hole$last;
         }
-        data = bytearray_indice(BUF$raw, start);
+        data = BUF$raw[start:];
         if ( |data| > 0 )
-            event write_data(data, conn, ack, T, start, |BUF$raw|);
+            hook write_data(data, conn, ack, T, start, |BUF$raw|);
     } else {
         data = BUF$raw;
         if ( |data| > 0 )
-            event write_data(data, conn, ack);
+            hook write_data(data, conn, ack);
     }
 }
 
@@ -200,40 +199,55 @@ function submit(id: conn_id) {
 
 event tcp_packet(c: connection, is_orig: bool, flags: string,
                  seq: count, ack: count, len: count, payload: string) &priority=5 {
-    local flag_orig: bool = contents_orig && is_orig;
-    local flag_resp: bool = contents_resp && !is_orig;
+    local uid: string = c$uid;
+    if ( uid !in ex && uid !in ws )
+        if ( hook predicate(payload) )
+            add ws[uid];
+        else
+            add ex[uid];
 
-    if ( flag_orig || flag_resp ) {
-        local syn: bool = "S" in flags;
-        local fin: bool = "F" in flags;
-        local rst: bool = "R" in flags;
+    if ( uid in ex )
+        print fmt("ignored: %s", c$uid);
+    else {
+        print fmt("working: %s", c$uid);
 
-        if ( syn || fin || rst || ( len > 0 ) ) {
-            local id: conn_id = [$orig_h=is_orig ? c$id$orig_h : c$id$resp_h,
-                                 $orig_p=is_orig ? c$id$orig_p : c$id$resp_p,
-                                 $resp_h=is_orig ? c$id$resp_h : c$id$orig_h,
-                                 $resp_p=is_orig ? c$id$resp_p : c$id$orig_p];
-            c$id = id;
+        local flag_orig: bool = contents_orig && is_orig;
+        local flag_resp: bool = contents_resp && !is_orig;
 
-            local pkt: context = [$conn=c,
-                                  $ts=network_time(),
-                                  $seq=seq,
-                                  $len=len,
-                                  $payload=payload];
+        if ( flag_orig || flag_resp ) {
+            local syn: bool = "S" in flags;
+            local fin: bool = "F" in flags;
+            local rst: bool = "R" in flags;
 
-            if ( syn && ( id in db ) )
-                submit(id);
+            if ( syn || fin || rst || ( len > 0 ) ) {
+                local id: conn_id = [$orig_h=is_orig ? c$id$orig_h : c$id$resp_h,
+                                     $orig_p=is_orig ? c$id$orig_p : c$id$resp_p,
+                                     $resp_h=is_orig ? c$id$resp_h : c$id$orig_h,
+                                     $resp_p=is_orig ? c$id$resp_p : c$id$orig_p];
+                c$id = id;
 
-            if ( id in db ) {
-                if ( ack in db[id] )
-                    db[id][ack] += pkt;
-                else
-                    db[id][ack] = vector(pkt);
-            } else
-                db[id] = table([ack] = vector(pkt));
+                local pkt: context = [$conn=c,
+                                      $ts=network_time(),
+                                      $seq=seq,
+                                      $len=len,
+                                      $payload=payload,
+                                      $fin=fin,
+                                      $rst=rst];
 
-            if ( fin || rst )
-                submit(id);
+                if ( syn && ( id in db ) )
+                    submit(id);
+
+                if ( id in db ) {
+                    if ( ack in db[id] )
+                        db[id][ack] += pkt;
+                    else
+                        db[id][ack] = vector(pkt);
+                } else
+                    db[id] = table([ack] = vector(pkt));
+
+                if ( fin || rst )
+                    submit(id);
+            }
         }
     }
 }
