@@ -45,7 +45,7 @@ global BUFFER: buffer;
 ## connection mappings
 global conn_table: table[string] of connection;
 ## connection enabled reassembly
-global conn_entabled: set[string];
+global conn_enabled: table[string] of set[count];
 
 function make_name(c: connection, ack: count &default=0): string {
     local suffix: string = fmt("%s", ack);
@@ -101,9 +101,9 @@ function submit(bufid: string, c: connection) {
     for ( ack in BUF ) {
         part = BUF[ack];
         if ( |HDL| > 1 && verbose_mode ) {
-            sorted_hdl = sort_hdl(HDL);
-            for ( index in sorted_hdl ) {
-                hole = sorted_hdl[index];
+            sort(HDL, comp_hdl);
+            for ( index in HDL ) {
+                hole = HDL[index];
                 stop = hole$first;
                 data = part$raw[start:stop];
                 if ( |data| > 0 )
@@ -123,7 +123,7 @@ function submit(bufid: string, c: connection) {
     delete conn_table[bufid];
 }
 
-event tcp_reassembly(info: Info, c: connection) {
+function tcp_reassembly(info: Info, c: connection) {
     local BUFID: string = info$bufid;   # Buffer Identifier
     local DSN: count = info$dsn;        # Data Sequence Number
     local ACK: count = info$ack;        # Acknowledgement Number
@@ -139,7 +139,7 @@ event tcp_reassembly(info: Info, c: connection) {
     if ( BUFID !in BUFFER ) {
         local hdl: hdl_t;
         local buf: buf_t;
-        add hdl[[$first=info$len, $last=0xffffffffffffffff]];
+        hdl[0] = [$first=info$len, $last=0xffffffffffffffff];
         buf[ACK] = [
             $isn=info$dsn,
             $len=info$len,
@@ -187,27 +187,29 @@ event tcp_reassembly(info: Info, c: connection) {
     BUFFER[BUFID]$buf[ACK]$raw = RAW;       # update payload datagram
     BUFFER[BUFID]$buf[ACK]$len = |RAW|;     # update payload length
 
-    local HDL: hdl_t = copy(BUFFER[BUFID]$hdl);
+    local HDL: hdl_t = BUFFER[BUFID]$hdl;
     local new_hole: hole_t;
-    for ( hole in BUFFER[BUFID]$hdl ) {                     # step one
+    local hole: hole_t;
+    for ( h in BUFFER[BUFID]$hdl ) {                        # step one
+        hole = HDL[h];
         if ( info$first > hole$last )                       # step two
             next;
         if ( info$last < hole$first )                       # step three
             next;
-        delete HDL[hole];                                   # step four
+        HDL = hdl_delete(HDL, h);                           # step four
         if ( info$first > hole$first ) {                    # step five
             new_hole = [$first=hole$first,
                         $last=info$first - 1];
-            add HDL[new_hole];
+            HDL += new_hole;
         }
         if ( info$last < hole$last && !FIN && !RST ) {      # step six
             new_hole = [$first=info$last + 1,
                         $last=hole$last];
-            add HDL[new_hole];
+            HDL += new_hole;
         }
         break;                                              # step seven
     }
-    BUFFER[BUFID]$hdl = copy(HDL);                          # update HDL
+    BUFFER[BUFID]$hdl = HDL;                                # update HDL
 
     # when FIN/RST is set, submit buffer of this session
     if ( FIN || RST )
@@ -216,15 +218,17 @@ event tcp_reassembly(info: Info, c: connection) {
 
 event tcp_packet(c: connection, is_orig: bool, flags: string,
                  seq: count, ack: count, len: count, payload: string) &priority=5 {
-    local uid: string = fmt("%s-%s", c$uid, is_orig ? "orig" : "resp");
-    if ( ( uid !in conn_entabled ) && ( len > 0 ) && hook predicate(payload) )
-        add conn_entabled[uid];
+    local flag_orig: bool = contents_orig && is_orig;
+    local flag_resp: bool = contents_resp && !is_orig;
 
-    if ( uid in conn_entabled ) {
-        local flag_orig: bool = contents_orig && is_orig;
-        local flag_resp: bool = contents_resp && !is_orig;
+    if ( flag_orig || flag_resp ) {
+        local uid: string = fmt("%s-%s", c$uid, is_orig ? "orig" : "resp");
+        if ( uid !in conn_enabled )
+            conn_enabled[uid] = set();
+        if ( ( ack !in conn_enabled[uid] ) && ( len > 0 ) && hook predicate(payload) )
+            add conn_enabled[uid][ack];
 
-        if ( flag_orig || flag_resp ) {
+        if ( ack in conn_enabled[uid] ) {
             local syn: bool = "S" in flags;
             local fin: bool = "F" in flags;
             local rst: bool = "R" in flags;
@@ -255,10 +259,10 @@ event tcp_packet(c: connection, is_orig: bool, flags: string,
                                     $payload=payload];  # raw bytearray type payload
 
                 conn_table[info$bufid] = conn;
-                event tcp_reassembly(info, conn);
+                tcp_reassembly(info, conn);
 
                 if ( fin || rst )
-                    delete conn_entabled[uid];
+                    delete conn_enabled[uid];
             }
         }
     }

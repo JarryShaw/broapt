@@ -37,7 +37,8 @@ type context: record {
 };
 
 global db: table[string] of table[count] of vector of context;
-global en: set[string];
+global en: table[string] of set[count];
+global ex: table[string] of set[count];
 
 function comp_frag(a: context, b: context): int {
     return ( a$ts > b$ts ) ? 1 : -1;
@@ -93,9 +94,7 @@ event tcp_reassembly(vec: vector of context, ack: count) {
     local SUM: count;       # SUM = ISN + LEN
     local GAP: count;       # gap length between payloads; GAP = DSN - SUM
 
-    local sorted_vec: vector of context = sort(vec, comp_frag);
     local FLAG: bool = T;   # is first fragment?
-
     local FIN: bool;
     local RST: bool;
 
@@ -109,8 +108,9 @@ event tcp_reassembly(vec: vector of context, ack: count) {
     local new_hole: hole_t;
     local hole: hole_t;
 
-    for ( f in sorted_vec ) {
-        frag = sorted_vec[f];
+    sort(vec, comp_frag);
+    for ( f in vec ) {
+        frag = vec[f];
         DSN = frag$seq;
         PLD = frag$payload;
         FIN = frag$fin;
@@ -122,7 +122,7 @@ event tcp_reassembly(vec: vector of context, ack: count) {
             ISN = DSN;
             FLAG = F;
 
-            add HDL[[$first=frag$len, $last=0xffffffffffffffff]];
+            HDL += [$first=frag$len, $last=0xffffffffffffffff];
             conn = frag$conn;
             next;
         }
@@ -151,21 +151,22 @@ event tcp_reassembly(vec: vector of context, ack: count) {
 
         first = frag$seq;
         last = first + frag$len;
-        for ( hole in HDL ) {                           # step one
+        for ( h in HDL ) {                              # step one
+            hole = HDL[h];
             if ( first > hole$last )                    # step two
                 next;
             if ( last < hole$first )                    # step three
                 next;
-            delete HDL[hole];                           # step four
+            HDL = hdl_delete(HDL, h);                   # step four
             if ( first > hole$first ) {                 # step five
                 new_hole = [$first=hole$first,
                             $last=first - 1];
-                add HDL[new_hole];
+                HDL += new_hole;
             }
             if ( last < hole$last && !FIN && !RST ) {   # step six
                 new_hole = [$first=last + 1,
                             $last=hole$last];
-                add HDL[new_hole];
+                HDL += new_hole;
             }
             break;                                      # step seven
         }
@@ -173,14 +174,12 @@ event tcp_reassembly(vec: vector of context, ack: count) {
 
     local start: count = 0;
     local stop: count = 0;
-
-    local sorted_hdl: vector of hole_t;
     local data: string;
 
     if ( ( |HDL| > 1 ) && verbose_mode ) {
-        sorted_hdl = sort_hdl(HDL);
-        for ( index in sorted_hdl ) {
-            hole = sorted_hdl[index];
+        sort(HDL, comp_hdl);
+        for ( index in HDL ) {
+            hole = HDL[index];
             stop = hole$first;
             data = BUF$raw[start:stop];
             if ( |data| > 0 )
@@ -205,15 +204,22 @@ function submit(id: string) {
 
 event tcp_packet(c: connection, is_orig: bool, flags: string,
                  seq: count, ack: count, len: count, payload: string) &priority=5 {
-    local uid: string = fmt("%s-%s", c$uid, is_orig ? "orig" : "resp");
-    if ( ( uid !in en ) && ( len > 0 ) && hook predicate(payload) )
-        add en[uid];
+    local flag_orig: bool = contents_orig && is_orig;
+    local flag_resp: bool = contents_resp && !is_orig;
 
-    if ( uid in en ) {
-        local flag_orig: bool = contents_orig && is_orig;
-        local flag_resp: bool = contents_resp && !is_orig;
+    if ( flag_orig || flag_resp ) {
+        local uid: string = fmt("%s-%s", c$uid, is_orig ? "orig" : "resp");
+        if ( uid !in en )
+            en[uid] = set();
+        if ( uid !in ex )
+            ex[uid] = set();
+        if ( ( ( ack !in en[uid] ) && ( ack !in ex[uid] ) ) && ( len > 0 ) )
+            if ( hook predicate(payload) )
+                add en[uid][ack];
+            else
+                add ex[uid][ack];
 
-        if ( flag_orig || flag_resp ) {
+        if ( ack in en[uid] ) {
             local syn: bool = "S" in flags;
             local fin: bool = "F" in flags;
             local rst: bool = "R" in flags;
@@ -243,17 +249,16 @@ event tcp_packet(c: connection, is_orig: bool, flags: string,
                 if ( syn && ( uid in db ) )
                     submit(uid);
 
-                if ( uid in db ) {
-                    if ( ack in db[uid] )
-                        db[uid][ack] += pkt;
-                    else
-                        db[uid][ack] = vector(pkt);
-                } else
-                    db[uid] = table([ack] = vector(pkt));
+                if ( uid !in db )
+                    db[uid] = table();
+                if ( ack !in db[uid] )
+                    db[uid][ack] = vector();
+                db[uid][ack] += pkt;
 
                 if ( fin || rst ) {
                     submit(uid);
                     delete en[uid];
+                    delete ex[uid];
                 }
             }
         }
@@ -266,6 +271,6 @@ event bro_init() &priority=5 {
 }
 
 event bro_done() {
-    for ( id in db )
-        submit(id);
+    for ( uid in db )
+        submit(uid);
 }

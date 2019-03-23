@@ -16,9 +16,9 @@
   - `scripts/__load__.bro` -- module entry
   - `scripts/config.bro` -- configuration
   - `scripts/contents.bro` -- store reassembled application layer data on demand (__DEPRECATED__)
-  - `scripts/logging.bro` -- logging implementation (__STALE__)
-  - `scripts/main.bro` -- main implementation; reassemble TCP datagram in pure Bro script (__DEBUG__)
-  - `scripts/reass.bro` -- final implementation (__DIST__)
+  - `scripts/logging.bro` -- logging implementation (__DEPRECATED__)
+  - `scripts/main.bro` -- main implementation; reassemble TCP datagram in pure Bro script (__DEPRECATED__)
+  - `scripts/reass.bro` -- final implementation (__STALE__)
   - `scripts/telepathy.bro` -- Broker sample code
   - `scripts/writer.bro` -- another logging implementation (__TESTING__)
   - `scripts/custom` -- customised helper scripts
