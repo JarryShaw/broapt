@@ -19,4 +19,15 @@ type frag_t: record {
     buf: buf_t;
 };
 
-type buffer: table[conn_id] of frag_t;
+type buffer: table[string] of frag_t;
+
+function comp_hdl(a: hole_t, b: hole_t): int {
+    return ( a$first > b$first ) ? 1 : -1;
+}
+
+function sort_hdl(HDL: hdl_t): vector of hole_t {
+    local vec: vector of hole_t;
+    for ( hole in HDL )
+        vec += hole;
+    return sort(vec, comp_hdl);
+}

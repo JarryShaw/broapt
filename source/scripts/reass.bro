@@ -1,5 +1,4 @@
-@load ./custom/buffer.bro
-@load ./helpers/packet.bro
+@load ./custom
 @load base/utils/files
 # @load misc/dump-events
 
@@ -20,18 +19,12 @@ export {
     # "log_<stream>".
     global log_pkt: event(pkt: pkt_t);
 
-    ## Record all reassembled payload (even though in parts)
+    ## Record all reassembled payload (even though partial)
     const verbose_mode: bool = F &redef;
 
     ## Predicators of app-layer protocols
     global predicate: hook (s: string);
 }
-
-type fragment: record {
-    isn:    count;
-    len:    count;
-    raw:    string;
-};
 
 type context: record {
     conn:       connection; # Bro connection instance
@@ -43,10 +36,10 @@ type context: record {
     rst:        bool;
 };
 
-global db: table[conn_id] of table[count] of vector of context;
+global db: table[string] of table[count] of vector of context;
 global en: set[string];
 
-function frag_comp(a: context, b: context): int {
+function comp_frag(a: context, b: context): int {
     return ( a$ts > b$ts ) ? 1 : -1;
 }
 
@@ -66,24 +59,22 @@ function write_data(data: string, c: connection, ack: count, is_part: bool &defa
     else
         filename = fmt("%s.dat", make_name(c, ack));
 
-    local payload: string = data;
     local f: file = open(filename);
-
-    write_file(f, payload);
+    write_file(f, data);
     close(f);
 
     if ( is_part )
         pkt = [$id=c$id,
                $uid=c$uid,
                $ack=ack,
-               $len=|payload|,
+               $len=|data|,
                $start=start,
                $stop=stop];
     else
         pkt = [$id=c$id,
                $uid=c$uid,
                $ack=ack,
-               $len=|payload|];
+               $len=|data|];
     Log::write(LOG_PKT, pkt);
     print filename;
 }
@@ -102,8 +93,8 @@ event tcp_reassembly(vec: vector of context, ack: count) {
     local SUM: count;       # SUM = ISN + LEN
     local GAP: count;       # gap length between payloads; GAP = DSN - SUM
 
-    local sorted_vec: vector of context = sort(vec, frag_comp);
-    local FLAG: bool = T; # is first fragment?
+    local sorted_vec: vector of context = sort(vec, comp_frag);
+    local FLAG: bool = T;   # is first fragment?
 
     local FIN: bool;
     local RST: bool;
@@ -155,7 +146,7 @@ event tcp_reassembly(vec: vector of context, ack: count) {
             } else                  # if fragment partially overlaps existing payload
                 RAW = PLD[:SUM] + RAW;
         }
-        BUF$raw = copy(RAW);
+        BUF$raw = RAW;
         BUF$len = |RAW|;
 
         first = frag$seq;
@@ -183,9 +174,13 @@ event tcp_reassembly(vec: vector of context, ack: count) {
     local start: count = 0;
     local stop: count = 0;
 
+    local sorted_hdl: vector of hole_t;
     local data: string;
+
     if ( ( |HDL| > 1 ) && verbose_mode ) {
-        for ( hole in HDL ) {
+        sorted_hdl = sort_hdl(HDL);
+        for ( index in sorted_hdl ) {
+            hole = sorted_hdl[index];
             stop = hole$first;
             data = BUF$raw[start:stop];
             if ( |data| > 0 )
@@ -202,19 +197,16 @@ event tcp_reassembly(vec: vector of context, ack: count) {
     }
 }
 
-function submit(id: conn_id) {
-    print id;
-
+function submit(id: string) {
     for ( ack in db[id] )
         event tcp_reassembly(db[id][ack], ack);
-
     delete db[id];
 }
 
 event tcp_packet(c: connection, is_orig: bool, flags: string,
                  seq: count, ack: count, len: count, payload: string) &priority=5 {
-    local uid: string = c$uid;
-    if ( uid !in en && hook predicate(payload) )
+    local uid: string = fmt("%s-%s", c$uid, is_orig ? "orig" : "resp");
+    if ( ( uid !in en ) && ( len > 0 ) && hook predicate(payload) )
         add en[uid];
 
     if ( uid in en ) {
@@ -227,13 +219,20 @@ event tcp_packet(c: connection, is_orig: bool, flags: string,
             local rst: bool = "R" in flags;
 
             if ( syn || fin || rst || ( len > 0 ) ) {
-                local id: conn_id = [$orig_h=is_orig ? c$id$orig_h : c$id$resp_h,
-                                     $orig_p=is_orig ? c$id$orig_p : c$id$resp_p,
-                                     $resp_h=is_orig ? c$id$resp_h : c$id$orig_h,
-                                     $resp_p=is_orig ? c$id$resp_p : c$id$orig_p];
-                c$id = id;
+                local id: conn_id = is_orig ? c$id : [$orig_h=c$id$resp_h, $orig_p=c$id$resp_p,
+                                                      $resp_h=c$id$orig_h, $resp_p=c$id$orig_p];
+                local orig: endpoint = is_orig ? c$orig : c$resp;
+                local resp: endpoint = is_orig ? c$resp : c$orig;
+                local conn: connection = [$id=id,
+                                          $orig=orig,
+                                          $resp=resp,
+                                          $start_time=c$start_time,
+                                          $duration=c$duration,
+                                          $service=c$service,
+                                          $history=c$history,
+                                          $uid=c$uid];
 
-                local pkt: context = [$conn=c,
+                local pkt: context = [$conn=conn,
                                       $ts=network_time(),
                                       $seq=seq,
                                       $len=len,
@@ -241,19 +240,21 @@ event tcp_packet(c: connection, is_orig: bool, flags: string,
                                       $fin=fin,
                                       $rst=rst];
 
-                if ( syn && ( id in db ) )
-                    submit(id);
+                if ( syn && ( uid in db ) )
+                    submit(uid);
 
-                if ( id in db ) {
-                    if ( ack in db[id] )
-                        db[id][ack] += pkt;
+                if ( uid in db ) {
+                    if ( ack in db[uid] )
+                        db[uid][ack] += pkt;
                     else
-                        db[id][ack] = vector(pkt);
+                        db[uid][ack] = vector(pkt);
                 } else
-                    db[id] = table([ack] = vector(pkt));
+                    db[uid] = table([ack] = vector(pkt));
 
-                if ( fin || rst )
-                    submit(id);
+                if ( fin || rst ) {
+                    submit(uid);
+                    delete en[uid];
+                }
             }
         }
     }

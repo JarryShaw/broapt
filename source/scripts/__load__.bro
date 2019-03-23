@@ -1,5 +1,5 @@
-@load ./main.bro
-@load ./contents.bro
-@load ./config.bro
-@load ./logging.bro
-@load ./writer.bro
+@load ./main
+@load ./contents
+@load ./config
+@load ./logging
+@load ./writer

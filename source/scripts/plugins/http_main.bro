@@ -1,4 +1,4 @@
-@load ../reass
+@load ../main
 @load base/utils/patterns
 
 module Reass;

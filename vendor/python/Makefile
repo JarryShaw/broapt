@@ -7,12 +7,12 @@ init:
 	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 	# remove top-level Pipfile temporarily
-	mv ../../Pipfile ../../Pipfile.tmp
+	mv -f ../../Pipfile ../../Pipfile.tmp
 	# create pipenv
 	pipenv --python 3.5
-	pipenv install dpkt "pypcapkit>=0.13.3.post2" python-magic
+	pipenv install "pypcapkit[DPKT]>=0.13.3.post2" python-magic
 	# reset top-level Pipfile
-	mv ../../Pipfile.tmp ../../Pipfile
+	mv -f ../../Pipfile.tmp ../../Pipfile
 
 .ONESHELL:
 update:
