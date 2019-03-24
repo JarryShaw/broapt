@@ -1,6 +1,6 @@
 # basic info
 FROM library/ubuntu:16.04
-LABEL version=2019.03.23
+LABEL version=2019.03.06
 
 # set up environment variables
 ENV LANG "C.UTF-8"
@@ -19,7 +19,7 @@ RUN apt-get update \
         python3 \
         python3-magic \
         python3-pip \
-        ## prerequisites for building Bro
+        ## prerequisites for building Bro & Broker
         ## from https://docs.zeek.org/en/stable/install/install.html#prerequisites
         cmake \
         make \
@@ -34,11 +34,19 @@ RUN apt-get update \
         zlib1g-dev
 
 # build Bro, Broker & its Python binding
-RUN wget -nv https://www.zeek.org/downloads/bro-2.6.1.tar.gz -O /tmp/bro-2.6.1.tar.gz
+RUN wget -nv https://www.zeek.org/downloads/bro-2.6.1.tar.gz -O /tmp/bro-2.6.1.tar.gz \
+ && wget -nv https://www.zeek.org/downloads/broker-1.1.2.tar.gz -O /tmp/broker-1.1.2.tar.gz
 RUN tar -xzf /tmp/bro-2.6.1.tar.gz \
  && cd bro-2.6.1 \
  && ./configure \
  && make \
+ && make install
+RUN tar -xzf /tmp/broker-1.1.2.tar.gz \
+ && cd broker-1.1.2 \
+ && ./configure \
+        --python-home=/usr/local \
+        --python-prefix=$(python3 -c 'import sys; print(sys.exec_prefix)') \
+        --with-python=/usr/bin/python3 \
  && make install
 
 # install Python packages & dependencies
@@ -61,12 +69,15 @@ RUN rm -rf \
         ## Bro build & archive
         /bro-2.6.1 \
         /tmp/bro-2.6.1.tar.gz \
+        ## Broker build & archive
+        /broker-1.1.2 \
+        /tmp/broker-1.1.2.tar.gz \
         ## Python dependencies
         /tmp/python \
         /tmp/pip \
  &&  apt-get remove -y \
         wget \
-        ## Bro build dependencies
+        ## Bro & Broker
         cmake \
         make \
         gcc \

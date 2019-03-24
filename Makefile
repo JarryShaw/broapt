@@ -104,6 +104,10 @@ gitlab-copy: gitlab-clean
 	find . -type f -depth 1 -exec cp -rf {} gitlab/xiaojiawei \;
 	# remove git-lfs usage
 	sed -i "" /lfs/d gitlab/xiaojiawei/.gitattributes
+	# copy archive
+	mkdir -p gitlab/xiaojiawei/archive
+	find archive \
+	    -depth 1 -exec cp -rf {} gitlab/xiaojiawei/archive \;
 	# copy build
 	mkdir -p gitlab/xiaojiawei/build
 	find build \

@@ -1,4 +1,6 @@
 
+*.icloud
+
 build/
 !/build/
 

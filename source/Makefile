@@ -3,7 +3,7 @@
 DIR ?= "random"
 
 init: mkdir-contents mkdir-extract_files mkdir-logs
-clean: clean-contents clean-extract_files clean-logs clean-state
+clean: clean-contents clean-extract_files clean-logs clean-nohup clean-state
 
 test:
 	mkdir -p ../test
@@ -29,6 +29,9 @@ clean-logs-local:
 
 clean-logs-folder:
 	find logs -iname '*.log' -print0 | xargs -0 rm -f
+
+clean-nohup:
+	rm -f nohup.out
 
 clean-state:
 	rm -rf .state

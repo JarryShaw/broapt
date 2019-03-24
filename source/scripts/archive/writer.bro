@@ -1,5 +1,4 @@
 @load base/utils/files
-@load base/utils/json
 # @load misc/dump-events
 
 module Reass;
@@ -32,41 +31,22 @@ export {
     ## Default string to use for an unset &optional field.
     ## Individual writers can use a different value.
     const unset_field = "-" &redef;
-
-    type pkt_t: record {
-        ts:         time    &log;
-        uid:        string  &log;
-        id:         conn_id &log;
-        is_orig:    bool    &log;
-        ack:        count   &log;
-    };
-
-    ## Predicators of app-layer protocols
-    global predicate: hook (s: string, pkt: pkt_t);
 }
 
-type context: record {
-    ts:         time    &log;
-    seq:        count   &log;
-    len:        count   &log;
-    payload:    string  &log;
+global file_list: set[string];
+global en: table[string] of set[count];
+
+type pkt: context {
+    ts:         time;
+    seq:        count;
+    len:        count;
+    payload:    string;
 };
 
-global db: set[string];
-global en: table[string] of set[count];
-global ex: table[string] of set[count];
-
-function write_json(name: string, info: context) {
-    local f: file;
-    if ( name in db )
-        f = open_for_append(fmt("%s.log", name));
-    else {
-        add db[name];
-        f = open(fmt("%s.log", name));
-    }
-    local data: string = fmt("%s\n", to_json(info));
-    write_file(f, data);
-    close(f);
+function make_name(c: connection, ack: count &default=0): string {
+    local suffix: string = fmt("%s", ack);
+    local name: string = generate_extraction_filename(c$uid, c, suffix);
+    return fmt("%s/%s", log_prefix, name);
 }
 
 function to_hex(s: string &default=empty_field): string {
@@ -77,36 +57,57 @@ function to_hex(s: string &default=empty_field): string {
     return ret;
 }
 
-function write_text(name: string, info: context) {
+function bool_to_string(b: bool &default=F): string {
+    return b ? "true" : "false";
+}
+
+function write_json(info: context) {
     local f: file;
-    if ( name in db )
-        f = open_for_append(fmt("%s.log", name));
+    if ( info$filename in file_list )
+        f = open_for_append(fmt("%s.log", info$filename));
     else {
-        add db[name];
-        f = open(fmt("%s.log", name));
-        write_file(f, fmt("#separator %s\n", to_hex(separator)));
-        write_file(f, fmt("#set_separator%s%s\n", separator, set_separator));
-        write_file(f, fmt("#empty_field%s%s\n", separator, empty_field));
-        write_file(f, fmt("#unset_field%s%s\n", separator, unset_field));
-        write_file(f, fmt("#path%s%s\n", separator, name));
-        write_file(f, fmt("#fields%sts%sseq%slen%spayload\n",
-                        separator, separator, separator, separator));
-        write_file(f, fmt("#types%stime%scount%scount%sstring\n",
-                        separator, separator, separator, separator));
+        add file_list[info$filename];
+        f = open(fmt("%s.log", info$filename));
     }
-    local data: string = fmt("%s%s%s%s%s%s%s\n",
-                             info$ts, separator,
-                             info$seq, separator,
-                             info$len, separator,
-                             ( info$len == 0 ) ? empty_field : info$payload);
+    local data: string = fmt("{\"ts\": %s, \"ack\": %s, \"dsn\": %s, \"syn\": %s, \"fin\": %s, \"rst\": %s, \"len\": %s, \"first\": %s, \"last\": %s, \"payload\": \"%s\"}\n",
+                             network_time(), info$ack, info$seq, bool_to_string(info$syn), bool_to_string(info$fin), bool_to_string(info$rst), info$len, info$first, info$last, bytestring_to_hexstr(info$payload));
     write_file(f, data);
     close(f);
 }
 
-function make_name(c: connection, ack: count &default=0): string {
-    local suffix: string = fmt("%s", ack);
-    local name: string = generate_extraction_filename(c$uid, c, suffix);
-    return fmt("%s/%s", log_prefix, name);
+function write_text(info: context) {
+    local f: file;
+    if ( filename in file_list )
+        f = open_for_append(fmt("%s.log", filename));
+    else {
+        add file_list[filename];
+        f = open(fmt("%s.log", filename));
+        write_file(f, fmt("#separator %s\n", to_hex(separator)));
+        write_file(f, fmt("#set_separator%s%s\n", separator, set_separator));
+        write_file(f, fmt("#empty_field%s%s\n", separator, empty_field));
+        write_file(f, fmt("#unset_field%s%s\n", separator, unset_field));
+        write_file(f, fmt("#path%s%s\n", separator, filename));
+        write_file(f, fmt("#fields%sts%sack%sdsn%ssyn%sfin%srst%slen%sfirst%slast%spayload\n",
+                        separator, separator, separator, separator, separator,
+                        separator, separator, separator, separator, separator));
+        write_file(f, fmt("#types%stime%scount%scount%sbool%sbool%sbool%scount%scount%scount%sstring\n",
+                        separator, separator, separator, separator, separator,
+                        separator, separator, separator, separator, separator));
+    }
+    write_file(f, fmt("%s%s", network_time(), separator));
+    write_file(f, fmt("%s%s", info$ack, separator));
+    write_file(f, fmt("%s%s", info$seq, separator));
+    write_file(f, fmt("%s%s", info$syn, separator));
+    write_file(f, fmt("%s%s", info$fin, separator));
+    write_file(f, fmt("%s%s", info$rst, separator));
+    write_file(f, fmt("%s%s", info$len, separator));
+    write_file(f, fmt("%s%s", info$first, separator));
+    write_file(f, fmt("%s%s", info$last, separator));
+    if ( info$len == 0 )
+        write_file(f, fmt("%s\n", empty_field));
+    else
+        write_file(f, fmt("%s\n", bytestring_to_hexstr(info$payload)));
+    close(f);
 }
 
 event tcp_packet(c: connection, is_orig: bool, flags: string,
@@ -118,19 +119,8 @@ event tcp_packet(c: connection, is_orig: bool, flags: string,
         local uid: string = fmt("%s-%s", c$uid, is_orig ? "orig" : "resp");
         if ( uid !in en )
             en[uid] = set();
-        if ( uid !in ex )
-            ex[uid] = set();
-        if ( ( ( ack !in en[uid] ) && ( ack !in ex[uid] ) ) && ( len > 0 ) ) {
-            local pkt: pkt_t = [$ts=network_time(),
-                                $id=c$id,
-                                $is_orig=is_orig,
-                                $uid=c$uid,
-                                $ack=ack];
-            if ( hook predicate(payload, pkt) )
-                add en[uid][ack];
-            else
-                add ex[uid][ack];
-        }
+        if ( ( ack !in en[uid] ) && ( len > 0 ) && hook predicate(payload) )
+            add en[uid][ack];
 
         if ( ack in en[uid] ) {
             local syn: bool = "S" in flags;
@@ -151,19 +141,12 @@ event tcp_packet(c: connection, is_orig: bool, flags: string,
                                           $history=c$history,
                                           $uid=c$uid];
 
-                local name: string = make_name(conn, ack);
-                local frag: context = [$ts=network_time(),
-                                       $seq=seq,
-                                       $len=len,
-                                       $payload=bytestring_to_hexstr(payload)];
-                use_json ? write_json(name, frag) : write_text(name, frag);
-
-                if ( fin || rst ) {
-                    print name;
-                    delete en[uid];
-                    delete ex[uid];
-                    delete db[name];
-                }
+                local name: string = make_name(conn, is_orig);
+                local pkt: context = [$ts=network_time(),
+                                      $seq=seq,
+                                      $len=len,
+                                      $payload=payload];
+                use_json ? write_json(name, pkt) : write_text(name, pkt);
             }
         }
     }
