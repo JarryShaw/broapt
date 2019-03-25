@@ -67,7 +67,7 @@ docker-run:
 	           --volume vendor:/vendor -it broapt
 
 git-commit:
-	git pull
+	# git pull
 	git add .
 	git commit -a -S
 	git push

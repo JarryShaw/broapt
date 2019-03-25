@@ -1,9 +1,11 @@
-.PHONY: init build clean test
+.PHONY: init build link clean test
 
 DIR ?= "random"
 
+build: build-link build-make
 init: mkdir-contents mkdir-extract_files mkdir-logs
 clean: clean-contents clean-extract_files clean-logs clean-nohup clean-state
+link: build-link json-link
 
 test:
 	mkdir -p ../test
@@ -11,7 +13,13 @@ test:
 	cp Makefile ../test/$(DIR)
 	$(MAKE) -C ../test/$(DIR) init
 
-build:
+json-link:
+	cd custom && ln -sf ../../vendor/json/single_include/nlohmann/json.hpp ./json.hh
+
+build-link:
+	cd custom && ln -sf TCP\ Reassembly/TCP\ Reassembly/main.cpp ./reass.cc
+
+build-make:
 	mkdir -p build
 	g++ --std=c++0x -stdlib=libc++ custom/reass.cc -o build/reass
 

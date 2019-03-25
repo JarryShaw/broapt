@@ -65,14 +65,7 @@ hdl_t HDL;
 part_t BUF{};
 bool FLAG = true;
 
-#include <iostream>
-
 void reassembly(uint64_t seq, uint64_t len, bool fin_rst, std::string PLD) {
-    std::cout << "seq: " << seq << std::endl;
-    std::cout << "len: " << len << std::endl;
-    std::cout << "fin_rst: " << fin_rst << std::endl;
-    std::cout << "----------" << std::endl;
-
     uint64_t DSN = seq;
     if (FLAG) {
         BUF.isn=DSN;
@@ -172,13 +165,9 @@ void write_data(const char * root, std::string data, bool is_part, uint64_t star
 
 // entry point
 
-#define ROOT "/Users/jarryshaw/Documents/GitHub/broapt/source/"
-
 int main(int argc, const char * argv[]) {
-//    const char * src = argv[1];
-//    const char * dst = argv[2];
-    const char * src = ROOT "logs/CGNKus3odD6nQQxll8_180.153.105.152:80-192.168.248.40:35623_589.log";
-    const char * dst = ROOT "contents/CGNKus3odD6nQQxll8_180.153.105.152:80-192.168.248.40:35623_589";
+    const char * src = argv[1];
+    const char * dst = argv[2];
 
     FILE * fp = fopen(src, "r");
     if (fp == NULL)
