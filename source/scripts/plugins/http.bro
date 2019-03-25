@@ -11,7 +11,7 @@ export {
         is_resp:    bool    &log;
         method:     string  &log &optional;
         target:     string  &log &optional;
-        version:    string  &log;
+        version:    string  &log &optional;
         status:     count   &log &optional;
         phrase:     string  &log &optional;
         host:       string  &log &optional;
@@ -39,6 +39,8 @@ hook Reass::predicate(s: string, pkt: pkt_t) {
     local body: string = vec[1];
 
     vec = split_string1(header, /\x0d\x0a/);
+    if ( |vec| != 2 )
+        break;
     local startline: string = vec[0];
     local headerfield: string = vec[1];
 

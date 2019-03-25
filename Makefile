@@ -85,6 +85,7 @@ submodule-link:
 submodule-pull:
 	cd vendor/broker && git pull
 	cd vendor/file\-extraction && git pull
+	cd vendor/json && git pull
 	cd vendor/pypcapkit && git pull
 	cd vendor/zeek && git pull
 
@@ -96,6 +97,7 @@ gitlab-clean:
 	find gitlab/xiaojiawei/vendor \
 	    ! -iname 'broker' \
 	    ! -iname 'file-extraction' \
+	    ! -iname 'json' \
 		! -iname 'pypcapkit' \
 	    ! -iname 'zeek' -depth 1 -print0 | xargs -0 rm -rf
 
@@ -128,6 +130,7 @@ gitlab-copy: gitlab-clean
 	    ! -iname 'broker' \
 	    ! -iname 'Cellar' \
 	    ! -iname 'file-extraction' \
+	    ! -iname 'json' \
 	    ! -iname 'pypcapkit' \
 	    ! -iname 'zeek' \
 	    ! -iname 'venv' -depth 1 -exec cp -rf {} gitlab/xiaojiawei/vendor \;
@@ -141,6 +144,7 @@ gitlab-copy: gitlab-clean
 gitlab-commit: gitlab-copy
 	cd gitlab/xiaojiawei/vendor/broker && git pull
 	cd gitlab/xiaojiawei/vendor/file\-extraction && git pull
+	cd gitlab/xiaojiawei/vendor/json && git pull
 	cd gitlab/xiaojiawei/vendor/pypcapkit && git pull
 	cd gitlab/xiaojiawei/vendor/zeek && git pull
 	cd gitlab/xiaojiawei && $(MAKE) git-commit
@@ -148,6 +152,7 @@ gitlab-commit: gitlab-copy
 gitlab-submodule: gitlab-copy
 	rm -rf gitlab/xiaojiawei/vendor/broker \
 	       gitlab/xiaojiawei/vendor/file\-extraction \
+	       gitlab/xiaojiawei/vendor/json \
 	       gitlab/xiaojiawei/vendor/pypcapkit \
 	       gitlab/xiaojiawei/vendor/zeek
 	cd gitlab/xiaojiawei/vendor && $(MAKE) all

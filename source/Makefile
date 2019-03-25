@@ -1,4 +1,4 @@
-.PHONY: init clean test
+.PHONY: init build clean test
 
 DIR ?= "random"
 
@@ -10,6 +10,10 @@ test:
 	mkdir -p ../test/$(DIR)
 	cp Makefile ../test/$(DIR)
 	$(MAKE) -C ../test/$(DIR) init
+
+build:
+	mkdir -p build
+	g++ --std=c++0x -stdlib=libc++ custom/reass.cc -o build/reass
 
 clean-contents: clean-contents-dat clean-contents-part
 
@@ -25,7 +29,7 @@ clean-extract_files:
 clean-logs: clean-logs-local clean-logs-folder
 
 clean-logs-local:
-	rm -f *.log
+	find . -iname '*.log' -print0 | xargs -0 rm -f
 
 clean-logs-folder:
 	find logs -iname '*.log' -print0 | xargs -0 rm -f

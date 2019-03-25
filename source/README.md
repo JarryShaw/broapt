@@ -6,6 +6,8 @@
   - `make init` -- create useful directories
   - `make clean` -- cleanup ignored files
   - `make test` -- make test directory in `/test/$(DIR)` (`random` in default)
+- `custom` -- C/C++ implementations
+  - `reass.cc` -- C++ 11 based TCP reassembly implementation (works with `scripts/writer.bro`)
 - `docs` -- useful documentations
   - `docs/reass.txt` -- TCP reassembly algorithm
   - `docs/rfc791.txt` -- RFC 791, Internet Protocol

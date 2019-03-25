@@ -13,3 +13,6 @@
 [submodule "vendor/pypcapkit"]
 	path = vendor/pypcapkit
 	url = https://github.com/JarryShaw/PyPCAPKit.git
+[submodule "vendor/json"]
+	path = vendor/json
+	url = https://github.com/nlohmann/json.git

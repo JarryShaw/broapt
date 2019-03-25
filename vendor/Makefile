@@ -1,11 +1,11 @@
 .PHONY: all build clean link recursive \
-		broker file-extration pypcapkit zeek
+		broker file-extration json pypcapkit zeek
 
 ROOT := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 
-all: broker file-extraction pypcapkit zeek
+all: broker file-extraction json pypcapkit zeek
 build: broker-build-release zeek-build-release
-clean: broker-clean file-extraction-clean pypcapkit-clean zeek-clean
+clean: broker-clean file-extraction-clean json-clean pypcapkit-clean zeek-clean
 link: link-cellar link-venv
 recursive: broker-recursive file-extraction zeek-recursive
 
@@ -22,7 +22,7 @@ link-venv:
 	ln -sf $(shell pipenv --venv) venv
 
 broker: broker-clean
-	git clone https://github.com/zeek/broker.git $(ROOT)/broker
+	git submodule add https://github.com/zeek/broker.git $(ROOT)/broker
 
 broker-clean:
 	rm -rf $(ROOT)/broker
@@ -96,19 +96,25 @@ broker-recursive: broker-clean
 	git clone --recursive https://github.com/zeek/broker.git $(ROOT)/broker
 
 file-extraction: file-extraction-clean
-	git clone https://github.com/hosom/file-extraction.git $(ROOT)/file-extraction
+	git submodule add https://github.com/hosom/file-extraction.git $(ROOT)/file-extraction
 
 file-extraction-clean:
 	rm -rf $(ROOT)/file\-extraction
 
+json: json-clean
+	git submodule add https://github.com/nlohmann/json.git $(ROOT)/json
+
+json-clean:
+	rm -rf $(ROOT)json
+
 pypcapkit: pypcapkit-clean
-	git clone https://github.com/JarryShaw/PyPCAPKit.git $(ROOT)/pypcapkit
+	git submodule add https://github.com/JarryShaw/PyPCAPKit.git $(ROOT)/pypcapkit
 
 pypcapkit-clean:
 	rm -rf $(ROOT)/pypcapkit
 
 zeek: zeek-clean
-	git clone https://github.com/zeek/zeek.git $(ROOT)/zeek
+	git submodule add https://github.com/zeek/zeek.git $(ROOT)/zeek
 
 zeek-clean:
 	rm -rf $(ROOT)/zeek

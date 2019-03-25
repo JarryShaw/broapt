@@ -23,7 +23,7 @@ type buffer: table[string] of frag_t;
 
 function comp_hdl(a: hole_t, b: hole_t): int {
     return ( a$first > b$first ) ? 1 : -1;
-}
+}s
 
 function hdl_delete(HDL: hdl_t, idx: int): hdl_t {
     local range: int = 0;
