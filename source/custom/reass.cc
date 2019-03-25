@@ -6,13 +6,13 @@
 // buffer (from PyPCAPKit, c.f. pcapkit.reassembly.tcp.TCP_Reassembly._buffer)
 
 typedef struct {
-    uint first;
-    uint last;
+    uint64_t first;
+    uint64_t last;
 } hole_t;
 
 typedef struct {
-    uint isn;
-    uint len;
+    uint64_t isn;
+    uint64_t len;
     std::string raw;
 } part_t;
 
@@ -49,18 +49,16 @@ void hex2ascii(const std::string & in, std::string & out) {
 
 // TCP Reassembly algorithm (c.f. RFC791, RFC815)
 
-void reassembly(float ts, uint seq, uint len, bool fin_rst, std::string payload);
+void reassembly(uint64_t seq, uint64_t len, bool fin_rst, std::string payload);
 void submit(const char * root);
-void write_data(const char * root, std::string data, bool is_part, uint start=0, uint stop=UINT_MAX);
+void write_data(const char * root, std::string data, bool is_part, uint64_t start=0, uint64_t stop=UINT_MAX);
 
 hdl_t HDL;
 part_t BUF{};
 bool FLAG = true;
 
-void reassembly(float ts, uint seq, uint len, bool fin_rst, std::string payload) {
-    uint DSN = seq;
-    std::string PLD = payload;
-
+void reassembly(uint64_t seq, uint64_t len, bool fin_rst, std::string PLD) {
+    uint64_t DSN = seq;
     if (FLAG) {
         BUF.isn=DSN;
         BUF.raw=PLD;
@@ -72,8 +70,8 @@ void reassembly(float ts, uint seq, uint len, bool fin_rst, std::string payload)
         return;
     }
 
-    uint LEN, SUM, GAP;
-    uint ISN = BUF.isn;
+    uint64_t LEN, SUM, GAP;
+    uint64_t ISN = BUF.isn;
     std::string TMP;
     std::string RAW = BUF.raw;
     if (DSN > ISN) {
@@ -90,18 +88,18 @@ void reassembly(float ts, uint seq, uint len, bool fin_rst, std::string payload)
     } else {
         LEN = len;
         SUM = DSN + LEN;
-        if (ISN>=DSN) {
+        if (ISN >= SUM) {
             GAP = ISN - SUM;
-            RAW = PLD + TMP.substr(0, '\x00') + RAW;
+            TMP.resize(GAP, '\x00');
+            RAW = PLD + TMP + RAW;
         } else
             RAW = PLD.substr(0, SUM) + RAW;
     }
-    TMP.clear();
     BUF.raw = RAW;
-    BUF.len = (uint) RAW.length();
+    BUF.len = (uint64_t) RAW.length();
 
-    uint first = seq;
-    uint last = first + len;
+    uint64_t first = seq;
+    uint64_t last = first + len;
     for(hdl_t::iterator hole = HDL.begin(); hole != HDL.end(); ++hole) {
         if (first > hole->last)
             continue;
@@ -114,15 +112,15 @@ void reassembly(float ts, uint seq, uint len, bool fin_rst, std::string payload)
         }
         if ((last < hole->last) && !fin_rst) {
             hole_t new_hole {last+1, hole->last};
-            HDL.insert(hole+1, new_hole);
+            HDL.insert(hole, new_hole);
         }
         break;
     }
 }
 
 void submit(const char * root) {
-    uint start = 0;
-    uint stop = 0;
+    uint64_t start = 0;
+    uint64_t stop = 0;
     std::string data;
 
     if (HDL.size() > 1) {
@@ -135,7 +133,7 @@ void submit(const char * root) {
         }
         data = BUF.raw.substr(start);
         if (data.length())
-            write_data(root, data, true, start, (uint) data.length());
+            write_data(root, data, true, start, (uint64_t) data.length());
     } else {
         data = BUF.raw;
         if (data.length())
@@ -143,10 +141,10 @@ void submit(const char * root) {
     }
 }
 
-void write_data(const char * root, std::string data, bool is_part, uint start, uint stop) {
+void write_data(const char * root, std::string data, bool is_part, uint64_t start, uint64_t stop) {
     char filename[strlen(root)*2];
     if (is_part)
-        sprintf(filename, "%s_%u-%u.part", root, start, stop);
+        sprintf(filename, "%s_%llu-%llu.part", root, start, stop);
     else
         sprintf(filename, "%s.dat", root);
 
@@ -168,7 +166,7 @@ int main(int argc, const char * argv[]) {
         exit(EXIT_FAILURE);
 
     float ts;
-    uint seq, len;
+    uint64_t seq, len;
     char flag;
     bool fin_rst = false;
     std::string pld_hex, payload;
@@ -194,13 +192,12 @@ int main(int argc, const char * argv[]) {
                 break;          // invalid bool value - should report error
         }
 
-        hex2ascii(pld_hex, payload);
-        reassembly(ts, seq, len, fin_rst, payload);
+        if (pld_hex != "(empty)")
+            hex2ascii(pld_hex, payload);
+        reassembly(seq, len, fin_rst, payload);
     }
     fclose(fp);
     submit(dst);
 
-    if (line)
-        free(line);
     return 0;
 }

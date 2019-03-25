@@ -181,7 +181,7 @@ event connection_state_remove(c: connection) {
         if ( ( orig in en ) || ( orig in ex ) ) {
             if ( !use_json ) {
                 name = build_path(log_prefix, generate_extraction_filename(c$uid, c, "*.log"));
-                args = fmt("for file in $(ls %s 2>/dev/null); do echo '%s' >> ${file}; %s ${file} \"%s/$(basename ${file} '%s')\"; done",
+                args = fmt("for file in $(ls %s 2>/dev/null); do echo '%s' >> ${file}; %s ${file} \"%s/$(basename ${file} '%s')\" || echo ${file}; done",
                         str_shell_escape(name), line, str_shell_escape(exec_path), str_shell_escape(pld_prefix), log_suffix);
                 system(args);
             }
@@ -204,7 +204,7 @@ event connection_state_remove(c: connection) {
                                           $uid=c$uid];
 
                 name = build_path(log_prefix, generate_extraction_filename(c$uid, conn, "*.log"));
-                args = fmt("for file in $(ls %s 2>/dev/null); do echo '%s' >> ${file}; %s ${file} \"%s/$(basename ${file} '%s')\"; done",
+                args = fmt("for file in $(ls %s 2>/dev/null); do echo '%s' >> ${file}; %s ${file} \"%s/$(basename ${file} '%s')\" || echo ${file}; done",
                         str_shell_escape(name), line, str_shell_escape(exec_path), str_shell_escape(pld_prefix), log_suffix);
                 system(args);
             }
@@ -229,7 +229,7 @@ event bro_done() {
 
         for ( uid in uids ) {
             name = build_path(log_prefix, fmt("%s_*.log", uid));
-            args = fmt("for file in $(ls %s 2>/dev/null); do echo '%s' >> ${file}; %s ${file} \"%s/$(basename ${file} '%s')\"; done",
+            args = fmt("for file in $(ls %s 2>/dev/null); do echo '%s' >> ${file}; %s ${file} \"%s/$(basename ${file} '%s')\" || echo ${file}; done",
                        str_shell_escape(name), line, str_shell_escape(exec_path), str_shell_escape(pld_prefix), log_suffix);
             system(args);
         }
