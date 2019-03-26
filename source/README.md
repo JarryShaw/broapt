@@ -58,12 +58,17 @@
 ### Implementation Comparison (__OUTDATED__)
 
 > test file: 1601 packets, ~1.4MB
+>
+> Bro processing of the test file:
+>   * real    0m1.099s
+>   * user    0m0.783s
+>   * sys     0m0.225s
 
 - Pure Bro Implementation (see `scripts/main.bro`)
   - real    14m36.081s
   - user    13m57.274s
   - sys	    0m28.832s
-- Hybrid Implementation (see `scripts/writer.bro` and `python/reader.py`)
+- Hybrid Implementation with Python (see `scripts/writer.bro` and `python/reader.py`)
   - real    0m20.440s
   - user    0m18.258s
   - sys	    0m2.018s
@@ -71,3 +76,7 @@
   - real    0m18.693s
   - user    0m16.850s
   - sys	    0m1.211s
+- Hybrid Implementation with C/C++ (see `scripts/writer.bro` and `custom/reass.cc`)
+  - real    0m2.352s
+  - user    0m1.243s
+  - sys     0m0.481s

@@ -50,6 +50,12 @@ export {
     global predicate: hook (s: string, pkt: pkt_t);
 }
 
+@ifndef ( BRO_LOG_SUFFIX )
+    const BRO_LOG_SUFFIX: string = getenv("BRO_LOG_SUFFIX");
+@endif
+
+const log_suffix: string = ( BRO_LOG_SUFFIX != "" ) ? BRO_LOG_SUFFIX : ".log";
+
 type context: record {
     ts:         time    &log;
     seq:        count   &log;
@@ -58,15 +64,12 @@ type context: record {
     payload:    string  &log;
 };
 
-const BRO_LOG_SUFFIX: string = getenv("BRO_LOG_SUFFIX");
-const log_suffix: string = ( BRO_LOG_SUFFIX != "" ) ? BRO_LOG_SUFFIX : ".log";
-
 global en: table[string] of set[count];
 global ex: table[string] of set[count];
 
 function write_json(name: string, info: context) {
-    local f: file = open_for_append(fmt("%s.log", name));
-    local data: string = fmt("%s\n", to_json(info));
+    local f: file = open_for_append(cat(name, log_suffix));
+    local data: string = cat(to_json(info), "\n");
     write_file(f, data);
     close(f);
 }
@@ -80,19 +83,18 @@ function to_hex(s: string &default=empty_field): string {
 }
 
 function write_text(name: string, info: context) {
-    local f: file = open_for_append(fmt("%s.log", name));
-    local data: string = fmt("%s%s%s%s%s%s%s%s%s\n",
-                             info$ts, separator,
+    local f: file = open_for_append(cat(name, log_suffix));
+    local data: string = cat(info$ts, separator,
                              info$seq, separator,
                              info$len, separator,
                              info$fin_rst, separator,
-                             ( info$len == 0 ) ? empty_field : info$payload);
+                             ( info$len == 0 ) ? empty_field : info$payload, "\n");
     write_file(f, data);
     close(f);
 }
 
 function init_text(name: string) {
-    local f: file = open(fmt("%s.log", name));
+    local f: file = open(cat(name, log_suffix));
     write_file(f, fmt("#separator %s\n", to_hex(separator)));
     write_file(f, fmt("#set_separator%s%s\n", separator, set_separator));
     write_file(f, fmt("#empty_field%s%s\n", separator, empty_field));
@@ -171,19 +173,22 @@ event tcp_packet(c: connection, is_orig: bool, flags: string,
     }
 }
 
+event subprocess(name: string, line: string) {
+    local args: string = fmt("for file in $(ls %s 2>/dev/null); do echo '%s' >> ${file}; %s ${file} \"%s/$(basename ${file} '%s')\" || echo ${file}; done",
+                             str_shell_escape(name), line, str_shell_escape(exec_path), str_shell_escape(pld_prefix), log_suffix);
+    system(args);
+}
+
 event connection_state_remove(c: connection) {
     if ( get_port_transport_proto(c$id$orig_p) == tcp ) {
-        local args: string;
         local name: string;
         local line: string = fmt("#close%s%s", separator, strftime("%Y-%m-%d-%H-%M-%S", current_time()));
 
         local orig: string = fmt("%s-orig", c$uid);
         if ( ( orig in en ) || ( orig in ex ) ) {
             if ( !use_json ) {
-                name = build_path(log_prefix, generate_extraction_filename(c$uid, c, "*.log"));
-                args = fmt("for file in $(ls %s 2>/dev/null); do echo '%s' >> ${file}; %s ${file} \"%s/$(basename ${file} '%s')\" || echo ${file}; done",
-                        str_shell_escape(name), line, str_shell_escape(exec_path), str_shell_escape(pld_prefix), log_suffix);
-                system(args);
+                name = build_path(log_prefix, generate_extraction_filename(c$uid, c, cat("*", log_suffix)));
+                event subprocess(name, line);
             }
 
             delete en[orig];
@@ -203,10 +208,8 @@ event connection_state_remove(c: connection) {
                                           $history=c$history,
                                           $uid=c$uid];
 
-                name = build_path(log_prefix, generate_extraction_filename(c$uid, conn, "*.log"));
-                args = fmt("for file in $(ls %s 2>/dev/null); do echo '%s' >> ${file}; %s ${file} \"%s/$(basename ${file} '%s')\" || echo ${file}; done",
-                        str_shell_escape(name), line, str_shell_escape(exec_path), str_shell_escape(pld_prefix), log_suffix);
-                system(args);
+                name = build_path(log_prefix, generate_extraction_filename(c$uid, conn, cat("*", log_suffix)));
+                event subprocess(name, line);
             }
 
             delete en[resp];
@@ -223,15 +226,12 @@ event bro_done() {
         add uids[split_string1(uid, /-/)[0]];
 
     if ( !use_json ) {
-        local args: string;
         local name: string;
         local line: string = fmt("#close%s%s", separator, strftime("%Y-%m-%d-%H-%M-%S", current_time()));
 
         for ( uid in uids ) {
-            name = build_path(log_prefix, fmt("%s_*.log", uid));
-            args = fmt("for file in $(ls %s 2>/dev/null); do echo '%s' >> ${file}; %s ${file} \"%s/$(basename ${file} '%s')\" || echo ${file}; done",
-                       str_shell_escape(name), line, str_shell_escape(exec_path), str_shell_escape(pld_prefix), log_suffix);
-            system(args);
+            name = build_path(log_prefix, fmt("%s_%s", uid, log_suffix));
+            event subprocess(name, line);
         }
     }
 }
