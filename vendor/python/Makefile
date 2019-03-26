@@ -1,18 +1,15 @@
 .PHONY: init update download clean remove
 
 export PIPENV_VENV_IN_PROJECT=1
+export PIPENV_NO_INHERIT=1
 
 .ONESHELL:
 init:
 	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
-	# remove top-level Pipfile temporarily
-	mv -f ../../Pipfile ../../Pipfile.tmp
 	# create pipenv
 	pipenv --python 3.5
 	pipenv install "pypcapkit[DPKT]>=0.13.3.post2" python-magic
-	# reset top-level Pipfile
-	mv -f ../../Pipfile.tmp ../../Pipfile
 
 .ONESHELL:
 update:
