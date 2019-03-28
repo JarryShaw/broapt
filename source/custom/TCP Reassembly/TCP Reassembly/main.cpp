@@ -6,9 +6,11 @@
 //  Copyright © 2019 Jarry Shaw. All rights reserved.
 //
 
+#include <limits.h>
 #include <stdio.h>
 #include <sstream>
 #include <string>
+#include <string.h>
 #include <vector>
 
 // buffer (from PyPCAPKit, c.f. pcapkit.reassembly.tcp.TCP_Reassembly._buffer)

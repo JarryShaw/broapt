@@ -21,7 +21,7 @@ build-link:
 
 build-make:
 	mkdir -p build
-	g++ --std=c++0x -stdlib=libc++ custom/reass.cc -o build/reass
+	g++ --std=c++0x custom/reass.cc -o build/reass
 
 clean-contents: clean-contents-dat clean-contents-part
 
@@ -32,7 +32,7 @@ clean-contents-part:
 	find contents -iname '*.part' -print0 | xargs -0 rm -f
 
 clean-extract_files:
-	find extract_files -type df -depth 1 -print0 | xargs -0 rm -rf
+	find extract_files \( -type d -or -type f \) -depth 1 -print0 | xargs -0 rm -rf
 
 clean-logs: clean-logs-local clean-logs-folder
 

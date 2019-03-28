@@ -5,6 +5,7 @@
         "bufid",
         "emsp",
         "nofile",
+        "numpy",
         "reass",
         "resp",
         "rsplit",
