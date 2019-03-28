@@ -8,3 +8,11 @@
 - `make pipenv`: update pipenv on root directory
 - `make download`: update then download Python dependency files into [`vendor/python/download`](vendor/python/download)
 - `make submodule`: clone all submodules into [`vendor`](vendor)
+
+## Licensing
+
+This work is in general licensed under the [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/).
+Part of this work is derived and copied from [Zeek](zeek/zeek) and [Broker](zeek/broker) both with [BSD 3-Clause License](LICENSE).
+Original developed of this software and associated documentation files (the "Software") are hereby licensed under the
+[Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](COPYING.html).
+No permits are foreordained unless granted by the author and maintainer of the Software, i.e. [Jarry Shaw](@jarryshaw).

@@ -8,6 +8,7 @@ export {
 
     type log_t: record {
         pkt:        pkt_t   &log;
+        is_data:    bool    &log;
         is_resp:    bool    &log &optional;
         command:    string  &log &optional;
         arg:        string  &log &optional;
@@ -15,7 +16,7 @@ export {
         data_port:  port    &log &optional;
         code:       count   &log &optional;
         msg:        string  &log &optional;
-        cont_resp   bool    &log &optional;
+        cont_resp:  bool    &log &optional;
     };
 
     # Define a logging event. By convention, this is called
@@ -23,16 +24,9 @@ export {
     global log_ftp: event(rec: log_t);
 }
 
-global ftp_conn: set[string];
 global ftp_data: table[string] of set[conn_id];
 
-event ftp_reply(c: connection, code: count, msg: string, cont_resp: bool) &priority=20 {
-    add ftp_conn[c$uid];
-}
-
-event ftp_request(c: connection, command: string, arg: string) &priority=20 {
-    add ftp_conn[c$uid];
-
+function parse_port(command: string, arg: string): ftp_port {
     local port_info: ftp_port;
     switch (to_upper(command)) {
         case "EPRT":
@@ -47,34 +41,85 @@ event ftp_request(c: connection, command: string, arg: string) &priority=20 {
         case "PORT":
             port_info = parse_ftp_port(arg);
             break;
-        default:
-            return;
     }
-
-    if ( port_info$valid ) {
-        if ( c$uid !in ftp_data )
-            ftp_data[c$uid] = set();
-        add ftp_data[c$uid][port_info];
-    }
+    return port_info;
 }
 
-hook Reass::predicate(s: string, pkt: pkt_t) {
-    if ( pkt$uid in ftp_conn )
-        return;
+function is_ftp(s: string, pkt: pkt_t): bool {
+    local rec: log_t;
+    local text: string;
+    if ( pkt$uid in ftp_data && pkt$id in ftp_data[pkt$uid] )
+        rec = [$pkt=pkt,
+               $is_data=T];
+    else {
+        if ( s[-2:] != "\r\n" )
+            return F;
+        text = s[:-2];
+        if ( |split_string1(text, /\n/)| != 1 )
+            return F;
 
-    if ( pkt$uid in ftp_data ) {
-        local port_info: ftp_port;
+        if ( /^[0-9][0-9][0-9]/ in text ) {
+            local msg: string;
+            local cont_resp: bool;
 
-        port_info = [$h=pkt$id$orig_h, $p=pkt$id$orig_p, $valid=T];
-        if ( port_info in ftp_data[pkt$uid] )
-            return;
+            local code: count = to_count(text[:3]);
+            if ( |text| > 3 ) {
+                cont_resp = ( text[3] == "-" ) ? T : F;
+                msg = text[4:];
+            }
 
-        port_info = [$h=pkt$id$resp_h, $p=pkt$id$resp_p, $valid=T];
-        if ( port_info in ftp_data[pkt$uid] )
-            return;
+            rec = [$pkt=pkt,
+                   $is_data=F,
+                   $is_resp=T,
+                   $code=code,
+                   $msg=msg,
+                   $cont_resp=cont_resp];
+        } else {
+            local command: string;
+            local arg: string = "";
+
+            local vec: string_vec = split_string1(text, /( )+/);
+            if ( |vec| == 2 ) {
+                command = vec[0];
+                arg = vec[1];
+            } else
+                command = vec[0];
+
+            rec = [$pkt=pkt,
+                   $is_data=F,
+                   $is_resp=F,
+                   $command=command,
+                   $arg=arg];
+
+            if ( command == /EPRT|EPSV|PASV|PORT/i ) {
+                local port_info: ftp_port = parse_port(command, arg);
+                if ( port_info$valid ) {
+                    rec$data_addr = port_info$h;
+                    rec$data_port = port_info$p;
+
+                    local data_conn: conn_id = [$orig_h=port_info$h,
+                                                $orig_p=port_info$p,
+                                                $resp_h=pkt$id$resp_h,
+                                                $resp_p=pkt$id$resp_p];
+                    if ( pkt$uid !in ftp_data )
+                        ftp_data[pkt$uid] = set();
+                    add ftp_data[pkt$uid][data_conn];
+                }
+            }
+        }
     }
 
     Log::write(LOG_FTP, rec);
+    return T;
+}
+
+hook Reass::predicate(s: string, pkt: pkt_t) {
+    if ( !is_ftp(s, pkt) )
+        break;
+}
+
+event connection_state_remove(c: connection) {
+    delete ftp_data[c$uid];
 }
 
 event bro_init() &priority=5 {

@@ -13,6 +13,6 @@
         "sysconf",
         "zeek"
     ],
-    "python.pythonPath": "/Users/jarryshaw/.local/share/virtualenvs/broapt-gvahlmFF/bin/python",
+    "python.pythonPath": ".venv/bin/python",
     "restructuredtext.confPath": "${workspaceFolder}/docs/conf.py"
 }

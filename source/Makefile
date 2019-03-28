@@ -32,7 +32,7 @@ clean-contents-part:
 	find contents -iname '*.part' -print0 | xargs -0 rm -f
 
 clean-extract_files:
-	find extract_files \( -type d -or -type f \) -depth 1 -print0 | xargs -0 rm -rf
+	find extract_files -depth 1 -type d -or -type f -print0 | xargs -0 rm -rf
 
 clean-logs: clean-logs-local clean-logs-folder
 
