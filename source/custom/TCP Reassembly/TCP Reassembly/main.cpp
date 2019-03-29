@@ -108,6 +108,7 @@ void reassembly(uint64_t seq, uint64_t len, bool fin_rst, std::string PLD) {
     BUF.raw = RAW;
     BUF.len = (uint64_t) RAW.length();
 
+    bool flag = false;
     uint64_t first = seq;
     uint64_t last = first + len;
     for(hdl_t::iterator hole = HDL.begin(); hole != HDL.end(); ++hole) {
@@ -119,9 +120,12 @@ void reassembly(uint64_t seq, uint64_t len, bool fin_rst, std::string PLD) {
         if (first > hole->first) {
             hole_t new_hole {hole->first, first-1};
             HDL.insert(hole, new_hole);
+            flag = true;
         }
         if ((last < hole->last) && !fin_rst) {
             hole_t new_hole {last+1, hole->last};
+            if (flag)
+                ++hole;
             HDL.insert(hole, new_hole);
         }
         break;
