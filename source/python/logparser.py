@@ -74,9 +74,9 @@ def parse_text(file, line):
     types = file.readline().strip().split(separator)[1:]
     field_parser = list()
     for (field, type_) in zip(fields, types):
-        match_set = re.match(r'^set\[(.+?)\]', type_)
+        match_set = re.match(r'^set\[(?P<type>.+?)\]', type_)
         if match_set is not None:
-            set_type = match_set.groups()[0]
+            set_type = match_set.group('type')[0]
             field_parser.append((field, lambda s: set_parser(s, type_parser[set_type])))  # pylint: disable=cell-var-from-loop
             continue
 
