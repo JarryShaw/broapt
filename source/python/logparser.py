@@ -3,6 +3,7 @@
 import ast
 import collections
 import datetime
+import ipaddress
 import json
 import re
 import sys
@@ -13,7 +14,7 @@ import pcapkit
 
 def parse_text(file, line):
     temp = line.strip().split(' ', maxsplit=1)[1]
-    separator = ast.literal_eval(f'{temp!r}'.replace('\\\\x', '\\x'))
+    separator = ast.literal_eval(f'b{temp!r}'.replace('\\\\x', '\\x')).decode()
 
     set_separator = file.readline().strip().split(separator)[1]
     set_parser = lambda s, t: set(t(e) for e in s.split(set_separator))
@@ -27,12 +28,22 @@ def parse_text(file, line):
             return str()
         if s == unset_field:
             return None
-        return s
+        return ast.literal_eval(f'b{s!r}'.replace('\\\\x', '\\x')).decode()
 
     def int_parser(s):
         if s == unset_field:
             return None
         return int(s)
+
+    def addr_parser(s):
+        if s == unset_field:
+            return None
+        return ipaddress.ip_address(s)
+
+    def subnet_parser(s):
+        if s == unset_field:
+            return None
+        return ipaddress.ip_network(s)
 
     def time_parser(s):
         if s == unset_field:
@@ -58,8 +69,8 @@ def parse_text(file, line):
         port=int_parser,
         enum=str_parser,
         interval=str_parser,
-        addr=str_parser,
-        subnet=str_parser,
+        addr=addr_parser,
+        subnet=subnet_parser,
         int=int_parser,
         count=int_parser,
         time=time_parser,

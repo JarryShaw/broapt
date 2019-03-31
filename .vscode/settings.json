@@ -4,16 +4,18 @@
         "Zeek's",
         "bufid",
         "emsp",
+        "iterrows",
         "nofile",
         "numpy",
+        "r'filename",
         "reass",
         "resp",
         "rsplit",
         "sched",
         "sysconf",
+        "tolist",
         "zeek"
     ],
     "python.pythonPath": "${workspaceFolder}/.venv/bin/python",
-    "restructuredtext.confPath": "${workspaceFolder}/docs/conf.py",
     "python.linting.pylintEnabled": true
 }
