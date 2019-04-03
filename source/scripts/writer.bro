@@ -1,6 +1,6 @@
-@load base/utils/files
-@load base/utils/json
-@load base/utils/paths
+@load ./vendor/files
+@load ./vendor/json
+@load ./vendor/paths
 # @load misc/dump-events
 
 module Reass;
