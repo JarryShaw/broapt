@@ -10,8 +10,6 @@ export {
     const log_prefix: string = "logs" &redef;
     ## Path to store reassembled payloads
     const pld_prefix: string = "contents" &redef;
-    ## Path to C/C++ TCP reassembly implementation executable
-    const exec_path: string = "build/reass" &redef;
 
     ## Record TCP content from originator-side
     const contents_orig: bool = T &redef;
@@ -178,8 +176,8 @@ event tcp_packet(c: connection, is_orig: bool, flags: string,
 }
 
 event subprocess(name: string, line: string) {
-    local args: string = fmt("for file in $(ls %s 2>/dev/null); do echo '%s' >> ${file}; %s ${file} \"%s/$(basename ${file} '%s')\" || echo ${file}; done",
-                             str_shell_escape(name), line, str_shell_escape(exec_path), str_shell_escape(pld_prefix), log_suffix);
+    local args: string = fmt("for file in $(ls %s 2>/dev/null); do echo '%s' >> ${file}; done",
+                             str_shell_escape(name), line;
     system(args);
 }
 
