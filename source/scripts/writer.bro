@@ -114,111 +114,118 @@ function make_name(c: connection, ack: count &default=0): string {
     return build_path(log_prefix, name);
 }
 
-event tcp_packet(c: connection, is_orig: bool, flags: string,
-                 seq: count, ack: count, len: count, payload: string) {
-    local flag_orig: bool = contents_orig && is_orig;
-    local flag_resp: bool = contents_resp && !is_orig;
-
+event process_tcp_packet(c: connection, is_orig: bool, flags: string,
+                         seq: count, ack: count, len: count, payload: string) {
     local new_file: bool = F;
-    if ( flag_orig || flag_resp ) {
-        local uid: string = fmt("%s-%s", c$uid, is_orig ? "orig" : "resp");
-        if ( uid !in en )
-            en[uid] = set();
-        if ( uid !in ex )
-            ex[uid] = set();
-        if ( ( ( ack !in en[uid] ) && ( ack !in ex[uid] ) ) && ( len > 0 ) ) {
-            local pkt: pkt_t = [$ts=network_time(),
-                                $id=c$id,
-                                $is_orig=is_orig,
-                                $uid=c$uid,
-                                $ack=ack];
-            if ( hook predicate(payload, pkt) ) {
-                add en[uid][ack];
-                new_file = T;
-            } else
-                add ex[uid][ack];
-        }
+    local uid: string = fmt("%s-%s", c$uid, is_orig ? "orig" : "resp");
+    if ( uid !in en )
+        en[uid] = set();
+    if ( uid !in ex )
+        ex[uid] = set();
+    if ( ( ( ack !in en[uid] ) && ( ack !in ex[uid] ) ) && ( len > 0 ) ) {
+        local pkt: pkt_t = [$ts=network_time(),
+                            $id=c$id,
+                            $is_orig=is_orig,
+                            $uid=c$uid,
+                            $ack=ack];
+        if ( hook predicate(payload, pkt) ) {
+            add en[uid][ack];
+            new_file = T;
+        } else
+            add ex[uid][ack];
+    }
 
-        if ( ack in en[uid] ) {
-            local syn: bool = "S" in flags;
-            local fin: bool = "F" in flags;
-            local rst: bool = "R" in flags;
+    if ( ack in en[uid] ) {
+        local syn: bool = "S" in flags;
+        local fin: bool = "F" in flags;
+        local rst: bool = "R" in flags;
 
-            if ( syn || fin || rst || ( len > 0 ) ) {
-                local id: conn_id = is_orig ? c$id : [$orig_h=c$id$resp_h, $orig_p=c$id$resp_p,
-                                                      $resp_h=c$id$orig_h, $resp_p=c$id$orig_p];
-                local orig: endpoint = is_orig ? c$orig : c$resp;
-                local resp: endpoint = is_orig ? c$resp : c$orig;
-                local conn: connection = [$id=id,
-                                          $orig=orig,
-                                          $resp=resp,
-                                          $start_time=c$start_time,
-                                          $duration=c$duration,
-                                          $service=c$service,
-                                          $history=c$history,
-                                          $uid=c$uid];
+        if ( syn || fin || rst || ( len > 0 ) ) {
+            local id: conn_id = is_orig ? c$id : [$orig_h=c$id$resp_h, $orig_p=c$id$resp_p,
+                                                    $resp_h=c$id$orig_h, $resp_p=c$id$orig_p];
+            local orig: endpoint = is_orig ? c$orig : c$resp;
+            local resp: endpoint = is_orig ? c$resp : c$orig;
+            local conn: connection = [$id=id,
+                                        $orig=orig,
+                                        $resp=resp,
+                                        $start_time=c$start_time,
+                                        $duration=c$duration,
+                                        $service=c$service,
+                                        $history=c$history,
+                                        $uid=c$uid];
 
-                local name: string = make_name(conn, ack);
-                if ( new_file && !use_json )
-                    init_text(name);
+            local name: string = make_name(conn, ack);
+            if ( new_file && !use_json )
+                init_text(name);
 
-                local frag: context = [$ts=network_time(),
-                                       $seq=seq,
-                                       $len=len,
-                                       $fin_rst=(fin || rst),
-                                       $payload=bytestring_to_hexstr(payload)];
-                use_json ? write_json(name, frag) : write_text(name, frag);
-            }
+            local frag: context = [$ts=network_time(),
+                                    $seq=seq,
+                                    $len=len,
+                                    $fin_rst=(fin || rst),
+                                    $payload=bytestring_to_hexstr(payload)];
+            use_json ? write_json(name, frag) : write_text(name, frag);
         }
     }
 }
 
+event tcp_packet(c: connection, is_orig: bool, flags: string,
+                 seq: count, ack: count, len: count, payload: string) &priority=5 {
+    local flag_orig: bool = contents_orig && is_orig;
+    local flag_resp: bool = contents_resp && !is_orig;
+
+    if ( flag_orig || flag_resp )
+        event process_tcp_packet(c, is_orig, flags, seq, ack, len, payload);
+}
+
 event subprocess(name: string, line: string) {
-    local args: string = fmt("for file in $(ls %s 2>/dev/null); do echo '%s' >> ${file}; %s ${file} \"%s/$(basename ${file} '%s')\" || echo ${file}; done",
+    local args: string = fmt("for file in $(ls %s 2>/dev/null); do echo '%s' >> ${file}; %s ${file} \"%s/$(basename ${file} '%s')\" &; done",
                              str_shell_escape(name), line, str_shell_escape(exec_path), str_shell_escape(pld_prefix), log_suffix);
     system(args);
 }
 
-event connection_state_remove(c: connection) {
-    if ( get_port_transport_proto(c$id$orig_p) == tcp ) {
-        local name: string;
-        local line: string = fmt("#close%s%s", separator, strftime("%Y-%m-%d-%H-%M-%S", current_time()));
+event process_connection_end(c: connection) {
+    local name: string;
+    local line: string = fmt("#close%s%s", separator, strftime("%Y-%m-%d-%H-%M-%S", current_time()));
 
-        local orig: string = fmt("%s-orig", c$uid);
-        if ( ( orig in en ) || ( orig in ex ) ) {
-            if ( !use_json ) {
-                name = build_path(log_prefix, generate_extraction_filename(c$uid, c, cat("*", log_suffix)));
-                event subprocess(name, line);
-            }
-
-            delete en[orig];
-            delete ex[orig];
+    local orig: string = fmt("%s-orig", c$uid);
+    if ( ( orig in en ) || ( orig in ex ) ) {
+        if ( !use_json ) {
+            name = build_path(log_prefix, generate_extraction_filename(c$uid, c, cat("*", log_suffix)));
+            event subprocess(name, line);
         }
 
-        local resp: string = fmt("%s-resp", c$uid);
-        if ( ( resp in en ) || ( resp in ex ) ) {
-            if ( !use_json ) {
-                local conn: connection = [$id=[$orig_h=c$id$resp_h, $orig_p=c$id$resp_p,
-                                               $resp_h=c$id$orig_h, $resp_p=c$id$orig_p],
-                                          $orig=c$resp,
-                                          $resp=c$orig,
-                                          $start_time=c$start_time,
-                                          $duration=c$duration,
-                                          $service=c$service,
-                                          $history=c$history,
-                                          $uid=c$uid];
+        delete en[orig];
+        delete ex[orig];
+    }
 
-                name = build_path(log_prefix, generate_extraction_filename(c$uid, conn, cat("*", log_suffix)));
-                event subprocess(name, line);
-            }
+    local resp: string = fmt("%s-resp", c$uid);
+    if ( ( resp in en ) || ( resp in ex ) ) {
+        if ( !use_json ) {
+            local conn: connection = [$id=[$orig_h=c$id$resp_h, $orig_p=c$id$resp_p,
+                                            $resp_h=c$id$orig_h, $resp_p=c$id$orig_p],
+                                        $orig=c$resp,
+                                        $resp=c$orig,
+                                        $start_time=c$start_time,
+                                        $duration=c$duration,
+                                        $service=c$service,
+                                        $history=c$history,
+                                        $uid=c$uid];
 
-            delete en[resp];
-            delete ex[resp];
+            name = build_path(log_prefix, generate_extraction_filename(c$uid, conn, cat("*", log_suffix)));
+            event subprocess(name, line);
         }
+
+        delete en[resp];
+        delete ex[resp];
     }
 }
 
-event bro_done() {
+event connection_state_remove(c: connection) &priority=5 {
+    if ( get_port_transport_proto(c$id$orig_p) == tcp )
+        event process_connection_end(c);
+}
+
+event bro_done() &priority=5 {
     local uids: set[string];
     for ( uid in en )
         add uids[split_string1(uid, /-/)[0]];

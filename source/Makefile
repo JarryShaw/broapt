@@ -32,8 +32,12 @@ clean-contents-part:
 	find contents -iname '*.part' -print0 | xargs -0 rm -f
 
 clean-extract_files:
-	find extract_files -depth 1 -type d -print0 | xargs -0 rm -rf
-	find extract_files -depth 1 -type f -print0 | xargs -0 rm -rf
+	@if [[ $(shell uname) =~ Darwin ]]; then \
+	    find extract_files -depth 1 -type d -print0 | xargs -0 rm -rf; \
+	    find extract_files -depth 1 -type f -print0 | xargs -0 rm -rf; \
+	else \
+	    rm -rf extract_files/* ; \
+	fi
 
 clean-logs: clean-logs-local clean-logs-folder
 

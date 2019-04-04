@@ -29,7 +29,8 @@
     - `scripts/helpers/buffer.bro` -- `buffer` for TCP reassembly (from PyPCAPKit, c.f. `pcapkit.reassembly.tcp.TCP_Reassembly._buffer`)
     - `scripts/helpers/bytearray.bro` -- `bytearray` for TCP reassembly (from Python, c.f. `builtins.bytearray`)
     - `scripts/helpers/packet.bro` -- `packet` for TCP reassembly (from PyPCAPKit, c.f. `pcapkit.reassembly.tcp.TCP_Reassembly.datagram[...]`)
-  - `scripts/plugins` -- Bro hook plugins
+  - `scripts/plugins` -- Bro protocol plugins
+  - `scripts/hooks` -- Bro protocol hooks
 
 ### Ignored files
 

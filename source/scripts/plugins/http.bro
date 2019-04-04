@@ -108,11 +108,6 @@ function is_http(s: string, pkt: pkt_t): bool {
     return T;
 }
 
-hook Reass::predicate(s: string, pkt: pkt_t) {
-    if ( !is_http(s, pkt) )
-        break;
-}
-
 event bro_init() &priority=5 {
     # Specify the "log_http" event here in order for Bro to raise it.
     Log::create_stream(Reass::LOG_HTTP, [$columns=log_t, $ev=Reass::log_http, $path="reass_http"]);

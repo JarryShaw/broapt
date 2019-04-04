@@ -113,11 +113,6 @@ function is_ftp(s: string, pkt: pkt_t): bool {
     return T;
 }
 
-hook Reass::predicate(s: string, pkt: pkt_t) {
-    if ( !is_ftp(s, pkt) )
-        break;
-}
-
 event connection_state_remove(c: connection) {
     delete ftp_data[c$uid];
 }
