@@ -177,7 +177,7 @@ event tcp_packet(c: connection, is_orig: bool, flags: string,
 
 event subprocess(name: string, line: string) {
     local args: string = fmt("for file in $(ls %s 2>/dev/null); do echo '%s' >> ${file}; done",
-                             str_shell_escape(name), line;
+                             str_shell_escape(name), line);
     system(args);
 }
 
