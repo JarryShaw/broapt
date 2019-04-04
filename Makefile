@@ -44,6 +44,7 @@ build-broker:
 	cd build && $(MAKE) broker
 
 docker-build: requirements-download
+	cd source && $(MAKE) clean
 	sed -i "" "s/LABEL version.*/LABEL version=$(shell date +%Y.%m.%d)/" Dockerfile
 	docker build --rm --tag broapt .
 	$(MAKE) docker-prune

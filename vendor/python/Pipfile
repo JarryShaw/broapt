@@ -4,10 +4,12 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+f2format = "*"
 
 [packages]
 pypcapkit = {extras = ["dpkt"],version = ">=0.13.3.post2"}
 python-magic = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.5"

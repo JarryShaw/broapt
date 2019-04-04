@@ -31,3 +31,8 @@ vendor/
 *.egg
 *.whl
 *.tar.gz
+
+# misc folders
+archive
+build
+docker

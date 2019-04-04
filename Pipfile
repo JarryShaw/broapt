@@ -10,10 +10,9 @@ pylint = "*"
 
 [packages]
 bro-pkg = "*"
-dpkt = "*"
-pypcapkit = ">=0.13.3.post2"
 python-magic = "*"
 pandas = "*"
+pypcapkit = {extras = ["dpkt"],version = ">=0.13.3.post2"}
 
 [requires]
 python_version = "3.7"

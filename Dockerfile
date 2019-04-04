@@ -54,6 +54,14 @@ RUN python3 -m pip install --no-deps --cache-dir=/tmp/pip \
  && python3 -m pip install --no-deps --cache-dir=/tmp/pip \
         /tmp/python/*
 
+# copy source
+COPY source /source
+RUN python3 -m f2format \
+        --no-archive \
+        --encoding='UTF-8' /source \
+ && cd source \
+ && make build
+
 # cleanup process
 RUN rm -rf \
         ## apt repository lists
@@ -64,6 +72,9 @@ RUN rm -rf \
         ## Python dependencies
         /tmp/python \
         /tmp/pip \
+ && python3 -m pip uninstall -y \
+        f2format \
+        typed-ast \
  &&  apt-get remove -y \
         wget \
         ## Bro build dependencies

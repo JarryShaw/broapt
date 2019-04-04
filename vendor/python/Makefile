@@ -9,7 +9,11 @@ init:
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 	# create pipenv
 	pipenv --python 3.5
-	pipenv install "pypcapkit[DPKT]>=0.13.3.post2" python-magic
+	pipenv install \
+	    "pypcapkit[DPKT]>=0.13.3.post2" \
+	    python-magic \
+	    pandas
+	pipenv install f2format --dev
 
 .ONESHELL:
 update:

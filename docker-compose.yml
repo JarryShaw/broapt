@@ -10,6 +10,4 @@ services:
     image: broapt
     volumes:
       - ./sample:/sample
-      - ./source:/source
       - ./test:/test
-      - ./vendor/file-extraction:/file-extraction
