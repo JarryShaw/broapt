@@ -97,9 +97,11 @@ def process_contents(entry):
         mime = magic.from_buffer(data, mime=True)
         os.makedirs(os.path.join('extract_files', mime), exist_ok=True)
 
-        df = LOG_HTTP.context
-        temp = df[df['pkt.path'] == os.path.splitext(entry.name)[0]]['filename'].item()
-        filename = temp
+        try:
+            df = LOG_HTTP.context
+            filename = df[df['pkt.path'] == os.path.splitext(entry.name)[0]]['filename'].item()
+        except ValueError:
+            filename = None
 
         if filename is None:
             ext = mimetypes.guess_extension(mime) or '.dat'
