@@ -116,7 +116,10 @@ def process_logs(entry):
         return
 
     dest = os.path.join('contents', basename)
-    subprocess.check_call([os.path.join(ROOT, 'build/reass'), entry.path, dest])
+    try:
+        subprocess.check_call([os.path.join(ROOT, 'build/reass'), entry.path, dest])
+    except subprocess.CalledProcessError:
+        print(entry.name, file=sys.stderr)
 
 
 def main():
