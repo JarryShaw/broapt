@@ -6,6 +6,7 @@ import datetime
 import ipaddress
 import json
 import re
+import urllib.parse
 import sys
 
 import pandas
@@ -14,7 +15,7 @@ import pcapkit
 
 def parse_text(file, line):
     temp = line.strip().split(' ', maxsplit=1)[1]
-    separator = ast.literal_eval(f'b{temp!r}'.replace('\\\\x', '\\x')).decode()
+    separator = urllib.parse.unquote(temp.replace('\\x', '%'))
 
     set_separator = file.readline().strip().split(separator)[1]
     set_parser = lambda s, t: set(t(e) for e in s.split(set_separator))
@@ -28,7 +29,8 @@ def parse_text(file, line):
             return str()
         if s == unset_field:
             return None
-        return ast.literal_eval(f'b{s!r}'.replace('\\\\x', '\\x')).decode()
+        b = ast.literal_eval(f'b{s!r}'.replace('\\\\x', '\\x'))
+        return pcapkit.protocols.Protocol.decode(b)
 
     def int_parser(s):
         if s == unset_field:
