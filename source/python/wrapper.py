@@ -8,6 +8,7 @@ import os
 import pathlib
 import subprocess
 import sys
+import time
 
 import magic
 import pandas
@@ -127,26 +128,37 @@ def process_logs(entry):
 
 def main():
     for file in sorted(sys.argv[1:]):
+        print(f'Working on PCAP: {file!r}')
+
+        start = time.time()
         subprocess.check_call(['bro', '-br', file, os.path.join(ROOT, 'scripts/hooks/http.bro')])
+        end = time.time()
+        print(f'Bro processing: {end-start} seconds')
 
         entries = (pcapkit.corekit.Info(
             path=entry.path,
             name=entry.name,
         ) for entry in os.scandir('logs') if entry.is_file)
+        start = time.time()
         if CPU_CNT > 1:
             multiprocessing.Pool(processes=CPU_CNT).map(process_logs, sorted(entries, key=lambda info: info.name))
         else:
             list(map(process_logs, sorted(entries, key=lambda info: info.name)))
+        end = time.time()
+        print(f'C/C++ reassembling: {end-start} seconds')
 
         update_log()
         entries = (pcapkit.corekit.Info(
             path=entry.path,
             name=entry.name,
         ) for entry in os.scandir('contents') if entry.is_file)
+        start = time.time()
         if CPU_CNT > 1:
             multiprocessing.Pool(processes=CPU_CNT).map(process_contents, sorted(entries, key=lambda info: info.name))
         else:
             list(map(process_contents, sorted(entries, key=lambda info: info.name)))
+        end = time.time()
+        print(f'Python analysing: {end-start} seconds')
 
 
 if __name__ == '__main__':
