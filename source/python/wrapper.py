@@ -105,9 +105,10 @@ def process_contents(entry):
 
         if filename is None:
             ext = mimetypes.guess_extension(mime) or '.dat'
-            filename = '%s%s' % (os.path.splitext(entry.name)[0], ext)
+            filename = f'{os.path.splitext(entry.name)[0]}{ext}'
 
-        with open(os.path.join('extract_files', mime, report.unquote(filename)), 'wb') as file:
+        dest = report.unquote(filename).replace(os.path.sep, ':')
+        with open(os.path.join('extract_files', mime, dest), 'wb') as file:
             file.write(data)
 
 
