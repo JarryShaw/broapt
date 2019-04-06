@@ -38,6 +38,10 @@ else:
 # HTTP log
 LOG_HTTP = None
 
+# redirect stderr
+LOG = open('reass_time.txt', 'wt', 1)
+sys.stderr = LOG
+
 
 def update_log():
     global LOG_HTTP
@@ -90,7 +94,7 @@ def update_log():
 def process_contents(entry):
     with open(entry.path, 'rb') as file:
         report = pcapkit.analyse(file)
-    print(entry.name, report.alias)
+    # print(entry.name, report.alias)
 
     if isinstance(report, pcapkit.HTTP) and report.info.receipt == 'response':
         data = report.info.raw.body
@@ -106,8 +110,15 @@ def process_contents(entry):
         except ValueError:
             filename = None
 
+        info = magic.from_buffer(data)
+       	with open('extract_files.log', 'a') as file:
+       	    file.write(f'{entry.name}\t{filename or "-"}\t{mime}\t{info}{os.linesep}')
+
         if filename is None:
-            ext = mimetypes.guess_extension(mime) or '.dat'
+            if mime == 'application/octet-stream':
+                ext = '.dat'
+            else:
+                ext = mimetypes.guess_extension(mime, strict=False) or '.dat'
             filename = f'{os.path.splitext(entry.name)[0]}{ext}'
 
         dest = report.unquote(filename).replace(os.path.sep, ':')
@@ -133,11 +144,19 @@ def main():
     for arg in sys.argv[1:]:
         if os.path.isdir(arg):
             file_list.extend(entry.path for entry in os.scandir(arg)
-                             if entry.is_file and magic.from_file(entry.path, mime=True) == 'application/vnd.tcpdump.pcap')  # pylint: disable=line-too-long
-        elif os.path.isfile(arg) and (magic.from_file(arg, mime=True) == 'application/vnd.tcpdump.pcap'):
+                             if entry.is_file and ('pcap' in magic.from_file(entry.path)))
+        elif os.path.isfile(arg) and ('pcap' in magic.from_file(arg)):
             file_list.append(arg)
         else:
             warnings.warn(f'invalid path: {arg!r}', UserWarning)
+
+    with open('extract_files.log', 'w') as file:
+        file.write(f'#separator \\x09{os.linesep}')
+        file.write(f'#set_separator\x09,{os.linesep}')
+        file.write(f'#empty_field\x09(empty){os.linesep}')
+        file.write(f'#unset_field\x09-{os.linesep}')
+        file.write(f'#path\x09extract_files{os.linesep}')
+        file.write(f'#open\x09{time.strftime("%Y-%m-%d-%H-%M-%S")}{os.linesep}')
 
     for file in sorted(file_list):
         print(f'Working on PCAP: {file!r}', file=sys.stderr)
@@ -179,6 +198,10 @@ def main():
         shutil.rmtree('contents')
         os.makedirs('logs', exist_ok=True)
         os.makedirs('contents', exist_ok=True)
+
+    with open('extract_files.log', 'a') as file:
+        file.write(f'#close\x09{time.strftime("%Y-%m-%d-%H-%M-%S")}{os.linesep}')
+    LOG.close()
 
 
 if __name__ == '__main__':
