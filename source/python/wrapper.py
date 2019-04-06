@@ -6,9 +6,11 @@ import mimetypes
 import multiprocessing
 import os
 import pathlib
+import shutil
 import subprocess
 import sys
 import time
+import warnings
 
 import magic
 import pandas
@@ -127,13 +129,26 @@ def process_logs(entry):
 
 
 def main():
-    for file in sorted(sys.argv[1:]):
-        print(f'Working on PCAP: {file!r}')
+    file_list = list()
+    for arg in sys.argv[1:]:
+        if os.path.isdir(arg):
+            file_list.extend(entry.path for entry in os.scandir(arg)
+                             if entry.is_file and magic.from_file(entry.path, mime=True) == 'application/vnd.tcpdump.pcap')  # pylint: disable=line-too-long
+        elif os.path.isfile(arg) and (magic.from_file(arg, mime=True) == 'application/vnd.tcpdump.pcap'):
+            file_list.append(arg)
+        else:
+            warnings.warn(f'invalid path: {arg!r}', UserWarning)
+
+    for file in sorted(file_list):
+        print(f'Working on PCAP: {file!r}', file=sys.stderr)
 
         start = time.time()
-        subprocess.check_call(['bro', '-br', file, os.path.join(ROOT, 'scripts/hooks/http.bro')])
+        try:
+            subprocess.check_call(['bro', '-br', file, os.path.join(ROOT, 'scripts/hooks/http.bro')])
+        except subprocess.CalledProcessError:
+            print(f'Failed on PCAP: {file!r}', file=sys.stderr)
         end = time.time()
-        print(f'Bro processing: {end-start} seconds')
+        print(f'Bro processing: {end-start} seconds', file=sys.stderr)
 
         entries = (pcapkit.corekit.Info(
             path=entry.path,
@@ -145,7 +160,7 @@ def main():
         else:
             list(map(process_logs, sorted(entries, key=lambda info: info.name)))
         end = time.time()
-        print(f'C/C++ reassembling: {end-start} seconds')
+        print(f'C/C++ reassembling: {end-start} seconds', file=sys.stderr)
 
         update_log()
         entries = (pcapkit.corekit.Info(
@@ -158,7 +173,12 @@ def main():
         else:
             list(map(process_contents, sorted(entries, key=lambda info: info.name)))
         end = time.time()
-        print(f'Python analysing: {end-start} seconds')
+        print(f'Python analysing: {end-start} seconds', file=sys.stderr)
+
+        shutil.rmtree('logs')
+        shutil.rmtree('contents')
+        os.makedirs('logs', exist_ok=True)
+        os.makedirs('contents', exist_ok=True)
 
 
 if __name__ == '__main__':
