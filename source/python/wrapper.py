@@ -40,7 +40,6 @@ LOG_HTTP = None
 
 # redirect stderr
 LOG = open('reass_time.txt', 'wt', 1)
-sys.stderr = LOG
 
 
 def update_log():
@@ -159,7 +158,7 @@ def main():
         file.write(f'#open\x09{time.strftime("%Y-%m-%d-%H-%M-%S")}{os.linesep}')
 
     for file in sorted(file_list):
-        print(f'Working on PCAP: {file!r}', file=sys.stderr)
+        print(f'Working on PCAP: {file!r}', file=LOG)
 
         start = time.time()
         try:
@@ -167,8 +166,7 @@ def main():
         except subprocess.CalledProcessError:
             print(f'Failed on PCAP: {file!r}', file=sys.stderr)
         end = time.time()
-        print(f'Bro processing: {end-start} seconds', file=sys.stderr)
-        shutil.move('reass_http.log', f'/sample/reass_http-{file}.log')
+        print(f'Bro processing: {end-start} seconds', file=LOG)
 
         entries = (pcapkit.corekit.Info(
             path=entry.path,
@@ -180,7 +178,7 @@ def main():
         else:
             list(map(process_logs, sorted(entries, key=lambda info: info.name)))
         end = time.time()
-        print(f'C/C++ reassembling: {end-start} seconds', file=sys.stderr)
+        print(f'C/C++ reassembling: {end-start} seconds', file=LOG)
 
         update_log()
         entries = (pcapkit.corekit.Info(
@@ -193,10 +191,11 @@ def main():
         else:
             list(map(process_contents, sorted(entries, key=lambda info: info.name)))
         end = time.time()
-        print(f'Python analysing: {end-start} seconds', file=sys.stderr)
+        print(f'Python analysing: {end-start} seconds', file=LOG)
 
-        shutil.move('logs', f'/sample/logs-{file}')
-        shutil.move('contents', f'/sample/contents-{file}')
+        shutil.move('reass_http.log', f'/test/reass_http-{os.path.split(file)[1]}.log')
+        shutil.move('logs', f'/test/logs-{os.path.split(file)[1]}')
+        shutil.move('contents', f'/test/contents-{os.path.split(file)[1]}')
         os.makedirs('logs', exist_ok=True)
         os.makedirs('contents', exist_ok=True)
 
