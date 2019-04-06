@@ -16,8 +16,9 @@ mv extract_files.log /sample/extract_files.1.log
 mv reass_http.log /sample/reass_http.1.log
 mv reass_time.txt /sample/test.1.log
 
+mv extract_files /sample/extract_files
+
 # do not quit
 while true; do
     sleep 5m
 done
-

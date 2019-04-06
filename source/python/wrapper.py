@@ -168,6 +168,7 @@ def main():
             print(f'Failed on PCAP: {file!r}', file=sys.stderr)
         end = time.time()
         print(f'Bro processing: {end-start} seconds', file=sys.stderr)
+        shutil.move('reass_http.log', f'/sample/reass_http-{file}.log')
 
         entries = (pcapkit.corekit.Info(
             path=entry.path,
@@ -194,8 +195,8 @@ def main():
         end = time.time()
         print(f'Python analysing: {end-start} seconds', file=sys.stderr)
 
-        shutil.rmtree('logs')
-        shutil.rmtree('contents')
+        shutil.move('logs', f'/sample/logs-{file}')
+        shutil.move('contents', f'/sample/contents-{file}')
         os.makedirs('logs', exist_ok=True)
         os.makedirs('contents', exist_ok=True)
 

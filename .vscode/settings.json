@@ -5,6 +5,7 @@
         "bufid",
         "emsp",
         "iterrows",
+        "linesep",
         "nofile",
         "numpy",
         "r'filename",
