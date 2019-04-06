@@ -6,7 +6,6 @@ import mimetypes
 import multiprocessing
 import os
 import pathlib
-import shutil
 import subprocess
 import sys
 import time
@@ -193,11 +192,11 @@ def main():
         end = time.time()
         print(f'Python analysing: {end-start} seconds', file=LOG)
 
-        shutil.move('reass_http.log', f'/test/reass_http-{os.path.split(file)[1]}.log')
-        shutil.move('logs', f'/test/logs-{os.path.split(file)[1]}')
-        shutil.move('contents', f'/test/contents-{os.path.split(file)[1]}')
-        os.makedirs('logs', exist_ok=True)
+        subprocess.run(['mv', '-f', 'reass_http.log', f'/test/reass_http-{os.path.split(file)[1]}.log'])
+        subprocess.run(['mv', '-f', 'contents', f'/test/contents-{os.path.split(file)[1]}'])
+        subprocess.run(['mv', '-f', 'logs', f'/test/logs-{os.path.split(file)[1]}'])
         os.makedirs('contents', exist_ok=True)
+        os.makedirs('logs', exist_ok=True)
 
     with open('extract_files.log', 'a') as file:
         file.write(f'#close\x09{time.strftime("%Y-%m-%d-%H-%M-%S")}{os.linesep}')
