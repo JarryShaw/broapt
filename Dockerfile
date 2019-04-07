@@ -58,7 +58,8 @@ RUN python3 -m pip install --no-deps --cache-dir=/tmp/pip \
 COPY source /source
 RUN python3 -m f2format \
         --no-archive \
-        --encoding='UTF-8' /source \
+        --encoding='UTF-8' \
+        --python='3.7' /source \
  && cd source \
  && make build
 

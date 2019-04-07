@@ -142,7 +142,7 @@ def main():
     for arg in sys.argv[1:]:
         if os.path.isdir(arg):
             file_list.extend(entry.path for entry in os.scandir(arg)
-                             if entry.is_file and ('pcap' in magic.from_file(entry.path)))
+                             if entry.is_file() and ('pcap' in magic.from_file(entry.path)))
         elif os.path.isfile(arg) and ('pcap' in magic.from_file(arg)):
             file_list.append(arg)
         else:
@@ -170,7 +170,7 @@ def main():
         entries = (pcapkit.corekit.Info(
             path=entry.path,
             name=entry.name,
-        ) for entry in os.scandir('logs') if entry.is_file)
+        ) for entry in os.scandir('logs') if entry.is_file())
         start = time.time()
         if CPU_CNT > 1:
             multiprocessing.Pool(processes=CPU_CNT).map(process_logs, sorted(entries, key=lambda info: info.name))
@@ -183,7 +183,7 @@ def main():
         entries = (pcapkit.corekit.Info(
             path=entry.path,
             name=entry.name,
-        ) for entry in os.scandir('contents') if entry.is_file)
+        ) for entry in os.scandir('contents') if entry.is_file())
         start = time.time()
         if CPU_CNT > 1:
             multiprocessing.Pool(processes=CPU_CNT).map(process_contents, sorted(entries, key=lambda info: info.name))
@@ -195,6 +195,7 @@ def main():
         subprocess.run(['mv', '-f', 'reass_http.log', f'/test/reass_http-{os.path.split(file)[1]}.log'])
         subprocess.run(['mv', '-f', 'contents', f'/test/contents-{os.path.split(file)[1]}'])
         subprocess.run(['mv', '-f', 'logs', f'/test/logs-{os.path.split(file)[1]}'])
+        subprocess.run(['rm', '-rf', 'reass_http.log', 'contents', 'logs'])
         os.makedirs('contents', exist_ok=True)
         os.makedirs('logs', exist_ok=True)
 
