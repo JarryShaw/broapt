@@ -109,8 +109,8 @@ def process_contents(entry):
             filename = None
 
         info = magic.from_buffer(data)
-       	with open('extract_files.log', 'a') as file:
-       	    file.write(f'{entry.name}\t{filename or "-"}\t{mime}\t{info}{os.linesep}')
+        with open('extract_files.log', 'a') as file:
+            file.write(f'{entry.name}\t{filename or "-"}\t{mime}\t{info}{os.linesep}')
 
         if filename is None:
             if mime == 'application/octet-stream':

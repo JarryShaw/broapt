@@ -5,6 +5,9 @@ set -x
 # change CWD
 cd /source
 
+# set environ
+export PCAPKIT_DEVMODE=1
+
 # run main scripts
 time python3 python/wrapper.py /sample/http-*.pcap
 mv -f reass_time.txt /test/test.0.log
