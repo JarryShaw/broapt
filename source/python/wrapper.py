@@ -138,12 +138,24 @@ def process_logs(entry):
 
 
 def main():
+    def is_pcap(file):
+        mime = magic.from_file(file, mime=True)
+        if mime == 'application/vnd.tcpdump.pcap':
+            return True
+        if mime == 'application/octet-stream':
+            info = magic.from_file(file).casefold()
+            if 'pcap' in info:
+                return True
+            if 'capture' in info:
+                return True
+        return False
+
     file_list = list()
     for arg in sys.argv[1:]:
         if os.path.isdir(arg):
             file_list.extend(entry.path for entry in os.scandir(arg)
-                             if entry.is_file() and ('pcap' in magic.from_file(entry.path)))
-        elif os.path.isfile(arg) and ('pcap' in magic.from_file(arg)):
+                             if entry.is_file() and is_pcap(entry.path))
+        elif os.path.isfile(arg) and is_pcap(arg):
             file_list.append(arg)
         else:
             warnings.warn(f'invalid path: {arg!r}', UserWarning)
@@ -192,9 +204,10 @@ def main():
         end = time.time()
         print(f'Python analysing: {end-start} seconds', file=LOG)
 
-        subprocess.run(['mv', '-f', 'reass_http.log', f'/test/reass_http-{os.path.split(file)[1]}.log'])
-        subprocess.run(['mv', '-f', 'contents', f'/test/contents-{os.path.split(file)[1]}'])
-        subprocess.run(['mv', '-f', 'logs', f'/test/logs-{os.path.split(file)[1]}'])
+        os.makedirs(f'/test/docker/{os.path.split(file)[1]}', exist_ok=True)
+        subprocess.run(['mv', '-f', 'reass_http.log', f'/test/docker/{os.path.split(file)[1]}/'])
+        subprocess.run(['mv', '-f', 'contents', f'/test/docker/{os.path.split(file)[1]}/'])
+        subprocess.run(['mv', '-f', 'logs', f'/test/docker/{os.path.split(file)[1]}/'])
         subprocess.run(['rm', '-rf', 'reass_http.log', 'contents', 'logs'])
         os.makedirs('contents', exist_ok=True)
         os.makedirs('logs', exist_ok=True)
