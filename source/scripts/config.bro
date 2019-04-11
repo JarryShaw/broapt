@@ -1,18 +1,11 @@
 # All configuration must occur within this file.
 # All other files may be overwritten during upgrade
-module Reassm;
+module FileExtraction;
 
-# Configure where reassembled files will be stored
-redef path = "contents";
+# Configure where extracted files will be stored
+redef path = "./dumps/";
 
-# Configure what prefix will be used for reassembled files
-redef reassembly_prefix = "";
-
-# Configure if reassemble TCP content from originator-side
-redef contents_orig = T;
-
-# Configure if reassemble TCP content from responder-side
-redef contents_resp = T;
-
-# Configure if change log files to JSON format.
-redef use_json = F;
+# Configure 'plugins' that can be loaded
+# these are shortcut modules to specify common
+# file extraction policies. Example:
+@load ./hooks/extract-all-files
