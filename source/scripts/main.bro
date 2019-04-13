@@ -12,10 +12,6 @@ export {
     global ignore: hook(f: fa_file, meta: fa_metadata);
 }
 
-@if ( path != FileExtract::prefix )
-    redef FileExtract::prefix = path;
-@endif
-
 event file_sniff(f: fa_file, meta: fa_metadata) {
     if ( !hook FileExtraction::ignore(f, meta) )
         return;
