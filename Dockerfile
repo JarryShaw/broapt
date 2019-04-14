@@ -1,6 +1,6 @@
 # basic info
 FROM library/ubuntu:16.04
-LABEL version=2019.04.04
+LABEL version=2019.04.14
 
 # set up environment variables
 ENV LANG "C.UTF-8"
@@ -12,34 +12,24 @@ ENV PYTHONPATH="/usr/lib/python3.5/site-packages"
 # install, Bro, Python 3 & all requirements
 RUN apt-get update \
  && apt-get upgrade -y \
- && apt-get install -y \
-        wget \
+ && apt-get install -y --no-install-recommends \
+        make \
         ## python3 is actually dependency of the latters
         ## but we keep it here as a good remainder
         python3 \
         python3-magic \
         python3-pip \
-        ## prerequisites for building Bro
+        ## prerequisites for installing Bro
         ## from https://docs.zeek.org/en/stable/install/install.html#prerequisites
-        cmake \
-        make \
-        gcc \
-        g++ \
-        flex \
-        bison \
         libpcap-dev \
         libssl-dev \
         python3-dev \
-        swig \
         zlib1g-dev
 
-# build Bro, Broker & its Python binding
-RUN wget -nv https://www.zeek.org/downloads/bro-2.6.1.tar.gz -O /tmp/bro-2.6.1.tar.gz
-RUN tar -xzf /tmp/bro-2.6.1.tar.gz \
- && cd bro-2.6.1 \
- && ./configure \
- && make \
- && make install
+# install Bro
+COPY vendor/archive/bro-2.6.1.ubuntu.16.04.tar.gz /tmp/bro.tar.gz
+RUN tar -xvzf /tmp/bro.tar.gz \
+        -C /usr/local
 
 # install Python packages & dependencies
 COPY vendor/python/download /tmp/python
@@ -59,33 +49,21 @@ COPY source /source
 RUN python3 -m f2format \
         --no-archive \
         --encoding='UTF-8' \
-        --python='3.7' /source \
- && cd source \
- && make build
+        --python='3.7' /source
 
 # cleanup process
 RUN rm -rf \
         ## apt repository lists
         /var/lib/apt/lists/* \
-        ## Bro build & archive
-        /bro-2.6.1 \
-        /tmp/bro-2.6.1.tar.gz \
+        ## Bro archive
+        /tmp/bro.tar.gz \
         ## Python dependencies
         /tmp/python \
         /tmp/pip \
  && python3 -m pip uninstall -y \
         f2format \
-        typed-ast \
- &&  apt-get remove -y \
-        wget \
-        ## Bro build dependencies
-        cmake \
-        make \
-        gcc \
-        g++ \
-        flex \
-        bison \
-        swig \
+        parso \
+        tbtrim \
  && apt-get autoremove -y \
  && apt-get autoclean \
  && apt-get clean

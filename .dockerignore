@@ -24,6 +24,7 @@ extract_files/
 # submodules
 gitlab/
 vendor/
+!vendor/archive
 !vendor/python
 
 # misc files
