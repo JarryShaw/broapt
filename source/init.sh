@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-set -x
+set -ex
 
 cd /source
 
-python3 python /sample/*.pcap
-mv -f dumps /test/docker
+python3 python /sample/*.pcap /pcap/*.pcap
+mv -f time.txt /test/docker
 
 # do not quit
 while true; do

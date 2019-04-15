@@ -15,7 +15,7 @@ import magic
 ROOT = str(pathlib.Path(__file__).parents[1])
 
 # redirect stderr
-LOG = open('time.log', 'wt', 1)
+LOG = open('time.txt', 'wt', 1)
 
 
 def is_pcap(file):
@@ -55,7 +55,7 @@ def main():
 
         start = time.time()
         try:
-            subprocess.check_call(['time', 'bro', '-r', file,
+            subprocess.check_call(['bro', '-r', file,
                                    os.path.join(ROOT, 'scripts')])
         except subprocess.CalledProcessError:
             print(f'+ Failed on PCAP: {file!r}', file=sys.stderr)
