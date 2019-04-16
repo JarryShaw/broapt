@@ -12,7 +12,8 @@ init:
 	pipenv install \
 	    "pypcapkit[DPKT]>=0.13.3.post2" \
 	    python-magic \
-	    pandas
+	    pandas \
+	    requests-futures
 	pipenv install f2format --dev
 
 .ONESHELL:

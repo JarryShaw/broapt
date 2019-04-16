@@ -1,15 +1,17 @@
 # Python packages
 pip==19.0.3
-setuptools==40.9.0
+setuptools==41.0.0
 wheel==0.33.1
 
 # Python dependencies
 aenum==2.1.2
+certifi==2019.3.9
 chardet==3.0.4
 dictdumper==0.7.0.post2
 dpkt==1.9.2
 emoji==0.5.2
-f2format==0.5.0
+f2format==0.5.2
+idna==2.8
 numpy==1.16.2
 pandas==0.24.2
 parso==0.4.0
@@ -17,5 +19,8 @@ pypcapkit==0.13.3.post2
 python-dateutil==2.8.0
 python-magic==0.4.15
 pytz==2019.1
+requests==2.21.0
+requests-futures==0.9.9
 six==1.12.0
 tbtrim==0.2.1
+urllib3==1.24.1

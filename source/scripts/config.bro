@@ -12,4 +12,5 @@ redef path = "./dumps/";
 # Configure 'plugins' that can be loaded
 # these are shortcut modules to specify common
 # file extraction policies. Example:
-@load ./plugins/extract-all-files
+@load ./plugins/extract-pe.bro
+@load ./hooks/extract-http.bro

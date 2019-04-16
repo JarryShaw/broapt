@@ -2,7 +2,7 @@
 
 module FileExtraction;
 
-hook FileExtraction::extract(f: fa_file, meta: fa_metadata) &priority=5 {
+hook FileExtraction::extract(f: fa_file, meta: fa_metadata) &priority=15 {
     if ( f$source == "SMTP" )
         break;
 }

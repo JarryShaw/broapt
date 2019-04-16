@@ -10,6 +10,7 @@ f2format = "*"
 pypcapkit = {extras = ["dpkt"],version = ">=0.13.3.post2"}
 python-magic = "*"
 pandas = "*"
+requests-futures = "*"
 
 [requires]
 python_version = "3.5"
