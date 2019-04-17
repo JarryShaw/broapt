@@ -16,11 +16,11 @@ f2format:
 	    --python='3.7' source/python
 
 clean-dump:
-	@if [[ $(shell uname) =~ Darwin ]]; then \
-	    find source/dump -depth 1 -type d -print0 | xargs -0 rm -rf; \
-	    find source/dump -depth 1 -type f -print0 | xargs -0 rm -rf; \
+	if [[ $(shell uname) =~ Darwin ]]; then \
+	    find source/dumps -depth 1 -type d -print0 | xargs -0 rm -rf; \
+	    find source/dumps -depth 1 -type f -print0 | xargs -0 rm -rf; \
 	else \
-	    rm -rf source/dump/* ; \
+	    rm -rf source/dumps/* ; \
 	fi
 
 clean-logs: clean-logs-local

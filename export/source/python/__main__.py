@@ -44,7 +44,7 @@ TIME = '/pcap/processed_time.log'
 def print(s, file=TIME):  # pylint: disable=redefined-builtin
     with open(file, 'at', 1) as LOG:
         builtins.print(s, file=LOG)
-    builtins.print(s, file=sys.stderr)
+    builtins.print(s, file=sys.stdout)
 
 
 def is_pcap(file):
@@ -91,7 +91,7 @@ def process(file):
             print('+ Failed on PCAP: {!r}'.format(file))
         end = time.time()
         print('+ Bro processing: {} seconds'.format(end-start))
-    print(file, FILE)
+    print(file, file=FILE)
 
 
 def main_with_args():
@@ -122,7 +122,9 @@ def main_without_args():
             time.sleep(10)
         except KeyboardInterrupt:
             return 0
-        print('+ Starting another turn...')
+
+        builtins.print('+ Starting another turn...')
+        processed_file.extend(file_list)
 
 
 def main():

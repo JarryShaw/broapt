@@ -55,7 +55,7 @@ TIME = os.path.join(ROOT, 'processed_time.log')
 def print(s, file=TIME):  # pylint: disable=redefined-builtin
     with open(file, 'at', 1) as LOG:
         builtins.print(s, file=LOG)
-    builtins.print(s, file=sys.stderr)
+    builtins.print(s, file=sys.stdout)
 
 
 def is_pcap(file):
@@ -120,7 +120,8 @@ def process(file):
             response_dict = dict()
             for path, request, pe in request_list:
                 response = request.result()
-                response_dict[path] = response.json()
+                with contextlib.suppress(json.JSONDecodeError):
+                    response_dict[path] = response.json()
                 pe.close()
 
             with open(os.path.join(dest, 'vt.json'), 'w') as json_file:
@@ -130,7 +131,7 @@ def process(file):
 
         subprocess.run('mv -f *.log {}'.format(dest), shell=True)
         subprocess.run('mv -f dumps {}'.format(dest), shell=True)
-    print(file, FILE)
+    print(file, file=FILE)
 
 
 def main_with_args():
@@ -161,7 +162,9 @@ def main_without_args():
             time.sleep(10)
         except KeyboardInterrupt:
             return 0
-        print('+ Starting another turn...')
+
+        builtins.print('+ Starting another turn...')
+        processed_file.extend(file_list)
 
 
 def main():
