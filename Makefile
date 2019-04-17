@@ -1,6 +1,7 @@
 .PHONY: build commit docker docker-compose gitlab link pipenv download submodule update
 
 export PIPENV_VENV_IN_PROJECT=1
+export PIPENV_CLEAR=1
 
 build: build-bro build-broker
 commit: requirements-download gitlab-commit git-commit

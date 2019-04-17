@@ -2,6 +2,7 @@
 
 export PIPENV_VENV_IN_PROJECT=1
 export PIPENV_NO_INHERIT=1
+export PIPENV_CLEAR=1
 
 .ONESHELL:
 init:
@@ -14,7 +15,8 @@ init:
 	    python-magic \
 	    pandas \
 	    requests-futures
-	pipenv install f2format --dev
+	pipenv install --dev \
+	    f2format
 
 .ONESHELL:
 update:
