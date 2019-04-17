@@ -66,7 +66,8 @@ docker-prune:
 	docker system prune --volumes -f
 
 docker-run:
-	docker run --volume sample:/sample \
+	docker run --env-file .env \
+	           --volume sample:/sample \
 	           --volume test:/test \
 	           --volume vendor:/vendor -it broapt
 

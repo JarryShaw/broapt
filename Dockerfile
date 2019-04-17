@@ -56,10 +56,6 @@ RUN rm -rf \
         ## Python dependencies
         /tmp/python \
         /tmp/pip \
- && python3 -m pip uninstall -y \
-        f2format \
-        parso \
-        tbtrim \
  && apt-get autoremove -y \
  && apt-get autoclean \
  && apt-get clean

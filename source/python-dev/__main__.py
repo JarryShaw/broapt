@@ -36,7 +36,10 @@ LOG = open('time.txt', 'wt', 1)
 
 # VT API URL
 URL = 'https://www.virustotal.com/vtapi/v2/file/scan'
-PARAMS = dict(apikey=os.environ['VT_API'])
+API = os.getenv('VT_API')
+if API is None:
+    raise KeyError('[VT_API] VirusTotal API key not set')
+PARAMS = dict(apikey=API)
 
 
 def is_pcap(file):
@@ -82,25 +85,29 @@ def process(file):
         end = time.time()
         print(f'+ Bro processing: {end-start} seconds', file=LOG)
 
-        pe_list = sorted(entry.path for entry in os.scandir(os.path.join('dumps', 'application/x-dosexec')))
-        session = requests_futures.sessions.FuturesSession(executor=concurrent.futures.ThreadPoolExecutor(max_workers=CPU_CNT))  # pylint: disable=line-too-long
-
-        request_list = list()
-        for path in pe_list:
-            with open(path, 'rb') as pe:
-                FILES = dict(file=(path, pe))
-                request_list.append((path, session.post(URL, files=FILES, params=PARAMS)))
-
-        response_dict = dict()
-        for path, request in request_list:
-            response = request.result()
-            response_dict[path] = response.json()
-
         dest = os.path.join('/test/docker', os.path.split(file)[1])
         os.makedirs(dest, exist_ok=True)
 
-        with open(os.path.join(dest, 'vt.json'), 'w') as json_file:
-            json.dump(response_dict, json_file)
+        pe_path = os.path.join('dumps', 'application/x-dosexec')
+        if os.path.isdir(pe_path):
+            pe_list = sorted(entry.path for entry in os.scandir(pe_path))
+            session = requests_futures.sessions.FuturesSession(executor=concurrent.futures.ThreadPoolExecutor(max_workers=CPU_CNT))  # pylint: disable=line-too-long
+
+            request_list = list()
+            for path in pe_list:
+                with open(path, 'rb') as pe:
+                    FILES = dict(file=(path, pe))
+                    request_list.append((path, session.post(URL, files=FILES, params=PARAMS)))
+
+            response_dict = dict()
+            for path, request in request_list:
+                response = request.result()
+                response_dict[path] = response.json()
+
+            with open(os.path.join(dest, 'vt.json'), 'w') as json_file:
+                json.dump(response_dict, json_file)
+        else:
+            warnings.warn(f'no pe extracted from {file!r}', UserWarning)
 
         subprocess.run(f'mv -f *.log {dest}', shell=True)
         subprocess.run(f'mv -f dumps {dest}', shell=True)
