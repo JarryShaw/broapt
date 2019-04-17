@@ -7,7 +7,6 @@ export {
         ["application/java-archive"] = "jar",
         ["application/javascript"] = "js",
         ["application/msword"] = "doc",
-        ["application/ocsp-response"] = "crt",
         ["application/pdf"] = "pdf",
         ["application/pkcs7-signature"] = "p7",
         ["application/vnd.font-fontforge-sfd"] = "sfd",

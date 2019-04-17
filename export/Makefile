@@ -16,11 +16,12 @@ f2format:
 	    --python='3.7' source/python
 
 clean-dump:
-	if [[ $(shell uname) =~ Darwin ]]; then \
+	if [ -d /home/traffic/log/extract ]; then \
+	    rm -rf /home/traffic/log/extract; \
+	    mkdir -p /home/traffic/log/extract; \
+	else \
 	    find source/dumps -depth 1 -type d -print0 | xargs -0 rm -rf; \
 	    find source/dumps -depth 1 -type f -print0 | xargs -0 rm -rf; \
-	else \
-	    rm -rf source/dumps/* ; \
 	fi
 
 clean-logs: clean-logs-local clean-logs-processed
@@ -29,9 +30,15 @@ clean-logs-local:
 	find . -iname '*.log' -print0 | xargs -0 rm -f
 
 clean-logs-processed:
-	> ../sample/processed_file.log
-	> ../sample/processed_mime.log
-	> ../sample/processed_time.log
+	if [ -d /home/traffic/pcapfile ]; then \
+	    > /home/traffic/pcapfile/processed_file.log; \
+	    > /home/traffic/pcapfile/processed_mime.log; \
+	    > /home/traffic/pcapfile/processed_time.log; \
+	else \
+	    > ../sample/processed_file.log; \
+	    > ../sample/processed_mime.log; \
+	    > ../sample/processed_time.log; \
+	fi
 
 clean-nohup:
 	rm -f nohup.out
