@@ -32,15 +32,18 @@ else:
 # repo root path
 ROOT = str(pathlib.Path(__file__).parents[1].resolve())
 
-# redirect stderr
-LOG = open('time.txt', 'wt', 1)
-
 # VT API URL
 URL = 'https://www.virustotal.com/vtapi/v2/file/scan'
 API = os.getenv('VT_API')
 if API is None:
     raise KeyError('[VT_API] VirusTotal API key not set')
 PARAMS = dict(apikey=API)
+
+
+def log_print(s):
+    with open(os.path.join(ROOT, 'time.txt'), 'at', 1) as LOG:
+        print(s, file=LOG)
+    print(s, file=sys.stderr)
 
 
 def is_pcap(file):
@@ -75,16 +78,16 @@ def process(file):
     with tempfile.TemporaryDirectory() as tempdir:
         os.chdir(tempdir)
         os.makedirs('dumps', exist_ok=True)
-        print(f'+ Working on PCAP: {file!r}', file=LOG)
+        log_print(f'+ Working on PCAP: {file!r}')
 
         start = time.time()
         try:
             subprocess.check_call(['bro', '--readfile', file,
                                    os.path.join(ROOT, 'scripts')])
         except subprocess.CalledProcessError:
-            print(f'+ Failed on PCAP: {file!r}', file=LOG)
+            log_print(f'+ Failed on PCAP: {file!r}')
         end = time.time()
-        print(f'+ Bro processing: {end-start} seconds', file=LOG)
+        log_print(f'+ Bro processing: {end-start} seconds')
 
         dest = os.path.join('/test/docker', f'{uuid.uuid4()}-{os.path.split(file)[1]}')
         os.makedirs(dest, exist_ok=True)
@@ -96,14 +99,15 @@ def process(file):
 
             request_list = list()
             for path in pe_list:
-                with open(path, 'rb') as pe:
-                    FILES = dict(file=(path, pe))
-                    request_list.append((path, session.post(URL, files=FILES, params=PARAMS)))
+                pe = open(path, 'rb')
+                FILES = dict(file=(path, pe))
+                request_list.append((path, session.post(URL, files=FILES, params=PARAMS), pe))
 
             response_dict = dict()
-            for path, request in request_list:
+            for path, request, pe in request_list:
                 response = request.result()
                 response_dict[path] = response.json()
+                pe.close()
 
             with open(os.path.join(dest, 'vt.json'), 'w') as json_file:
                 json.dump(response_dict, json_file)
@@ -116,11 +120,11 @@ def process(file):
 
 def main():
     file_list = parse_args()
-    if CPU_CNT < 1:
+    if CPU_CNT <= 1:
         [process(file) for file in sorted(file_list)]  # pylint: disable=expression-not-assigned
     else:
         multiprocessing.Pool(CPU_CNT).map(process, sorted(file_list))
-    LOG.close()
+    return 0
 
 
 if __name__ == '__main__':
