@@ -29,7 +29,7 @@ else:
     CPU_CNT = int(cpu_count)
 
 # repo root path
-ROOT = str(pathlib.Path(__file__).parents[1])
+ROOT = str(pathlib.Path(__file__).parents[1].resolve())
 
 # redirect stderr
 LOG = open('time.txt', 'wt', 1)
