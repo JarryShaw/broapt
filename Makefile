@@ -121,6 +121,9 @@ gitlab-copy: gitlab-clean
 	    ! -iname 'venv' -depth 1 -exec cp -rf {} gitlab/xiaojiawei/build \;
 	# copy docker
 	cp -rf docker gitlab/xiaojiawei
+	# copy export
+	$(MAKE) -C export clean f2format
+	cp -rf export gitlab/xiaojiawei
 	# copy source
 	mkdir -p gitlab/xiaojiawei/source
 	find source \

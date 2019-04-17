@@ -9,8 +9,8 @@ services:
     entrypoint: ["bash", "/source/init.sh"]
     image: bro
     volumes:
-      # - /home/traffic/pcapfile:/pcap
-      - ../sample:/pcap
-      # - /home/traffic/log/extract:/dump
-      - ../source/dumps:/dump
+      - /home/traffic/pcapfile:/pcap
+      # - ../sample:/pcap
+      - /home/traffic/log/extract:/dump
+      # - ./source/dumps:/dump
     restart: "always"

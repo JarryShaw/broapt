@@ -37,8 +37,8 @@ PCAP_MGC = (b'\xa1\xb2\x3c\x4d',
             b'\x0a\x0d\x0d\x0a')
 
 # log files
-FILE = os.path.join(ROOT, 'processed_file.log')
-TIME = os.path.join(ROOT, 'processed_time.log')
+FILE = '/pcap/processed_file.log'
+TIME = '/pcap/processed_time.log'
 
 
 def print(s, file=TIME):  # pylint: disable=redefined-builtin
@@ -113,7 +113,7 @@ def main_without_args():
     # main loop
     while True:
         try:
-            file_list = sorted(filter(lambda file: file in processed_file, parse_args(['/pcap'])))
+            file_list = sorted(filter(lambda file: file not in processed_file, parse_args(['/pcap'])))
             if file_list:
                 if CPU_CNT <= 1:
                     [process(file) for file in file_list]  # pylint: disable=expression-not-assigned

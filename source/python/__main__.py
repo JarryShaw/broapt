@@ -152,7 +152,7 @@ def main_without_args():
     # main loop
     while True:
         try:
-            file_list = sorted(filter(lambda file: file in processed_file, parse_args('/pcap')))
+            file_list = sorted(filter(lambda file: file not in processed_file, parse_args('/pcap')))
             if file_list:
                 if CPU_CNT <= 1:
                     [process(file) for file in file_list]  # pylint: disable=expression-not-assigned

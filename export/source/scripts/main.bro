@@ -38,7 +38,7 @@ event file_sniff(f: fa_file, meta: fa_metadata) {
             mkdir(fmt("%s/%s", path, root));
             mkdir(fmt("%s/%s", path, mgct));
         } else
-            mgct = "";
+            mgct = ".";
 
         local name = fmt("%s/%s-%s.%s", mgct, f$source, f$id, fext);
         Files::add_analyzer(f, Files::ANALYZER_EXTRACT, [$extract_filename=name]);

@@ -6,7 +6,7 @@ module FileExtraction;
 redef mime = F;
 
 # Configure where extracted files will be stored
-redef path = "/dump";
+redef path = "./dump/";
 
 @if ( path != FileExtract::prefix )
     redef FileExtract::prefix = path;
