@@ -13,4 +13,4 @@ services:
     volumes:
       - ./sample:/sample
       - ./test:/test
-      # - /home/traffic/pcapfile:/pcap
+      - /home/traffic/pcapfile:/pcap

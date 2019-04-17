@@ -11,10 +11,11 @@ import subprocess
 import sys
 import tempfile
 import time
+import uuid
 import warnings
 
 import magic
-import requests_futures
+import requests_futures.sessions
 
 # limit on CPU
 cpu_count = os.getenv('CPU')
@@ -85,7 +86,7 @@ def process(file):
         end = time.time()
         print('+ Bro processing: {} seconds'.format(end-start), file=LOG)
 
-        dest = os.path.join('/test/docker', os.path.split(file)[1])
+        dest = os.path.join('/test/docker', '{}-{}'.format(uuid.uuid4(), os.path.split(file)[1]))
         os.makedirs(dest, exist_ok=True)
 
         pe_path = os.path.join('dumps', 'application/x-dosexec')
