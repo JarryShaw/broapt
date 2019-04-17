@@ -15,8 +15,6 @@ init:
 	    python-magic \
 	    pandas \
 	    requests-futures
-	pipenv install --dev \
-	    f2format
 
 .ONESHELL:
 update:

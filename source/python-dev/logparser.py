@@ -29,7 +29,7 @@ def parse_text(file, line):
             return str()
         if s == unset_field:
             return None
-        b = ast.literal_eval('b{!r}'.format(s).replace('\\\\x', '\\x'))
+        b = ast.literal_eval(f'b{s!r}'.replace('\\\\x', '\\x'))
         return pcapkit.protocols.Protocol.decode(b)
 
     def int_parser(s):

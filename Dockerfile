@@ -46,10 +46,6 @@ RUN python3 -m pip install --no-deps --cache-dir=/tmp/pip \
 
 # copy source
 COPY source /source
-RUN python3 -m f2format \
-        --no-archive \
-        --encoding='UTF-8' \
-        --python='3.7' /source
 
 # cleanup process
 RUN rm -rf \

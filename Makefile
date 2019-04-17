@@ -4,7 +4,7 @@ export PIPENV_VENV_IN_PROJECT=1
 export PIPENV_CLEAR=1
 
 build: build-bro build-broker
-commit: requirements-download gitlab-commit git-commit
+commit: requirements-download f2format gitlab-commit git-commit
 docker: docker-build docker-run
 docker-compose: docker-compose-daemon docker-compose-exec docker-compose-stop
 download: requirements-download
@@ -126,6 +126,7 @@ gitlab-copy: gitlab-clean
 	    ! -iname '*.log' \
 	    ! -iname '.state' \
 	    ! -iname 'contents' \
+	    ! -iname 'dumps' \
 	    ! -iname 'extract_files' -depth 1 -exec cp -rf {} gitlab/xiaojiawei/source \;
 	# copy vendor
 	mkdir -p gitlab/xiaojiawei/vendor
@@ -160,3 +161,11 @@ gitlab-submodule: gitlab-copy
 	       gitlab/xiaojiawei/vendor/pypcapkit \
 	       gitlab/xiaojiawei/vendor/zeek
 	cd gitlab/xiaojiawei/vendor && $(MAKE) all
+
+f2format:
+	rm -rf source/python
+	cp -rf source/python-dev source/python
+	pipenv run f2format \
+	    --no-archive \
+	    --encoding='UTF-8' \
+	    --python='3.7' source/python

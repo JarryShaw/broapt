@@ -63,7 +63,7 @@ def parse_args():
         elif os.path.isfile(arg) and is_pcap(arg):
             file_list.append(arg)
         else:
-            warnings.warn('invalid path: {!r}'.format(arg), UserWarning)
+            warnings.warn(f'invalid path: {arg!r}', UserWarning)
     return file_list
 
 
@@ -71,16 +71,16 @@ def process(file):
     with tempfile.TemporaryDirectory() as tempdir:
         os.chdir(tempdir)
         os.makedirs('dumps', exist_ok=True)
-        print('+ Working on PCAP: {!r}'.format(file), file=LOG)
+        print(f'+ Working on PCAP: {file!r}', file=LOG)
 
         start = time.time()
         try:
             subprocess.check_call(['bro', '--readfile', file,
                                    os.path.join(ROOT, 'scripts')])
         except subprocess.CalledProcessError:
-            print('+ Failed on PCAP: {!r}'.format(file), file=LOG)
+            print(f'+ Failed on PCAP: {file!r}', file=LOG)
         end = time.time()
-        print('+ Bro processing: {} seconds'.format(end-start), file=LOG)
+        print(f'+ Bro processing: {end-start} seconds', file=LOG)
 
         pe_list = sorted(entry.path for entry in os.scandir(os.path.join('dumps', 'application/x-dosexec')))
         session = requests_futures.sessions.FuturesSession(executor=concurrent.futures.ThreadPoolExecutor(max_workers=CPU_CNT))  # pylint: disable=line-too-long
@@ -102,8 +102,8 @@ def process(file):
         with open(os.path.join(dest, 'vt.json'), 'w') as json_file:
             json.dump(response_dict, json_file)
 
-        subprocess.run('mv -f *.log {}'.format(dest), shell=True)
-        subprocess.run('mv -f dumps {}'.format(dest), shell=True)
+        subprocess.run(f'mv -f *.log {dest}', shell=True)
+        subprocess.run(f'mv -f dumps {dest}', shell=True)
 
 
 def main():
