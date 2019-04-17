@@ -13,6 +13,8 @@ emoji==0.5.2
 idna==2.8
 numpy==1.16.2
 pandas==0.24.2
+peewee==3.9.4
+PyMySQL==0.9.3
 pypcapkit==0.13.3.post2
 python-dateutil==2.8.0
 python-magic==0.4.15

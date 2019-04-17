@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=no-member
 
+import builtins
 import concurrent.futures
 import contextlib
 import json
@@ -32,6 +33,13 @@ else:
 # repo root path
 ROOT = str(pathlib.Path(__file__).parents[1].resolve())
 
+# PCAP magic numbers
+PCAP_MGC = (b'\xa1\xb2\x3c\x4d',
+            b'\xa1\xb2\xc3\xd4',
+            b'\x4d\x3c\xb2\xa1',
+            b'\xd4\xc3\xb2\xa1',
+            b'\x0a\x0d\x0d\x0a')
+
 # VT API URL
 URL = 'https://www.virustotal.com/vtapi/v2/file/scan'
 API = os.getenv('VT_API')
@@ -39,11 +47,15 @@ if API is None:
     raise KeyError('[VT_API] VirusTotal API key not set')
 PARAMS = dict(apikey=API)
 
+# log files
+FILE = os.path.join(ROOT, 'processed_file.log')
+TIME = os.path.join(ROOT, 'processed_time.log')
 
-def log_print(s):
-    with open(os.path.join(ROOT, 'time.txt'), 'at', 1) as LOG:
-        print(s, file=LOG)
-    print(s, file=sys.stderr)
+
+def print(s, file=TIME):  # pylint: disable=redefined-builtin
+    with open(file, 'at', 1) as LOG:
+        builtins.print(s, file=LOG)
+    builtins.print(s, file=sys.stderr)
 
 
 def is_pcap(file):
@@ -57,13 +69,15 @@ def is_pcap(file):
                 return True
             if 'capture' in info:
                 return True
-        return False
+        with open(file, 'rb') as test_file:
+            magic_number = test_file.read(4)
+        return magic_number in PCAP_MGC
     return False
 
 
-def parse_args():
+def parse_args(argv):
     file_list = list()
-    for arg in sys.argv[1:]:
+    for arg in argv:
         if os.path.isdir(arg):
             file_list.extend(entry.path for entry in os.scandir(arg)
                              if entry.is_file() and is_pcap(entry.path))
@@ -78,16 +92,16 @@ def process(file):
     with tempfile.TemporaryDirectory() as tempdir:
         os.chdir(tempdir)
         os.makedirs('dumps', exist_ok=True)
-        log_print('+ Working on PCAP: {!r}'.format(file))
+        print('+ Working on PCAP: {!r}'.format(file))
 
         start = time.time()
         try:
             subprocess.check_call(['bro', '--readfile', file,
                                    os.path.join(ROOT, 'scripts')])
         except subprocess.CalledProcessError:
-            log_print('+ Failed on PCAP: {!r}'.format(file))
+            print('+ Failed on PCAP: {!r}'.format(file))
         end = time.time()
-        log_print('+ Bro processing: {} seconds'.format(end-start))
+        print('+ Bro processing: {} seconds'.format(end-start))
 
         dest = os.path.join('/test/docker', '{}-{}'.format(uuid.uuid4(), os.path.split(file)[1]))
         os.makedirs(dest, exist_ok=True)
@@ -116,15 +130,44 @@ def process(file):
 
         subprocess.run('mv -f *.log {}'.format(dest), shell=True)
         subprocess.run('mv -f dumps {}'.format(dest), shell=True)
+    print(file, FILE)
 
 
-def main():
-    file_list = parse_args()
+def main_with_args():
+    file_list = parse_args(sys.argv[1:])
     if CPU_CNT <= 1:
         [process(file) for file in sorted(file_list)]  # pylint: disable=expression-not-assigned
     else:
         multiprocessing.Pool(CPU_CNT).map(process, sorted(file_list))
     return 0
+
+
+def main_without_args():
+    # processed log
+    processed_file = list()
+    if os.path.isfile(FILE):
+        with open(FILE) as file:
+            processed_file.extend(line.strip() for line in file)
+
+    # main loop
+    while True:
+        try:
+            file_list = sorted(filter(lambda file: file in processed_file, parse_args('/pcap')))
+            if file_list:
+                if CPU_CNT <= 1:
+                    [process(file) for file in file_list]  # pylint: disable=expression-not-assigned
+                else:
+                    multiprocessing.Pool(CPU_CNT).map(process, file_list)
+            time.sleep(10)
+        except KeyboardInterrupt:
+            return 0
+        print('+ Starting another turn...')
+
+
+def main():
+    if sys.argv[1:]:
+        return main_with_args()
+    return main_without_args()
 
 
 if __name__ == '__main__':

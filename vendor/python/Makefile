@@ -9,11 +9,13 @@ init:
 	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 	# create pipenv
-	pipenv --python 3.5
+	pipenv --python 3.5 || true
 	pipenv install \
+	    pandas \
+	    peewee \
+	    PyMySQL \
 	    "pypcapkit[DPKT]>=0.13.3.post2" \
 	    python-magic \
-	    pandas \
 	    requests-futures
 
 .ONESHELL:

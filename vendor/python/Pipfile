@@ -6,9 +6,11 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+pandas = "*"
+peewee = "*"
+pymysql = "*"
 pypcapkit = {extras = ["dpkt"],version = ">=0.13.3.post2"}
 python-magic = "*"
-pandas = "*"
 requests-futures = "*"
 
 [requires]

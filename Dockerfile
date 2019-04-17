@@ -27,7 +27,7 @@ RUN apt-get update \
         zlib1g-dev
 
 # install Bro
-COPY vendor/archive//linux/bro-2.6.1.ubuntu.16.04.tar.gz /tmp/bro.tar.gz
+COPY vendor/archive/linux/bro-2.6.1.ubuntu.16.04.tar.gz /tmp/bro.tar.gz
 RUN tar -xvzf /tmp/bro.tar.gz \
         -C /usr/local
 

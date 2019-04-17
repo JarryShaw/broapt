@@ -1,0 +1,16 @@
+# docker-compose version
+version: "3"
+
+# Broapt services
+services:
+  bro:
+    build: .
+    container_name: bro
+    entrypoint: ["bash", "/source/init.sh"]
+    image: bro
+    volumes:
+      # - /home/traffic/pcapfile:/pcap
+      - ../sample:/pcap
+      # - /home/traffic/log/extract:/dump
+      - ../source/dumps:/dump
+    restart: "always"
