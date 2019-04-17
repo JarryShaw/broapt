@@ -28,7 +28,7 @@ event file_sniff(f: fa_file, meta: fa_metadata) {
                 fext = mime_to_ext[mgct];
             else {
                 fext = cat(sub(mgct, /\//, "."), ".dat");
-                system(fmt("echo '%s' >> /pcap/processed_mime.txt", mgct));
+                system(fmt("echo '%s' >> /pcap/processed_mime.log", mgct));
             }
         } else {
             mgct = "application/octet-stream";
