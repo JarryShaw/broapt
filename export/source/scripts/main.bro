@@ -23,11 +23,13 @@ event file_sniff(f: fa_file, meta: fa_metadata) {
         local fext: string;
         local mgct: string;
         if ( meta?$mime_type ) {
-            mgct  = meta$mime_type;
+            mgct = meta$mime_type;
             if ( mgct in mime_to_ext )
                 fext = mime_to_ext[mgct];
-            else
-                fext = split_string(mgct, /\//)[1];
+            else {
+                fext = cat(sub(mgct, /\//, "."), ".dat");
+                system(fmt("echo '%s' >> /pcap/processed_mime.txt", mgct));
+            }
         } else {
             mgct = "application/octet-stream";
             fext = "dat";

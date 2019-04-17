@@ -123,7 +123,7 @@ def main_without_args():
         except KeyboardInterrupt:
             return 0
 
-        builtins.print('+ Starting another turn...')
+        print('+ Starting another turn...')
         processed_file.extend(file_list)
 
 

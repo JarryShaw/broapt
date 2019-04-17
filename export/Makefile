@@ -23,10 +23,15 @@ clean-dump:
 	    rm -rf source/dumps/* ; \
 	fi
 
-clean-logs: clean-logs-local
+clean-logs: clean-logs-local clean-logs-processed
 
 clean-logs-local:
 	find . -iname '*.log' -print0 | xargs -0 rm -f
+
+clean-logs-processed:
+	> ../sample/processed_file.log
+	> ../sample/processed_mime.log
+	> ../sample/processed_time.log
 
 clean-nohup:
 	rm -f nohup.out

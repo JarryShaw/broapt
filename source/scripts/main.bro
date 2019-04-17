@@ -23,11 +23,11 @@ event file_sniff(f: fa_file, meta: fa_metadata) {
         local fext: string;
         local mgct: string;
         if ( meta?$mime_type ) {
-            mgct  = meta$mime_type;
+            mgct = meta$mime_type;
             if ( mgct in mime_to_ext )
                 fext = mime_to_ext[mgct];
             else
-                fext = split_string(mgct, /\//)[1];
+                fext = cat(sub(mgct, /\//, "."), ".dat");
         } else {
             mgct = "application/octet-stream";
             fext = "dat";
@@ -38,7 +38,7 @@ event file_sniff(f: fa_file, meta: fa_metadata) {
             mkdir(fmt("%s/%s", path, root));
             mkdir(fmt("%s/%s", path, mgct));
         } else
-            mgct = "";
+            mgct = ".";
 
         local name = fmt("%s/%s-%s.%s", mgct, f$source, f$id, fext);
         Files::add_analyzer(f, Files::ANALYZER_EXTRACT, [$extract_filename=name]);
