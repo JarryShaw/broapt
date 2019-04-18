@@ -26,8 +26,7 @@ install: init
 	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 	# install dependencies
-	# pipenv install ...
-	# pipenv install --dev ...
+	pipenv install python-magic
 
 .ONESHELL:
 update:
