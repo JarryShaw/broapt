@@ -22,12 +22,16 @@ event file_sniff(f: fa_file, meta: fa_metadata) {
     if ( !hook FileExtraction::extract(f, meta) ) {
         local fext: string;
         local mgct: string;
+
         if ( meta?$mime_type ) {
             mgct = meta$mime_type;
             if ( mgct in mime_to_ext )
                 fext = mime_to_ext[mgct];
             else {
-                fext = cat(sub(mgct, /\//, "."), ".dat");
+                if ( mime )
+                    fext = "dat";
+                else
+                    fext = cat(sub(mgct, /\//, "."), ".dat");
                 system(fmt("echo '%s' >> /pcap/processed_mime.log", mgct));
             }
         } else {

@@ -3,7 +3,7 @@
 module FileExtraction;
 
 # Configure if store extracted files by MIME types
-redef mime = F;
+redef mime = T;
 
 # Configure where extracted files will be stored
 redef path = "/dump/";

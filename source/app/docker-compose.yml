@@ -3,14 +3,12 @@ version: "3"
 
 # Broapt services
 services:
-  core:
+  app:
     build: .
-    container_name: broapt-core
+    container_name: broapt-app
     entrypoint: ["bash", "/source/init.sh"]
-    image: broapt-core
+    image: broapt-app
     volumes:
-      - /home/traffic/pcapfile:/pcap
-      # - ../../sample:/pcap
       - /home/traffic/log/extract:/dump
-      # - ../dumps:/dump
+      # - ./source/dumps:/dump
     restart: "always"

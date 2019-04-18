@@ -1,11 +1,11 @@
 .PHONY: init clean docker f2format vendor
 
 init: mkdir-dump
-clean: clean-dump clean-logs clean-state
+clean: clean-dump clean-logs
 
 docker: clean
 	sed -i "" "s/LABEL version.*/LABEL version=$(shell date +%Y.%m.%d)/" Dockerfile
-	docker build --rm --tag broapt-core .
+	docker build --rm --tag broapt-app .
 	docker system prune --volumes -f
 
 f2format:
@@ -18,11 +18,10 @@ f2format:
 
 vendor:
 	rm -rf vendor
-	mkdir -p vendor vendor/{archive,python}
-	cp -f ../../vendor/archive/linux/bro-2.6.1.ubuntu.16.04.tar.gz vendor/archive
-	$(MAKE) -C ../../vendor/python/core download
-	find ../../vendor/python/core/download -iname '*.tar.gz' -type f -exec cp -f {} vendor/python \;
-	find ../../vendor/python/core/download -iname '*.whl' -type f -exec cp -f {} vendor/python \;
+	mkdir -p vendor vendor/{modules,python}
+	$(MAKE) -C ../../vendor/python/app download
+	find ../../vendor/python/app/download -iname '*.tar.gz' -type f -exec cp -f {} vendor/python \;
+	find ../../vendor/python/app/download -iname '*.whl' -type f -exec cp -f {} vendor/python \;
 
 clean-dump:
 	if [ -d /home/traffic/log/extract ]; then \
@@ -33,12 +32,7 @@ clean-dump:
 	    find ../dumps -depth 1 -type f -print0 | xargs -0 rm -rf; \
 	fi
 
-clean-logs: clean-logs-local clean-logs-processed
-
-clean-logs-local:
-	find . -iname '*.log' -print0 | xargs -0 rm -f
-
-clean-logs-processed:
+clean-logs:
 	if [ -d /home/traffic/pcapfile ]; then \
 	    > /home/traffic/pcapfile/processed_file.log; \
 	    > /home/traffic/pcapfile/processed_mime.log; \
@@ -48,12 +42,6 @@ clean-logs-processed:
 	    > ../../sample/processed_mime.log; \
 	    > ../../sample/processed_time.log; \
 	fi
-
-clean-nohup:
-	rm -f nohup.out
-
-clean-state:
-	rm -rf source/.state
 
 mkdir-dump:
 	mkdir -p ../dump
