@@ -1,0 +1,65 @@
+# -*- coding: utf-8 -*-
+
+from __future__ import print_function
+
+import mimetypes
+import os
+import re
+import sys
+
+if sys.version_info.major > 2:
+    raw_input = input
+
+# repo root path
+ROOT = os.path.realpath(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+
+# Bro table literal
+TABLE = re.compile(r'\s*\["(?P<mime>.+?)"\] = "(?P<ext>.+?)",\s*')
+
+# mime2ext mappings
+mime2ext = dict()
+with open(os.path.join(ROOT, 'scripts', 'file-extensions.bro')) as file:
+    for line in file:
+        match = TABLE.match(line)
+        if match is None:
+            continue
+        mime2ext[match.group('mime')] = match.group('ext')
+
+
+# parse missing mappings
+missing = list()
+if os.path.isfile('/home/traffic/pcapfile/processed_mime.log'):
+    with open('/home/traffic/pcapfile/processed_mime.log') as file:
+        missing.extend(line.strip() for line in file)
+if os.path.isfile('../../../sample/processed_mime.log'):
+    with open(os.path.join(ROOT, '../../../sample/processed_mime.log')) as file:
+        missing.extend(line.strip() for line in file)
+
+# update missing mappings
+for mime in set(missing):
+    ext = [s.lstrip('.') for s in mimetypes.guess_all_extensions(mime)]
+    if ext:
+        if len(ext) > 1:
+            print('{!r} -> {}'.format(mime, " | ".join(ext)))
+            usr_ext = raw_input('Please select an extension: ').strip().lstrip('.')
+            if usr_ext:
+                mime2ext[mime] = usr_ext
+        else:
+            mime2ext[mime] = ext[0]
+
+# generate Bro file
+TEXT = '\n        '.join(sorted('["{}"] = "{}",'.format(mime, ext) for mime, ext in mime2ext.items()))
+FILE = '''\
+module FileExtraction;
+
+export {
+    ## Map file extensions to file mime_type
+    const mime_to_ext: table[string] of string = {
+        %s
+    };
+}
+''' % TEXT
+
+# update Bro script
+with open(os.path.join(ROOT, 'scripts', 'file-extensions.bro'), 'w') as file:
+    file.write(FILE)

@@ -10,7 +10,7 @@ services:
     image: broapt-core
     volumes:
       - /home/traffic/pcapfile:/pcap
-      # - ../sample:/pcap
+      # - ../../sample:/pcap
       - /home/traffic/log/extract:/dump
       # - ./source/dumps:/dump
     restart: "always"

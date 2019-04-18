@@ -9,6 +9,7 @@
         "linesep",
         "nofile",
         "numpy",
+        "pcapfile",
         "r'filename",
         "reass",
         "resp",
