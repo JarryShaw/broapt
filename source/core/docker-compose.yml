@@ -3,11 +3,11 @@ version: "3"
 
 # Broapt services
 services:
-  bro:
+  core:
     build: .
-    container_name: bro
+    container_name: broapt-core
     entrypoint: ["bash", "/source/init.sh"]
-    image: bro
+    image: broapt-core
     volumes:
       - /home/traffic/pcapfile:/pcap
       # - ../sample:/pcap

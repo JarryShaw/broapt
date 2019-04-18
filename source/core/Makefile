@@ -5,7 +5,7 @@ clean: clean-dump clean-logs clean-state
 
 docker: clean
 	sed -i "" "s/LABEL version.*/LABEL version=$(shell date +%Y.%m.%d)/" Dockerfile
-	docker build --rm --tag bro .
+	docker build --rm --tag broapt-core .
 	docker system prune --volumes -f
 
 f2format:
