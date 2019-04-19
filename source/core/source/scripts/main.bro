@@ -28,10 +28,7 @@ event file_sniff(f: fa_file, meta: fa_metadata) {
             if ( mgct in mime_to_ext )
                 fext = mime_to_ext[mgct];
             else {
-                if ( mime )
-                    fext = "dat";
-                else
-                    fext = cat(sub(mgct, /\//, "."), ".dat");
+                fext = "dat";
                 system(fmt("echo '%s' >> /pcap/processed_mime.log", mgct));
             }
         } else {
@@ -43,8 +40,10 @@ event file_sniff(f: fa_file, meta: fa_metadata) {
             local root = split_string(mgct, /\//)[0];
             mkdir(fmt("%s/%s", path, root));
             mkdir(fmt("%s/%s", path, mgct));
-        } else
+        } else {
             mgct = ".";
+            fext = cat(sub(mgct, /\//, "."), ".", fext);
+        }
 
         local name = fmt("%s/%s-%s.%s", mgct, f$source, f$id, fext);
         Files::add_analyzer(f, Files::ANALYZER_EXTRACT, [$extract_filename=name]);
