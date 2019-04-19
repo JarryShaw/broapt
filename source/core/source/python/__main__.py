@@ -6,6 +6,7 @@ import contextlib
 import multiprocessing
 import os
 import pathlib
+import re
 import subprocess
 import sys
 import tempfile
@@ -15,16 +16,16 @@ import warnings
 import magic
 
 # limit on CPU
-cpu_count = os.getenv('CPU')
-if cpu_count is None:
+cpu_count = os.getenv('CORE_CPU')
+try:
+    CPU_CNT = int(cpu_count)
+except (ValueError, TypeError):
     if os.name == 'posix' and 'SC_NPROCESSORS_CONF' in os.sysconf_names:
         CPU_CNT = os.sysconf('SC_NPROCESSORS_CONF')
     elif 'sched_getaffinity' in os.__all__:
         CPU_CNT = len(os.sched_getaffinity(0))  # pylint: disable=E1101
     else:
         CPU_CNT = os.cpu_count() or 1
-else:
-    CPU_CNT = int(cpu_count)
 
 # repo root path
 ROOT = str(pathlib.Path(__file__).parents[1].resolve())
@@ -36,9 +37,30 @@ PCAP_MGC = (b'\xa1\xb2\x3c\x4d',
             b'\xd4\xc3\xb2\xa1',
             b'\x0a\x0d\x0d\x0a')
 
+# Bro config
+BOOLEAN_STATES = {'1': True, '0': False,
+                  'yes': True, 'no': False,
+                  'true': True, 'false': False,
+                  'on': True, 'off': False}
+DUMP_MIME = BOOLEAN_STATES.get(os.getenv('DUMP_MIME', 'false').strip().lower(), False)
+DUMP_PATH = os.getenv('DUMP_PATH', '/dump/').strip()
+PCAP_PATH = os.getenv('DUMP_PATH', '/pcap/').strip()
+
+# update Bro scripts
+MIME_REGEX = re.compile(r'(?P<prefix>\s*redef mime\s*=\s*)[TF](?P<suffix>\s*;\s*)')
+PATH_REGEX = re.compile(r'(?P<prefix>\s*redef path\s*=\s*").*?(?P<suffix>"\s*;\s*)')
+context = list()
+with open(os.path.join(ROOT, 'scripts', 'config.bro')) as config:
+    for line in config:
+        line = MIME_REGEX.sub(r'\g<prefix>{}\g<suffix>'.format("T" if DUMP_MIME else "F"), line)
+        line = PATH_REGEX.sub(r'\g<prefix>{}\g<suffix>'.format(DUMP_PATH), line)
+        context.append(line)
+with open(os.path.join(ROOT, 'scripts', 'config.bro'), 'w') as config:
+    config.writelines(context)
+
 # log files
-FILE = '/pcap/processed_file.log'
-TIME = '/pcap/processed_time.log'
+FILE = os.path.join(PCAP_PATH, 'processed_file.log')
+TIME = os.path.join(PCAP_PATH, 'processed_time.log')
 
 
 def print(s, file=TIME):  # pylint: disable=redefined-builtin
@@ -70,7 +92,7 @@ def parse_args(argv):
         if os.path.isdir(arg):
             file_list.extend(entry.path for entry in os.scandir(arg)
                              if entry.is_file() and is_pcap(entry.path))
-        elif os.path.isfile(arg) and is_pcap(arg):
+        elif os.path.isfile(arg) and is_pcap(arg):  # pylint: disable=else-if-used
             file_list.append(arg)
         else:
             warnings.warn('invalid path: {!r}'.format(arg), UserWarning)
@@ -103,7 +125,7 @@ def main_with_args():
     return 0
 
 
-def main_without_args():
+def main_with_no_args():
     # processed log
     processed_file = list()
     if os.path.isfile(FILE):
@@ -113,7 +135,7 @@ def main_without_args():
     # main loop
     while True:
         try:
-            file_list = sorted(filter(lambda file: file not in processed_file, parse_args(['/pcap'])))
+            file_list = sorted(filter(lambda file: file not in processed_file, parse_args([PCAP_PATH])))
             if file_list:
                 if CPU_CNT <= 1:
                     [process(file) for file in file_list]  # pylint: disable=expression-not-assigned
@@ -130,7 +152,7 @@ def main_without_args():
 def main():
     if sys.argv[1:]:
         return main_with_args()
-    return main_without_args()
+    return main_with_no_args()
 
 
 if __name__ == '__main__':

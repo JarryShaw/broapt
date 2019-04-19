@@ -12,6 +12,7 @@
         "pcapfile",
         "r'filename",
         "reass",
+        "redef",
         "resp",
         "rsplit",
         "sched",

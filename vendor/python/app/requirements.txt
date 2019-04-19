@@ -4,4 +4,4 @@ setuptools==41.0.0
 wheel==0.33.1
 
 # Python dependencies
-python-magic==0.4.15
+dataclasses==0.6

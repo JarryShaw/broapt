@@ -16,6 +16,7 @@ venv
 logs/
 .state/
 contents/
+dump/
 dumps/
 extecte_files/
 
