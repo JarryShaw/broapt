@@ -1,6 +1,6 @@
 # basic info
 FROM library/ubuntu:16.04
-LABEL version=2019.04.18
+LABEL version=2019.04.20
 
 # set up environment variables
 ENV LANG "C.UTF-8"
@@ -16,7 +16,8 @@ RUN apt-get update \
     ## python3 is actually dependency of the latters
     ## but we keep it here as a good remainder
     python3 \
-    python3-pip
+    python3-pip \
+    python3-requests
 
 # install Python packages & dependencies
 COPY vendor/python /tmp/python

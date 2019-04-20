@@ -1,5 +1,7 @@
 .PHONY: build commit docker docker-compose gitlab link pipenv download submodule update
 
+include .env
+
 export PIPENV_VENV_IN_PROJECT=1
 export PIPENV_CLEAR=1
 
@@ -95,11 +97,11 @@ submodule-pull:
 	cd vendor/zeek && git pull
 
 gitlab-clean:
-	find gitlab/xiaojiawei \
+	find ${REPO_PATH} \
 	    ! -iname 'README' \
 	    ! -iname '.gitkeep' \
 	    ! -iname 'vendor' -depth 1 -print0 | xargs -0 rm -rf
-	find gitlab/xiaojiawei/vendor \
+	find ${REPO_PATH}/vendor \
 	    ! -iname 'broker' \
 	    ! -iname 'file-extraction' \
 	    ! -iname 'json' \
@@ -108,29 +110,28 @@ gitlab-clean:
 
 gitlab-copy: gitlab-clean
 	# copy top-level files
-	find . -type f -depth 1 -exec cp -rf {} gitlab/xiaojiawei \;
+	find . -type f -depth 1 -exec cp -rf {} ${REPO_PATH} \;
 	# remove git-lfs usage
-	sed -i "" /lfs/d gitlab/xiaojiawei/.gitattributes
+	sed -i "" /lfs/d ${REPO_PATH}/.gitattributes
 	# copy archive
-	mkdir -p gitlab/xiaojiawei/archive
+	mkdir -p ${REPO_PATH}/archive
 	find archive \
-	    -depth 1 -exec cp -rf {} gitlab/xiaojiawei/archive \;
+	    -depth 1 -exec cp -rf {} ${REPO_PATH}/archive \;
 	# copy build
-	mkdir -p gitlab/xiaojiawei/build
+	mkdir -p ${REPO_PATH}/build
 	find build \
-	    ! -iname 'venv' -depth 1 -exec cp -rf {} gitlab/xiaojiawei/build \;
+	    ! -iname 'venv' -depth 1 -exec cp -rf {} ${REPO_PATH}/build \;
 	# copy docker
-	cp -rf docker gitlab/xiaojiawei
+	cp -rf docker ${REPO_PATH}
 	# copy source
-	mkdir -p gitlab/xiaojiawei/source
+	mkdir -p ${REPO_PATH}/source
 	$(MAKE) -C source/app clean f2format vendor
-	find source -iname 'app' -depth 1 -exec cp -rf {} gitlab/xiaojiawei/source \;
+	find source -iname 'app' -depth 1 -exec cp -rf {} ${REPO_PATH}/source \;
 	$(MAKE) -C source/core clean f2format vendor
-	find source -iname 'core' -depth 1 -exec cp -rf {} gitlab/xiaojiawei/source \;
+	find source -iname 'core' -depth 1 -exec cp -rf {} ${REPO_PATH}/source \;
 	$(MAKE) -C source archive
-	find source -iname 'archive' -depth 1 -exec cp -rf {} gitlab/xiaojiawei/source \;
 	# copy vendor
-	mkdir -p gitlab/xiaojiawei/vendor
+	mkdir -p ${REPO_PATH}/vendor
 	find vendor \
 	    ! -iname 'bro*' \
 	    ! -iname 'broker' \
@@ -139,26 +140,26 @@ gitlab-copy: gitlab-clean
 	    ! -iname 'json' \
 	    ! -iname 'pypcapkit' \
 	    ! -iname 'zeek' \
-	    ! -iname 'venv' -depth 1 -exec cp -rf {} gitlab/xiaojiawei/vendor \;
+	    ! -iname 'venv' -depth 1 -exec cp -rf {} ${REPO_PATH}/vendor \;
 	# remove unexpected files
-	find gitlab/xiaojiawei \
+	find ${REPO_PATH} \
 	    -iname '__pycache__' -or \
 	    -iname '*~orig*' -type fd -print0 | xargs -0 rm -rf
 	find gitlab \
 	    -iname '.DS_Store' -print0 | xargs -0 rm -rf
 
 gitlab-commit: gitlab-copy
-	cd gitlab/xiaojiawei/vendor/broker && git pull
-	cd gitlab/xiaojiawei/vendor/file\-extraction && git pull
-	cd gitlab/xiaojiawei/vendor/json && git pull
-	cd gitlab/xiaojiawei/vendor/pypcapkit && git pull
-	cd gitlab/xiaojiawei/vendor/zeek && git pull
-	cd gitlab/xiaojiawei && $(MAKE) git-commit
+	cd ${REPO_PATH}/vendor/broker && git pull
+	cd ${REPO_PATH}/vendor/file\-extraction && git pull
+	cd ${REPO_PATH}/vendor/json && git pull
+	cd ${REPO_PATH}/vendor/pypcapkit && git pull
+	cd ${REPO_PATH}/vendor/zeek && git pull
+	cd ${REPO_PATH} && $(MAKE) git-commit
 
 gitlab-submodule: gitlab-copy
-	rm -rf gitlab/xiaojiawei/vendor/broker \
-	       gitlab/xiaojiawei/vendor/file\-extraction \
-	       gitlab/xiaojiawei/vendor/json \
-	       gitlab/xiaojiawei/vendor/pypcapkit \
-	       gitlab/xiaojiawei/vendor/zeek
-	cd gitlab/xiaojiawei/vendor && $(MAKE) all
+	rm -rf ${REPO_PATH}/vendor/broker \
+	       ${REPO_PATH}/vendor/file\-extraction \
+	       ${REPO_PATH}/vendor/json \
+	       ${REPO_PATH}/vendor/pypcapkit \
+	       ${REPO_PATH}/vendor/zeek
+	cd ${REPO_PATH}/vendor && $(MAKE) all
