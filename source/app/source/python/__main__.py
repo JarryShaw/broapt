@@ -4,6 +4,7 @@ import dataclasses
 import multiprocessing
 import os
 import pathlib
+import subprocess
 import sys
 import time
 import typing
@@ -20,6 +21,10 @@ except (ValueError, TypeError):
     else:
         CPU_CNT = os.cpu_count() or 1
 
+# repo root path
+ROOT = str(pathlib.Path(__file__).parents[1].resolve())
+API_PATH = os.path.join(os.path.dirname(__file__), 'api')
+
 # Bro config
 BOOLEAN_STATES = {'1': True, '0': False,
                   'yes': True, 'no': False,
@@ -27,13 +32,14 @@ BOOLEAN_STATES = {'1': True, '0': False,
                   'on': True, 'off': False}
 DUMP_MIME = BOOLEAN_STATES.get(os.getenv('DUMP_MIME', 'false').strip().lower(), False)
 DUMP_PATH = os.getenv('DUMP_PATH', '/dump/').strip()
-PCAP_PATH = os.getenv('PCAP_PATH', '/pcap/').strip()
+LOGS_PATH = os.getenv('LOGS_PATH', '/var/log/bro/').strip()
 
 # log files
-FILE = os.path.join(PCAP_PATH, 'processed_dump.log')
+FILE = os.path.join(LOGS_PATH, 'processed_dump.log')
+FAIL = os.path.join(LOGS_PATH, 'processed_fail.log')
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(forzen=True)  # pylint: disable=unexpected-keyword-arg
 class Entry:
     path: typing.AnyStr
     name: typing.AnyStr
@@ -46,6 +52,15 @@ def print_file(s, file=FILE):
 
 
 def process(entry):
+    api_path = os.path.join(API_PATH, entry.mime)
+    if not os.path.isfile(api_path):
+        api_path = os.path.join(API_PATH, 'default.py')
+
+    try:
+        subprocess.check_call([sys.executable, api_path,
+                               entry.path, entry.name, entry.mime])
+    except subprocess.CalledProcessError as error:
+        print_file(error.args, file=FAIL)
     print_file(entry.path)
 
 

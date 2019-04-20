@@ -45,6 +45,7 @@ BOOLEAN_STATES = {'1': True, '0': False,
 DUMP_MIME = BOOLEAN_STATES.get(os.getenv('DUMP_MIME', 'false').strip().lower(), False)
 DUMP_PATH = os.getenv('DUMP_PATH', '/dump/').strip()
 PCAP_PATH = os.getenv('DUMP_PATH', '/pcap/').strip()
+LOGS_PATH = os.getenv('LOGS_PATH', '/var/log/bro/').strip()
 
 # update Bro scripts
 MIME_REGEX = re.compile(r'(?P<prefix>\s*redef mime\s*=\s*)[TF](?P<suffix>\s*;\s*)')
@@ -59,8 +60,8 @@ with open(os.path.join(ROOT, 'scripts', 'config.bro'), 'w') as config:
     config.writelines(context)
 
 # log files
-FILE = os.path.join(PCAP_PATH, 'processed_file.log')
-TIME = os.path.join(PCAP_PATH, 'processed_time.log')
+FILE = os.path.join(LOGS_PATH, 'processed_file.log')
+TIME = os.path.join(LOGS_PATH, 'processed_time.log')
 
 
 def print(s, file=TIME):  # pylint: disable=redefined-builtin

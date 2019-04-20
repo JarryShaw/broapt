@@ -127,6 +127,8 @@ gitlab-copy: gitlab-clean
 	find source -iname 'app' -depth 1 -exec cp -rf {} gitlab/xiaojiawei/source \;
 	$(MAKE) -C source/core clean f2format vendor
 	find source -iname 'core' -depth 1 -exec cp -rf {} gitlab/xiaojiawei/source \;
+	$(MAKE) -C source archive
+	find source -iname 'archive' -depth 1 -exec cp -rf {} gitlab/xiaojiawei/source \;
 	# copy vendor
 	mkdir -p gitlab/xiaojiawei/vendor
 	find vendor \

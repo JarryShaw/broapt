@@ -10,5 +10,7 @@ services:
     image: broapt-app
     volumes:
       - /home/traffic/log/extract:/dump
-      # - ./source/dumps:/dump
+      # - ../dump:/dump
+      - /home/traffic/log/bro:/var/log/bro
+      # - ../logs:/var/log/bro
     restart: "always"

@@ -1,9 +1,9 @@
 .PHONY: init clean docker f2format vendor
 
-init: mkdir-dump
+init: mkdir-dump mkdir-logs
 clean: clean-dump clean-logs
 
-docker: clean
+docker: clean f2format
 	sed -i "" "s/LABEL version.*/LABEL version=$(shell date +%Y.%m.%d)/" Dockerfile
 	docker build --rm --tag broapt-app .
 	docker system prune --volumes -f
@@ -28,8 +28,8 @@ clean-dump:
 	    rm -rf /home/traffic/log/extract; \
 	    mkdir -p /home/traffic/log/extract; \
 	else \
-	    find ../dumps -depth 1 -type d -print0 | xargs -0 rm -rf; \
-	    find ../dumps -depth 1 -type f -print0 | xargs -0 rm -rf; \
+	    find ../dump -depth 1 -type d -print0 | xargs -0 rm -rf; \
+	    find ../dump -depth 1 -type f -print0 | xargs -0 rm -rf; \
 	fi
 
 clean-logs:
@@ -45,3 +45,6 @@ clean-logs:
 
 mkdir-dump:
 	mkdir -p ../dump
+
+mkdir-logs:
+	mkdir -p ../logs

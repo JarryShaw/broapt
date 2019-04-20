@@ -26,7 +26,9 @@ install: init
 	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 	# install dependencies
-	pipenv install dataclasses
+	pipenv install \
+	    dataclasses \
+	    requests
 
 .ONESHELL:
 update:

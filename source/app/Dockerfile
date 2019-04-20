@@ -6,7 +6,6 @@ LABEL version=2019.04.18
 ENV LANG "C.UTF-8"
 ENV LC_ALL "C.UTF-8"
 ENV PYTHONIOENCODING "UTF-8"
-ENV PATH="/usr/local/bro/bin:${PATH}"
 ENV PYTHONPATH="/usr/lib/python3.5/site-packages"
 
 # install, Bro, Python 3 & all requirements
@@ -17,7 +16,6 @@ RUN apt-get update \
     ## python3 is actually dependency of the latters
     ## but we keep it here as a good remainder
     python3 \
-    python3-magic \
     python3-pip
 
 # install Python packages & dependencies
