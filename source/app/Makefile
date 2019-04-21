@@ -36,9 +36,12 @@ clean-logs:
 	if [ -d /home/traffic/log/bro ]; then \
 	    > /home/traffic/log/bro/processed_dump.log; \
 	    > /home/traffic/log/bro/processed_fail.log; \
+	    rm -rf /home/traffic/log/bro/tmp; \
+	    mkdir -p /home/traffic/log/bro/tmp; \
 	else \
 	    > ../logs/processed_dump.log; \
 	    > ../logs/processed_fail.log; \
+	    find ../logs/tmp -iname '*.json' -depth 1 -type f -print0 | xargs -0 rm -rf; \
 	fi
 
 mkdir-dump:

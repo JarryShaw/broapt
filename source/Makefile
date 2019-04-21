@@ -4,8 +4,19 @@ include .env
 
 archive: archive-app archive-core
 clean: clean-app clean-core
-docker: docker-app docker-core
-docker-compose: docker-compose-app docker-compose-core
+docker-up: docker-up-app docker-up-core
+docker-stop: docker-stop-app docker-stop-core
+docker-ps: docker-ps-app docker-ps-core
+docker-logs: docker-logs-app docker-logs-core
+f2format: f2format-app f2format-core
+
+docker: clean docker-app docker-core
+	docker system prune --volumes -f
+
+docker-compose: clean f2format
+	docker-compose build
+	docker-compose up -d
+	docker system prune --volumes -f
 
 archive-app:
 	mkdir -p archive
@@ -34,8 +45,32 @@ docker-app:
 docker-core:
 	$(MAKE) -C core docker
 
-docker-compose-app: docker-app
+docker-up-app:
 	cd app && docker-compose up -d
 
-docker-compose-core: docker-core
+docker-up-core:
 	cd core && docker-compose up -d
+
+docker-stop-app:
+	cd app && docker-compose stop
+
+docker-stop-core:
+	cd core && docker-compose stop
+
+docker-ps-app:
+	cd app && docker-compose ps
+
+docker-ps-core:
+	cd core && docker-compose ps
+
+docker-logs-app:
+	cd app && docker-compose logs
+
+docker-logs-core:
+	cd core && docker-compose logs
+
+f2format-app:
+	$(MAKE) -C app f2format
+
+f2format-core:
+	$(MAKE) -C core f2format

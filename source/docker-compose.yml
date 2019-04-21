@@ -1,0 +1,33 @@
+# docker-compose version
+version: "3"
+
+# Broapt services
+services:
+  core:
+    build: core
+    container_name: broapt-core
+    entrypoint: ["bash", "/source/init.sh"]
+    env_file:
+      - ./core/source/.env
+    image: broapt-core
+    volumes:
+      - /home/traffic/pcapfile:/pcap
+      # - ../sample:/pcap
+      - /home/traffic/log/extract:/dump
+      # - ./dump:/dump
+      - /home/traffic/log/bro:/var/log/bro
+      # - ./logs:/var/log/bro
+    restart: "always"
+  app:
+    build: app
+    container_name: broapt-app
+    entrypoint: ["bash", "/source/init.sh"]
+    env_file:
+      - ./app/source/.env
+    image: broapt-app
+    volumes:
+      - /home/traffic/log/extract:/dump
+      # - ./dump:/dump
+      - /home/traffic/log/bro:/var/log/bro
+      # - ./logs:/var/log/bro
+    restart: "always"

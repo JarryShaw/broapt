@@ -64,7 +64,7 @@ def list_dir(path):
         file_list = list()
         for content_type in filter(lambda entry: entry.is_dir(), os.scandir(path)):
             for subtype in filter(lambda entry: entry.is_dir(), os.scandir(content_type.path)):
-                mime = '{}/{}'.format(content_type, subtype)
+                mime = '{}/{}'.format(content_type.name, subtype.name)
                 file_list.extend(Entry(path=entry.path, name=entry.name, mime=mime)
                                  for entry in filter(lambda entry: entry.is_file(), os.scandir(subtype.path)))
     else:

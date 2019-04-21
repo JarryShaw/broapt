@@ -5,3 +5,10 @@
 - [`pypcapkit`](https://github.com/JarryShaw/PyPCAPKit):  Python Multi-Engine PCAP Analysis Kit
 - [`json`](https://github.com/nlohmann/json): JSON for Modern C++
 - [`zeek`](https:github.com/zeek/zeek): Zeek Network Security Monitor
+
+# Tools
+
+- [`Image ExifTool`](https://sno.phy.queensu.ca/~phil/exiftool): reading, writing and editing meta information (v11.37)
+- PDF Tools
+  - [`pdf-parser`](https://blog.didierstevens.com/programs/pdf-tools/#pdf-parser): simple PDF parser (v0.7.1)
+  - [`PDFiD`](https://blog.didierstevens.com/programs/pdf-tools/#pdfid): triage PDF documents (v0.2.5)
