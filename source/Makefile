@@ -1,8 +1,9 @@
-.PHONY: archive
+.PHONY: archive clean
 
 include .env
 
 archive: archive-app archive-core
+clean: clean-app clean-core
 
 archive-app:
 	mkdir -p archive
@@ -18,3 +19,9 @@ archive-core:
 	mv broapt-core.tar.gz archive
 	scp archive/broapt-core.tar.gz ${SRV_PATH}/source/archive/
 	scp archive/broapt-core.tar.gz ${SRV_PATH}/../
+
+clean-app:
+	$(MAKE) -C app clean
+
+clean-core:
+	$(MAKE) -C core clean

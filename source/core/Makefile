@@ -39,14 +39,14 @@ clean-logs-local:
 	find . -iname '*.log' -print0 | xargs -0 rm -f
 
 clean-logs-processed:
-	if [ -d /home/traffic/pcapfile ]; then \
-	    > /home/traffic/pcapfile/processed_file.log; \
-	    > /home/traffic/pcapfile/processed_mime.log; \
-	    > /home/traffic/pcapfile/processed_time.log; \
+	if [ -d /home/traffic/log/bro ]; then \
+	    > /home/traffic/log/bro/processed_file.log; \
+	    > /home/traffic/log/bro/processed_mime.log; \
+	    > /home/traffic/log/bro/processed_time.log; \
 	else \
-	    > ../../sample/processed_file.log; \
-	    > ../../sample/processed_mime.log; \
-	    > ../../sample/processed_time.log; \
+	    > ../logs/processed_file.log; \
+	    > ../logs/processed_mime.log; \
+	    > ../logs/processed_time.log; \
 	fi
 
 clean-nohup:
