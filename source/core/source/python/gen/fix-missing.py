@@ -28,12 +28,9 @@ with open(os.path.join(ROOT, 'scripts', 'file-extensions.bro')) as file:
 
 # parse missing mappings
 missing = list()
-if os.path.isfile('/home/traffic/pcapfile/processed_mime.log'):
-    with open('/home/traffic/pcapfile/processed_mime.log') as file:
-        missing.extend(line.strip() for line in file)
-if os.path.isfile('../../../sample/processed_mime.log'):
-    with open(os.path.join(ROOT, '../../../sample/processed_mime.log')) as file:
-        missing.extend(line.strip() for line in file)
+LOGS_PATH = os.getenv('LOGS_PATH', '/var/log/bro')
+with open(os.path.join(LOGS_PATH, 'processed_mime.log')) as file:
+    missing.extend(line.strip() for line in file)
 
 # update missing mappings
 for mime in set(missing):

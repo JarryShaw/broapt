@@ -16,9 +16,8 @@ import warnings
 import magic
 
 # limit on CPU
-cpu_count = os.getenv('CORE_CPU')
 try:
-    CPU_CNT = int(cpu_count)
+    CPU_CNT = int(os.getenv('CORE_CPU').strip())
 except (ValueError, TypeError):
     if os.name == 'posix' and 'SC_NPROCESSORS_CONF' in os.sysconf_names:
         CPU_CNT = os.sysconf('SC_NPROCESSORS_CONF')
@@ -42,7 +41,7 @@ BOOLEAN_STATES = {'1': True, '0': False,
                   'yes': True, 'no': False,
                   'true': True, 'false': False,
                   'on': True, 'off': False}
-DUMP_MIME = BOOLEAN_STATES.get(os.getenv('DUMP_MIME', 'false').strip().lower(), False)
+DUMP_MIME = BOOLEAN_STATES.get(os.getenv('DUMP_MIME', 'true').strip().lower(), True)
 DUMP_PATH = os.getenv('DUMP_PATH', '/dump/').strip()
 PCAP_PATH = os.getenv('PCAP_PATH', '/pcap/').strip()
 LOGS_PATH = os.getenv('LOGS_PATH', '/var/log/bro/').strip()
@@ -64,6 +63,12 @@ with open(os.path.join(ROOT, 'scripts', 'config.bro'), 'w') as config:
 # log files
 FILE = os.path.join(LOGS_PATH, 'processed_file.log')
 TIME = os.path.join(LOGS_PATH, 'processed_time.log')
+
+# sleep interval
+try:
+    INTERVAL = int(os.getenv('CORE_INT').strip())
+except (TypeError, ValueError):
+    INTERVAL = 10
 
 
 def print(s, file=TIME):  # pylint: disable=redefined-builtin
@@ -144,7 +149,7 @@ def main_with_no_args():
                     [process(file) for file in file_list]  # pylint: disable=expression-not-assigned
                 else:
                     multiprocessing.Pool(CPU_CNT).map(process, file_list)
-            time.sleep(10)
+            time.sleep(INTERVAL)
         except KeyboardInterrupt:
             return 0
 

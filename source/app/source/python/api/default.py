@@ -8,21 +8,22 @@ import time
 import requests
 
 # useful paths
-LOGS_PATH = os.getenv('VT_LOG', '/var/log/bro/tmp/').strip()
-os.makedirs(LOGS_PATH, exist_ok=True)
+LOGS_PATH = os.getenv('LOGS_PATH', '/var/log/bro/').strip()
+VT_LOG = os.getenv('VT_LOG', '/var/log/bro/tmp/').strip()
+os.makedirs(VT_LOG, exist_ok=True)
 
-# VirusTotal
-VT_API = os.environ['VT_API']
+# VirusTotal API key
+VT_API = os.environ['VT_API'].strip()
 
 # time interval
 try:
-    VT_INT = int(os.getenv('VT_INT', '60'))
+    VT_INT = int(os.getenv('VT_INT', '60').strip())
 except ValueError:
     VT_INT = 60
 
 # max retry
 try:
-    VT_RETRY = int(os.getenv('VT_RETRY', '3'))
+    VT_RETRY = int(os.getenv('VT_RETRY', '3').strip())
 except ValueError:
     VT_RETRY = 3
 
@@ -76,8 +77,20 @@ def main():
             return EXIT_FAILURE
 
         log_name = '{}.json'.format(os.path.splitext(name)[0])
-        with open(os.path.join(LOGS_PATH, log_name), 'w') as log:
+        with open(os.path.join(VT_LOG, log_name), 'w') as log:
             json.dump(report_json, log, indent=2)
+
+        positives = report_json['positives']
+        total = report_json['total']
+        ratio = positives * 100 / total
+
+        result = {'time': time.time(),
+                  'path': path,
+                  'name': name,
+                  'mime': mime,
+                  'ratio': ratio}
+        with open(os.path.join(LOGS_PATH, 'processed_rate.log'), 'at', 1) as file:
+            json.dump(result, file)
         return EXIT_SUCCESS
     return VT_RESPONSE.status_code
 

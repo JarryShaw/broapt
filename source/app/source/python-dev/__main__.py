@@ -9,9 +9,8 @@ import sys
 import time
 
 # limit on CPU
-cpu_count = os.getenv('CORE_CPU')
 try:
-    CPU_CNT = int(cpu_count)
+    CPU_CNT = int(os.getenv('APP_CPU').strip())
 except (ValueError, TypeError):
     if os.name == 'posix' and 'SC_NPROCESSORS_CONF' in os.sysconf_names:
         CPU_CNT = os.sysconf('SC_NPROCESSORS_CONF')
@@ -23,6 +22,8 @@ except (ValueError, TypeError):
 # repo root path
 ROOT = str(pathlib.Path(__file__).parents[1].resolve())
 API_PATH = os.path.join(os.path.dirname(__file__), 'api')
+API_SUFFIX = os.getenv('API_SUFFIX', '')
+DEFAULT_API = os.getenv('DEFAULT_API', 'default.py')
 
 # Bro config
 BOOLEAN_STATES = {'1': True, '0': False,
@@ -40,6 +41,12 @@ FAIL = os.path.join(LOGS_PATH, 'processed_fail.log')
 # entry class
 Entry = collections.namedtuple('Entry', ['path', 'name', 'mime'])
 
+# sleep interval
+try:
+    INTERVAL = int(os.getenv('APP_INT').strip())
+except (TypeError, ValueError):
+    INTERVAL = 10
+
 
 def print_file(s, file=FILE):
     with open(file, 'at', 1) as LOG:
@@ -47,9 +54,9 @@ def print_file(s, file=FILE):
 
 
 def process(entry):
-    api_path = os.path.join(API_PATH, entry.mime)
-    if not os.path.isfile(api_path):
-        api_path = os.path.join(API_PATH, 'default.py')
+    api_path = os.path.join(API_PATH, f'{entry.mime}{API_SUFFIX}')
+    if not os.path.exists(api_path):
+        api_path = os.path.join(API_PATH, DEFAULT_API)
 
     try:
         subprocess.check_call([sys.executable, api_path,
@@ -90,7 +97,7 @@ def main():
                     [process(entry) for entry in file_list]  # pylint: disable=expression-not-assigned
                 else:
                     multiprocessing.Pool(CPU_CNT).map(process, file_list)
-            time.sleep(10)
+            time.sleep(INTERVAL)
         except KeyboardInterrupt:
             return 0
 
