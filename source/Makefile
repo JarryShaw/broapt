@@ -1,9 +1,11 @@
-.PHONY: archive clean
+.PHONY: archive clean docker docker-compose
 
 include .env
 
 archive: archive-app archive-core
 clean: clean-app clean-core
+docker: docker-app docker-core
+docker-compose: docker-compose-app docker-compose-core
 
 archive-app:
 	mkdir -p archive
@@ -25,3 +27,15 @@ clean-app:
 
 clean-core:
 	$(MAKE) -C core clean
+
+docker-app:
+	$(MAKE) -C app docker
+
+docker-core:
+	$(MAKE) -C core docker
+
+docker-compose-app: docker-app
+	cd app && docker-compose up -d
+
+docker-compose-core: docker-core
+	cd core && docker-compose up -d

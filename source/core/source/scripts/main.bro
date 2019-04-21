@@ -8,6 +8,8 @@ export {
     const mime: bool = T &redef;
     ## Path to store files
     const path: string = FileExtract::prefix &redef;
+    ## Path to missing MIME log file
+    const logs: string = "/var/log/bro/processed_mime.log" &redef;
 
     ## Hook to include files in extraction
     global extract: hook(f: fa_file, meta: fa_metadata);
@@ -29,7 +31,7 @@ event file_sniff(f: fa_file, meta: fa_metadata) {
                 fext = mime_to_ext[mgct];
             else {
                 fext = "dat";
-                system(fmt("echo '%s' >> /pcap/processed_mime.log", mgct));
+                system(fmt("echo '%s' >> '%s'", mgct, logs));
             }
         } else {
             mgct = "application/octet-stream";

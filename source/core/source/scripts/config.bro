@@ -8,6 +8,9 @@ redef mime = T;
 # Configure where extracted files will be stored
 redef path = "/dump/";
 
+## Configure path to missing MIME log file
+redef logs = "/var/log/bro/processed_mime.log";
+
 @if ( path != FileExtract::prefix )
     redef FileExtract::prefix = path;
 @endif

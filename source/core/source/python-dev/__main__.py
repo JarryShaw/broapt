@@ -44,17 +44,19 @@ BOOLEAN_STATES = {'1': True, '0': False,
                   'on': True, 'off': False}
 DUMP_MIME = BOOLEAN_STATES.get(os.getenv('DUMP_MIME', 'false').strip().lower(), False)
 DUMP_PATH = os.getenv('DUMP_PATH', '/dump/').strip()
-PCAP_PATH = os.getenv('DUMP_PATH', '/pcap/').strip()
+PCAP_PATH = os.getenv('PCAP_PATH', '/pcap/').strip()
 LOGS_PATH = os.getenv('LOGS_PATH', '/var/log/bro/').strip()
 
 # update Bro scripts
 MIME_REGEX = re.compile(r'(?P<prefix>\s*redef mime\s*=\s*)[TF](?P<suffix>\s*;\s*)')
 PATH_REGEX = re.compile(r'(?P<prefix>\s*redef path\s*=\s*").*?(?P<suffix>"\s*;\s*)')
+LOGS_REGEX = re.compile(r'(?P<prefix>\s*redef logs\s*=\s*").*?(?P<suffix>"\s*;\s*)')
 context = list()
 with open(os.path.join(ROOT, 'scripts', 'config.bro')) as config:
     for line in config:
         line = MIME_REGEX.sub(rf'\g<prefix>{"T" if DUMP_MIME else "F"}\g<suffix>', line)
         line = PATH_REGEX.sub(rf'\g<prefix>{DUMP_PATH}\g<suffix>', line)
+        line = LOGS_REGEX.sub(rf'\g<prefix>{os.path.join(LOGS_PATH, "processed_mime.log")}\g<suffix>', line)
         context.append(line)
 with open(os.path.join(ROOT, 'scripts', 'config.bro'), 'w') as config:
     config.writelines(context)
