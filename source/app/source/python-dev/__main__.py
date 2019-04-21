@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import dataclasses
+import collections
 import multiprocessing
 import os
 import pathlib
 import subprocess
 import sys
 import time
-import typing
 
 # limit on CPU
 cpu_count = os.getenv('CORE_CPU')
@@ -38,12 +37,8 @@ LOGS_PATH = os.getenv('LOGS_PATH', '/var/log/bro/').strip()
 FILE = os.path.join(LOGS_PATH, 'processed_dump.log')
 FAIL = os.path.join(LOGS_PATH, 'processed_fail.log')
 
-
-@dataclasses.dataclass(forzen=True)  # pylint: disable=unexpected-keyword-arg
-class Entry:
-    path: typing.AnyStr
-    name: typing.AnyStr
-    mime: typing.AnyStr
+# entry class
+Entry = collections.namedtuple('Entry', ['path', 'name', 'mime'])
 
 
 def print_file(s, file=FILE):
