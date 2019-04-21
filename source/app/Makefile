@@ -17,8 +17,8 @@ f2format:
 	    --python='3.7' source/python
 
 vendor:
-	rm -rf vendor
-	mkdir -p vendor vendor/{modules,python}
+	rm -rf vendor/python
+	mkdir -p vendor vendor/python
 	$(MAKE) -C ../../vendor/python/app download
 	find ../../vendor/python/app/download -iname '*.tar.gz' -type f -exec cp -f {} vendor/python \;
 	find ../../vendor/python/app/download -iname '*.whl' -type f -exec cp -f {} vendor/python \;
@@ -36,11 +36,13 @@ clean-logs:
 	if [ -d /home/traffic/log/bro ]; then \
 	    > /home/traffic/log/bro/processed_dump.log; \
 	    > /home/traffic/log/bro/processed_fail.log; \
+	    > /home/traffic/log/bro/processed_rate.log; \
 	    rm -rf /home/traffic/log/bro/tmp; \
 	    mkdir -p /home/traffic/log/bro/tmp; \
 	else \
 	    > ../logs/processed_dump.log; \
 	    > ../logs/processed_fail.log; \
+	    > ../logs/processed_rate.log; \
 	    find ../logs/tmp -iname '*.json' -depth 1 -type f -print0 | xargs -0 rm -rf; \
 	fi
 

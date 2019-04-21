@@ -90,7 +90,7 @@ def main():
                   'mime': mime,
                   'ratio': ratio}
         with open(os.path.join(LOGS_PATH, 'processed_rate.log'), 'at', 1) as file:
-            json.dump(result, file)
+            print(json.dumps(result), file=file)
         return EXIT_SUCCESS
     return VT_RESPONSE.status_code
 
