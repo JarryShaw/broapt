@@ -17,13 +17,13 @@ VT_API = os.environ['VT_API'].strip()
 
 # time interval
 try:
-    VT_INT = int(os.getenv('VT_INT', '60').strip())
+    VT_INT = int(os.getenv('VT_INT', '60'))
 except ValueError:
     VT_INT = 60
 
 # max retry
 try:
-    VT_RETRY = int(os.getenv('VT_RETRY', '3').strip())
+    VT_RETRY = int(os.getenv('VT_RETRY', '3'))
 except ValueError:
     VT_RETRY = 3
 

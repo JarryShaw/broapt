@@ -10,7 +10,7 @@ import time
 
 # limit on CPU
 try:
-    CPU_CNT = int(os.getenv('APP_CPU').strip())
+    CPU_CNT = int(os.getenv('APP_CPU'))
 except (ValueError, TypeError):
     if os.name == 'posix' and 'SC_NPROCESSORS_CONF' in os.sysconf_names:
         CPU_CNT = os.sysconf('SC_NPROCESSORS_CONF')
@@ -43,7 +43,7 @@ Entry = collections.namedtuple('Entry', ['path', 'name', 'mime'])
 
 # sleep interval
 try:
-    INTERVAL = int(os.getenv('APP_INT').strip())
+    INTERVAL = int(os.getenv('APP_INT'))
 except (TypeError, ValueError):
     INTERVAL = 10
 

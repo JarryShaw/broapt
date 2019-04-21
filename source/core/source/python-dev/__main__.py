@@ -17,7 +17,7 @@ import magic
 
 # limit on CPU
 try:
-    CPU_CNT = int(os.getenv('CORE_CPU').strip())
+    CPU_CNT = int(os.getenv('CORE_CPU'))
 except (ValueError, TypeError):
     if os.name == 'posix' and 'SC_NPROCESSORS_CONF' in os.sysconf_names:
         CPU_CNT = os.sysconf('SC_NPROCESSORS_CONF')
@@ -66,7 +66,7 @@ TIME = os.path.join(LOGS_PATH, 'processed_time.log')
 
 # sleep interval
 try:
-    INTERVAL = int(os.getenv('CORE_INT').strip())
+    INTERVAL = int(os.getenv('CORE_INT'))
 except (TypeError, ValueError):
     INTERVAL = 10
 
