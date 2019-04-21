@@ -49,8 +49,11 @@ for mime, ext in mappings.items():
             continue
     if len(pure_ext) > 1:
         print('{!r} -> {}'.format(mime, " | ".join(pure_ext)))
-        usr_ext = raw_input('Please select an extension: ').strip().lstrip('.')
-        if usr_ext:
+        try:
+            usr_ext = raw_input('Please select an extension: ').strip().lstrip('.')
+        except (EOFError, KeyboardInterrupt):
+            pass
+        else:
             mime2ext[mime] = usr_ext
     else:
         mime2ext[mime] = ext[0].lstrip('.')

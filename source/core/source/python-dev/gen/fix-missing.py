@@ -30,7 +30,7 @@ with open(os.path.join(ROOT, 'scripts', 'file-extensions.bro')) as file:
 missing = list()
 LOGS_PATH = os.getenv('LOGS_PATH', '/var/log/bro')
 with open(os.path.join(LOGS_PATH, 'processed_mime.log')) as file:
-    missing.extend(line.strip() for line in file)
+    missing.extend(filter(lambda mime: mime not in mime2ext, map(lambda line: line.strip(), file)))
 
 # update missing mappings
 for mime in set(missing):
@@ -38,11 +38,21 @@ for mime in set(missing):
     if ext:
         if len(ext) > 1:
             print(f'{mime!r} -> {" | ".join(ext)}')
-            usr_ext = raw_input('Please select an extension: ').strip().lstrip('.')
-            if usr_ext:
+            try:
+                usr_ext = raw_input('Please select an extension: ').strip().lstrip('.')
+            except (EOFError, KeyboardInterrupt):
+                pass
+            else:
                 mime2ext[mime] = usr_ext
         else:
             mime2ext[mime] = ext[0]
+    else:
+        try:
+            usr_ext = raw_input(f'[{mime}] Please input an possible extension: ').strip().lstrip('.')
+        except (EOFError, KeyboardInterrupt):
+            pass
+        else:
+            mime2ext[mime] = usr_ext
 
 # generate Bro file
 TEXT = '\n        '.join(sorted(f'["{mime}"] = "{ext}",' for mime, ext in mime2ext.items()))
