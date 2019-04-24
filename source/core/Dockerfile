@@ -47,4 +47,4 @@ RUN rm -rf \
         ## Python archives
         /tmp/python \
         /tmp/pip \
- && yum clean -y
+ && yum clean all -y
