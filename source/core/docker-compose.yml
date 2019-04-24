@@ -7,8 +7,20 @@ services:
     build: .
     container_name: broapt-core
     entrypoint: ["bash", "/source/init.sh"]
-    env_file:
-      - ./source/.env
+    environment:
+      # Bro MIME whilelist
+      BRO_MIME: ""
+      # concurrent process limit
+      CORE_CPU: 5
+      # sleep interval
+      CORE_INT: 10
+      # force update mime2ext database
+      MIME_UPDATE: 0
+      # core environ
+      DUMP_MIME: 1
+      DUMP_PATH: /dump/
+      PCAP_PATH: /pcap/
+      LOGS_PATH: /var/log/bro/
     image: broapt-core
     volumes:
       - /home/traffic/pcapfile:/pcap

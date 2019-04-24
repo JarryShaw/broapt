@@ -24,6 +24,8 @@ For development environment, `make` and `pipenv` are the two things playing arou
 
 ## Environment
 
+- `BRO_MIME` -- Bro MIME while list
+
 - `CORE_CPU` -- concurrent process limit (*default*: 5)
 - `CORE_INT` -- sleep interval (*default*: 10s)
 

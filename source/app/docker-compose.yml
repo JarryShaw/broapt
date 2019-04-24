@@ -7,8 +7,24 @@ services:
     build: .
     container_name: broapt-app
     entrypoint: ["bash", "/source/init.sh"]
-    env_file:
-      - ./source/.env
+    environment:
+      # concurrent process limit
+      APP_CPU: 10
+      # sleep interval
+      APP_INT: 10
+      # app environ
+      DUMP_MIME: 1
+      DUMP_PATH: /dump/
+      LOGS_PATH: /var/log/bro/
+      # model environ
+      DEFAULT_API: default.py
+      API_SUFFIX: ""
+      MODEL_PATH: /model/
+      # VirusTotal
+      VT_API: f8b5e766a0d15fa2b3d6b3bdd526d4346816c09b78409632d5b8fa88a3a21940
+      VT_LOG: /var/log/bro/tmp/
+      VT_INT: 10
+      VT_RETRY: 6
     image: broapt-app
     volumes:
       - /home/traffic/log/extract:/dump

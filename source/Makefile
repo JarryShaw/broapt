@@ -2,7 +2,7 @@
 
 include .env
 
-archive: archive-app archive-core
+archive: archive-app archive-core archive-test
 clean: clean-app clean-core
 docker-up: docker-up-app docker-up-core
 docker-stop: docker-stop-app docker-stop-core
@@ -25,10 +25,15 @@ archive-app:
 
 archive-core:
 	mkdir -p archive
-	mv core bro
-	tar -cvzf broapt-core.tar.gz bro
-	mv bro core
+	tar -cvzf broapt-core.tar.gz core
 	mv broapt-core.tar.gz archive
+
+archive-test:
+	[ -d test ] || false
+	mv test bro
+	tar -cvzf bro.tar.gz bro
+	mv bro.tar.gz archive
+	mv bro test
 
 clean-app:
 	$(MAKE) -C app clean
