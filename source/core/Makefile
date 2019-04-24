@@ -1,25 +1,18 @@
-.PHONY: init clean docker f2format vendor
+.PHONY: init clean docker vendor
 
 init: mkdir-dump mkdir-logs
 clean: clean-dump clean-logs clean-state
 
-docker: clean f2format
+docker: clean
 	sed -i "" "s/LABEL version.*/LABEL version=$(shell date +%Y.%m.%d)/" Dockerfile
 	docker build --rm --tag broapt-core .
 	docker system prune --volumes -f
 
-f2format:
-	rm -rf source/python
-	cp -rf source/python-dev source/python
-	pipenv run f2format \
-	    --no-archive \
-	    --encoding='UTF-8' \
-	    --python='3.7' source/python
-
 vendor:
 	rm -rf vendor
 	mkdir -p vendor vendor/{archive,python}
-	cp -f ../../vendor/archive/linux/bro-2.6.1.ubuntu.16.04.tar.gz vendor/archive
+	wget http://download.opensuse.org/repositories/network:bro/CentOS_7/network:bro.repo \
+	    -O vendor/archive/network-bro.repo
 	$(MAKE) -C ../../vendor/python/core download
 	find ../../vendor/python/core/download -iname '*.tar.gz' -type f -exec cp -f {} vendor/python \;
 	find ../../vendor/python/core/download -iname '*.whl' -type f -exec cp -f {} vendor/python \;

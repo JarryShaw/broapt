@@ -8,7 +8,7 @@ docker-up: docker-up-app docker-up-core
 docker-stop: docker-stop-app docker-stop-core
 docker-ps: docker-ps-app docker-ps-core
 docker-logs: docker-logs-app docker-logs-core
-f2format: f2format-app f2format-core
+f2format: f2format-app
 
 docker: clean docker-app docker-core
 	docker system prune --volumes -f
@@ -22,7 +22,6 @@ archive-app:
 	mkdir -p archive
 	tar -cvzf broapt-app.tar.gz app
 	mv broapt-app.tar.gz archive
-	scp archive/broapt-app.tar.gz ${SRV_PATH}/source/archive/
 
 archive-core:
 	mkdir -p archive
@@ -30,8 +29,6 @@ archive-core:
 	tar -cvzf broapt-core.tar.gz bro
 	mv bro core
 	mv broapt-core.tar.gz archive
-	scp archive/broapt-core.tar.gz ${SRV_PATH}/source/archive/
-	scp archive/broapt-core.tar.gz ${SRV_PATH}/../
 
 clean-app:
 	$(MAKE) -C app clean
@@ -71,6 +68,3 @@ docker-logs-core:
 
 f2format-app:
 	$(MAKE) -C app f2format
-
-f2format-core:
-	$(MAKE) -C core f2format

@@ -48,7 +48,7 @@ for mime, ext in mappings.items():
         else:
             continue
     if len(pure_ext) > 1:
-        print('{!r} -> {}'.format(mime, " | ".join(pure_ext)))
+        print(f'{mime!r} -> {" | ".join(pure_ext)}')
         try:
             usr_ext = raw_input('Please select an extension: ').strip().lstrip('.')
         except (EOFError, KeyboardInterrupt):
@@ -59,7 +59,7 @@ for mime, ext in mappings.items():
         mime2ext[mime] = ext[0].lstrip('.')
 
 # generate Bro file
-TEXT = '\n        '.join(sorted('["{}"] = "{}",'.format(mime, ext) for mime, ext in mime2ext.items()))
+TEXT = '\n        '.join(sorted(f'["{mime}"] = "{ext}",' for mime, ext in mime2ext.items()))
 FILE = '''\
 module FileExtraction;
 

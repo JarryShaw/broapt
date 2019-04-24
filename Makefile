@@ -127,9 +127,10 @@ gitlab-copy: gitlab-clean
 	mkdir -p ${REPO_PATH}/source
 	$(MAKE) -C source/app clean f2format vendor
 	find source -iname 'app' -depth 1 -exec cp -rf {} ${REPO_PATH}/source \;
-	$(MAKE) -C source/core clean f2format vendor
+	$(MAKE) -C source/core clean vendor
 	find source -iname 'core' -depth 1 -exec cp -rf {} ${REPO_PATH}/source \;
 	$(MAKE) -C source archive
+	find source -iname 'archive' -depth 1 -exec cp -rf {} ${REPO_PATH}/source \;
 	# copy vendor
 	mkdir -p ${REPO_PATH}/vendor
 	find vendor \

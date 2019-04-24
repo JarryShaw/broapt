@@ -53,9 +53,9 @@ LOGS_REGEX = re.compile(r'(?P<prefix>\s*redef logs\s*=\s*").*?(?P<suffix>"\s*;\s
 context = list()
 with open(os.path.join(ROOT, 'scripts', 'config.bro')) as config:
     for line in config:
-        line = MIME_REGEX.sub(r'\g<prefix>{}\g<suffix>'.format("T" if DUMP_MIME else "F"), line)
-        line = PATH_REGEX.sub(r'\g<prefix>{}\g<suffix>'.format(DUMP_PATH), line)
-        line = LOGS_REGEX.sub(r'\g<prefix>{}\g<suffix>'.format(os.path.join(LOGS_PATH, "processed_mime.log")), line)
+        line = MIME_REGEX.sub(rf'\g<prefix>{"T" if DUMP_MIME else "F"}\g<suffix>', line)
+        line = PATH_REGEX.sub(rf'\g<prefix>{DUMP_PATH}\g<suffix>', line)
+        line = LOGS_REGEX.sub(rf'\g<prefix>{os.path.join(LOGS_PATH, "processed_mime.log")}\g<suffix>', line)
         context.append(line)
 with open(os.path.join(ROOT, 'scripts', 'config.bro'), 'w') as config:
     config.writelines(context)
@@ -103,7 +103,7 @@ def parse_args(argv):
         elif os.path.isfile(arg) and is_pcap(arg):  # pylint: disable=else-if-used
             file_list.append(arg)
         else:
-            warnings.warn('invalid path: {!r}'.format(arg), UserWarning)
+            warnings.warn(f'invalid path: {arg!r}', UserWarning)
     return file_list
 
 
@@ -111,16 +111,16 @@ def process(file):
     with tempfile.TemporaryDirectory() as tempdir:
         os.chdir(tempdir)
         os.makedirs('dumps', exist_ok=True)
-        print('+ Working on PCAP: {!r}'.format(file))
+        print(f'+ Working on PCAP: {file!r}')
 
         start = time.time()
         try:
             subprocess.check_call(['bro', '--readfile', file,
                                    os.path.join(ROOT, 'scripts')])
         except subprocess.CalledProcessError:
-            print('+ Failed on PCAP: {!r}'.format(file))
+            print(f'+ Failed on PCAP: {file!r}')
         end = time.time()
-        print('+ Bro processing: {} seconds'.format(end-start))
+        print(f'+ Bro processing: {end-start} seconds')
     print(file, file=FILE)
 
 

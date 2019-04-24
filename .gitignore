@@ -24,8 +24,6 @@ test/
 sample/
 extract_files/
 
-source/archive/
-
 vendor/bro*
 
 # Created by https://www.gitignore.io/api/visualstudiocode,xcode,python,macos,linux

@@ -1,0 +1,7 @@
+[network_bro]
+name=The Bro Network Security Monitor (CentOS_7)
+type=rpm-md
+baseurl=http://download.opensuse.org/repositories/network:/bro/CentOS_7/
+gpgcheck=1
+gpgkey=http://download.opensuse.org/repositories/network:/bro/CentOS_7/repodata/repomd.xml.key
+enabled=1
