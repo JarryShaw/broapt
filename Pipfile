@@ -16,6 +16,7 @@ pypcapkit = {extras = ["dpkt"],version = ">=0.13.3.post2"}
 requests-futures = "*"
 peewee = "*"
 pymysql = "*"
+pefile = "*"
 
 [requires]
 python_version = "3.7"
