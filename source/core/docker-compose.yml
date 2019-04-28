@@ -9,7 +9,7 @@ services:
     entrypoint: ["bash", "/source/init.sh"]
     environment:
       # Bro MIME whilelist
-      BRO_MIME: ""
+      BRO_MIME: application/x-dosexec,application/msword,application/pdf,application/vnd.android.package-archive
       # concurrent process limit
       CORE_CPU: 5
       # sleep interval

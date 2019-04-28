@@ -1,6 +1,6 @@
 # basic info
 FROM library/centos:7
-LABEL version=2019.04.24
+LABEL version=2019.04.28
 
 # set up environment variables
 ENV LANG "C.UTF-8"
@@ -28,7 +28,7 @@ RUN yum install -y bro
 
 # install Python packages & dependencies
 COPY vendor/python /tmp/python
-RUN python3 -m pip install --no-deps --cache-dir=/tmp/pip \
+RUN python3.6 -m pip install --no-deps --cache-dir=/tmp/pip \
         /tmp/python/setuptools-* \
         /tmp/python/pip-* \
         /tmp/python/wheel-* \
@@ -36,7 +36,7 @@ RUN python3 -m pip install --no-deps --cache-dir=/tmp/pip \
         /tmp/python/pip-* \
         /tmp/python/setuptools-* \
         /tmp/python/wheel-* \
- && python3 -m pip install --no-deps --cache-dir=/tmp/pip \
+ && python3.6 -m pip install --no-deps --cache-dir=/tmp/pip \
         /tmp/python/*
 
 # copy source

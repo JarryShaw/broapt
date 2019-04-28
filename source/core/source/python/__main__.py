@@ -9,7 +9,6 @@ import pathlib
 import re
 import subprocess
 import sys
-import tempfile
 import time
 import warnings
 
@@ -108,19 +107,20 @@ def parse_args(argv):
 
 
 def process(file):
-    with tempfile.TemporaryDirectory() as tempdir:
-        os.chdir(tempdir)
-        os.makedirs('dumps', exist_ok=True)
-        print(f'+ Working on PCAP: {file!r}')
+    print(f'+ Working on PCAP: {file!r}')
 
-        start = time.time()
-        try:
-            subprocess.check_call(['bro', '--readfile', file,
-                                   os.path.join(ROOT, 'scripts')])
-        except subprocess.CalledProcessError:
-            print(f'+ Failed on PCAP: {file!r}')
-        end = time.time()
-        print(f'+ Bro processing: {end-start} seconds')
+    env = os.environ
+    env['BRO_LOG_SUFFIX'] = f'{pathlib.Path(file).stem}.log'
+
+    start = time.time()
+    try:
+        subprocess.check_call(['bro', '--readfile', file,
+                               os.path.join(ROOT, 'scripts')], env=env)
+    except subprocess.CalledProcessError:
+        print(f'+ Failed on PCAP: {file!r}')
+    end = time.time()
+
+    print(f'+ Bro processing: {end-start} seconds')
     print(file, file=FILE)
 
 

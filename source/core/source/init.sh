@@ -11,4 +11,7 @@ if [ -f .env ] ; then
 fi
 
 # run scripts
-python3.6 python
+python3.6 python $@
+
+# sleep
+sleep infinity
