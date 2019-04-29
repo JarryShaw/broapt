@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=no-member
 
+import ast
 import builtins
 import contextlib
 import multiprocessing
@@ -45,17 +46,56 @@ DUMP_PATH = os.getenv('DUMP_PATH', '/dump/').strip()
 PCAP_PATH = os.getenv('PCAP_PATH', '/pcap/').strip()
 LOGS_PATH = os.getenv('LOGS_PATH', '/var/log/bro/').strip()
 
+# buffer size
+BUF_SIZE = os.getenv('BUF_SIZE')
+if BUF_SIZE is not None:
+    try:
+        ast.literal_eval(BUF_SIZE)
+    except SyntaxError:
+        BUF_SIZE = '0xffffffffffffffff'
+
+# template plugin
+FILE_TEMP = '''\
+@load ../__load__.bro
+
+module FileExtraction;
+
+hook FileExtraction::extract(f: fa_file, meta: fa_metadata) &priority=5 {
+    if ( meta?$mime_type && meta$mime_type == "%s")
+        break;
+}
+'''
+
+# MIME white list
+LOAD_MIME = os.getenv('BRO_MIME')
+if LOAD_MIME is not None:
+    load_file = list()
+    for mime_type in filter(len, re.split(r'\s*[,;|]\s*', LOAD_MIME)):
+        safe_mime = re.sub(r'\W', r'-', mime_type, re.ASCII)
+        file_name = os.path.join('.', 'plugins', f'extract-{safe_mime}.bro')
+        load_file.append(file_name)
+        with open(os.path.join(ROOT, 'scripts', file_name), 'w') as zeek_file:
+            zeek_file.write(FILE_TEMP % mime_type)
+else:
+    load_file = [os.path.join('.', 'plugins', 'extract-all-files.bro')]
+
 # update Bro scripts
 MIME_REGEX = re.compile(r'(?P<prefix>\s*redef mime\s*=\s*)[TF](?P<suffix>\s*;\s*)')
+SIZE_REGEX = re.compile(r'(?P<prefix>\s*redef size\s*=\s*).*?(?P<suffix>\s*;\s*)')
 PATH_REGEX = re.compile(r'(?P<prefix>\s*redef path\s*=\s*").*?(?P<suffix>"\s*;\s*)')
 LOGS_REGEX = re.compile(r'(?P<prefix>\s*redef logs\s*=\s*").*?(?P<suffix>"\s*;\s*)')
+LOAD_REGEX = re.compile(r'^@load\s+.*?\s*')
 context = list()
 with open(os.path.join(ROOT, 'scripts', 'config.bro')) as config:
     for line in config:
         line = MIME_REGEX.sub(rf'\g<prefix>{"T" if DUMP_MIME else "F"}\g<suffix>', line)
+        line = SIZE_REGEX.sub(rf'\g<prefix>{BUF_SIZE}\g<suffix>', line)
         line = PATH_REGEX.sub(rf'\g<prefix>{DUMP_PATH}\g<suffix>', line)
         line = LOGS_REGEX.sub(rf'\g<prefix>{os.path.join(LOGS_PATH, "processed_mime.log")}\g<suffix>', line)
+        if LOAD_REGEX.match(line) is not None:
+            break
         context.append(line)
+context.extend(f'@load {file_name}\n' for file_name in load_file)
 with open(os.path.join(ROOT, 'scripts', 'config.bro'), 'w') as config:
     config.writelines(context)
 

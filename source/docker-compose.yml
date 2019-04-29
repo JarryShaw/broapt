@@ -8,7 +8,7 @@ services:
     container_name: broapt-core
     entrypoint: ["bash", "/source/init.sh"]
     env_file:
-      - ./core/source/.env
+      - ./core/.env
     image: broapt-core
     volumes:
       - /home/traffic/pcapfile:/pcap
@@ -23,7 +23,7 @@ services:
     container_name: broapt-app
     entrypoint: ["bash", "/source/init.sh"]
     env_file:
-      - ./app/source/.env
+      - ./app/.env
     image: broapt-app
     volumes:
       - /home/traffic/log/extract:/dump

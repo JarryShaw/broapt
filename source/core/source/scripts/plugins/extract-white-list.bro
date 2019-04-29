@@ -3,7 +3,7 @@
 module FileExtraction;
 
 hook FileExtraction::extract(f: fa_file, meta: fa_metadata) &priority=5 {
-    local mime_wl: string_vec = split_string(getenv("BRO_MIME"), /[[:space:]]*,[[:space:]]*/);
+    local mime_wl: string_vec = split_string(getenv("BRO_MIME"), /[[:space:]]*[,;|][[:space:]]*/);
     if ( meta?$mime_type ) {
         local mime_flag: bool = F;
         local mime_type: string = meta$mime_type;
@@ -13,8 +13,7 @@ hook FileExtraction::extract(f: fa_file, meta: fa_metadata) &priority=5 {
                 break;
             }
         }
-        if ( mime_flag ) {
+        if ( mime_flag )
             break;
-        }
     }
 }

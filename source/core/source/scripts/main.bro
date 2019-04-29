@@ -5,11 +5,13 @@ module FileExtraction;
 
 export {
     ## If store files by MIME types
-    const mime: bool = T &redef;
+    option mime: bool = T;
+    ## Buffer size for file reassembly
+    option size: count = Files::reassembly_buffer_size;
     ## Path to store files
-    const path: string = FileExtract::prefix &redef;
+    option path: string = FileExtract::prefix;
     ## Path to missing MIME log file
-    const logs: string = "/var/log/bro/processed_mime.log" &redef;
+    option logs: string = "/var/log/bro/processed_mime.log";
 
     ## Hook to include files in extraction
     global extract: hook(f: fa_file, meta: fa_metadata);
