@@ -26,6 +26,7 @@ For development environment, `make` and `pipenv` are the two things playing arou
 
 - `BRO_MIME` -- Bro MIME while list
 - `BUF_SIZE` -- Bro file reassembly buffer size
+- `SIZE_LIMIT` -- Bro extracted file size limit
 
 - `CORE_CPU` -- concurrent process limit (*default*: 5)
 - `CORE_INT` -- sleep interval (*default*: 10s)

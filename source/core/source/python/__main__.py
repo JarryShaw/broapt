@@ -47,12 +47,18 @@ PCAP_PATH = os.getenv('PCAP_PATH', '/pcap/').strip()
 LOGS_PATH = os.getenv('LOGS_PATH', '/var/log/bro/').strip()
 
 # buffer size
-BUF_SIZE = os.getenv('BUF_SIZE')
-if BUF_SIZE is not None:
-    try:
-        ast.literal_eval(BUF_SIZE)
-    except SyntaxError:
-        BUF_SIZE = '0xffffffffffffffff'
+BUF_SIZE = os.getenv('BUF_SIZE', '0xffffffffffffffff')
+try:
+    int(ast.literal_eval(BUF_SIZE))
+except (ValueError, TypeError, SyntaxError):
+    BUF_SIZE = '0xffffffffffffffff'
+
+# size limit
+SIZE_LIMIT = os.getenv('SIZE_LIMIT', '0')
+try:
+    int(ast.literal_eval(SIZE_LIMIT))
+except (ValueError, TypeError, SyntaxError):
+    SIZE_LIMIT = '0'
 
 # template plugin
 FILE_TEMP = '''\
@@ -79,19 +85,25 @@ if LOAD_MIME is not None:
 else:
     load_file = [os.path.join('.', 'plugins', 'extract-all-files.bro')]
 
-# update Bro scripts
+# prepare regex
+BUFFER_REGEX = re.compile(r'(?P<prefix>\s*redef buffer_size\s*=\s*).*?(?P<suffix>\s*;\s*)')
+LIMIT_REGEX = re.compile(r'(?P<prefix>\s*redef size_limit\s*=\s*).*?(?P<suffix>\s*;\s*)')
 MIME_REGEX = re.compile(r'(?P<prefix>\s*redef mime\s*=\s*)[TF](?P<suffix>\s*;\s*)')
-SIZE_REGEX = re.compile(r'(?P<prefix>\s*redef size\s*=\s*).*?(?P<suffix>\s*;\s*)')
 PATH_REGEX = re.compile(r'(?P<prefix>\s*redef path\s*=\s*").*?(?P<suffix>"\s*;\s*)')
 LOGS_REGEX = re.compile(r'(?P<prefix>\s*redef logs\s*=\s*").*?(?P<suffix>"\s*;\s*)')
 LOAD_REGEX = re.compile(r'^@load\s+.*?\s*')
+
+# update Bro scripts
 context = list()
 with open(os.path.join(ROOT, 'scripts', 'config.bro')) as config:
     for line in config:
         line = MIME_REGEX.sub(rf'\g<prefix>{"T" if DUMP_MIME else "F"}\g<suffix>', line)
-        line = SIZE_REGEX.sub(rf'\g<prefix>{BUF_SIZE}\g<suffix>', line)
         line = PATH_REGEX.sub(rf'\g<prefix>{DUMP_PATH}\g<suffix>', line)
         line = LOGS_REGEX.sub(rf'\g<prefix>{os.path.join(LOGS_PATH, "processed_mime.log")}\g<suffix>', line)
+
+        line = BUFFER_REGEX.sub(rf'\g<prefix>{BUF_SIZE}\g<suffix>', line)
+        line = LIMIT_REGEX.sub(rf'\g<prefix>{SIZE_LIMIT}\g<suffix>', line)
+
         if LOAD_REGEX.match(line) is not None:
             break
         context.append(line)

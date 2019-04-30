@@ -12,6 +12,8 @@ services:
       BRO_MIME: application/x-dosexec;application/msword;application/pdf;application/vnd.android.package-archive
       # Bro buffer size
       BUF_SIZE: 0xffffffffffffffff
+      # Bro size limit
+      SIZE_LIMIT: 0
       # concurrent process limit
       CORE_CPU: 5
       # sleep interval

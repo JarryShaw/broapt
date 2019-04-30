@@ -6,12 +6,15 @@ module FileExtraction;
 export {
     ## If store files by MIME types
     option mime: bool = T;
-    ## Buffer size for file reassembly
-    option size: count = Files::reassembly_buffer_size;
     ## Path to store files
     option path: string = FileExtract::prefix;
     ## Path to missing MIME log file
     option logs: string = "/var/log/bro/processed_mime.log";
+
+    ## Buffer size for file reassembly
+    option buffer_size: count = Files::reassembly_buffer_size;
+    ## Size limit for extracted files
+    option size_limit: count = FileExtract::default_limit;
 
     ## Hook to include files in extraction
     global extract: hook(f: fa_file, meta: fa_metadata);
