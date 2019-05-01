@@ -10,8 +10,7 @@ ENV PATH="/usr/local/bro/bin:${PATH}"
 
 # install, Bro & all requirements
 RUN apt-get update \
- && apt-get upgrade -y \
- && apt-get install -y \
+ && apt-get install -y --no-install-recommends \
         wget \
         ## prerequisites for building Bro & Broker
         ## from https://docs.zeek.org/en/stable/install/install.html#prerequisites
@@ -28,7 +27,8 @@ RUN apt-get update \
         zlib1g-dev
 
 # build Bro, Broker & its Python binding
-RUN wget -nv https://www.zeek.org/downloads/bro-2.6.1.tar.gz -O /tmp/bro-2.6.1.tar.gz
+RUN wget -nv --no-check-certificate \
+        https://www.zeek.org/downloads/bro-2.6.1.tar.gz -O /tmp/bro-2.6.1.tar.gz
 RUN tar -xzf /tmp/bro-2.6.1.tar.gz \
  && cd bro-2.6.1 \
  && ./configure \
@@ -41,7 +41,7 @@ RUN rm -rf \
         ## Bro build & archive
         /bro-2.6.1 \
         /tmp/bro-2.6.1.tar.gz \
- &&  apt-get remove -y \
+ &&  apt-get remove -y --auto-remove \
         wget \
         ## Bro & Broker
         cmake \

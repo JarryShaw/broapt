@@ -6,13 +6,12 @@ LABEL version 1.1.2
 ENV LANG "C.UTF-8"
 ENV LC_ALL "C.UTF-8"
 ENV PYTHONIOENCODING "UTF-8"
-ENV PATH="/usr/local/bro/bin:${PATH}"
-ENV PYTHONPATH="/usr/lib/python2.7/site-packages"
+ENV PATH "/usr/local/bro/bin:${PATH}"
+ENV PYTHONPATH "/usr/lib/python2.7/site-packages"
 
 # install, Bro, Python & all requirements
 RUN apt-get update \
- && apt-get upgrade -y \
- && apt-get install -y \
+ && apt-get install -y --no-install-recommends \
         wget \
         ## prerequisites for building Bro & Broker
         ## from https://docs.zeek.org/en/stable/install/install.html#prerequisites
@@ -26,13 +25,13 @@ RUN apt-get update \
         libssl-dev \
         python-dev \
         swig \
-        zlib1g-dev \
- && apt-get autoremove -y \
- && rm -rf /var/lib/apt/lists/*
+        zlib1g-dev
 
 # build Bro, Broker & its Python binding
-RUN wget -nv https://www.zeek.org/downloads/bro-2.6.1.tar.gz -O /tmp/bro-2.6.1.tar.gz \
- && wget -nv https://www.zeek.org/downloads/broker-1.1.2.tar.gz -O /tmp/broker-1.1.2.tar.gz
+RUN wget -nv --no-check-certificate \
+        https://www.zeek.org/downloads/bro-2.6.1.tar.gz -O /tmp/bro-2.6.1.tar.gz \
+ && wget -nv --no-check-certificate \
+        https://www.zeek.org/downloads/broker-1.1.2.tar.gz -O /tmp/broker-1.1.2.tar.gz
 RUN tar -xzf /tmp/bro-2.6.1.tar.gz \
  && cd bro-2.6.1 \
  && ./configure \
@@ -55,8 +54,7 @@ RUN rm -rf \
         ## Broker build & archive
         /broker-1.1.2 \
         /tmp/broker-1.1.2.tar.gz \
- &&  apt-get remove -y \
-        software-properties-common \
+ && apt-get remove -y --auto-remove \
         wget \
         ## Bro & Broker
         cmake \

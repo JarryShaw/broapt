@@ -7,9 +7,11 @@ ENV PYTHONIOENCODING="UTF-8"
 ENV PATH="/opt/bro/bin:${PATH}"
 
 # install, Bro, Python 3 & all requirements
+COPY vendor/archive/network-bro.repo /etc/yum.repos.d/
 RUN yum install -y \
         https://centos7.iuscommunity.org/ius-release.rpm \
  && yum install -y \
+        bro \
         ## python36u is actually dependency of the latter
         ## but we keep it here as a good remainder
         python36u \
@@ -17,10 +19,6 @@ RUN yum install -y \
         ## dependency of python-magic
         ## python-magic on yum is of Python 2.7
         file
-
-# install Bro
-COPY vendor/archive/network-bro.repo /etc/yum.repos.d/
-RUN yum install -y bro
 
 # install Python packages & dependencies
 COPY vendor/python /tmp/python

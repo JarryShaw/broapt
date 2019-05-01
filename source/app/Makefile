@@ -1,20 +1,12 @@
-.PHONY: init clean docker f2format vendor
+.PHONY: init clean docker vendor
 
 init: mkdir-dump mkdir-logs
 clean: clean-dump clean-logs
 
-docker: clean f2format
+docker: clean
 	sed -i "" "s/LABEL version.*/LABEL version=$(shell date +%Y.%m.%d)/" Dockerfile
 	docker build --rm --tag broapt-app .
 	docker system prune --volumes -f
-
-f2format:
-	rm -rf source/python
-	cp -rf source/python-dev source/python
-	pipenv run f2format \
-	    --no-archive \
-	    --encoding='UTF-8' \
-	    --python='3.7' source/python
 
 vendor:
 	rm -rf vendor/python

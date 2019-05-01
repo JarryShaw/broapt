@@ -76,7 +76,7 @@ def main():
         else:
             return EXIT_FAILURE
 
-        log_name = '{}.json'.format(os.path.splitext(name)[0])
+        log_name = f'{os.path.splitext(name)[0]}.json'
         with open(os.path.join(VT_LOG, log_name), 'w') as log:
             json.dump(report_json, log, indent=2)
 

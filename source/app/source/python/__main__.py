@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 
-import collections
+import dataclasses
 import multiprocessing
 import os
 import pathlib
 import subprocess
 import sys
 import time
+
+# repo root path
+ROOT = str(pathlib.Path(__file__).parents[1].resolve())
 
 # limit on CPU
 try:
@@ -19,8 +22,13 @@ except (ValueError, TypeError):
     else:
         CPU_CNT = os.cpu_count() or 1
 
-# repo root path
-ROOT = str(pathlib.Path(__file__).parents[1].resolve())
+# sleep interval
+try:
+    INTERVAL = int(os.getenv('APP_INT'))
+except (TypeError, ValueError):
+    INTERVAL = 10
+
+# fetch environ
 API_PATH = os.path.join(os.path.dirname(__file__), 'api')
 API_SUFFIX = os.getenv('API_SUFFIX', '')
 DEFAULT_API = os.getenv('DEFAULT_API', 'default.py')
@@ -31,21 +39,24 @@ BOOLEAN_STATES = {'1': True, '0': False,
                   'true': True, 'false': False,
                   'on': True, 'off': False}
 DUMP_MIME = BOOLEAN_STATES.get(os.getenv('DUMP_MIME', 'false').strip().lower(), False)
-DUMP_PATH = os.getenv('DUMP_PATH', '/dump/').strip()
 LOGS_PATH = os.getenv('LOGS_PATH', '/var/log/bro/').strip()
+DUMP_PATH = os.getenv('DUMP_PATH').strip()
+if DUMP_PATH is None:
+    try:
+        DUMP_PATH = subprocess.check_output(['bro', '-e', 'print(FileExtract::prefix)']).strip()
+    except subprocess.CalledProcessError:
+        DUMP_PATH = './extract_files/'
 
 # log files
 FILE = os.path.join(LOGS_PATH, 'processed_dump.log')
 FAIL = os.path.join(LOGS_PATH, 'processed_fail.log')
 
 # entry class
-Entry = collections.namedtuple('Entry', ['path', 'name', 'mime'])
-
-# sleep interval
-try:
-    INTERVAL = int(os.getenv('APP_INT'))
-except (TypeError, ValueError):
-    INTERVAL = 10
+@dataclasses.dataclass
+class Entry:
+    path: str
+    name: str
+    mime: str
 
 
 def print_file(s, file=FILE):
@@ -54,7 +65,7 @@ def print_file(s, file=FILE):
 
 
 def process(entry):
-    api_path = os.path.join(API_PATH, '{}{}'.format(entry.mime, API_SUFFIX))
+    api_path = os.path.join(API_PATH, f'{entry.mime}{API_SUFFIX}')
     if not os.path.exists(api_path):
         api_path = os.path.join(API_PATH, DEFAULT_API)
 
@@ -71,7 +82,7 @@ def list_dir(path):
         file_list = list()
         for content_type in filter(lambda entry: entry.is_dir(), os.scandir(path)):
             for subtype in filter(lambda entry: entry.is_dir(), os.scandir(content_type.path)):
-                mime = '{}/{}'.format(content_type.name, subtype.name)
+                mime = f'{content_type.name}/{subtype.name}'
                 file_list.extend(Entry(path=entry.path, name=entry.name, mime=mime)
                                  for entry in filter(lambda entry: entry.is_file(), os.scandir(subtype.path)))
     else:
