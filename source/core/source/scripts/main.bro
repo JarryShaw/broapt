@@ -9,8 +9,11 @@ export {
     ## Path to missing MIME log file
     option logs: string = "/var/log/bro/processed_mime.log";
 
+    ## Change hash salt
+    const file_salt: string = Files::salt &redef;
     ## Buffer size for file reassembly
     const file_buffer: count = Files::reassembly_buffer_size &redef;
+
     ## Path to store files
     const path_prefix: string = FileExtract::prefix &redef;
     ## Size limit for extracted files
@@ -55,10 +58,4 @@ event file_sniff(f: fa_file, meta: fa_metadata) {
         local name = fmt("%s/%s-%s.%s", mgct, f$source, f$id, fext);
         Files::add_analyzer(f, Files::ANALYZER_EXTRACT, [$extract_filename=name]);
     }
-}
-
-event bro_init() &priority=10 {
-    local file_salt: string = getenv("BRO_FILES_SALT");
-    if ( |file_salt| != 0 )
-        redef Files::salt = file_salt;
 }

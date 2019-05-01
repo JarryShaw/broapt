@@ -39,7 +39,7 @@ clean-logs-processed:
 	    for file in $$(ls /home/traffic/log/bro) ; do \
 	        [ -d "/home/traffic/log/bro/$${file}" ] && \
 		    [ "/home/traffic/log/bro/$${file}" != "tmp" ] && \
-		    rm -rf "/home/traffic/log/bro/$${file}"; \
+		    rm -rf "/home/traffic/log/bro/$${file}" || true; \
 	    done \
 	else \
 	    > ../logs/processed_file.log; \

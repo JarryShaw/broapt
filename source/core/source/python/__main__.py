@@ -102,6 +102,7 @@ else:
 # prepare regex
 MIME_REGEX = re.compile(r'(?P<prefix>\s*redef mime\s*=\s*)[TF](?P<suffix>\s*;\s*)')
 LOGS_REGEX = re.compile(r'(?P<prefix>\s*redef logs\s*=\s*").*?(?P<suffix>"\s*;\s*)')
+SALT_REGEX = re.compile(r'(?P<prefix>\s*redef file_salt\s*=\s*).*?(?P<suffix>\s*;\s*)')
 FILE_REGEX = re.compile(r'(?P<prefix>\s*redef file_buffer\s*=\s*).*?(?P<suffix>\s*;\s*)')
 PATH_REGEX = re.compile(r'(?P<prefix>\s*redef path_prefix\s*=\s*).*?(?P<suffix>\s*;\s*)')
 SIZE_REGEX = re.compile(r'(?P<prefix>\s*redef size_limit\s*=\s*).*?(?P<suffix>\s*;\s*)')
@@ -113,6 +114,7 @@ with open(os.path.join(ROOT, 'scripts', 'config.bro')) as config:
     for line in config:
         line = MIME_REGEX.sub(rf'\g<prefix>{"T" if DUMP_MIME else "F"}\g<suffix>', line)
         line = LOGS_REGEX.sub(rf'\g<prefix>{os.path.join(LOGS_PATH, "processed_mime.log")}\g<suffix>', line)
+        line = SALT_REGEX.sub(rf'\g<prefix>"{uuid.uuid4()}"\g<suffix>', line)
         line = FILE_REGEX.sub(rf'\g<prefix>{FILE_BUFFER}\g<suffix>', line)
         line = PATH_REGEX.sub(rf'\g<prefix>{DUMP_PATH}\g<suffix>', line)
         line = SIZE_REGEX.sub(rf'\g<prefix>{SIZE_LIMIT}\g<suffix>', line)
@@ -171,7 +173,6 @@ def process(file):
     uid = uuid.uuid4()
 
     env = os.environ
-    env['BRO_FILES_SALT'] = str(uid)
     env['BRO_LOG_SUFFIX'] = f'{uid}.log'
 
     start = time.time()

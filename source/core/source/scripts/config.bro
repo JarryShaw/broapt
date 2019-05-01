@@ -8,6 +8,13 @@ redef mime = T;
 ## Configure path to missing MIME log file
 redef logs = "/var/log/bro/processed_mime.log";
 
+# Configure hash salt
+redef file_salt = Files::salt;
+
+@if ( file_salt != Files::salt )
+    redef Files::salt = file_salt;
+@endif
+
 # Configure buffer size for file reassembly
 redef file_buffer = Files::reassembly_buffer_size;
 
