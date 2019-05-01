@@ -4,16 +4,23 @@
 import ast
 import builtins
 import contextlib
+import ctypes
+import glob
 import multiprocessing
 import os
 import pathlib
 import re
+import shutil
 import subprocess
 import sys
 import time
+import uuid
 import warnings
 
 import magic
+
+# repo root path
+ROOT = str(pathlib.Path(__file__).parents[1].resolve())
 
 # limit on CPU
 try:
@@ -26,8 +33,11 @@ except (ValueError, TypeError):
     else:
         CPU_CNT = os.cpu_count() or 1
 
-# repo root path
-ROOT = str(pathlib.Path(__file__).parents[1].resolve())
+# sleep interval
+try:
+    INTERVAL = int(os.getenv('CORE_INT'))
+except (TypeError, ValueError):
+    INTERVAL = 10
 
 # PCAP magic numbers
 PCAP_MGC = (b'\xa1\xb2\x3c\x4d',
@@ -37,30 +47,34 @@ PCAP_MGC = (b'\xa1\xb2\x3c\x4d',
             b'\x0a\x0d\x0d\x0a')
 
 # Bro config
+## group by MIME flag
 BOOLEAN_STATES = {'1': True, '0': False,
                   'yes': True, 'no': False,
                   'true': True, 'false': False,
                   'on': True, 'off': False}
 DUMP_MIME = BOOLEAN_STATES.get(os.getenv('DUMP_MIME', 'true').strip().lower(), True)
-DUMP_PATH = os.getenv('DUMP_PATH', '/dump/').strip()
-PCAP_PATH = os.getenv('PCAP_PATH', '/pcap/').strip()
+## log file path
 LOGS_PATH = os.getenv('LOGS_PATH', '/var/log/bro/').strip()
-
-# buffer size
-BUF_SIZE = os.getenv('BUF_SIZE', '0xffffffffffffffff')
+## extract files path
+DUMP_PATH = os.getenv('DUMP_PATH')
+if DUMP_PATH is None:
+    DUMP_PATH = 'FileExtract::prefix'
+else:
+    DUMP_PATH = '"%s"' % DUMP_PATH.replace('"', '\\"')
+## source PCAP path
+PCAP_PATH = os.getenv('PCAP_PATH', '/pcap/').strip()
+## buffer size
 try:
-    int(ast.literal_eval(BUF_SIZE))
-except (ValueError, TypeError, SyntaxError):
-    BUF_SIZE = '0xffffffffffffffff'
-
-# size limit
-SIZE_LIMIT = os.getenv('SIZE_LIMIT', '0')
+    FILE_BUFFER = ctypes.c_uint64(ast.literal_eval(os.getenv('FILE_BUFFER'))).value
+except (SyntaxError, TypeError, ValueError):
+    FILE_BUFFER = 'Files::reassembly_buffer_size'
+## size limit
 try:
-    int(ast.literal_eval(SIZE_LIMIT))
-except (ValueError, TypeError, SyntaxError):
-    SIZE_LIMIT = '0'
+    SIZE_LIMIT = ctypes.c_uint64(ast.literal_eval(os.getenv('SIZE_LIMIT'))).value
+except (SyntaxError, TypeError, ValueError):
+    SIZE_LIMIT = 'FileExtract::default_limit'
 
-# template plugin
+# plugin template
 FILE_TEMP = '''\
 @load ../__load__.bro
 
@@ -86,11 +100,11 @@ else:
     load_file = [os.path.join('.', 'plugins', 'extract-all-files.bro')]
 
 # prepare regex
-BUFFER_REGEX = re.compile(r'(?P<prefix>\s*redef buffer_size\s*=\s*).*?(?P<suffix>\s*;\s*)')
-LIMIT_REGEX = re.compile(r'(?P<prefix>\s*redef size_limit\s*=\s*).*?(?P<suffix>\s*;\s*)')
 MIME_REGEX = re.compile(r'(?P<prefix>\s*redef mime\s*=\s*)[TF](?P<suffix>\s*;\s*)')
-PATH_REGEX = re.compile(r'(?P<prefix>\s*redef path\s*=\s*").*?(?P<suffix>"\s*;\s*)')
 LOGS_REGEX = re.compile(r'(?P<prefix>\s*redef logs\s*=\s*").*?(?P<suffix>"\s*;\s*)')
+FILE_REGEX = re.compile(r'(?P<prefix>\s*redef file_buffer\s*=\s*).*?(?P<suffix>\s*;\s*)')
+PATH_REGEX = re.compile(r'(?P<prefix>\s*redef path_prefix\s*=\s*).*?(?P<suffix>\s*;\s*)')
+SIZE_REGEX = re.compile(r'(?P<prefix>\s*redef size_limit\s*=\s*).*?(?P<suffix>\s*;\s*)')
 LOAD_REGEX = re.compile(r'^@load\s+.*?\s*')
 
 # update Bro scripts
@@ -98,12 +112,10 @@ context = list()
 with open(os.path.join(ROOT, 'scripts', 'config.bro')) as config:
     for line in config:
         line = MIME_REGEX.sub(rf'\g<prefix>{"T" if DUMP_MIME else "F"}\g<suffix>', line)
-        line = PATH_REGEX.sub(rf'\g<prefix>{DUMP_PATH}\g<suffix>', line)
         line = LOGS_REGEX.sub(rf'\g<prefix>{os.path.join(LOGS_PATH, "processed_mime.log")}\g<suffix>', line)
-
-        line = BUFFER_REGEX.sub(rf'\g<prefix>{BUF_SIZE}\g<suffix>', line)
-        line = LIMIT_REGEX.sub(rf'\g<prefix>{SIZE_LIMIT}\g<suffix>', line)
-
+        line = FILE_REGEX.sub(rf'\g<prefix>{FILE_BUFFER}\g<suffix>', line)
+        line = PATH_REGEX.sub(rf'\g<prefix>{DUMP_PATH}\g<suffix>', line)
+        line = SIZE_REGEX.sub(rf'\g<prefix>{SIZE_LIMIT}\g<suffix>', line)
         if LOAD_REGEX.match(line) is not None:
             break
         context.append(line)
@@ -114,12 +126,6 @@ with open(os.path.join(ROOT, 'scripts', 'config.bro'), 'w') as config:
 # log files
 FILE = os.path.join(LOGS_PATH, 'processed_file.log')
 TIME = os.path.join(LOGS_PATH, 'processed_time.log')
-
-# sleep interval
-try:
-    INTERVAL = int(os.getenv('CORE_INT'))
-except (TypeError, ValueError):
-    INTERVAL = 10
 
 
 def print(s, file=TIME):  # pylint: disable=redefined-builtin
@@ -161,8 +167,12 @@ def parse_args(argv):
 def process(file):
     print(f'+ Working on PCAP: {file!r}')
 
+    stem = pathlib.Path(file).stem
+    uid = uuid.uuid4()
+
     env = os.environ
-    env['BRO_LOG_SUFFIX'] = f'{pathlib.Path(file).stem}.log'
+    env['BRO_FILES_SALT'] = uid
+    env['BRO_LOG_SUFFIX'] = f'{uid}.log'
 
     start = time.time()
     try:
@@ -171,6 +181,13 @@ def process(file):
     except subprocess.CalledProcessError:
         print(f'+ Failed on PCAP: {file!r}')
     end = time.time()
+
+    dest = os.path.join(LOGS_PATH, f'{stem}-{uid}')
+    os.makedirs(dest, exist_ok=True)
+
+    for log in glob.glob(f'*.{uid}.log'):
+        with contextlib.suppress(OSError):
+            shutil.move(log, os.path.join(dest, log.replace(f'.{uid}.log', '.log')))
 
     print(f'+ Bro processing: {end-start} seconds')
     print(file, file=FILE)

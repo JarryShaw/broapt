@@ -1,19 +1,15 @@
 # basic info
 FROM library/centos:7
-LABEL version=2019.04.28
+LABEL version=2019.05.01
 
 # set up environment variables
-ENV LANG "C.UTF-8"
-ENV LC_ALL "C.UTF-8"
-ENV PYTHONIOENCODING "UTF-8"
+ENV PYTHONIOENCODING="UTF-8"
 ENV PATH="/opt/bro/bin:${PATH}"
 
 # install, Bro, Python 3 & all requirements
-RUN yum update -y \
- && yum install -y \
+RUN yum install -y \
         https://centos7.iuscommunity.org/ius-release.rpm \
  && yum install -y \
-        make \
         ## python36u is actually dependency of the latter
         ## but we keep it here as a good remainder
         python36u \

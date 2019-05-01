@@ -125,6 +125,9 @@ gitlab-copy: gitlab-clean
 	cp -rf docker ${REPO_PATH}
 	# copy source
 	mkdir -p ${REPO_PATH}/source
+	cp -f \
+	    source/docker-compose.yml \
+	    source/Makefile ${REPO_PATH}/source
 	$(MAKE) -C source/app clean f2format vendor
 	find source -iname 'app' -depth 1 -exec cp -rf {} ${REPO_PATH}/source \;
 	$(MAKE) -C source/core clean vendor

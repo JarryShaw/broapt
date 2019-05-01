@@ -21,6 +21,7 @@
         "sched",
         "sysconf",
         "tolist",
+        "uint",
         "zeek"
     ],
     "python.pythonPath": "${workspaceFolder}/.venv/bin/python",

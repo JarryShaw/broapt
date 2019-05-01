@@ -10,9 +10,9 @@ services:
     environment:
       # Bro MIME whilelist
       BRO_MIME: application/x-dosexec;application/msword;application/pdf;application/vnd.android.package-archive
-      # Bro buffer size
-      BUF_SIZE: 0xffffffffffffffff
-      # Bro size limit
+      # Bro file reassembly buffer size
+      #FILE_BUFFER: 0xffffffffffffffff
+      # Bro extract file size limit
       SIZE_LIMIT: 0
       # concurrent process limit
       CORE_CPU: 5
@@ -27,10 +27,10 @@ services:
       LOGS_PATH: /var/log/bro/
     image: broapt-core
     volumes:
-      - /home/traffic/pcapfile:/pcap
-      # - ../../sample:/pcap
-      - /home/traffic/log/extract:/dump
-      # - ../dump:/dump
-      - /home/traffic/log/bro:/var/log/bro
-      # - ../logs:/var/log/bro
+      # - /home/traffic/pcapfile:/pcap
+      - ../../sample:/pcap
+      # - /home/traffic/log/extract:/dump
+      - ../dump:/dump
+      # - /home/traffic/log/bro:/var/log/bro
+      - ../logs:/var/log/bro
     restart: "always"

@@ -6,15 +6,15 @@ module FileExtraction;
 export {
     ## If store files by MIME types
     option mime: bool = T;
-    ## Path to store files
-    option path: string = FileExtract::prefix;
     ## Path to missing MIME log file
     option logs: string = "/var/log/bro/processed_mime.log";
 
     ## Buffer size for file reassembly
-    option buffer_size: count = Files::reassembly_buffer_size;
+    const file_buffer: count = Files::reassembly_buffer_size &redef;
+    ## Path to store files
+    const path_prefix: string = FileExtract::prefix &redef;
     ## Size limit for extracted files
-    option size_limit: count = FileExtract::default_limit;
+    const size_limit: count = FileExtract::default_limit &redef;
 
     ## Hook to include files in extraction
     global extract: hook(f: fa_file, meta: fa_metadata);
@@ -45,8 +45,8 @@ event file_sniff(f: fa_file, meta: fa_metadata) {
 
         if ( mime ) {
             local root = split_string(mgct, /\//)[0];
-            mkdir(fmt("%s/%s", path, root));
-            mkdir(fmt("%s/%s", path, mgct));
+            mkdir(fmt("%s/%s", path_prefix, root));
+            mkdir(fmt("%s/%s", path_prefix, mgct));
         } else {
             mgct = ".";
             fext = cat(sub(mgct, /\//, "."), ".", fext);
@@ -55,4 +55,10 @@ event file_sniff(f: fa_file, meta: fa_metadata) {
         local name = fmt("%s/%s-%s.%s", mgct, f$source, f$id, fext);
         Files::add_analyzer(f, Files::ANALYZER_EXTRACT, [$extract_filename=name]);
     }
+}
+
+event bro_init() &priority=10 {
+    local file_salt: string = getenv("BRO_FILES_SALT");
+    if ( |file_salt| != 0 )
+        redef Files::salt = file_salt;
 }
