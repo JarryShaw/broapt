@@ -171,7 +171,7 @@ def process(file):
     uid = uuid.uuid4()
 
     env = os.environ
-    env['BRO_FILES_SALT'] = uid
+    env['BRO_FILES_SALT'] = str(uid)
     env['BRO_LOG_SUFFIX'] = f'{uid}.log'
 
     start = time.time()
