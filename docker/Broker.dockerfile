@@ -12,6 +12,10 @@ ENV PYTHONPATH "/usr/lib/python2.7/site-packages"
 # install, Bro, Python & all requirements
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
+        software-properties-common \
+ && add-apt-repository --yes ppa:deadsnakes/ppa
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
         wget \
         ## prerequisites for building Bro & Broker
         ## from https://docs.zeek.org/en/stable/install/install.html#prerequisites
@@ -23,7 +27,8 @@ RUN apt-get update \
         bison \
         libpcap-dev \
         libssl-dev \
-        python-dev \
+        # build with Python 3.6 instead
+        python3.6-dev \
         swig \
         zlib1g-dev
 
@@ -35,13 +40,14 @@ RUN wget -nv --no-check-certificate \
 RUN tar -xzf /tmp/bro-2.6.1.tar.gz \
  && cd bro-2.6.1 \
  && ./configure \
+        --with-python=/usr/bin/python3.6 \
  && make \
  && make install
 RUN tar -xzf /tmp/broker-1.1.2.tar.gz \
  && cd broker-1.1.2 \
  && ./configure \
-        --python-prefix=$(python -c 'import sys; print(sys.exec_prefix)') \
-        --with-python=/usr/bin/python \
+        --python-prefix=$(python3.6 -c 'import sys; print(sys.exec_prefix)') \
+        --with-python=/usr/bin/python3.6 \
  && make install
 
 # cleanup process
@@ -56,6 +62,7 @@ RUN rm -rf \
         /tmp/broker-1.1.2.tar.gz \
  && apt-get remove -y --auto-remove \
         wget \
+        software-properties-common \
         ## Bro & Broker
         cmake \
         make \

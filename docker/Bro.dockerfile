@@ -11,6 +11,10 @@ ENV PATH="/usr/local/bro/bin:${PATH}"
 # install, Bro & all requirements
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
+        software-properties-common \
+ && add-apt-repository --yes ppa:deadsnakes/ppa
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
         wget \
         ## prerequisites for building Bro & Broker
         ## from https://docs.zeek.org/en/stable/install/install.html#prerequisites
@@ -22,16 +26,18 @@ RUN apt-get update \
         bison \
         libpcap-dev \
         libssl-dev \
-        python-dev \
+        ## build with Python 3.6 instead
+        python3.6-dev \
         swig \
         zlib1g-dev
 
-# build Bro, Broker & its Python binding
+# build Bro
 RUN wget -nv --no-check-certificate \
         https://www.zeek.org/downloads/bro-2.6.1.tar.gz -O /tmp/bro-2.6.1.tar.gz
 RUN tar -xzf /tmp/bro-2.6.1.tar.gz \
  && cd bro-2.6.1 \
  && ./configure \
+        --with-python=/usr/bin/python3.6 \
  && make \
  && make install
 
@@ -43,6 +49,7 @@ RUN rm -rf \
         /tmp/bro-2.6.1.tar.gz \
  &&  apt-get remove -y --auto-remove \
         wget \
+        software-properties-common \
         ## Bro & Broker
         cmake \
         make \
