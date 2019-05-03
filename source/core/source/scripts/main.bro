@@ -1,5 +1,8 @@
-@load base/utils/paths
-@load ./file-extensions
+@load base/files/extract
+@load base/frameworks/files
+
+@load base/utils/paths.bro
+@load ./file-extensions.bro
 
 module FileExtraction;
 

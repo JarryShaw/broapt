@@ -1,2 +1,2 @@
-@load ./main
-@load ./config
+@load ./main.bro
+@load ./config.bro

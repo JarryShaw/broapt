@@ -1,4 +1,5 @@
 @load ../__load__.bro
+@load base/protocols/ftp/files.bro
 
 module FileExtraction;
 

@@ -1,6 +1,6 @@
 # basic info
 FROM library/centos:7
-LABEL version=2019.05.01
+LABEL version=2019.05.03
 
 # set up environment variables
 ENV PYTHONIOENCODING="UTF-8"
@@ -23,8 +23,8 @@ RUN yum install -y \
 # install Python packages & dependencies
 COPY vendor/python /tmp/python
 RUN python3.6 -m pip install --no-deps --cache-dir=/tmp/pip \
-        /tmp/python/setuptools-* \
         /tmp/python/pip-* \
+        /tmp/python/setuptools-* \
         /tmp/python/wheel-* \
  && rm -f \
         /tmp/python/pip-* \
@@ -41,4 +41,10 @@ RUN rm -rf \
         ## Python archives
         /tmp/python \
         /tmp/pip \
+ && python3.6 -m pip uninstall -y \
+        wheel \
+        setuptools \
+        pip \
+ && yum erase -y \
+        python36u-pip \
  && yum clean all -y
