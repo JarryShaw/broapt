@@ -2,6 +2,19 @@
 
 include .env
 
+export PIPENV_DONT_LOAD_ENV=1
+## core environ
+export DUMP_MIME=1
+export DUMP_PATH=/dump/
+export PCAP_PATH=/pcap/
+export LOGS_PATH=/var/log/bro/
+## Bro MIME whilelist
+export BRO_MIME=application/x-dosexec,application/msword,application/pdf,application/vnd.android.package-archive
+## buffer size
+# export FILE_BUFFER=0xffffffffffffffff
+## size limit
+export SIZE_LIMIT=0
+
 archive: archive-app archive-core archive-test
 clean: clean-app clean-core
 docker-up: docker-up-app docker-up-core
