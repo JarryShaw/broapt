@@ -2,7 +2,7 @@
 
 module FileExtraction;
 
-hook FileExtraction::extract(f: fa_file, meta: fa_metadata) &priority=5 {
+hook FileExtraction::extract(f: fa_file, meta: fa_metadata) {
     local mime_wl: string_vec = split_string(getenv("BRO_MIME"), /[[:space:]]*[,;|][[:space:]]*/);
     if ( meta?$mime_type ) {
         local mime_flag: bool = F;

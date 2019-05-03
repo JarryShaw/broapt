@@ -30,10 +30,11 @@ archive-core:
 
 archive-test:
 	[ -d test ] || false
-	mv test bro
+	cp -rf test bro
+	pipenv run python compose.py
 	tar -cvzf bro.tar.gz bro
 	mv bro.tar.gz archive
-	mv bro test
+	rm -rf bro
 
 clean-app:
 	$(MAKE) -C app clean
