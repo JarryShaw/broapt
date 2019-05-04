@@ -18,11 +18,12 @@ RUN yum install -y \
         python36u-pip \
         ## dependency of python-magic
         ## python-magic on yum is of Python 2.7
-        file
+        file \
+ && ln -sf /usr/bin/python3.6 /usr/bin/python3
 
 # install Python packages & dependencies
 COPY vendor/python /tmp/python
-RUN python3.6 -m pip install --no-deps --cache-dir=/tmp/pip \
+RUN python3 -m pip install --no-deps --cache-dir=/tmp/pip \
         /tmp/python/pip-* \
         /tmp/python/setuptools-* \
         /tmp/python/wheel-* \
@@ -30,7 +31,7 @@ RUN python3.6 -m pip install --no-deps --cache-dir=/tmp/pip \
         /tmp/python/pip-* \
         /tmp/python/setuptools-* \
         /tmp/python/wheel-* \
- && python3.6 -m pip install --no-deps --cache-dir=/tmp/pip \
+ && python3 -m pip install --no-deps --cache-dir=/tmp/pip \
         /tmp/python/*
 
 # copy source
@@ -41,7 +42,7 @@ RUN rm -rf \
         ## Python archives
         /tmp/python \
         /tmp/pip \
- && python3.6 -m pip uninstall -y \
+ && python3 -m pip uninstall -y \
         wheel \
         setuptools \
         pip \

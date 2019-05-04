@@ -3,6 +3,7 @@
 include .env
 
 export PIPENV_VENV_IN_PROJECT=1
+export PIPENV_MAX_DEPTH=100
 export PIPENV_CLEAR=1
 
 build: build-bro build-broker
@@ -134,6 +135,7 @@ gitlab-copy: gitlab-clean
 	find source -iname 'core' -depth 1 -exec cp -rf {} ${REPO_PATH}/source \;
 	$(MAKE) -C source archive
 	find source -iname 'archive' -depth 1 -exec cp -rf {} ${REPO_PATH}/source \;
+	find source -iname 'utils' -depth 1 -exec cp -rf {} ${REPO_PATH}/source \;
 	# copy vendor
 	mkdir -p ${REPO_PATH}/vendor
 	find vendor \

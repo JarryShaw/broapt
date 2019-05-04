@@ -1,4 +1,4 @@
-.PHONY: archive clean docker docker-compose
+.PHONY: archive clean docker docker-compose parse
 
 include .env
 
@@ -21,12 +21,11 @@ docker-up: docker-up-app docker-up-core
 docker-stop: docker-stop-app docker-stop-core
 docker-ps: docker-ps-app docker-ps-core
 docker-logs: docker-logs-app docker-logs-core
-f2format: f2format-app
 
 docker: clean docker-app docker-core
 	docker system prune --volumes -f
 
-docker-compose: clean f2format
+docker-compose: clean
 	docker-compose build
 	docker-compose up -d
 	docker system prune --volumes -f
@@ -44,7 +43,7 @@ archive-core:
 archive-test:
 	[ -d test ] || false
 	cp -rf test bro
-	pipenv run python compose.py
+	pipenv run python utils/compose.py
 	tar -cvzf bro.tar.gz bro
 	mv bro.tar.gz archive
 	rm -rf bro
@@ -85,5 +84,5 @@ docker-logs-app:
 docker-logs-core:
 	cd core && docker-compose logs
 
-f2format-app:
-	$(MAKE) -C app f2format
+parse:
+	pipenv run python utils/logparse.py

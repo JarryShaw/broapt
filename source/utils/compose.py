@@ -3,11 +3,12 @@
 import ast
 import ctypes
 import os
+import pathlib
 import re
 import uuid
 
 # repo root path
-ROOT = os.path.join(os.path.realpath(os.path.dirname(__file__)), 'bro', 'source')
+ROOT = str(os.path.join(pathlib.Path(__file__).parents[1].resolve(), 'bro', 'source'))
 
 # Bro config
 ## group by MIME flag
