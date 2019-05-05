@@ -2,6 +2,7 @@
 
 import ast
 import collections
+import dataclasses
 import datetime
 import ipaddress
 import json
@@ -11,7 +12,21 @@ import sys
 import urllib.parse
 
 import pandas
-import pcapkit
+
+
+@dataclasses.dataclass
+class TEXTInfo:
+    format = 'text'
+    path: str
+    open: datetime.datetime
+    close: datetime.datetime
+    context: pandas.DataFrame
+
+
+@dataclasses.dataclass
+class JSONInfo:
+    format = 'json'
+    context: pandas.DataFrame
 
 
 def parse_text(file, line):
@@ -19,8 +34,8 @@ def parse_text(file, line):
     separator = urllib.parse.unquote(temp.replace('\\x', '%'))
 
     set_separator = file.readline().strip().split(separator)[1]
-    set_parser = lambda s, t: set(t(e) for e in s.split(set_separator))
-    vector_parser = lambda s, t: list(t(e) for e in s.split(set_separator))
+    def set_parser(s, t): return set(t(e) for e in s.split(set_separator))
+    def vector_parser(s, t): return list(t(e) for e in s.split(set_separator))
 
     empty_field = file.readline().strip().split(separator)[1]
     unset_field = file.readline().strip().split(separator)[1]
@@ -31,7 +46,7 @@ def parse_text(file, line):
         if s == unset_field:
             return None
         b = ast.literal_eval(f'b{s!r}'.replace('\\\\x', '\\x'))
-        return pcapkit.protocols.Protocol.decode(b)
+        return b.decode()
 
     def int_parser(s):
         if s == unset_field:
@@ -91,13 +106,15 @@ def parse_text(file, line):
         match_set = re.match(r'set\[(?P<type>.+)\]', type_)
         if match_set is not None:
             set_type = match_set.group('type')
-            field_parser.append((field, lambda s: set_parser(s, type_parser[set_type])))  # pylint: disable=cell-var-from-loop
+            field_parser.append((field, lambda s: set_parser(
+                s, type_parser[set_type])))  # pylint: disable=cell-var-from-loop
             continue
 
         match_vector = re.match(r'^vector\[(.+?)\]', type_)
         if match_vector is not None:
             vector_type = match_vector.groups()[0]
-            field_parser.append((field, lambda s: vector_parser(s, type_parser[vector_type])))  # pylint: disable=cell-var-from-loop
+            field_parser.append((field, lambda s: vector_parser(
+                s, type_parser[vector_type])))  # pylint: disable=cell-var-from-loop
             continue
 
         field_parser.append((field, type_parser[type_]))
@@ -113,7 +130,7 @@ def parse_text(file, line):
         loglist.append(logline)
     close_time = datetime.datetime.strptime(line.strip().split(separator)[1], '%Y-%m-%d-%H-%M-%S')
 
-    loginfo = pcapkit.corekit.Info(
+    loginfo = TEXTInfo(
         format='text',
         path=path,
         open=open_time,
@@ -122,11 +139,12 @@ def parse_text(file, line):
     )
     return loginfo
 
+
 def parse_json(file, line):
     loglist = [json.loads(line)]
     for line in file:  # pylint: disable = redefined-argument-from-local
         loglist.append(json.loads(line))
-    loginfo = pcapkit.corekit.Info(
+    loginfo = JSONInfo(
         format='json',
         context=pandas.DataFrame(loglist),
     )
@@ -141,6 +159,7 @@ def parse(filename):
         else:
             loginfo = parse_json(file, line)
     return loginfo
+
 
 def main():
     for logfile in sys.argv[1:]:

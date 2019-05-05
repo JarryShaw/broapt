@@ -8,6 +8,8 @@ import subprocess
 import sys
 import time
 
+import magic
+
 # repo root path
 ROOT = str(pathlib.Path(__file__).parents[1].resolve())
 
@@ -29,7 +31,7 @@ except (TypeError, ValueError):
     INTERVAL = 10
 
 # fetch environ
-API_PATH = os.path.join(os.path.dirname(__file__), 'api')
+API_PATH = os.path.join(ROOT, 'api')
 API_SUFFIX = os.getenv('API_SUFFIX', '')
 DEFAULT_API = os.getenv('DEFAULT_API', 'default.py')
 
@@ -43,7 +45,8 @@ LOGS_PATH = os.getenv('LOGS_PATH', '/var/log/bro/').strip()
 DUMP_PATH = os.getenv('DUMP_PATH').strip()
 if DUMP_PATH is None:
     try:
-        DUMP_PATH = subprocess.check_output(['bro', '-e', 'print(FileExtract::prefix)']).strip()
+        DUMP_PATH = subprocess.check_output(['bro', '-e', 'print(FileExtract::prefix)'],
+                                            encoding='utf-8').strip()
     except subprocess.CalledProcessError:
         DUMP_PATH = './extract_files/'
 
@@ -54,9 +57,10 @@ FAIL = os.path.join(LOGS_PATH, 'processed_fail.log')
 # entry class
 @dataclasses.dataclass
 class Entry:
-    path: str
-    name: str
-    mime: str
+    file_path: str
+    file_name: str
+    file_mime: str
+    zeek_mime: str
 
 
 def print_file(s, file=FILE):
@@ -83,7 +87,8 @@ def list_dir(path):
         for content_type in filter(lambda entry: entry.is_dir(), os.scandir(path)):
             for subtype in filter(lambda entry: entry.is_dir(), os.scandir(content_type.path)):
                 mime = f'{content_type.name}/{subtype.name}'
-                file_list.extend(Entry(path=entry.path, name=entry.name, mime=mime)
+                file_list.extend(Entry(path=entry.path, name=entry.name,
+                                       mime=magic.from_file(entry.path, mime=True))
                                  for entry in filter(lambda entry: entry.is_file(), os.scandir(subtype.path)))
     else:
         file_list = list(Entry(path=entry.path, name=entry.name,

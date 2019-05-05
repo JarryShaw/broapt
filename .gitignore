@@ -1,6 +1,5 @@
 
 tmp/
-*.icloud
 
 build/
 !/build/
