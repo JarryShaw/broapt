@@ -37,25 +37,25 @@ for mime in set(missing):
     ext = [s.lstrip('.') for s in mimetypes.guess_all_extensions(mime)]
     if ext:
         if len(ext) > 1:
-            print(f'{mime!r} -> {" | ".join(ext)}')
+            print('%r -> %s' % (mime, ' | '.join(ext)))
             try:
                 usr_ext = raw_input('Please select an extension: ').strip().lstrip('.')
             except (EOFError, KeyboardInterrupt):
-                pass
+                print()
             else:
                 mime2ext[mime] = usr_ext
         else:
             mime2ext[mime] = ext[0]
     else:
         try:
-            usr_ext = raw_input(f'[{mime}] Please input an possible extension: ').strip().lstrip('.')
+            usr_ext = raw_input('[%s] Please input an possible extension: ' % mime).strip().lstrip('.')
         except (EOFError, KeyboardInterrupt):
-            pass
+            print()
         else:
             mime2ext[mime] = usr_ext
 
 # generate Bro file
-TEXT = '\n        '.join(sorted(f'["{mime}"] = "{ext}",' for mime, ext in mime2ext.items()))
+TEXT = '\n        '.join(sorted('["%s"] = "%s",' % (mime.lower(), ext.lower()) for mime, ext in mime2ext.items()))
 FILE = '''\
 module FileExtraction;
 

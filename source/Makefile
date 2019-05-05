@@ -2,18 +2,21 @@
 
 include .env
 
-export PIPENV_DONT_LOAD_ENV=1
+# pipenv
+export PIPENV_DONT_LOAD_ENV
+
+# broapt
 ## core environ
-export DUMP_MIME=1
-export DUMP_PATH=/dump/
-export PCAP_PATH=/pcap/
-export LOGS_PATH=/var/log/bro/
+export DUMP_MIME
+export DUMP_PATH
+export PCAP_PATH
+export LOGS_PATH
 ## Bro MIME whilelist
-export BRO_MIME=application/x-dosexec,application/msword,application/pdf,application/vnd.android.package-archive
+export BRO_MIME
 ## buffer size
-# export FILE_BUFFER=0xffffffffffffffff
+# export FILE_BUFFER
 ## size limit
-export SIZE_LIMIT=0
+export SIZE_LIMIT
 
 archive: archive-app archive-core archive-test
 clean: clean-app clean-core

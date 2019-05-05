@@ -2,9 +2,9 @@
 
 include .env
 
-export PIPENV_VENV_IN_PROJECT=1
-export PIPENV_MAX_DEPTH=100
-export PIPENV_CLEAR=1
+export PIPENV_VENV_IN_PROJECT
+export PIPENV_MAX_DEPTH
+export PIPENV_CLEAR
 
 build: build-bro build-broker
 commit: gitlab-commit submodule-pull git-commit

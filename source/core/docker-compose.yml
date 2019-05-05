@@ -9,7 +9,7 @@ services:
     entrypoint: ["bash", "/source/init.sh"]
     environment:
       # Bro MIME whilelist
-      BRO_MIME: application/x-dosexec;application/msword;application/pdf;application/vnd.android.package-archive
+      BRO_MIME: application/vnd.microsoft.portable-executable;application/x-dosexec;application/msword;application/pdf;application/vnd.android.package-archive;message/rfc822
       # Bro file reassembly buffer size
       #FILE_BUFFER: 0xffffffffffffffff
       # Bro extract file size limit
