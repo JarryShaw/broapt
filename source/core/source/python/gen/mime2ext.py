@@ -33,11 +33,18 @@ BOOLEAN_STATES = {'1': True, '0': False,
                   'on': True, 'off': False}
 FLAG = BOOLEAN_STATES.get(os.getenv('MIME_UPDATE', 'false').strip().lower(), False)
 
+
+class Dict(dict):
+
+    def __setitem__(self, key, value):
+        return super().__setitem__(key.lower(), value.lower())
+
+
 # mime2ext mappings
-mime2ext = dict()
+mime2ext = Dict()
 with open(os.path.join(ROOT, 'scripts', 'file-extensions.bro')) as file:
     for line in file:
-        match = TABLE.match(line)
+        match = TABLE.match(line.lower())
         if match is None:
             continue
         mime2ext[match.group('mime')] = match.group('ext')
@@ -85,7 +92,7 @@ try:
             'https://www.iana.org/assignments/media-types/video.csv']
     for url in URLS:
         page = urlopen(url)
-        data = page.read().decode('utf-8').strip().splitlines()
+        data = page.read().decode('utf-8').lower().strip().splitlines()
         page.close()
 
         reader = csv.reader(data)
@@ -111,16 +118,9 @@ try:
                     mime2ext[mime] = ext
                     continue
                 # .../...-...
-                guess_ext = re.split(r'[.+-]', mime.lower().split('/', maxsplit=1)[1])
-                guess_hit = False
-                for ext in guess_ext:
-                    if ext == 'vnd':
-                        continue
-                    if ext in mime2ext.values():
-                        mime2ext[mime] = ext
-                        guess_hit = True
-                        break
-                if guess_hit:
+                guess_ext = re.split(r'[.+-]', mime.lower().split('/', maxsplit=1)[1])[-1]
+                if guess_ext in mime2ext.values():
+                    mime2ext[mime] = guess_ext
                     continue
                 try:
                     usr_ext = raw_input('[%s] Please input an possible extension: ' % mime).strip().lstrip('.')
@@ -148,7 +148,6 @@ finally:
         json.dump(mime2ext, file, indent=2)
 
 # generate Bro file
-TEXT = '\n        '.join(sorted('["%s"] = "%s",' % (mime.lower(), ext.lower()) for mime, ext in mime2ext.items()))
 FILE = '''\
 module FileExtraction;
 
@@ -158,7 +157,7 @@ export {
         %s
     };
 }
-''' % TEXT
+''' % '\n        '.join(sorted('["%s"] = "%s",' % (mime, ext) for mime, ext in mime2ext.items()))
 
 # update Bro script
 with open(os.path.join(ROOT, 'scripts', 'file-extensions.bro'), 'w') as file:
