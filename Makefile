@@ -30,25 +30,25 @@ pipenv-remove:
 	pipenv --rm
 
 requirements-init:
-	cd vendor/python && $(MAKE) init
+	$(MAKE) -C vendor/python init
 
 requirements-update:
-	cd vendor/python && $(MAKE) update
+	$(MAKE) -C vendor/python update
 
 requirements-download:
-	cd vendor/python && $(MAKE) download
+	$(MAKE) -C vendor/python download
 
 requirements-remove:
-	cd vendor/python && $(MAKE) remove
+	$(MAKE) -C vendor/python remove
 
 build-bro:
-	cd build && $(MAKE) bro
+	$(MAKE) -C build bro
 
 build-broker:
-	cd build && $(MAKE) broker
+	$(MAKE) -C build broker
 
 docker-build: requirements-download
-	cd source && $(MAKE) clean
+	$(MAKE) -C source clean
 	sed -i "" "s/LABEL version.*/LABEL version=$(shell date +%Y.%m.%d)/" Dockerfile
 	docker build --rm --tag broapt .
 	$(MAKE) docker-prune
@@ -110,8 +110,12 @@ gitlab-clean:
 	    ! -iname 'zeek' -depth 1 -print0 | xargs -0 rm -rf
 
 gitlab-copy: gitlab-clean
+	# copy .gitmodules
+	cat .gitmodules | sed "s/vendor/xiaojiawei\/vendor/" > gitlab/.gitmodules
 	# copy top-level files
-	find . -type f -depth 1 -exec cp -rf {} ${REPO_PATH} \;
+	find . \
+	    ! -iname '.gitmodules' \
+	    ! -iname 'Pipfile.lock' -type f -depth 1 -exec cp -rf {} ${REPO_PATH} \;
 	# remove git-lfs usage
 	sed -i "" /lfs/d ${REPO_PATH}/.gitattributes
 	# copy archive
@@ -155,12 +159,8 @@ gitlab-copy: gitlab-clean
 	    -iname '.DS_Store' -print0 | xargs -0 rm -rf
 
 gitlab-commit: gitlab-copy
-	cd ${REPO_PATH}/vendor/broker && git pull
-	cd ${REPO_PATH}/vendor/file\-extraction && git pull
-	cd ${REPO_PATH}/vendor/json && git pull
-	cd ${REPO_PATH}/vendor/pypcapkit && git pull
-	cd ${REPO_PATH}/vendor/zeek && git pull
-	cd ${REPO_PATH} && $(MAKE) git-commit
+	cd ${REPO_PATH} && git submodule sync
+	$(MAKE) -C ${REPO_PATH} git-commit
 
 gitlab-submodule: gitlab-copy
 	rm -rf ${REPO_PATH}/vendor/broker \
@@ -168,4 +168,4 @@ gitlab-submodule: gitlab-copy
 	       ${REPO_PATH}/vendor/json \
 	       ${REPO_PATH}/vendor/pypcapkit \
 	       ${REPO_PATH}/vendor/zeek
-	cd ${REPO_PATH}/vendor && $(MAKE) all
+	$(MAKE) -C ${REPO_PATH}/vendor all
