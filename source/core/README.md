@@ -25,6 +25,8 @@ For development environment, `make` and `pipenv` are the two things playing arou
 ## Environment
 
 - `BRO_MIME` -- Bro MIME while list
+- `BRO_PROTOCOL` -- Bro protocol while list
+
 - `BUF_SIZE` -- Bro file reassembly buffer size
 - `SIZE_LIMIT` -- Bro extracted file size limit
 

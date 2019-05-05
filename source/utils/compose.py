@@ -63,6 +63,15 @@ if LOAD_MIME is not None:
 else:
     load_file = [os.path.join('.', 'plugins', 'extract-all-files.bro')]
 
+# protocol list
+LOAD_PROTOCOL = os.getenv('BRO_PROTOCOL')
+if LOAD_PROTOCOL is not None:
+    # available protocols
+    available_protocols = ('dtls', 'ftp', 'http', 'irc', 'smtp')
+    for protocol in filter(lambda protocol: protocol in available_protocols,
+                           re.split(r'\s*[,;|]\s*', LOAD_PROTOCOL.casefold())):
+        load_file.append(os.path.join('.', 'hooks', f'extract-{protocol}.bro'))
+
 # prepare regex
 MIME_REGEX = re.compile(r'(?P<prefix>\s*redef mime\s*=\s*)[TF](?P<suffix>\s*;\s*)')
 LOGS_REGEX = re.compile(r'(?P<prefix>\s*redef logs\s*=\s*").*?(?P<suffix>"\s*;\s*)')

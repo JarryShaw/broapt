@@ -11,8 +11,10 @@ export DUMP_MIME
 export DUMP_PATH
 export PCAP_PATH
 export LOGS_PATH
-## Bro MIME whilelist
+## Bro MIME white list
 export BRO_MIME
+## Bro protocol white list
+export BRO_PROTOCOL
 ## buffer size
 # export FILE_BUFFER
 ## size limit

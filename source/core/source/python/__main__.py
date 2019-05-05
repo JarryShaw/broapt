@@ -90,7 +90,7 @@ hook FileExtraction::extract(f: fa_file, meta: fa_metadata) &priority=5 {
 LOAD_MIME = os.getenv('BRO_MIME')
 if LOAD_MIME is not None:
     load_file = list()
-    for mime_type in filter(len, re.split(r'\s*[,;|]\s*', LOAD_MIME)):
+    for mime_type in filter(len, re.split(r'\s*[,;|]\s*', LOAD_MIME.casefold())):
         safe_mime = re.sub(r'\W', r'-', mime_type, re.ASCII)
         file_name = os.path.join('.', 'plugins', f'extract-{safe_mime}.bro')
         load_file.append(file_name)
@@ -98,6 +98,15 @@ if LOAD_MIME is not None:
             zeek_file.write(FILE_TEMP % mime_type)
 else:
     load_file = [os.path.join('.', 'plugins', 'extract-all-files.bro')]
+
+# protocol list
+LOAD_PROTOCOL = os.getenv('BRO_PROTOCOL')
+if LOAD_PROTOCOL is not None:
+    # available protocols
+    available_protocols = ('dtls', 'ftp', 'http', 'irc', 'smtp')
+    for protocol in filter(lambda protocol: protocol in available_protocols,
+                           re.split(r'\s*[,;|]\s*', LOAD_PROTOCOL.casefold())):
+        load_file.append(os.path.join('.', 'hooks', f'extract-{protocol}.bro'))
 
 # prepare regex
 MIME_REGEX = re.compile(r'(?P<prefix>\s*redef mime\s*=\s*)[TF](?P<suffix>\s*;\s*)')
