@@ -142,15 +142,20 @@ gitlab-copy: gitlab-clean
 	find source -iname 'utils' -depth 1 -exec cp -rf {} ${REPO_PATH}/source \;
 	# copy vendor
 	mkdir -p ${REPO_PATH}/vendor
-	find vendor \
-	    ! -iname 'bro*' \
-	    ! -iname 'broker' \
-	    ! -iname 'Cellar' \
-	    ! -iname 'file-extraction' \
-	    ! -iname 'json' \
-	    ! -iname 'pypcapkit' \
-	    ! -iname 'zeek' \
-	    ! -iname 'venv' -depth 1 -exec cp -rf {} ${REPO_PATH}/vendor \;
+	find vendor -depth 1 -type f -exec cp -rf {} ${REPO_PATH}/vendor \;
+	mkdir -p ${REPO_PATH}/vendor/archive
+	find vendor/archive \
+	    ! -iname 'build' -depth 1 -exec cp -rf {} ${REPO_PATH}/vendor/archive \;
+	mkdir -p ${REPO_PATH}/vendor/python
+	find vendor/python -depth 1 -type f -exec cp -rf {} ${REPO_PATH}/vendor/python \;
+	mkdir -p ${REPO_PATH}/vendor/python/app
+	find vendor/python/app \
+	    ! -iname '.venv' -depth 1 -exec cp -rf {} ${REPO_PATH}/vendor/python/app \;
+	mkdir -p ${REPO_PATH}/vendor/python/core
+	find vendor/python/core \
+	    ! -iname '.venv' -depth 1 -exec cp -rf {} ${REPO_PATH}/vendor/python/core \;
+	mkdir -p ${REPO_PATH}/vendor/tools
+	find vendor/tools -depth 1 -exec cp -rf {} ${REPO_PATH}/vendor/tools \;
 	# remove unexpected files
 	find ${REPO_PATH} \
 	    -iname '__pycache__' -or \

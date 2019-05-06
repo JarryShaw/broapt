@@ -13,7 +13,7 @@ redef use_json = LogAscii::use_json;
 
 @if ( use_json != LogAscii::use_json )
     redef LogAscii::use_json = use_json;
-@end
+@endif
 
 # Configure hash salt
 redef file_salt = Files::salt;

@@ -37,6 +37,16 @@ try:
     SIZE_LIMIT = ctypes.c_uint64(ast.literal_eval(os.getenv('SIZE_LIMIT'))).value
 except (SyntaxError, TypeError, ValueError):
     SIZE_LIMIT = 'FileExtract::default_limit'
+## log in JSON format
+JSON_LOGS_ENV = os.getenv('JSON_LOGS')
+if JSON_LOGS_ENV is None:
+    JSON_LOGS = 'LogAscii::use_json'
+else:
+    JSON_LOGS_BOOL = BOOLEAN_STATES.get(JSON_LOGS_ENV.casefold())
+    if JSON_LOGS_BOOL is None:
+        JSON_LOGS = 'LogAscii::use_json'
+    else:
+        JSON_LOGS = 'T' if JSON_LOGS_BOOL else 'F'
 
 # plugin template
 FILE_TEMP = '''\
@@ -75,6 +85,7 @@ if LOAD_PROTOCOL is not None:
 # prepare regex
 MIME_REGEX = re.compile(r'(?P<prefix>\s*redef mime\s*=\s*)[TF](?P<suffix>\s*;\s*)')
 LOGS_REGEX = re.compile(r'(?P<prefix>\s*redef logs\s*=\s*").*?(?P<suffix>"\s*;\s*)')
+JSON_REGEX = re.compile(r'(?P<prefix>\s*redef use_json\s*=\s*).*?(?P<suffix>\s*;\s*)')
 SALT_REGEX = re.compile(r'(?P<prefix>\s*redef file_salt\s*=\s*).*?(?P<suffix>\s*;\s*)')
 FILE_REGEX = re.compile(r'(?P<prefix>\s*redef file_buffer\s*=\s*).*?(?P<suffix>\s*;\s*)')
 PATH_REGEX = re.compile(r'(?P<prefix>\s*redef path_prefix\s*=\s*).*?(?P<suffix>\s*;\s*)')
@@ -87,6 +98,7 @@ with open(os.path.join(ROOT, 'scripts', 'config.bro')) as config:
     for line in config:
         line = MIME_REGEX.sub(rf'\g<prefix>{"T" if DUMP_MIME else "F"}\g<suffix>', line)
         line = LOGS_REGEX.sub(rf'\g<prefix>{os.path.join(LOGS_PATH, "processed_mime.log")}\g<suffix>', line)
+        line = JSON_REGEX.sub(rf'\g<prefix>{JSON_LOGS}\g<suffix>', line)
         line = SALT_REGEX.sub(rf'\g<prefix>"{uuid.uuid4()}"\g<suffix>', line)
         line = FILE_REGEX.sub(rf'\g<prefix>{FILE_BUFFER}\g<suffix>', line)
         line = PATH_REGEX.sub(rf'\g<prefix>{DUMP_PATH}\g<suffix>', line)

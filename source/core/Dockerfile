@@ -1,6 +1,6 @@
 # basic info
 FROM library/centos:7
-LABEL version=2019.05.03
+LABEL version=2019.05.06
 
 # set up environment variables
 ENV PYTHONIOENCODING="UTF-8"
@@ -12,10 +12,11 @@ RUN yum install -y \
         https://centos7.iuscommunity.org/ius-release.rpm \
  && yum install -y \
         bro \
-        ## python36u is actually dependency of the latter
+        ## python36u is actually dependency of the latters
         ## but we keep it here as a good remainder
         python36u \
         python36u-pip \
+        python36u-setuptools \
         ## dependency of python-magic
         ## python-magic on yum is of Python 2.7
         file \
@@ -46,6 +47,8 @@ RUN rm -rf \
         wheel \
         setuptools \
         pip \
- && yum erase -y \
-        python36u-pip \
+ ## do not remove pip & setuptools from yum
+ # && yum erase -y \
+ #        python36u-pip \
+ #        python36u-setuptools \
  && yum clean all -y

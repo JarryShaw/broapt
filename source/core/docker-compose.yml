@@ -28,7 +28,9 @@ services:
       PCAP_PATH: /pcap/
       LOGS_PATH: /var/log/bro/
       # log in JSON format
-      JSON_LOGS: true
+      JSON_LOGS: 1
+      # run Bro in bare mode
+      BARE_MODE: 0
     image: broapt-core
     volumes:
       - /home/traffic/pcapfile:/pcap

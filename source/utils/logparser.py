@@ -148,7 +148,7 @@ def parse_text(file, line):
         close_time = datetime.datetime.strptime(line.strip().split(separator)[1], '%Y-%m-%d-%H-%M-%S')
 
     loginfo = TEXTInfo(
-        format='text',
+        # format='text',
         path=path,
         open=open_time,
         close=close_time,
@@ -163,7 +163,7 @@ def parse_json(file, line):
     for line in file:  # pylint: disable = redefined-argument-from-local
         loglist.append(json.loads(line))
     loginfo = JSONInfo(
-        format='json',
+        # format='json',
         context=pandas.DataFrame(loglist),
     )
     return loginfo

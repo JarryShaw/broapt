@@ -19,6 +19,10 @@ export BRO_PROTOCOL
 # export FILE_BUFFER
 ## size limit
 export SIZE_LIMIT
+## log in JSON format
+export JSON_LOGS
+## run Bro in bare mode
+export BARE_MODE
 
 archive: archive-app archive-core archive-test
 clean: clean-app clean-core

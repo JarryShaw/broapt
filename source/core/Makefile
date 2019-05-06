@@ -34,6 +34,7 @@ clean-logs-local:
 clean-logs-processed:
 	if [ -d /home/traffic/log/bro ]; then \
 	    > /home/traffic/log/bro/processed_file.log; \
+	    > /home/traffic/log/bro/processed_info.log; \
 	    > /home/traffic/log/bro/processed_mime.log; \
 	    > /home/traffic/log/bro/processed_time.log; \
 	    for file in $$(ls /home/traffic/log/bro) ; do \
@@ -43,6 +44,7 @@ clean-logs-processed:
 	    done \
 	else \
 	    > ../logs/processed_file.log; \
+	    > ../logs/processed_info.log; \
 	    > ../logs/processed_mime.log; \
 	    > ../logs/processed_time.log; \
 	    find ../logs ! -iname 'tmp' -type d -depth 1 -print0 | xargs -0 rm -rf; \

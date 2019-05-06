@@ -1452,7 +1452,7 @@ export {
         ["application/x-msbinder"] = "obd",
         ["application/x-mscardfile"] = "crd",
         ["application/x-msclip"] = "clp",
-        ["application/x-msdownload"] = "msdownload",
+        ["application/x-msdownload"] = "dat",
         ["application/x-msmediaview"] = "mvb",
         ["application/x-msmetafile"] = "wmf",
         ["application/x-msmoney"] = "mny",
