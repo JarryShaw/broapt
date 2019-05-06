@@ -27,6 +27,8 @@ services:
       DUMP_PATH: /dump/
       PCAP_PATH: /pcap/
       LOGS_PATH: /var/log/bro/
+      # log in JSON format
+      JSON_LOGS: true
     image: broapt-core
     volumes:
       - /home/traffic/pcapfile:/pcap

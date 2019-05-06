@@ -12,6 +12,8 @@ export {
     ## Path to missing MIME log file
     option logs: string = "/var/log/bro/processed_mime.log";
 
+    ## Log format
+    const use_json: bool = LogAscii::use_json &redef;
     ## Change hash salt
     const file_salt: string = Files::salt &redef;
     ## Buffer size for file reassembly

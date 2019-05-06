@@ -5,8 +5,15 @@ module FileExtraction;
 # Configure if store extracted files by MIME types
 redef mime = T;
 
-## Configure path to missing MIME log file
+# Configure path to missing MIME log file
 redef logs = "/var/log/bro/processed_mime.log";
+
+# Configure log in ASCII or JSON format
+redef use_json = LogAscii::use_json;
+
+@if ( use_json != LogAscii::use_json )
+    redef LogAscii::use_json = use_json;
+@end
 
 # Configure hash salt
 redef file_salt = Files::salt;

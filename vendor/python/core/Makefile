@@ -28,7 +28,10 @@ install: init
 	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 	# install dependencies
-	pipenv install python-magic
+	pipenv install \
+	    dataclasses \
+	    pandas \
+	    python-magic
 
 .ONESHELL:
 update:

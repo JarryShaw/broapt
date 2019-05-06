@@ -37,6 +37,7 @@ For development environment, `make` and `pipenv` are the two things playing arou
 - `DUMP_PATH` -- where extracted files will be stored (*default*: `/dump/`)
 - `PCAP_PATH` -- path to PCAP source files (*default*: `/pcap/`)
 - `LOGS_PATH` -- path to log files (*default*: `/var/log/bro/`)
+- `JSON_LOGS` -- log in JSON or ASCII format (*default*: `true`)
 
 - `MIME_UPDATE` -- force update `mime2ext` database (*default*: 0)
 
