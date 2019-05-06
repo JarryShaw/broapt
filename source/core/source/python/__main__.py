@@ -8,6 +8,7 @@ import ctypes
 import glob
 import ipaddress
 import json
+import math
 import multiprocessing
 import os
 import pathlib
@@ -224,6 +225,13 @@ def generate_log(log_root):
     if not os.path.isfile(log_file):
         return
 
+    def is_nan(value):
+        if value is None:
+            return True
+        if math.isnan(value):
+            return True
+        return False
+
     class IPAddressJSONEncoder(json.JSONEncoder):
 
         def default(self, o):  # pylint: disable=method-hidden
@@ -234,7 +242,7 @@ def generate_log(log_root):
     LOG_FILE = parse(log_file)
     LOG_CONN = parse(os.path.join(log_root, 'conn.log'))
     for line in LOG_FILE.context.itertuples():
-        if (not hasattr(line, 'extracted')) or (line.extracted is None):
+        if (not hasattr(line, 'extracted')) or is_nan(line.extracted):
             continue
         hosts = [dict(tx=ipaddress.ip_address(tx),
                       rx=ipaddress.ip_address(rx))

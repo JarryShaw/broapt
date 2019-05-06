@@ -1,0 +1,87 @@
+## Configuration for API arguments of BroAPT-APP
+##
+## All APIs when called will implicitly take
+## two more arguments at the end of argv:
+##
+## - ........ -- API arguments specified as below
+## - MIMETYPE -- MIME type of target file
+## - FILENAME -- path to the target file
+##
+## and will `chdir` to corresponding folder
+## named after its media type or MIME type.
+
+###############################################################################
+## Environment setup
+##
+## Environment variables `${...}` used in API
+## arguments will be translated according to
+## the following values.
+environ:
+  # Python 3.6
+  PYTHON: /usr/bin/python3.6
+  PYTHON36: /usr/bin/python3.6
+  PYTHON3: /usr/bin/python3.6
+  # Python 2.7
+  PYTHON27: /usr/bin/python
+  PYTHON2: /usr/bin/python
+  # Shell/Bash
+  SHELL: /bin/bash
+
+###############################################################################
+## Example:
+##
+## - Target:
+##   - MIME type: `application/pdf`
+##   - file name: `/dump/application/pdf/test.pdf`
+## - API:
+##   - argument: python3.6 pdf_analysis/main.py
+##   - API root: /api/
+##
+## The configuration section should then be:
+##
+## application:
+##   ...  # other APIs
+##   pdf:
+##     - ${PYTHON36}
+##     - pdf_analysis/main.py
+##     - ...  # possible options
+##
+## BroAPT will work as following:
+##
+## 1. change the current working directory to
+##    `/api/application/pdf`
+## 2. call the API as the following command:
+##    `/usr/bin/python3.6 pdf_analysis/main.py [...] 'application/pdf' '/dump/application/pdf/test.pdf'`
+## 3. retrieve and save the generated report
+
+# See: https://www.iana.org/assignments/media-types/application.csv
+application:
+
+# See: https://www.iana.org/assignments/media-types/audio.csv
+audio:
+
+# Default API for missing MIME types
+example:
+  - ${PYTHON}
+  - default.py
+
+# See: https://www.iana.org/assignments/media-types/font.csv
+font:
+
+# See: https://www.iana.org/assignments/media-types/image.csv
+image:
+
+# See: https://www.iana.org/assignments/media-types/message.csv
+message:
+
+# See: https://www.iana.org/assignments/media-types/model.csv
+model:
+
+# See: https://www.iana.org/assignments/media-types/multipart.csv
+multipart:
+
+# See: https://www.iana.org/assignments/media-types/text.csv
+text:
+
+# See: https://www.iana.org/assignments/media-types/video.csv
+video:

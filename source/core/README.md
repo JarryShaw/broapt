@@ -15,7 +15,7 @@ indended design.
   * if wish to build from source, a sample script can be found in `/docker/` folder
   * in `/vendor/Makefile`, you may also find how to build from source on macOS with a
     Pipenv virtual environment
-- Python, version 3.5+ (tested only on 3.5.2 and 3.7.3)
+- Python, version 3.6+ (tested only on 3.6.7 and 3.7.3)
   > __NOTE__: requirements are provided in `./vendor/python/` folder
   * [`python-magic`](https://github.com/ahupp/python-magic)
 
@@ -66,7 +66,7 @@ For now, known supported protocols are: DTLS, FTP, HTTP, IRC and SMTP.
 
 ### Generation Utility
 
-In `./source/python[-dev]/gen/` folder, two scripts are provided.
+In `./source/python/gen/` folder, two scripts are provided.
 
 `fix-missing.py` is to read `${LOGS_PATH}/processed_mime.log`, which lists unexpected MIMEs missing
 in Bro script `./source/scripts/file-extensions.bro`, and try to fix and update the missing

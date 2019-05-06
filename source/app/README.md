@@ -6,7 +6,7 @@ any specifications and declarations.
 
 ## Prerequisites
 
-- Python, version 3.5+ (tested only on 3.5.2 & 3.7.3)
+- Python, version 3.6+ (tested only on 3.6.8 & 3.7.3)
   - [`requests`](http://python-requests.org) -- for the default API, can be changed on demand
 
 For Docker addict, a `Dockerfile` and a `docker-compose.yml` are both provided, just hit and go.
@@ -53,18 +53,9 @@ This will run API scripts on extracted files. The mechanism of choosing API scri
 
 ### API Specification
 
-The API can either be a single file or a directory. Since it will be called by Python,
-it should have a Python wrapper script if not implemented in Python. Also, if the API
-is a directory, to be callable as a module, it should have a `__main__.py` as its main
-entry point.
+The API should be configured through `${API_ROOT}/api.yml`.
 
-The API should always take three command line arguments (`sys.argv`):
-
-- `FILE_PATH` -- path to the extracted file
-- `FILE_NAME` -- name of the extracted file
-- `FILE_MIME` -- MIME type of the extracted file
-
-Other arguments can be set through environment arguments or else.
+See the sample file `vendor/api/api.yml` for more information.
 
 ### Log Specification
 

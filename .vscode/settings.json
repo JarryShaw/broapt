@@ -10,6 +10,7 @@
         "emsp",
         "hosom",
         "inited",
+        "isnan",
         "iterrows",
         "itertuples",
         "linesep",
