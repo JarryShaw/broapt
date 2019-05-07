@@ -184,10 +184,27 @@ TIME = os.path.join(LOGS_PATH, 'processed_time.log')
 INFO = os.path.join(LOGS_PATH, 'processed_info.log')
 
 
+class IPAddressJSONEncoder(json.JSONEncoder):
+
+    def default(self, o):  # pylint: disable=method-hidden
+        if isinstance(o, ipaddress._IPAddressBase):  # pylint: disable=protected-access
+            return str(o)
+        return super().default(o)
+
+
 def print(s, file=TIME):  # pylint: disable=redefined-builtin
     with open(file, 'at', 1) as LOG:
         builtins.print(s, file=LOG)
     builtins.print(s, file=sys.stdout)
+
+
+def is_nan(value):
+    if value is None:
+        return True
+    try:
+        return math.isnan(value)
+    except TypeError:
+        return False
 
 
 def is_pcap(file):
@@ -224,20 +241,6 @@ def generate_log(log_root):
     log_file = os.path.join(log_root, 'files.log')
     if not os.path.isfile(log_file):
         return
-
-    def is_nan(value):
-        if value is None:
-            return True
-        if math.isnan(value):
-            return True
-        return False
-
-    class IPAddressJSONEncoder(json.JSONEncoder):
-
-        def default(self, o):  # pylint: disable=method-hidden
-            if isinstance(o, ipaddress._IPAddressBase):  # pylint: disable=protected-access
-                return str(o)
-            return super().default(o)
 
     LOG_FILE = parse(log_file)
     LOG_CONN = parse(os.path.join(log_root, 'conn.log'))

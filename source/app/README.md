@@ -20,10 +20,7 @@ For development environment, `make` and `pipenv` are the two things playing arou
 - `DUMP_MIME` -- if store extracted files by MIME types (*default*: `true`)
 - `DUMP_PATH` -- where extracted files will be stored (*default*: `/dump/`)
 - `LOGS_PATH` -- path to log files (*default*: `/var/log/bro/`)
-
-- `DEFAULT_API` -- name of default API script (*default*: `default.py`)
-- `API_SUFFIX` -- suffix of API scripts (*default*: `''`)
-- `MODEL_PATH` -- path to ML models (*default*: `/model/`)
+- `API_ROOT` -- root path to APIs (*default*: `/api/`)
 
 > __NOTE__: the following environment variables are used only for the default API, and can be
 >           removed if some other default API introduced

@@ -13,13 +13,10 @@ services:
       # sleep interval
       APP_INT: 10
       # app environ
+      API_ROOT: /api/
       DUMP_MIME: 1
       DUMP_PATH: /dump/
       LOGS_PATH: /var/log/bro/
-      # model environ
-      DEFAULT_API: default.py
-      API_SUFFIX: ""
-      MODEL_PATH: /model/
       # VirusTotal
       VT_API: f8b5e766a0d15fa2b3d6b3bdd526d4346816c09b78409632d5b8fa88a3a21940
       VT_LOG: /var/log/bro/tmp/
@@ -31,4 +28,5 @@ services:
       # - ../dump:/dump
       - /home/traffic/log/bro:/var/log/bro
       # - ../logs:/var/log/bro
+      - ./vendor/api:/api/
     restart: "always"

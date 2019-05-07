@@ -29,6 +29,8 @@ install: init
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 	# install dependencies
 	pipenv install \
+	    dataclasses \
+	    PyYAML \
 	    requests
 
 .ONESHELL:

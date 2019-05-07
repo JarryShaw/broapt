@@ -8,7 +8,12 @@ import subprocess
 import sys
 import time
 
-import magic
+import yaml
+
+try:
+    from yaml import CLoader as Loader
+except ImportError:
+    from yaml import Loader
 
 # repo root path
 ROOT = str(pathlib.Path(__file__).parents[1].resolve())
@@ -31,22 +36,24 @@ except (TypeError, ValueError):
     INTERVAL = 10
 
 # fetch environ
-API_PATH = os.path.join(ROOT, 'api')
-API_SUFFIX = os.getenv('API_SUFFIX', '')
-DEFAULT_API = os.getenv('DEFAULT_API', 'default.py')
+API_ROOT = os.getenv('API_ROOT', '/api/')
+with open(os.path.join(API_ROOT, 'api.yml')) as yaml_file:
+    API_CFG = yaml.load(yaml_file, Loader=Loader)
+for (env, val) in API_CFG.get('environment', dict()).items():
+    os.environ[env] = str(val)
 
 # Bro config
 BOOLEAN_STATES = {'1': True, '0': False,
                   'yes': True, 'no': False,
                   'true': True, 'false': False,
                   'on': True, 'off': False}
-DUMP_MIME = BOOLEAN_STATES.get(os.getenv('DUMP_MIME', 'false').strip().lower(), False)
-LOGS_PATH = os.getenv('LOGS_PATH', '/var/log/bro/').strip()
-DUMP_PATH = os.getenv('DUMP_PATH').strip()
+DUMP_MIME = BOOLEAN_STATES.get(os.getenv('DUMP_MIME', 'false').lower(), False)
+LOGS_PATH = os.getenv('LOGS_PATH', '/var/log/bro/')
+DUMP_PATH = os.getenv('DUMP_PATH')
 if DUMP_PATH is None:
     try:
         DUMP_PATH = subprocess.check_output(['bro', '-e', 'print(FileExtract::prefix)'],
-                                            encoding='utf-8').strip()
+                                            stderr=subprocess.DEVNULL, encoding='utf-8').strip()
     except subprocess.CalledProcessError:
         DUMP_PATH = './extract_files/'
 
@@ -54,46 +61,65 @@ if DUMP_PATH is None:
 FILE = os.path.join(LOGS_PATH, 'processed_dump.log')
 FAIL = os.path.join(LOGS_PATH, 'processed_fail.log')
 
+
+# mimetype class
+@dataclasses.dataclass
+class MIME:
+    content_type: str
+    subtype: str
+    name: str
+
+
 # entry class
 @dataclasses.dataclass
 class Entry:
-    file_path: str
-    file_name: str
-    file_mime: str
-    zeek_mime: str
+    name: str
+    path: str
+    mime: MIME
 
 
 def print_file(s, file=FILE):
     with open(file, 'at', 1) as LOG:
-        print(s, file=LOG)
+       print(s, file=LOG)
 
 
 def process(entry):
-    api_path = os.path.join(API_PATH, f'{entry.mime}{API_SUFFIX}')
-    if not os.path.exists(api_path):
-        api_path = os.path.join(API_PATH, DEFAULT_API)
+    try:
+        api_args = API_CFG[entry.mime.content_type][entry.mime.subtype]
+        api_path = os.path.join(API_ROOT, entry.mime.content_type, entry.mime.subtype)
+    except (KeyError, TypeError):
+        api_args = API_CFG['example']
+        api_path = os.path.join(API_ROOT, 'example')
+
+    args = [os.path.expandvar(argv) for argv in api_args]
+    args.append(entry.path)
+    args.append(entry.name)
+    args.append(entry.mime.name)
 
     try:
-        subprocess.check_call([sys.executable, api_path,
-                               entry.path, entry.name, entry.mime])
+        subprocess.check_call(args, cwd=api_path)
     except subprocess.CalledProcessError as error:
         print_file(error.args, file=FAIL)
     print_file(entry.path)
 
 
 def list_dir(path):
+    file_list = list()
     if DUMP_MIME:
-        file_list = list()
         for content_type in filter(lambda entry: entry.is_dir(), os.scandir(path)):
             for subtype in filter(lambda entry: entry.is_dir(), os.scandir(content_type.path)):
-                mime = f'{content_type.name}/{subtype.name}'
-                file_list.extend(Entry(path=entry.path, name=entry.name,
-                                       mime=magic.from_file(entry.path, mime=True))
+                mime = MIME(content_type=content_type.name,
+                            subtype=subtype.name,
+                            name=f'{content_type.name}/{subtype.name}')
+                file_list.extend(Entry(path=entry.path, name=entry.name, mime=mime)
                                  for entry in filter(lambda entry: entry.is_file(), os.scandir(subtype.path)))
     else:
-        file_list = list(Entry(path=entry.path, name=entry.name,
-                               mime=''.join(pathlib.Path(entry.name).suffixes[:-1])[1:].replace('.', '/', 1))
-                         for entry in filter(lambda entry: entry.path != FILE, os.scandir(path)))
+        for entry in os.scandir(path):
+            content_type, subtype = map(lambda s: s[1:], pathlib.Path(entry.name).suffixes[:2])
+            mime = MIME(content_type=content_type,
+                        subtype=subtype,
+                        name=f'{content_type}/{subtype}')
+            file_list.append(Entry(path=entry.path, name=entry.name, mime=mime))
     return file_list
 
 

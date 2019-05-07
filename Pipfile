@@ -10,13 +10,14 @@ pylint = "*"
 
 [packages]
 bro-pkg = "*"
-python-magic = "*"
 pandas = "*"
-pypcapkit = {extras = ["dpkt"],version = ">=0.13.3.post2"}
-requests-futures = "*"
 peewee = "*"
-pymysql = "*"
 pefile = "*"
+PyMySQL = "*"
+pypcapkit = {extras = ["dpkt"],version = ">=0.13.3.post2"}
+python-magic = "*"
+PyYAML = "*"
+requests-futures = "*"
 
 [requires]
 python_version = "3.7"

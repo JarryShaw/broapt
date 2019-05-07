@@ -4,8 +4,9 @@
 ## two more arguments at the end of argv:
 ##
 ## - ........ -- API arguments specified as below
+## - FILEPATH -- path to the target file
+## - FILENAME -- basename of target file
 ## - MIMETYPE -- MIME type of target file
-## - FILENAME -- path to the target file
 ##
 ## and will `chdir` to corresponding folder
 ## named after its media type or MIME type.
@@ -16,7 +17,7 @@
 ## Environment variables `${...}` used in API
 ## arguments will be translated according to
 ## the following values.
-environ:
+environment:
   # Python 3.6
   PYTHON: /usr/bin/python3.6
   PYTHON36: /usr/bin/python3.6
@@ -51,13 +52,13 @@ environ:
 ## 1. change the current working directory to
 ##    `/api/application/pdf`
 ## 2. call the API as the following command:
-##    `/usr/bin/python3.6 pdf_analysis/main.py [...] 'application/pdf' '/dump/application/pdf/test.pdf'`
+##    `/usr/bin/python3.6 pdf_analysis/main.py [...] '/dump/application/pdf/test.pdf' 'test.pdf' 'application/pdf'`
 ## 3. retrieve and save the generated report
 
-# See: https://www.iana.org/assignments/media-types/application.csv
+# APIs for `application` media type
 application:
 
-# See: https://www.iana.org/assignments/media-types/audio.csv
+# APIs for `audio` media type
 audio:
 
 # Default API for missing MIME types
@@ -65,23 +66,23 @@ example:
   - ${PYTHON}
   - default.py
 
-# See: https://www.iana.org/assignments/media-types/font.csv
+# APIs for `font` media type
 font:
 
-# See: https://www.iana.org/assignments/media-types/image.csv
+# APIs for `image` media type
 image:
 
-# See: https://www.iana.org/assignments/media-types/message.csv
+# APIs for `message` media type
 message:
 
-# See: https://www.iana.org/assignments/media-types/model.csv
+# APIs for `model` media type
 model:
 
-# See: https://www.iana.org/assignments/media-types/multipart.csv
+# APIs for `multipart` media type
 multipart:
 
-# See: https://www.iana.org/assignments/media-types/text.csv
+# APIs for `text` media type
 text:
 
-# See: https://www.iana.org/assignments/media-types/video.csv
+# APIs for `video` media type
 video:

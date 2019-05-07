@@ -21,6 +21,7 @@ RUN apt-get update \
         python3-setuptools \
         python3-wheel \
         python3-requests \
+        python3-yaml \
  && ln -sf /usr/bin/python3.6 /usr/bin/python3
 
 # install Python packages & dependencies
