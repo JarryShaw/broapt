@@ -1,5 +1,5 @@
 # Python packages
-pip==19.1
+pip==19.1.1
 setuptools==41.0.1
 wheel==0.33.1
 

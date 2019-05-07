@@ -8,20 +8,19 @@ services:
     container_name: broapt-app
     entrypoint: ["bash", "/source/init.sh"]
     environment:
-      # concurrent process limit
-      APP_CPU: 10
-      # sleep interval
-      APP_INT: 10
-      # app environ
-      API_ROOT: /api/
-      DUMP_MIME: 1
-      DUMP_PATH: /dump/
-      LOGS_PATH: /var/log/bro/
-      # VirusTotal
-      VT_API: f8b5e766a0d15fa2b3d6b3bdd526d4346816c09b78409632d5b8fa88a3a21940
-      VT_LOG: /var/log/bro/tmp/
-      VT_INT: 10
-      VT_RETRY: 6
+      # BroAPT-APP environment
+      ## concurrent process limit
+      BROAPT_APP_CPU: 5
+      ## sleep interval
+      BROAPT_APP_INTERVAL: 10
+      ## group extracted file by MIME types
+      BROAPT_MIME_MODE: 1
+      ## path to detection APIs
+      BROAPT_API_ROOT: /api/
+      ## path to extract files
+      BROAPT_DUMP_PATH: /dump/
+      ## path to log files
+      BROAPT_LOGS_PATH: /var/log/bro/
     image: broapt-app
     volumes:
       - /home/traffic/log/extract:/dump

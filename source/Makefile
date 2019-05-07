@@ -5,24 +5,31 @@ include .env
 # pipenv
 export PIPENV_DONT_LOAD_ENV
 
-# broapt
-## core environ
-export DUMP_MIME
-export DUMP_PATH
-export PCAP_PATH
-export LOGS_PATH
+# BroAPT-Core environment
+## concurrent process limit
+export BROAPT_CORE_CPU
+## sleep interval
+export BROAPT_CORE_INTERVAL
 ## Bro MIME white list
-export BRO_MIME
+export BROAPT_MIME
 ## Bro protocol white list
-export BRO_PROTOCOL
-## buffer size
-# export FILE_BUFFER
-## size limit
-export SIZE_LIMIT
+export BROAPT_PROTOCOL
+## group extracted file by MIME types
+export BROAPT_MIME_MODE
 ## log in JSON format
-export JSON_LOGS
+export BROAPT_JSON_MODE
 ## run Bro in bare mode
-export BARE_MODE
+export BROAPT_BARE_MODE
+## path to extract files
+export BROAPT_DUMP_PATH
+## path to source PCAP files
+export BROAPT_PCAP_PATH
+## path to log files
+export BROAPT_LOGS_PATH
+## Bro file reassembly buffer size
+export BROAPT_FILE_BUFFER
+## Bro extract file size limit
+export BROAPT_SIZE_LIMIT
 
 archive: archive-app archive-core archive-test
 clean: clean-app clean-core

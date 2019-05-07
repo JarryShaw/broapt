@@ -31,7 +31,7 @@ BOOLEAN_STATES = {'1': True, '0': False,
                   'yes': True, 'no': False,
                   'true': True, 'false': False,
                   'on': True, 'off': False}
-FLAG = BOOLEAN_STATES.get(os.getenv('MIME_UPDATE', 'false').strip().lower(), False)
+FLAG = BOOLEAN_STATES.get(os.getenv('BROAPT_FORCE_UPDATE', 'false').strip().lower(), False)
 
 
 class Dict(dict):

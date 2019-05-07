@@ -7,28 +7,30 @@ any specifications and declarations.
 ## Prerequisites
 
 - Python, version 3.6+ (tested only on 3.6.8 & 3.7.3)
-  - [`requests`](http://python-requests.org) -- for the default API, can be changed on demand
+  - [`dataclasses`](https://github.com/ericvsmith/dataclasses)
+  - [`PyYAML`](https://github.com/yaml/pyyaml) -- with optional `libyaml`
 
 For Docker addict, a `Dockerfile` and a `docker-compose.yml` are both provided, just hit and go.
 For development environment, `make` and `pipenv` are the two things playing around my workflow.
 
 ## Environment
 
-- `APP_CPU` -- concurrent process limit (*default*: 10)
-- `APP_INT` -- sleep interval (*default*: 10s)
+- `BROAPT_APP_CPU` -- concurrent process limit (*default*: 10)
+- `BROAPT_APP_INTERVAL` -- sleep interval (*default*: 10s)
 
-- `DUMP_MIME` -- if store extracted files by MIME types (*default*: `true`)
-- `DUMP_PATH` -- where extracted files will be stored (*default*: `/dump/`)
-- `LOGS_PATH` -- path to log files (*default*: `/var/log/bro/`)
-- `API_ROOT` -- root path to APIs (*default*: `/api/`)
+- `BROAPT_MIME_MODE` -- if store extracted files by MIME types (*default*: `true`)
+
+- `BROAPT_API_ROOT` -- root path to APIs (*default*: `/api/`)
+- `BROAPT_DUMP_PATH` -- where extracted files will be stored (*default*: `FileExtract::prefix`)
+- `BROAPT_LOGS_PATH` -- path to log files (*default*: `/var/log/bro/`)
 
 > __NOTE__: the following environment variables are used only for the default API, and can be
 >           removed if some other default API introduced
 
-- `VT_API` -- VirusTotal API key
-- `VT_LOG` -- path to store VirusTotal file scan reports & runtime logs
-- `VT_INT` -- VirusTotal sleep interval (*default*: 10s)
-- `VT_RETRY` -- maximum times of retry for retrieving VirusTotal file scan reports (*default*: 3)
+- `BROAPT_VT_API` -- VirusTotal API key
+- `BROAPT_VT_LOG` -- path to store VirusTotal file scan reports & runtime logs (`/var/log/bro/tmp/`)
+- `BROAPT_VT_INT` -- VirusTotal sleep interval (*default*: 60s)
+- `BROAPT_VT_RETRY` -- maximum times of retry for retrieving VirusTotal file scan reports (*default*: 3)
 
 ## Usage
 
@@ -39,13 +41,13 @@ $ python3 ./python/
 
 This will run API scripts on extracted files. The mechanism of choosing API scripts is:
 
-- fetch an extracted file, say its path is `${FILE_PATH}` and name is `${FILE_NAME}`
-- obtain the MIME type of the extracted file, say `${FILE_MIME}`
-- if `./source/python[-dev]/api/${FILE_MIME}${API_SUFFIX}` exists (say `${MIME_API}`)
-  - note that `${MIME_API}` can either be a file or a directory
-  - the API should take three command line arguments as specified below
-- else use the default API, i.e. `./source/python[-dev]/api/${DEFAULT_API}`
-- run `python3 ${MIME_API} ${FILE_PATH} ${FILE_NAME} ${FILE_MIME}`
+- fetch an extracted file, then obtain MIME type of the file, say `${FILE_MIME}`
+- if `${API_ROOT}/${FILE_MIME}` exists (say `${API_PATH}`)
+  - note that `${API_PATH}` can either be a file or a directory
+  - the API should be configured in the YAML file `${API_ROOT}/api.yml`
+- else use the default API, as specified in the config file
+- if first time, run installation scripts specified in the config file
+- run detection scripts specified in the config file
 - then add a new line of report to `${LOGS_PATH}/processed_rate.log`
 
 ### API Specification

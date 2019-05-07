@@ -30,13 +30,17 @@ install: init
 	# install dependencies
 	pipenv install \
 	    dataclasses \
-	    PyYAML \
-	    requests
+	    PyYAML
 
 .ONESHELL:
 update:
 	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
+	# update pip, setuptools, wheel
+	pipenv run pip install -U \
+	    pip \
+	    setuptools \
+	    wheel
 	# update pipenv
 	pipenv update
 	pipenv install

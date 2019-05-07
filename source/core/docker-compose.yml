@@ -7,30 +7,32 @@ services:
     build: .
     container_name: broapt-core
     entrypoint: ["bash", "/source/init.sh"]
+    # core environ
     environment:
-      # Bro MIME white list
-      BRO_MIME: application/vnd.microsoft.portable-executable;application/x-dosexec;application/msword;application/pdf;application/vnd.android.package-archive;message/rfc822
-      # Bro protocol white list
-      BRO_PROTOCOL: smtp
-      # Bro file reassembly buffer size
-      #FILE_BUFFER: 0xffffffffffffffff
-      # Bro extract file size limit
-      SIZE_LIMIT: 0
       # concurrent process limit
-      CORE_CPU: 5
+      BROAPT_CORE_CPU: 5
       # sleep interval
-      CORE_INT: 10
-      # force update mime2ext database
-      MIME_UPDATE: 0
-      # core environ
-      DUMP_MIME: 1
-      DUMP_PATH: /dump/
-      PCAP_PATH: /pcap/
-      LOGS_PATH: /var/log/bro/
+      BROAPT_CORE_INTERVAL: 10
+      # Bro MIME white list
+      BROAPT_MIME: application/vnd.microsoft.portable-executable;application/x-dosexec;application/msword;application/pdf;application/vnd.android.package-archive;message/rfc822
+      # Bro protocol white list
+      BROAPT_PROTOCOL: smtp
+      # group extracted file by MIME types
+      BROAPT_MIME_MODE: 1
       # log in JSON format
-      JSON_LOGS: 1
+      BROAPT_JSON_MODE: 1
       # run Bro in bare mode
-      BARE_MODE: 0
+      BROAPT_BARE_MODE: 0
+      # path to extract files
+      BROAPT_DUMP_PATH: /dump/
+      # path to source PCAP files
+      BROAPT_PCAP_PATH: /pcap/
+      # path to log files
+      BROAPT_LOGS_PATH: /var/log/bro/
+      # Bro file reassembly buffer size
+      #BROAPT_FILE_BUFFER: 0xffffffffffffffff
+      # Bro extract file size limit
+      #BROAPT_SIZE_LIMIT: 0
     image: broapt-core
     volumes:
       - /home/traffic/pcapfile:/pcap

@@ -8,7 +8,6 @@ verify_ssl = true
 [packages]
 dataclasses = "*"
 PyYAML = "*"
-requests = "*"
 
 [requires]
 python_version = "3.6"

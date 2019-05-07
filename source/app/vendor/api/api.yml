@@ -1,22 +1,11 @@
 ## Configuration for API arguments of BroAPT-APP
-##
-## All APIs when called will implicitly take
-## two more arguments at the end of argv:
-##
-## - ........ -- API arguments specified as below
-## - FILEPATH -- path to the target file
-## - FILENAME -- basename of target file
-## - MIMETYPE -- MIME type of target file
-##
-## and will `chdir` to corresponding folder
-## named after its media type or MIME type.
 
 ###############################################################################
-## Environment setup
+## Environment (global setup)
 ##
-## Environment variables `${...}` used in API
-## arguments will be translated according to
-## the following values.
+## Environment variables `${...}` used in API arguments will be translated
+## according to the following values.
+##
 environment:
   # Python 3.6
   PYTHON: /usr/bin/python3.6
@@ -35,25 +24,46 @@ environment:
 ##   - MIME type: `application/pdf`
 ##   - file name: `/dump/application/pdf/test.pdf`
 ## - API:
-##   - argument: python3.6 pdf_analysis/main.py
-##   - API root: /api/
+##   - argument: `python2.7 pdf_analysis/detect.py`
+##   - API root: `/api/`
+##   - environment: `ENV_FOO=1`, `ENV_BAR=this is an environment variable`
 ##
 ## The configuration section should then be:
 ##
 ## application:
 ##   ...  # other APIs
 ##   pdf:
-##     - ${PYTHON36}
-##     - pdf_analysis/main.py
-##     - ...  # possible options
+##     # assume using Python 2.7 environment
+##     environ:
+##       ENV_FOO: 1
+##       ENV_BAR: this is an environment variable
+##     install:
+##       - apt-get update && apt-get install -y python
+##       - pip install -r requirements.txt
+##     scripts:
+##       - ${PYTHON27} pdf_analysis/detect.py [...]        # refer to /usr/bin/python
+##       - ...                                             # and some random command
 ##
 ## BroAPT will work as following:
 ##
-## 1. change the current working directory to
+## 0. if run for the first time, run the following commands:
+##    - `apt-get update && apt-get install -y python`
+##    - `pip install -r requirements.txt`
+## 1. set the following environment variables
+##    # per target file
+##    - BROAPT_APP_FILE="/dump/application/pdf/test.pdf"
+##    - BROAPT_APP_MIME="application/pdf"
+##    # per API configuration
+##    - ENV_FOO=1
+##    - ENV_BAR="this is an environment variable"
+## 2. change the current working directory to
 ##    `/api/application/pdf`
-## 2. call the API as the following command:
-##    `/usr/bin/python3.6 pdf_analysis/main.py [...] '/dump/application/pdf/test.pdf' 'test.pdf' 'application/pdf'`
-## 3. retrieve and save the generated report
+## 3. call the API as the following commands:
+##    - `/usr/bin/python pdf_analysis/detect.py [...]`
+##    - `...`
+##
+## NOTE: `scripts` section is MANDATORY.
+##
 
 # APIs for `application` media type
 application:
@@ -63,8 +73,20 @@ audio:
 
 # Default API for missing MIME types
 example:
-  - ${PYTHON}
-  - default.py
+  environ:
+    ## sleep interval
+    VT_INTERVAL: 10
+    ## max retry for report
+    VT_RETRY: 6
+    ## VT API key
+    VT_API: f8b5e766a0d15fa2b3d6b3bdd526d4346816c09b78409632d5b8fa88a3a21940
+    ## path to VT file scan reports
+    VT_LOG: /var/log/bro/tmp/
+  install:
+    - apt-get update &&
+      apt-get install -y --no-install-recommends python3-requests
+  scripts:
+    - ${PYTHON36} virustotal.py
 
 # APIs for `font` media type
 font:

@@ -29,7 +29,7 @@ ROOT = str(pathlib.Path(__file__).parents[1].resolve())
 
 # limit on CPU
 try:
-    CPU_CNT = int(os.getenv('CORE_CPU'))
+    CPU_CNT = int(os.getenv('BROAPT_CORE_CPU'))
 except (ValueError, TypeError):
     if os.name == 'posix' and 'SC_NPROCESSORS_CONF' in os.sysconf_names:
         CPU_CNT = os.sysconf('SC_NPROCESSORS_CONF')
@@ -40,7 +40,7 @@ except (ValueError, TypeError):
 
 # sleep interval
 try:
-    INTERVAL = int(os.getenv('CORE_INT'))
+    INTERVAL = int(os.getenv('BROAPT_CORE_INTERVAL'))
 except (TypeError, ValueError):
     INTERVAL = 10
 
@@ -62,11 +62,11 @@ inited = False
 ## extract files path
 DUMP_PATH = None
 ## source PCAP path
-PCAP_PATH = os.getenv('PCAP_PATH', '/pcap/')
+PCAP_PATH = os.getenv('BROAPT_PCAP_PATH', '/pcap/')
 ## log file path
-LOGS_PATH = os.getenv('LOGS_PATH', '/var/log/bro/')
+LOGS_PATH = os.getenv('BROAPT_LOGS_PATH', '/var/log/bro/')
 ## run Bro in bare mode
-BARE_MODE = BOOLEAN_STATES.get(os.getenv('BARE_MODE', 'false').casefold(), False)
+BARE_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_BARE_MODE', 'false').casefold(), False)
 
 
 def init():
@@ -79,33 +79,33 @@ def init():
     ## source PCAP path
     # PCAP_PATH = os.getenv('PCAP_PATH', '/pcap/')
     ## group by MIME flag
-    DUMP_MIME = BOOLEAN_STATES.get(os.getenv('DUMP_MIME', 'true').casefold(), True)
+    MIME_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_MIME_MODE', 'true').casefold(), True)
     ## extract files path
-    DUMP_PATH_ENV = os.getenv('DUMP_PATH')
+    DUMP_PATH_ENV = os.getenv('BROAPT_DUMP_PATH')
     if DUMP_PATH_ENV is None:
         DUMP_PATH = 'FileExtract::prefix'
     else:
         DUMP_PATH = '"%s"' % DUMP_PATH_ENV.replace('"', '\\"')
     ## buffer size
     try:
-        FILE_BUFFER = ctypes.c_uint64(ast.literal_eval(os.getenv('FILE_BUFFER'))).value
+        FILE_BUFFER = ctypes.c_uint64(ast.literal_eval(os.getenv('BROAPT_FILE_BUFFER'))).value
     except (SyntaxError, TypeError, ValueError):
         FILE_BUFFER = 'Files::reassembly_buffer_size'
     ## size limit
     try:
-        SIZE_LIMIT = ctypes.c_uint64(ast.literal_eval(os.getenv('SIZE_LIMIT'))).value
+        SIZE_LIMIT = ctypes.c_uint64(ast.literal_eval(os.getenv('BROAPT_SIZE_LIMIT'))).value
     except (SyntaxError, TypeError, ValueError):
         SIZE_LIMIT = 'FileExtract::default_limit'
     ## log in JSON format
-    JSON_LOGS_ENV = os.getenv('JSON_LOGS')
-    if JSON_LOGS_ENV is None:
-        JSON_LOGS = 'LogAscii::use_json'
+    JSON_MODE_ENV = os.getenv('BROAPT_JSON_MODE')
+    if JSON_MODE_ENV is None:
+        JSON_MODE = 'LogAscii::use_json'
     else:
-        JSON_LOGS_BOOL = BOOLEAN_STATES.get(JSON_LOGS_ENV.casefold())
-        if JSON_LOGS_BOOL is None:
-            JSON_LOGS = 'LogAscii::use_json'
+        JSON_MODE_BOOL = BOOLEAN_STATES.get(JSON_MODE_ENV.casefold())
+        if JSON_MODE_BOOL is None:
+            JSON_MODE = 'LogAscii::use_json'
         else:
-            JSON_LOGS = 'T' if JSON_LOGS_BOOL else 'F'
+            JSON_MODE = 'T' if JSON_MODE_BOOL else 'F'
 
     # plugin template
     FILE_TEMP = ('@load ../__load__.bro',
@@ -119,7 +119,7 @@ def init():
                  '')
 
     # MIME white list
-    LOAD_MIME = os.getenv('BRO_MIME')
+    LOAD_MIME = os.getenv('BROAPT_MIME')
     if LOAD_MIME is not None:
         load_file = list()
         for mime_type in filter(len, re.split(r'\s*[,;|]\s*', LOAD_MIME.casefold())):
@@ -132,7 +132,7 @@ def init():
         load_file = [os.path.join('.', 'plugins', 'extract-all-files.bro')]
 
     # protocol list
-    LOAD_PROTOCOL = os.getenv('BRO_PROTOCOL')
+    LOAD_PROTOCOL = os.getenv('BROAPT_PROTOCOL')
     if LOAD_PROTOCOL is not None:
         # available protocols
         available_protocols = ('dtls', 'ftp', 'http', 'irc', 'smtp')
@@ -154,9 +154,9 @@ def init():
     context = list()
     with open(os.path.join(ROOT, 'scripts', 'config.bro')) as config:
         for line in config:
-            line = MIME_REGEX.sub(rf'\g<prefix>{"T" if DUMP_MIME else "F"}\g<suffix>', line)
+            line = MIME_REGEX.sub(rf'\g<prefix>{"T" if MIME_MODE else "F"}\g<suffix>', line)
             line = LOGS_REGEX.sub(rf'\g<prefix>{os.path.join(LOGS_PATH, "processed_mime.log")}\g<suffix>', line)
-            line = JSON_REGEX.sub(rf'\g<prefix>{JSON_LOGS}\g<suffix>', line)
+            line = JSON_REGEX.sub(rf'\g<prefix>{JSON_MODE}\g<suffix>', line)
             line = SALT_REGEX.sub(rf'\g<prefix>"{uuid.uuid4()}"\g<suffix>', line)
             line = FILE_REGEX.sub(rf'\g<prefix>{FILE_BUFFER}\g<suffix>', line)
             line = PATH_REGEX.sub(rf'\g<prefix>{DUMP_PATH}\g<suffix>', line)

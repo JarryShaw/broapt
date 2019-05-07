@@ -13,6 +13,7 @@
         "isnan",
         "iterrows",
         "itertuples",
+        "libyaml",
         "linesep",
         "nofile",
         "numpy",

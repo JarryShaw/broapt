@@ -17,6 +17,8 @@ indended design.
     Pipenv virtual environment
 - Python, version 3.6+ (tested only on 3.6.7 and 3.7.3)
   > __NOTE__: requirements are provided in `./vendor/python/` folder
+  * [`dataclasses`](https://github.com/ericvsmith/dataclasses)
+  * [`pandas`](http://pandas.pydata.org)
   * [`python-magic`](https://github.com/ahupp/python-magic)
 
 For Docker addict, a `Dockerfile` and a `docker-compose.yml` are both provided, just hit and go.
@@ -24,24 +26,24 @@ For development environment, `make` and `pipenv` are the two things playing arou
 
 ## Environment
 
-- `BRO_MIME` -- Bro MIME while list
-- `BRO_PROTOCOL` -- Bro protocol while list
+- `BROAPT_FORCE_UPDATE` -- force update MIME mapping (*default*: `false`)
 
-- `BUF_SIZE` -- Bro file reassembly buffer size
-- `SIZE_LIMIT` -- Bro extracted file size limit
+- `BROAPT_CORE_CPU` -- concurrent process limit (*default*: 5)
+- `BROAPT_CORE_INTERVAL` -- sleep interval (*default*: 10s)
 
-- `CORE_CPU` -- concurrent process limit (*default*: 5)
-- `CORE_INT` -- sleep interval (*default*: 10s)
+- `BROAPT_MIME` -- Bro MIME while list (*default*: all MIME types)
+- `BROAPT_PROTOCOL` -- Bro protocol while list (*default*: null)
 
-- `DUMP_MIME` -- if store extracted files by MIME types (*default*: `true`)
-- `DUMP_PATH` -- where extracted files will be stored (*default*: `/dump/`)
-- `PCAP_PATH` -- path to PCAP source files (*default*: `/pcap/`)
-- `LOGS_PATH` -- path to log files (*default*: `/var/log/bro/`)
+- `BROAPT_MIME_MODE` -- store extracted files by MIME types (*default*: `true`)
+- `BROAPT_JSON_LOGS` -- log in JSON format (*default*: `true`)
+- `BROAPT_BARE_MODE` -- run Bro in bare mode (*default*: `false`)
 
-- `JSON_LOGS` -- log in JSON or ASCII format (*default*: `true`)
-- `BARE_MODE` -- run Bro in bare mode (*default*: `false`)
+- `BROAPT_DUMP_PATH` -- where extracted files will be stored (*default*: `FileExtract::prefix`)
+- `BROAPT_PCAP_PATH` -- path to PCAP source files (*default*: `/pcap/`)
+- `BROAPT_LOGS_PATH` -- path to log files (*default*: `/var/log/bro/`)
 
-- `MIME_UPDATE` -- force update `mime2ext` database (*default*: 0)
+- `BROAPT_FILE_BUFFER` -- Bro file reassembly buffer size (*default*: `Files::reassembly_buffer_size`)
+- `BROAPT_SIZE_LIMIT` -- Bro extracted file size limit (*default*: `FileExtract::default_limit`)
 
 ## Usage
 

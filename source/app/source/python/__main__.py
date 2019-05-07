@@ -9,19 +9,14 @@ import subprocess
 import sys
 import time
 
-import yaml
-
-try:
-    from yaml import CLoader as Loader
-except ImportError:
-    from yaml import Loader
+from cfgparser import parse  # pylint: disable=import-error
 
 # repo root path
 ROOT = str(pathlib.Path(__file__).parents[1].resolve())
 
 # limit on CPU
 try:
-    CPU_CNT = int(os.getenv('APP_CPU'))
+    CPU_CNT = int(os.getenv('BROAPT_APP_CPU'))
 except (ValueError, TypeError):
     if os.name == 'posix' and 'SC_NPROCESSORS_CONF' in os.sysconf_names:
         CPU_CNT = os.sysconf('SC_NPROCESSORS_CONF')
@@ -32,25 +27,22 @@ except (ValueError, TypeError):
 
 # sleep interval
 try:
-    INTERVAL = int(os.getenv('APP_INT'))
+    INTERVAL = int(os.getenv('BROAPT_APP_INTERVAL'))
 except (TypeError, ValueError):
     INTERVAL = 10
 
 # fetch environ
-API_ROOT = os.getenv('API_ROOT', '/api/')
-with open(os.path.join(API_ROOT, 'api.yml')) as yaml_file:
-    API_CFG = yaml.load(yaml_file, Loader=Loader)
-for (env, val) in API_CFG.get('environment', dict()).items():
-    os.environ[env] = str(val)
+API_ROOT = os.getenv('BROAPT_API_ROOT', '/api/')
+API_CFG = parse(API_ROOT)
 
 # Bro config
 BOOLEAN_STATES = {'1': True, '0': False,
                   'yes': True, 'no': False,
                   'true': True, 'false': False,
                   'on': True, 'off': False}
-DUMP_MIME = BOOLEAN_STATES.get(os.getenv('DUMP_MIME', 'false').lower(), False)
-LOGS_PATH = os.getenv('LOGS_PATH', '/var/log/bro/')
-DUMP_PATH = os.getenv('DUMP_PATH')
+MIME_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_MIME_MODE', 'false').lower(), False)
+LOGS_PATH = os.getenv('BROAPT_LOGS_PATH', '/var/log/bro/')
+DUMP_PATH = os.getenv('BROAPT_DUMP_PATH')
 if DUMP_PATH is None:
     try:
         DUMP_PATH = subprocess.check_output(['bro', '-e', 'print(FileExtract::prefix)'],
@@ -85,7 +77,7 @@ class Entry:
 
 def print_file(s, file=FILE):
     with open(file, 'at', 1) as LOG:
-       print(s, file=LOG)
+        print(s, file=LOG)
 
 
 def process(entry):
@@ -110,7 +102,7 @@ def process(entry):
 
 def list_dir(path):
     file_list = list()
-    if DUMP_MIME:
+    if MIME_MODE:
         for content_type in filter(lambda entry: entry.is_dir(), os.scandir(path)):
             for subtype in filter(lambda entry: entry.is_dir(), os.scandir(content_type.path)):
                 mime = MIME(content_type=content_type.name,

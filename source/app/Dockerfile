@@ -22,7 +22,6 @@ RUN apt-get update \
         python3-wheel \
         ## do not directly install python3-yaml
         ## install its dependency libyaml instead
-        # python3-requests \
         # python3-yaml \
         libyaml-0-2 \
  && ln -sf /usr/bin/python3.6 /usr/bin/python3

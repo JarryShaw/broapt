@@ -28,7 +28,7 @@ with open(os.path.join(ROOT, 'scripts', 'file-extensions.bro')) as file:
 
 # parse missing mappings
 missing = list()
-LOGS_PATH = os.getenv('LOGS_PATH', '/var/log/bro')
+LOGS_PATH = os.getenv('BROAPT_LOGS_PATH', '/var/log/bro')
 with open(os.path.join(LOGS_PATH, 'processed_mime.log')) as file:
     missing.extend(filter(lambda mime: mime not in mime2ext, map(lambda line: line.strip(), file)))
 
