@@ -96,7 +96,7 @@ def process(entry):
         api_args = API_CFG['example']
         api_path = os.path.join(API_ROOT, 'example')
 
-    args = [os.path.expandvar(argv) for argv in api_args]
+    args = [os.path.expandvars(argv) for argv in api_args]
     args.append(entry.path)
     args.append(entry.name)
     args.append(entry.mime.name)
