@@ -271,14 +271,23 @@ def generate_log(log_root):
                 )
             conns.append(conn)
 
+        mime_type = None
+        dump_path = os.path.join(DUMP_PATH, line.extracted)
+        if os.path.exists(dump_path):
+            with contextlib.suppress(Exception):
+                mime_type = magic.from_file(dump_path, mime=True)
+        else:
+            dump_path = None
+
         info = dict(
             timestamp=line.ts,
+            dump_path=dump_path,
             local_name=line.extracted,
             source_name=line.filename if hasattr(line, 'filename') else None,
             hosts=hosts,
             conns=conns,
             bro_mime_type=line.mime_type,
-            real_mime_type=magic.from_file(os.path.join(DUMP_PATH, line.extracted), mime=True),
+            real_mime_type=mime_type,
         )
         print(json.dumps(info, cls=IPAddressJSONEncoder), file=INFO)
 

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import dataclasses
+import functools
 import multiprocessing
 import os
 import pathlib
@@ -71,11 +72,15 @@ class MIME:
 
 
 # entry class
+@functools.total_ordering
 @dataclasses.dataclass
 class Entry:
     name: str
     path: str
     mime: MIME
+
+    def __lt__(self, value):
+        return self.name < value.name
 
 
 def print_file(s, file=FILE):

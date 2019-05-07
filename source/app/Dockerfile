@@ -14,14 +14,17 @@ RUN apt-get update \
  && add-apt-repository --yes ppa:deadsnakes/ppa
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
-        ## python3 is actually dependency of the latters
+        ## python3.6 is actually dependency of the latters
         ## but we keep it here as a good remainder
         python3.6 \
         python3-pip \
         python3-setuptools \
         python3-wheel \
-        python3-requests \
-        python3-yaml \
+        ## do not directly install python3-yaml
+        ## install its dependency libyaml instead
+        # python3-requests \
+        # python3-yaml \
+        libyaml-0-2 \
  && ln -sf /usr/bin/python3.6 /usr/bin/python3
 
 # install Python packages & dependencies
