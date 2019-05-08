@@ -37,12 +37,12 @@ services:
       #BROAPT_SIZE_LIMIT: 0
     image: broapt-core
     volumes:
-      # - /home/traffic/pcapfile:/pcap
-      - ../sample:/pcap
-      # - /home/traffic/log/extract:/dump
-      - ./dump:/dump
-      # - /home/traffic/log/bro:/var/log/bro
-      - ./logs:/var/log/bro
+      - /home/traffic/pcapfile:/pcap
+      # - ../sample:/pcap
+      - /home/traffic/log/extract:/dump
+      # - ./dump:/dump
+      - /home/traffic/log/bro:/var/log/bro
+      # - ./logs:/var/log/bro
     restart: "always"
   app:
     build: app
@@ -66,9 +66,9 @@ services:
       BROAPT_LOGS_PATH: /var/log/bro/
     image: broapt-app
     volumes:
-      # - /home/traffic/log/extract:/dump
-      - ./dump:/dump
-      # - /home/traffic/log/bro:/var/log/bro
-      - ./logs:/var/log/bro
+      - /home/traffic/log/extract:/dump
+      # - ./dump:/dump
+      - /home/traffic/log/bro:/var/log/bro
+      # - ./logs:/var/log/bro
       - ./app/vendor/api:/api/
     restart: "always"
