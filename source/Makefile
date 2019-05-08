@@ -38,10 +38,9 @@ docker-stop: docker-stop-app docker-stop-core
 docker-ps: docker-ps-app docker-ps-core
 docker-logs: docker-logs-app docker-logs-core
 
-docker: clean docker-app docker-core
-	docker system prune --volumes -f
+docker: docker-app docker-core
 
-docker-compose: clean
+docker-compose:
 	docker-compose build
 	docker-compose up -d
 	docker system prune --volumes -f

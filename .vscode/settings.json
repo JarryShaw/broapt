@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "CHKSUM",
         "DTLS",
         "ENTR",
         "Exif",
@@ -11,6 +12,7 @@
         "conns",
         "emsp",
         "fext",
+        "fuid",
         "hosom",
         "inited",
         "isnan",

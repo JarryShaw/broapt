@@ -34,6 +34,18 @@ try:
 except (TypeError, ValueError):
     INTERVAL = 10
 
+# command retry
+try:
+    MAX_RETRY = int(os.getenv('BROAPT_MAX_RETRY'))
+    if MAX_RETRY < 1:
+        MAX_RETRY = 3
+except (TypeError, ValueError):
+    MAX_RETRY = 3
+
+# macros
+EXIT_SUCCESS = 0
+EXIT_FAILURE = 1
+
 # Bro config
 LOGS_PATH = os.getenv('BROAPT_LOGS_PATH', '/var/log/bro/')
 DUMP_PATH = os.getenv('BROAPT_DUMP_PATH')
@@ -52,7 +64,10 @@ API_DICT = parse(API_ROOT)
 # file name regex
 FILE_REGEX = re.compile(r'''
     # protocol prefix
-    (DTLS|FTP_DATA|HTTP|IRC_DATA|SMTP|\S+)-F\w+
+    (?P<protocol>DTLS|FTP_DATA|HTTP|IRC_DATA|SMTP|\S+)
+    -
+    # file UID
+    (?P<fuid>F\w+)
     \.
     # media-type
     (?P<media_type>application|audio|example|font|image|message|model|multipart|text|video|\S+)
@@ -61,7 +76,7 @@ FILE_REGEX = re.compile(r'''
     (?P<subtype>\S+)
     \.
     # file extension
-    \S+
+    (?P<extension>\S+)
 ''', re.IGNORECASE | re.VERBOSE)
 
 # log files
@@ -113,26 +128,31 @@ def suppress(func):
     return wrapper
 
 
-def run(command, cwd=None, env=None, file='unknown'):
+def run(command, cwd=None, env=None,
+        mime='example', file='unknown'):
     # prepare log path
-    logs_path = os.path.join(API_LOGS, env['BROAPT_MIME'])
+    logs_path = os.path.join(API_LOGS, mime)
     os.makedirs(logs_path, exist_ok=True)
 
     # prepare runtime
     log = os.path.join(logs_path, file)
     args = os.path.expandvars(command)
 
-    print_file(f'# time: {time.ctime()}', file=log)
-    print_file(f'# args: {args}', file=log)
-
-    try:
-        with open(log, 'at', 1) as stdout:
-            subprocess.check_call(args, shell=True, cwd=cwd, env=env,
-                                  stdout=stdout, stderr=subprocess.STDOUT)
-    except subprocess.CalledProcessError as error:
-        print_file(error.args, file=FAIL)
-        return True
-    return False
+    suffix = ''
+    for retry in range(MAX_RETRY):
+        log += suffix
+        print_file(f'# time: {time.ctime()}', file=log)
+        print_file(f'# args: {args}', file=log)
+        try:
+            with open(log, 'at', 1) as stdout:
+                subprocess.check_call(args, shell=True, cwd=cwd, env=env,
+                                      stdout=stdout, stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError as error:
+            print_file(error.args, file=FAIL)
+            suffix = f'_{retry}'
+            continue
+        return EXIT_SUCCESS
+    return EXIT_FAILURE
 
 
 def issue(mime):
@@ -148,6 +168,8 @@ def issue(mime):
 
 @suppress
 def process(entry):  # pylint: disable=inconsistent-return-statements
+    print(f'+ Processing {entry.path!r}')
+
     if entry.mime.name in API_DICT:
         mime = entry.mime.name
         api = API_DICT[entry.mime]
@@ -167,7 +189,7 @@ def process(entry):  # pylint: disable=inconsistent-return-statements
     if not api._inited:  # pylint: disable=protected-access
         for command in api.install:
             log = f'install.{api.install_log}'
-            if run(command, cwd, env, file=log):
+            if run(command, cwd, env, mime, file=log):
                 return issue(mime)
             api.install_log += 1
         api._inited = True  # pylint: disable=protected-access
@@ -175,7 +197,7 @@ def process(entry):  # pylint: disable=inconsistent-return-statements
     # run scripts commands
     for command in api.scripts:
         log = f'scripts.{api.scripts_log}'
-        if run(command, cwd, env, file=log):
+        if run(command, cwd, env, mime, file=log):
             return issue(mime)
         api.scripts_log += 1
     print_file(entry.path)

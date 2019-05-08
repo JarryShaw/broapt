@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import ast
-import builtins
 import contextlib
 import ctypes
 import functools
@@ -45,6 +44,24 @@ try:
 except (TypeError, ValueError):
     INTERVAL = 10
 
+# file name regex
+FILE_REGEX = re.compile(r'''
+    # protocol prefix
+    (?P<protocol>DTLS|FTP_DATA|HTTP|IRC_DATA|SMTP|\S+)
+    -
+    # file UID
+    (?P<fuid>F\w+)
+    \.
+    # media-type
+    (?P<media_type>application|audio|example|font|image|message|model|multipart|text|video|\S+)
+    \.
+    # subtype
+    (?P<subtype>\S+)
+    \.
+    # file extension
+    (?P<extension>\S+)
+''', re.IGNORECASE | re.VERBOSE)
+
 # PCAP magic numbers
 PCAP_MGC = (b'\xa1\xb2\x3c\x4d',
             b'\xa1\xb2\xc3\xd4',
@@ -70,6 +87,8 @@ PCAP_PATH = os.getenv('BROAPT_PCAP_PATH', '/pcap/')
 LOGS_PATH = os.getenv('BROAPT_LOGS_PATH', '/var/log/bro/')
 ## run Bro in bare mode
 BARE_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_BARE_MODE', 'false').casefold(), False)
+## run Bro with `-C` option
+NO_CHKSUM = BOOLEAN_STATES.get(os.getenv('BROAPT_NO_CHKSUM', 'true').casefold(), True)
 
 
 def init():
@@ -157,7 +176,7 @@ def init():
     ENTR_REGEX = re.compile(r'(?P<prefix>\s*redef entropy\s*=\s*)[TF](?P<suffix>\s*;\s*)')
     JSON_REGEX = re.compile(r'(?P<prefix>\s*redef use_json\s*=\s*).*?(?P<suffix>\s*;\s*)')
     SALT_REGEX = re.compile(r'(?P<prefix>\s*redef file_salt\s*=\s*).*?(?P<suffix>\s*;\s*)')
-    FILE_REGEX = re.compile(r'(?P<prefix>\s*redef file_buffer\s*=\s*).*?(?P<suffix>\s*;\s*)')
+    FILE_REGEX = re.compile(r'(?P<prefix>\s*redef file_buffer\s*=\s*).*?(?P<suffix>\s*;\s*)')  # pylint: disable=redefined-outer-name
     PATH_REGEX = re.compile(r'(?P<prefix>\s*redef path_prefix\s*=\s*).*?(?P<suffix>\s*;\s*)')
     SIZE_REGEX = re.compile(r'(?P<prefix>\s*redef size_limit\s*=\s*).*?(?P<suffix>\s*;\s*)')
     LOAD_REGEX = re.compile(r'^@load\s+.*?\s*')
@@ -186,7 +205,7 @@ def init():
     # get real DUMP_PATH
     if DUMP_PATH_ENV is None:
         try:
-            DUMP_PATH_ENV = subprocess.check_output(['bro', '-e', 'print(FileExtract::prefix)'],
+            DUMP_PATH_ENV = subprocess.check_output(['bro', '-e', 'print_file(FileExtract::prefix)'],
                                                     stderr=subprocess.DEVNULL, encoding='utf-8').strip()
         except subprocess.CalledProcessError:
             DUMP_PATH_ENV = './extract_files/'
@@ -207,10 +226,9 @@ class IPAddressJSONEncoder(json.JSONEncoder):
         return super().default(o)
 
 
-def print(s, file=TIME):  # pylint: disable=redefined-builtin
+def print_file(s, file=TIME):
     with open(file, 'at', 1) as LOG:
-        builtins.print(s, file=LOG)
-    builtins.print(s, file=sys.stdout)
+        print(s, file=LOG)
 
 
 def suppress(func):
@@ -263,7 +281,14 @@ def parse_args(argv):
 
 
 def rename_dump(local_name, mime_type):
-    stem, fext = os.path.splitext(local_name)
+    if MIME_MODE:
+        stem, fext = os.path.splitext(local_name)
+    else:
+        match = FILE_REGEX.match(local_name)
+        if match is None:
+            return local_name
+        stem = f'{match.group("protocol")}-{match.group("fuid")}'
+        fext = match.group('extension')
     mime = mime_type.replace('/', '.', 1)
 
     name = f'{stem}.{mime}{fext}'
@@ -327,14 +352,14 @@ def generate_log(log_root):
             bro_mime_type=line.mime_type,
             real_mime_type=mime_type,
         )
-        print(json.dumps(info, cls=IPAddressJSONEncoder), file=INFO)
+        print_file(json.dumps(info, cls=IPAddressJSONEncoder), file=INFO)
 
 
 @suppress
 def process(file):
     if not inited:
         init()
-
+    print_file(f'+ Working on PCAP: {file!r}')
     print(f'+ Working on PCAP: {file!r}')
 
     stem = pathlib.Path(file).stem
@@ -343,16 +368,18 @@ def process(file):
     env = os.environ
     env['BRO_LOG_SUFFIX'] = f'{uid}.log'
 
+    args = ['bro']
     if BARE_MODE:
-        args = ['bro', '--bare-mode', '--readfile', file, os.path.join(ROOT, 'scripts')]
-    else:
-        args = ['bro', '--readfile', file, os.path.join(ROOT, 'scripts')]
+        args.append('--bare-mode')
+    if NO_CHKSUM:
+        args.append('--no-checksums')
+    args.extend(['--readfile', file, os.path.join(ROOT, 'scripts')])
 
     start = time.time()
     try:
         subprocess.check_call(args, env=env)
     except subprocess.CalledProcessError:
-        print(f'+ Failed on PCAP: {file!r}')
+        print_file(f'+ Failed on PCAP: {file!r}')
     end = time.time()
 
     dest = os.path.join(LOGS_PATH, f'{stem}-{uid}')
@@ -363,8 +390,8 @@ def process(file):
             shutil.move(log, os.path.join(dest, log.replace(f'.{uid}.log', '.log')))
     generate_log(dest)
 
-    print(f'+ Bro processing: {end-start} seconds')
-    print(file, file=FILE)
+    print_file(f'+ Bro processing: {end-start} seconds')
+    print_file(file, file=FILE)
 
 
 def main_with_args():
@@ -396,6 +423,7 @@ def main_with_no_args():
         except KeyboardInterrupt:
             return 0
 
+        print_file('+ Starting another turn...')
         print('+ Starting another turn...')
         processed_file.extend(file_list)
 

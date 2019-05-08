@@ -37,6 +37,7 @@ For development environment, `make` and `pipenv` are the two things playing arou
 - `BROAPT_MIME_MODE` -- store extracted files by MIME types (*default*: `true`)
 - `BROAPT_JSON_LOGS` -- log in JSON format (*default*: `true`)
 - `BROAPT_BARE_MODE` -- run Bro in bare mode (*default*: `false`)
+- `BROAPT_NO_CHKSUM` -- run Bro with `-C` option (*default*: `true`)
 
 - `BROAPT_DUMP_PATH` -- where extracted files will be stored (*default*: `FileExtract::prefix`)
 - `BROAPT_PCAP_PATH` -- path to PCAP source files (*default*: `/pcap/`)

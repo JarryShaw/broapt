@@ -1,18 +1,20 @@
 # docker-compose version
 version: "3"
 
-# Broapt services
+# BroAPT services
 services:
   app:
     build: .
     container_name: broapt-app
     entrypoint: ["bash", "/source/init.sh"]
+    # app environ
     environment:
-      # BroAPT-APP environment
       ## concurrent process limit
       BROAPT_APP_CPU: 5
       ## sleep interval
       BROAPT_APP_INTERVAL: 10
+      ## command retry
+      BROAPT_MAX_RETRY: 3
       ## path to detection APIs
       BROAPT_API_ROOT: /api/
       ## path to API runtime logs

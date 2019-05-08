@@ -8,24 +8,30 @@ import time
 import requests
 
 # useful paths
-LOGS_PATH = os.getenv('BROAPT_LOGS_PATH', '/var/log/bro/').strip()
-VT_LOG = os.getenv('BROAPT_VT_LOG', '/var/log/bro/tmp/').strip()
+LOGS_PATH = os.getenv('BROAPT_LOGS_PATH', '/var/log/bro/')
+VT_LOG = os.getenv('VT_LOG', '/var/log/bro/tmp/')
 os.makedirs(VT_LOG, exist_ok=True)
 
 # VirusTotal API key
-VT_API = os.environ['VT_API'].strip()
+VT_API = os.environ['VT_API']
 
 # time interval
 try:
-    VT_INT = int(os.getenv('BROAPT_VT_INTERVAL'))
+    VT_INT = int(os.getenv('VT_INTERVAL'))
 except (TypeError, ValueError):
     VT_INT = 60
 
 # max retry
 try:
-    VT_RETRY = int(os.getenv('BROAPT_VT_RETRY'))
+    VT_RETRY = int(os.getenv('VT_RETRY'))
 except (TypeError, ValueError):
     VT_RETRY = 3
+
+# ratio threshold percentage
+try:
+    VT_PERCENT = int(os.getenv('VT_PERCENT'))
+except (TypeError, ValueError):
+    VT_PERCENT = 50
 
 # return codes
 EXIT_SUCCESS = 0
@@ -78,12 +84,12 @@ def main():
     positives = report_json['positives']
     total = report_json['total']
     ratio = positives * 100 / total
+    rate = ratio >= VT_PERCENT
 
     result = {'time': time.time(),
               'path': path,
-              'name': name,
               'mime': mime,
-              'ratio': ratio}
+              'rate': rate}
     with open(os.path.join(LOGS_PATH, 'processed_rate.log'), 'at', 1) as file:
         print(json.dumps(result), file=file)
     return EXIT_SUCCESS

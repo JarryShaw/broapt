@@ -17,6 +17,7 @@ For development environment, `make` and `pipenv` are the two things playing arou
 
 - `BROAPT_APP_CPU` -- concurrent process limit (*default*: 10)
 - `BROAPT_APP_INTERVAL` -- sleep interval (*default*: 10s)
+- `BROAPT_MAX_RETRY` -- maximum times of retry for running commands (*default*: 3)
 
 - `BROAPT_API_ROOT` -- root path to APIs (*default*: `/api/`)
 - `BROAPT_API_LOGS` -- path to API runtime logs (*default*: `/var/log/bro/api/`)
@@ -27,10 +28,11 @@ For development environment, `make` and `pipenv` are the two things playing arou
 > __NOTE__: the following environment variables are used only for the default API, and can be
 >           removed if some other default API introduced
 
-- `BROAPT_VT_API` -- VirusTotal API key
-- `BROAPT_VT_LOG` -- path to store VirusTotal file scan reports & runtime logs (`/var/log/bro/tmp/`)
-- `BROAPT_VT_INT` -- VirusTotal sleep interval (*default*: 60s)
-- `BROAPT_VT_RETRY` -- maximum times of retry for retrieving VirusTotal file scan reports (*default*: 3)
+- `VT_API` -- VirusTotal API key
+- `VT_LOG` -- path to store VirusTotal file scan reports & runtime logs (`/var/log/bro/tmp/`)
+- `VT_INT` -- VirusTotal sleep interval (*default*: 60s)
+- `VT_RETRY` -- maximum times of retry for retrieving VirusTotal file scan reports (*default*: 3)
+- `VT_PERCENT` -- percentage of positive threshold (*default*: 50%)
 
 ## Usage
 

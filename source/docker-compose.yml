@@ -1,34 +1,74 @@
 # docker-compose version
 version: "3"
 
-# Broapt services
+# BroAPT services
 services:
   core:
     build: core
     container_name: broapt-core
     entrypoint: ["bash", "/source/init.sh"]
-    env_file:
-      - ./core/source/.env
+    # core environ
+    environment:
+      ## concurrent process limit
+      BROAPT_CORE_CPU: 5
+      ## sleep interval
+      BROAPT_CORE_INTERVAL: 10
+      ## Bro MIME white list
+      BROAPT_LOAD_MIME: application/vnd.microsoft.portable-executable;application/x-dosexec;application/msword;application/pdf;application/vnd.android.package-archive;message/rfc822
+      ## Bro protocol white list
+      BROAPT_LOAD_PROTOCOL: smtp
+      ## group extracted file by MIME types
+      BROAPT_MIME_MODE: 1
+      ## log in JSON format
+      BROAPT_JSON_MODE: 1
+      ## run Bro in bare mode
+      BROAPT_BARE_MODE: 0
+      ## run Bro with `-C` option
+      BROAPT_NO_CHKSUM: 1
+      ## path to extract files
+      BROAPT_DUMP_PATH: /dump/
+      ## path to source PCAP files
+      BROAPT_PCAP_PATH: /pcap/
+      ## path to log files
+      BROAPT_LOGS_PATH: /var/log/bro/
+      ## Bro file reassembly buffer size
+      #BROAPT_FILE_BUFFER: 0xffffffffffffffff
+      ## Bro extract file size limit
+      #BROAPT_SIZE_LIMIT: 0
     image: broapt-core
     volumes:
-      - /home/traffic/pcapfile:/pcap
-      # - ../sample:/pcap
-      - /home/traffic/log/extract:/dump
-      # - ./dump:/dump
-      - /home/traffic/log/bro:/var/log/bro
-      # - ./logs:/var/log/bro
+      # - /home/traffic/pcapfile:/pcap
+      - ../sample:/pcap
+      # - /home/traffic/log/extract:/dump
+      - ./dump:/dump
+      # - /home/traffic/log/bro:/var/log/bro
+      - ./logs:/var/log/bro
     restart: "always"
   app:
     build: app
     container_name: broapt-app
     entrypoint: ["bash", "/source/init.sh"]
-    env_file:
-      - ./app/source/.env
+    # app environ
+    environment:
+      ## concurrent process limit
+      BROAPT_APP_CPU: 5
+      ## sleep interval
+      BROAPT_APP_INTERVAL: 10
+      ## command retry
+      BROAPT_MAX_RETRY: 3
+      ## path to detection APIs
+      BROAPT_API_ROOT: /api/
+      ## path to API runtime logs
+      BROAPT_API_LOGS: /var/log/bro/api/
+      ## path to extract files
+      BROAPT_DUMP_PATH: /dump/
+      ## path to log files
+      BROAPT_LOGS_PATH: /var/log/bro/
     image: broapt-app
     volumes:
-      - /home/traffic/log/extract:/dump
-      # - ./dump:/dump
-      - /home/traffic/log/bro:/var/log/bro
-      # - ./logs:/var/log/bro
-      - ./app/vendor/api:/api
+      # - /home/traffic/log/extract:/dump
+      - ./dump:/dump
+      # - /home/traffic/log/bro:/var/log/bro
+      - ./logs:/var/log/bro
+      - ./app/vendor/api:/api/
     restart: "always"
