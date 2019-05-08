@@ -55,38 +55,38 @@ def main():
                                     files={'file': (name, file)},
                                     params={'apikey': VT_API})
 
-    if VT_RESPONSE.status_code == 200:
-        response_json = VT_RESPONSE.json()
+    if VT_RESPONSE.status_code != 200:
+        return VT_RESPONSE.status_code
+    response_json = VT_RESPONSE.json()
 
-        for _ in range(VT_RETRY):
-            VT_REPORT = requests.get('https://www.virustotal.com/vtapi/v2/file/report',
-                                     params={'apikey': VT_API,
-                                             'resource': response_json['scan_id']})
-            if VT_REPORT.status_code == 200:
-                report_json = VT_REPORT.json()
-                if report_json['response_code'] == 1:
-                    break
-            time.sleep(VT_INT)
-        else:
-            return EXIT_FAILURE
+    for _ in range(VT_RETRY):
+        VT_REPORT = requests.get('https://www.virustotal.com/vtapi/v2/file/report',
+                                 params={'apikey': VT_API,
+                                         'resource': response_json['scan_id']})
+        if VT_REPORT.status_code == 200:
+            report_json = VT_REPORT.json()
+            if report_json['response_code'] == 1:
+                break
+        time.sleep(VT_INT)
+    else:
+        return EXIT_FAILURE
 
-        log_name = f'{os.path.splitext(name)[0]}.json'
-        with open(os.path.join(VT_LOG, log_name), 'w') as log:
-            json.dump(report_json, log, indent=2)
+    log_name = f'{os.path.splitext(name)[0]}.json'
+    with open(os.path.join(VT_LOG, log_name), 'w') as log:
+        json.dump(report_json, log, indent=2)
 
-        positives = report_json['positives']
-        total = report_json['total']
-        ratio = positives * 100 / total
+    positives = report_json['positives']
+    total = report_json['total']
+    ratio = positives * 100 / total
 
-        result = {'time': time.time(),
-                  'path': path,
-                  'name': name,
-                  'mime': mime,
-                  'ratio': ratio}
-        with open(os.path.join(LOGS_PATH, 'processed_rate.log'), 'at', 1) as file:
-            print(json.dumps(result), file=file)
-        return EXIT_SUCCESS
-    return VT_RESPONSE.status_code
+    result = {'time': time.time(),
+              'path': path,
+              'name': name,
+              'mime': mime,
+              'ratio': ratio}
+    with open(os.path.join(LOGS_PATH, 'processed_rate.log'), 'at', 1) as file:
+        print(json.dumps(result), file=file)
+    return EXIT_SUCCESS
 
 
 if __name__ == '__main__':

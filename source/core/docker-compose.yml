@@ -14,9 +14,9 @@ services:
       # sleep interval
       BROAPT_CORE_INTERVAL: 10
       # Bro MIME white list
-      BROAPT_MIME: application/vnd.microsoft.portable-executable;application/x-dosexec;application/msword;application/pdf;application/vnd.android.package-archive;message/rfc822
+      BROAPT_LOAD_MIME: application/vnd.microsoft.portable-executable;application/x-dosexec;application/msword;application/pdf;application/vnd.android.package-archive;message/rfc822
       # Bro protocol white list
-      BROAPT_PROTOCOL: smtp
+      BROAPT_LOAD_PROTOCOL: smtp
       # group extracted file by MIME types
       BROAPT_MIME_MODE: 1
       # log in JSON format

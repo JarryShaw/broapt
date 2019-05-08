@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
         "DTLS",
+        "ENTR",
         "Exif",
         "NPROCESSORS",
         "Zeek's",
@@ -9,6 +10,7 @@
         "cfgparser",
         "conns",
         "emsp",
+        "fext",
         "hosom",
         "inited",
         "isnan",

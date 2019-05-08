@@ -31,10 +31,13 @@ clean-logs:
 	    > /home/traffic/log/bro/processed_rate.log; \
 	    rm -rf /home/traffic/log/bro/tmp; \
 	    mkdir -p /home/traffic/log/bro/tmp; \
+	    rm -rf /home/traffic/log/bro/api; \
+	    mkdir -p /home/traffic/log/bro/api; \
 	else \
 	    > ../logs/processed_dump.log; \
 	    > ../logs/processed_fail.log; \
 	    > ../logs/processed_rate.log; \
+		find ../logs/api -depth 1 -print0 | xargs -0 rm -rf; \
 	    find ../logs/tmp -iname '*.json' -depth 1 -type f -print0 | xargs -0 rm -rf; \
 	fi
 

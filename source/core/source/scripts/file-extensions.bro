@@ -21,7 +21,7 @@ export {
         ["application/alto-networkmapfilter+json"] = "json",
         ["application/aml"] = "aml",
         ["application/andrew-inset"] = "ez",
-        ["application/applefile"] = "",
+        ["application/applefile"] = "dat",
         ["application/applixware"] = "aw",
         ["application/atf"] = "atf",
         ["application/atfx"] = "atfx",

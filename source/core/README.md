@@ -31,8 +31,8 @@ For development environment, `make` and `pipenv` are the two things playing arou
 - `BROAPT_CORE_CPU` -- concurrent process limit (*default*: 5)
 - `BROAPT_CORE_INTERVAL` -- sleep interval (*default*: 10s)
 
-- `BROAPT_MIME` -- Bro MIME while list (*default*: all MIME types)
-- `BROAPT_PROTOCOL` -- Bro protocol while list (*default*: null)
+- `BROAPT_LOAD_MIME` -- Bro MIME while list (*default*: all MIME types)
+- `BROAPT_LOAD_PROTOCOL` -- Bro protocol while list (*default*: null)
 
 - `BROAPT_MIME_MODE` -- store extracted files by MIME types (*default*: `true`)
 - `BROAPT_JSON_LOGS` -- log in JSON format (*default*: `true`)

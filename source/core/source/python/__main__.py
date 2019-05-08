@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-# pylint: disable=no-member
 
 import ast
 import builtins
 import contextlib
 import ctypes
+import functools
 import glob
 import ipaddress
 import json
@@ -16,6 +16,7 @@ import re
 import shutil
 import subprocess
 import sys
+import traceback
 import time
 import uuid
 import warnings
@@ -59,6 +60,8 @@ BOOLEAN_STATES = {'1': True, '0': False,
 
 # macros
 inited = False
+## group by MIME flag
+MIME_MODE = None
 ## extract files path
 DUMP_PATH = None
 ## source PCAP path
@@ -70,7 +73,7 @@ BARE_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_BARE_MODE', 'false').casefold()
 
 
 def init():
-    global inited, DUMP_PATH
+    global inited, DUMP_PATH, MIME_MODE
     inited = True
 
     # Bro config
@@ -80,6 +83,12 @@ def init():
     # PCAP_PATH = os.getenv('PCAP_PATH', '/pcap/')
     ## group by MIME flag
     MIME_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_MIME_MODE', 'true').casefold(), True)
+    ## include hash flag
+    HASH_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_HASH_MODE', 'false').casefold(), False)
+    ## include X509 flag
+    X509_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_X509_MODE', 'false').casefold(), False)
+    ## include entropy flag
+    ENTR_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_ENTROPY_MODE', 'false').casefold(), False)
     ## extract files path
     DUMP_PATH_ENV = os.getenv('BROAPT_DUMP_PATH')
     if DUMP_PATH_ENV is None:
@@ -119,7 +128,7 @@ def init():
                  '')
 
     # MIME white list
-    LOAD_MIME = os.getenv('BROAPT_MIME')
+    LOAD_MIME = os.getenv('BROAPT_LOAD_MIME')
     if LOAD_MIME is not None:
         load_file = list()
         for mime_type in filter(len, re.split(r'\s*[,;|]\s*', LOAD_MIME.casefold())):
@@ -132,7 +141,7 @@ def init():
         load_file = [os.path.join('.', 'plugins', 'extract-all-files.bro')]
 
     # protocol list
-    LOAD_PROTOCOL = os.getenv('BROAPT_PROTOCOL')
+    LOAD_PROTOCOL = os.getenv('BROAPT_LOAD_PROTOCOL')
     if LOAD_PROTOCOL is not None:
         # available protocols
         available_protocols = ('dtls', 'ftp', 'http', 'irc', 'smtp')
@@ -143,6 +152,9 @@ def init():
     # prepare regex
     MIME_REGEX = re.compile(r'(?P<prefix>\s*redef mime\s*=\s*)[TF](?P<suffix>\s*;\s*)')
     LOGS_REGEX = re.compile(r'(?P<prefix>\s*redef logs\s*=\s*").*?(?P<suffix>"\s*;\s*)')
+    HASH_REGEX = re.compile(r'(?P<prefix>\s*redef hash\s*=\s*)[TF](?P<suffix>\s*;\s*)')
+    X509_REGEX = re.compile(r'(?P<prefix>\s*redef x509\s*=\s*)[TF](?P<suffix>\s*;\s*)')
+    ENTR_REGEX = re.compile(r'(?P<prefix>\s*redef entropy\s*=\s*)[TF](?P<suffix>\s*;\s*)')
     JSON_REGEX = re.compile(r'(?P<prefix>\s*redef use_json\s*=\s*).*?(?P<suffix>\s*;\s*)')
     SALT_REGEX = re.compile(r'(?P<prefix>\s*redef file_salt\s*=\s*).*?(?P<suffix>\s*;\s*)')
     FILE_REGEX = re.compile(r'(?P<prefix>\s*redef file_buffer\s*=\s*).*?(?P<suffix>\s*;\s*)')
@@ -156,6 +168,9 @@ def init():
         for line in config:
             line = MIME_REGEX.sub(rf'\g<prefix>{"T" if MIME_MODE else "F"}\g<suffix>', line)
             line = LOGS_REGEX.sub(rf'\g<prefix>{os.path.join(LOGS_PATH, "processed_mime.log")}\g<suffix>', line)
+            line = HASH_REGEX.sub(rf'\g<prefix>{"T" if HASH_MODE else "F"}\g<suffix>', line)
+            line = X509_REGEX.sub(rf'\g<prefix>{"T" if X509_MODE else "F"}\g<suffix>', line)
+            line = ENTR_REGEX.sub(rf'\g<prefix>{"T" if ENTR_MODE else "F"}\g<suffix>', line)
             line = JSON_REGEX.sub(rf'\g<prefix>{JSON_MODE}\g<suffix>', line)
             line = SALT_REGEX.sub(rf'\g<prefix>"{uuid.uuid4()}"\g<suffix>', line)
             line = FILE_REGEX.sub(rf'\g<prefix>{FILE_BUFFER}\g<suffix>', line)
@@ -198,6 +213,16 @@ def print(s, file=TIME):  # pylint: disable=redefined-builtin
     builtins.print(s, file=sys.stdout)
 
 
+def suppress(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            func(*args, **kwargs)
+        except Exception:
+            traceback.print_exc()
+    return wrapper
+
+
 def is_nan(value):
     if value is None:
         return True
@@ -237,6 +262,16 @@ def parse_args(argv):
     return file_list
 
 
+def rename_dump(local_name, mime_type):
+    stem, fext = os.path.splitext(local_name)
+    mime = mime_type.replace('/', '.', 1)
+
+    name = f'{stem}.{mime}{fext}'
+    shutil.move(os.path.join(DUMP_PATH, local_name),
+                os.path.join(DUMP_PATH, name))
+    return name
+
+
 def generate_log(log_root):
     log_file = os.path.join(log_root, 'files.log')
     if not os.path.isfile(log_file):
@@ -271,18 +306,21 @@ def generate_log(log_root):
                 )
             conns.append(conn)
 
+        local_name = line.extracted
         mime_type = None
-        dump_path = os.path.join(DUMP_PATH, line.extracted)
+        dump_path = os.path.join(DUMP_PATH, local_name)
         if os.path.exists(dump_path):
-            with contextlib.suppress(Exception):
+            with contextlib.suppress(magic.MagicException):
                 mime_type = magic.from_file(dump_path, mime=True)
+            if MIME_MODE or (mime_type != line.mime_type):
+                local_name = rename_dump(local_name, mime_type)
         else:
             dump_path = None
 
         info = dict(
-            timestamp=line.ts,
+            timestamp=line.ts if LOG_FILE.format == 'json' else line.ts.timestamp(),
             dump_path=dump_path,
-            local_name=line.extracted,
+            local_name=local_name,
             source_name=line.filename if hasattr(line, 'filename') else None,
             hosts=hosts,
             conns=conns,
@@ -292,6 +330,7 @@ def generate_log(log_root):
         print(json.dumps(info, cls=IPAddressJSONEncoder), file=INFO)
 
 
+@suppress
 def process(file):
     if not inited:
         init()

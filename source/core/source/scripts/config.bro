@@ -8,6 +8,27 @@ redef mime = T;
 # Configure path to missing MIME log file
 redef logs = "/var/log/bro/processed_mime.log";
 
+# Configure if include hash information
+redef hash = F;
+
+@if ( hash )
+    @load base/files/hash
+@endif
+
+# Configure if include X509 information
+redef x509 = F;
+
+@if ( x509 )
+    @load base/files/x509
+@endif
+
+# Configure if include entropy information
+redef entropy = F;
+
+@if ( entropy )
+    @load policy/frameworks/files/entropy-test-all-files.bro
+@endif
+
 # Configure log in ASCII or JSON format
 redef use_json = LogAscii::use_json;
 

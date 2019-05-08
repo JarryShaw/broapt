@@ -35,9 +35,6 @@ RUN python3 -m pip install --no-deps --cache-dir=/tmp/pip \
  && python3 -m pip install --no-deps --cache-dir=/tmp/pip \
         /tmp/python/*
 
-# copy source
-COPY source /source
-
 # cleanup process
 RUN rm -rf \
         ## Python archives
@@ -52,3 +49,6 @@ RUN rm -rf \
  #        python36u-pip \
  #        python36u-setuptools \
  && yum clean all -y
+
+# copy source
+COPY source /source

@@ -5,9 +5,11 @@ import functools
 import multiprocessing
 import os
 import pathlib
+import re
 import subprocess
 import sys
 import time
+import traceback
 import warnings
 
 from cfgparser import parse  # pylint: disable=import-error
@@ -33,11 +35,6 @@ except (TypeError, ValueError):
     INTERVAL = 10
 
 # Bro config
-BOOLEAN_STATES = {'1': True, '0': False,
-                  'yes': True, 'no': False,
-                  'true': True, 'false': False,
-                  'on': True, 'off': False}
-MIME_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_MIME_MODE', 'false').lower(), False)
 LOGS_PATH = os.getenv('BROAPT_LOGS_PATH', '/var/log/bro/')
 DUMP_PATH = os.getenv('BROAPT_DUMP_PATH')
 if DUMP_PATH is None:
@@ -52,9 +49,32 @@ API_ROOT = os.getenv('BROAPT_API_ROOT', '/api/')
 API_LOGS = os.getenv('BROAPT_API_LOGS', '/var/log/bro/api/')
 API_DICT = parse(API_ROOT)
 
+# file name regex
+FILE_REGEX = re.compile(r'''
+    # protocol prefix
+    (DTLS|FTP_DATA|HTTP|IRC_DATA|SMTP|\S+)-F\w+
+    \.
+    # media-type
+    (?P<media_type>application|audio|example|font|image|message|model|multipart|text|video|\S+)
+    \.
+    # subtype
+    (?P<subtype>\S+)
+    \.
+    # file extension
+    \S+
+''', re.IGNORECASE | re.VERBOSE)
+
 # log files
 FILE = os.path.join(LOGS_PATH, 'processed_dump.log')
 FAIL = os.path.join(LOGS_PATH, 'processed_fail.log')
+
+
+class APIWarning(Warning):
+    pass
+
+
+class APIError(Exception):
+    pass
 
 
 # mimetype class
@@ -81,12 +101,16 @@ def print_file(s, file=FILE):
         print(s, file=LOG)
 
 
-class APIWarning(Warning):
-    pass
-
-
-class APIError(Exception):
-    pass
+def suppress(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            func(*args, **kwargs)
+        except APIError:
+            raise
+        except Exception:
+            traceback.print_exc()
+    return wrapper
 
 
 def run(command, cwd=None, env=None, file='unknown'):
@@ -122,7 +146,8 @@ def issue(mime):
     del API_DICT[mime]
 
 
-def process(entry):
+@suppress
+def process(entry):  # pylint: disable=inconsistent-return-statements
     if entry.mime.name in API_DICT:
         mime = entry.mime.name
         api = API_DICT[entry.mime]
@@ -143,8 +168,7 @@ def process(entry):
         for command in api.install:
             log = f'install.{api.install_log}'
             if run(command, cwd, env, file=log):
-                issue(mime)
-                return
+                return issue(mime)
             api.install_log += 1
         api._inited = True  # pylint: disable=protected-access
 
@@ -152,26 +176,22 @@ def process(entry):
     for command in api.scripts:
         log = f'scripts.{api.scripts_log}'
         if run(command, cwd, env, file=log):
-            issue(mime)
-            return
+            return issue(mime)
         api.scripts_log += 1
-
     print_file(entry.path)
 
 
-def list_dir(path):
+def listdir(path):
     file_list = list()
-    if MIME_MODE:
-        for media_type in filter(lambda entry: entry.is_dir(), os.scandir(path)):
-            for subtype in filter(lambda entry: entry.is_dir(), os.scandir(media_type.path)):
-                mime = MIME(media_type=media_type.name,
-                            subtype=subtype.name,
-                            name=f'{media_type.name}/{subtype.name}'.lower())
-                file_list.extend(Entry(path=entry.path, mime=mime)
-                                 for entry in filter(lambda entry: entry.is_file(), os.scandir(subtype.path)))
-    else:
-        for entry in os.scandir(path):
-            media_type, subtype = map(lambda s: s[1:], pathlib.Path(entry.name).suffixes[:2])
+    for entry in os.scandir(path):
+        if entry.is_dir():
+            file_list.extend(listdir(entry.path))
+        else:
+            match = FILE_REGEX.match(entry.name)
+            if match is None:
+                continue
+            media_type = match.group('media_type')
+            subtype = match.group('subtype')
             mime = MIME(media_type=media_type,
                         subtype=subtype,
                         name=f'{media_type}/{subtype}'.lower())
@@ -189,7 +209,7 @@ def main():
     # main loop
     while True:
         try:
-            file_list = sorted(filter(lambda entry: entry.path not in processed_file, list_dir(DUMP_PATH)))
+            file_list = sorted(filter(lambda entry: entry.path not in processed_file, listdir(DUMP_PATH)))
             if file_list:
                 if CPU_CNT <= 1:
                     [process(entry) for entry in file_list]  # pylint: disable=expression-not-assigned

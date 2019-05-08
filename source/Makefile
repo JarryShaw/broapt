@@ -11,9 +11,9 @@ export BROAPT_CORE_CPU
 ## sleep interval
 export BROAPT_CORE_INTERVAL
 ## Bro MIME white list
-export BROAPT_MIME
+export BROAPT_LOAD_MIME
 ## Bro protocol white list
-export BROAPT_PROTOCOL
+export BROAPT_LOAD_PROTOCOL
 ## group extracted file by MIME types
 export BROAPT_MIME_MODE
 ## log in JSON format

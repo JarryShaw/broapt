@@ -12,6 +12,13 @@ export {
     ## Path to missing MIME log file
     option logs: string = "/var/log/bro/processed_mime.log";
 
+    ## Include hash information
+    option hash: bool = F;
+    ## Include X509 information
+    option x509: bool = F;
+    ## Include entropy information
+    option entropy: bool = F;
+
     ## Log format
     const use_json: bool = LogAscii::use_json &redef;
     ## Change hash salt

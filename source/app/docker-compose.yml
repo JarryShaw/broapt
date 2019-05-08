@@ -13,8 +13,6 @@ services:
       BROAPT_APP_CPU: 5
       ## sleep interval
       BROAPT_APP_INTERVAL: 10
-      ## group extracted file by MIME types
-      BROAPT_MIME_MODE: 1
       ## path to detection APIs
       BROAPT_API_ROOT: /api/
       ## path to API runtime logs

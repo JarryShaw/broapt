@@ -11,30 +11,36 @@ import uuid
 ROOT = str(os.path.join(pathlib.Path(__file__).parents[1].resolve(), 'bro', 'source'))
 
 # Bro config
-## group by MIME flag
 BOOLEAN_STATES = {'1': True, '0': False,
                   'yes': True, 'no': False,
                   'true': True, 'false': False,
                   'on': True, 'off': False}
-DUMP_MIME = BOOLEAN_STATES.get(os.getenv('DUMP_MIME', 'true').strip().lower(), True)
+## group by MIME flag
+MIME_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_MIME_MODE', 'true').strip().lower(), True)
+## include hash flag
+HASH_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_HASH_MODE', 'false').casefold(), False)
+## include X509 flag
+X509_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_X509_MODE', 'false').casefold(), False)
+## include entropy flag
+ENTR_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_ENTROPY_MODE', 'false').casefold(), False)
 ## log file path
-LOGS_PATH = os.getenv('LOGS_PATH', '/var/log/bro/').strip()
+LOGS_PATH = os.getenv('BROAPT_LOGS_PATH', '/var/log/bro/').strip()
 ## extract files path
-DUMP_PATH = os.getenv('DUMP_PATH')
+DUMP_PATH = os.getenv('BROAPT_DUMP_PATH')
 if DUMP_PATH is None:
     DUMP_PATH = 'FileExtract::prefix'
 else:
     DUMP_PATH = '"%s"' % DUMP_PATH.replace('"', '\\"')
 ## source PCAP path
-PCAP_PATH = os.getenv('PCAP_PATH', '/pcap/').strip()
+PCAP_PATH = os.getenv('BROAPT_PCAP_PATH', '/pcap/').strip()
 ## buffer size
 try:
-    FILE_BUFFER = ctypes.c_uint64(ast.literal_eval(os.getenv('FILE_BUFFER'))).value
+    FILE_BUFFER = ctypes.c_uint64(ast.literal_eval(os.getenv('BROAPT_FILE_BUFFER'))).value
 except (SyntaxError, TypeError, ValueError):
     FILE_BUFFER = 'Files::reassembly_buffer_size'
 ## size limit
 try:
-    SIZE_LIMIT = ctypes.c_uint64(ast.literal_eval(os.getenv('SIZE_LIMIT'))).value
+    SIZE_LIMIT = ctypes.c_uint64(ast.literal_eval(os.getenv('BROAPT_SIZE_LIMIT'))).value
 except (SyntaxError, TypeError, ValueError):
     SIZE_LIMIT = 'FileExtract::default_limit'
 ## log in JSON format
@@ -61,7 +67,7 @@ hook FileExtraction::extract(f: fa_file, meta: fa_metadata) &priority=5 {
 '''
 
 # MIME white list
-LOAD_MIME = os.getenv('BRO_MIME')
+LOAD_MIME = os.getenv('BROAPT_LOAD_MIME')
 if LOAD_MIME is not None:
     load_file = list()
     for mime_type in filter(len, re.split(r'\s*[,;|]\s*', LOAD_MIME)):
@@ -74,7 +80,7 @@ else:
     load_file = [os.path.join('.', 'plugins', 'extract-all-files.bro')]
 
 # protocol list
-LOAD_PROTOCOL = os.getenv('BRO_PROTOCOL')
+LOAD_PROTOCOL = os.getenv('BROAPT_LOAD_PROTOCOL')
 if LOAD_PROTOCOL is not None:
     # available protocols
     available_protocols = ('dtls', 'ftp', 'http', 'irc', 'smtp')
@@ -85,6 +91,9 @@ if LOAD_PROTOCOL is not None:
 # prepare regex
 MIME_REGEX = re.compile(r'(?P<prefix>\s*redef mime\s*=\s*)[TF](?P<suffix>\s*;\s*)')
 LOGS_REGEX = re.compile(r'(?P<prefix>\s*redef logs\s*=\s*").*?(?P<suffix>"\s*;\s*)')
+HASH_REGEX = re.compile(r'(?P<prefix>\s*redef hash\s*=\s*)[TF](?P<suffix>\s*;\s*)')
+X509_REGEX = re.compile(r'(?P<prefix>\s*redef x509\s*=\s*)[TF](?P<suffix>\s*;\s*)')
+ENTR_REGEX = re.compile(r'(?P<prefix>\s*redef entropy\s*=\s*)[TF](?P<suffix>\s*;\s*)')
 JSON_REGEX = re.compile(r'(?P<prefix>\s*redef use_json\s*=\s*).*?(?P<suffix>\s*;\s*)')
 SALT_REGEX = re.compile(r'(?P<prefix>\s*redef file_salt\s*=\s*).*?(?P<suffix>\s*;\s*)')
 FILE_REGEX = re.compile(r'(?P<prefix>\s*redef file_buffer\s*=\s*).*?(?P<suffix>\s*;\s*)')
@@ -96,8 +105,11 @@ LOAD_REGEX = re.compile(r'^@load\s+.*?\s*')
 context = list()
 with open(os.path.join(ROOT, 'scripts', 'config.bro')) as config:
     for line in config:
-        line = MIME_REGEX.sub(rf'\g<prefix>{"T" if DUMP_MIME else "F"}\g<suffix>', line)
+        line = MIME_REGEX.sub(rf'\g<prefix>{"T" if MIME_MODE else "F"}\g<suffix>', line)
         line = LOGS_REGEX.sub(rf'\g<prefix>{os.path.join(LOGS_PATH, "processed_mime.log")}\g<suffix>', line)
+        line = HASH_REGEX.sub(rf'\g<prefix>{"T" if HASH_MODE else "F"}\g<suffix>', line)
+        line = X509_REGEX.sub(rf'\g<prefix>{"T" if X509_MODE else "F"}\g<suffix>', line)
+        line = ENTR_REGEX.sub(rf'\g<prefix>{"T" if ENTR_MODE else "F"}\g<suffix>', line)
         line = JSON_REGEX.sub(rf'\g<prefix>{JSON_LOGS}\g<suffix>', line)
         line = SALT_REGEX.sub(rf'\g<prefix>"{uuid.uuid4()}"\g<suffix>', line)
         line = FILE_REGEX.sub(rf'\g<prefix>{FILE_BUFFER}\g<suffix>', line)
