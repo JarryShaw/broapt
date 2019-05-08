@@ -1,6 +1,6 @@
 # basic info
 FROM library/ubuntu:16.04
-LABEL version=2019.05.03
+LABEL version=2019.05.08
 
 # set up environment variables
 ENV LANG "C.UTF-8"
@@ -61,3 +61,6 @@ RUN rm -rf \
  && apt-get autoremove -y \
  && apt-get autoclean \
  && apt-get clean
+
+# final setup
+RUN ln -sf /usr/bin/python3.6 /usr/bin/python3

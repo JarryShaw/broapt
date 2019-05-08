@@ -8,6 +8,7 @@ import pathlib
 import subprocess
 import sys
 import time
+import warnings
 
 from cfgparser import parse  # pylint: disable=import-error
 
@@ -31,10 +32,6 @@ try:
 except (TypeError, ValueError):
     INTERVAL = 10
 
-# fetch environ
-API_ROOT = os.getenv('BROAPT_API_ROOT', '/api/')
-API_CFG = parse(API_ROOT)
-
 # Bro config
 BOOLEAN_STATES = {'1': True, '0': False,
                   'yes': True, 'no': False,
@@ -50,6 +47,11 @@ if DUMP_PATH is None:
     except subprocess.CalledProcessError:
         DUMP_PATH = './extract_files/'
 
+# parse API
+API_ROOT = os.getenv('BROAPT_API_ROOT', '/api/')
+API_LOGS = os.getenv('BROAPT_API_LOGS', '/var/log/bro/api/')
+API_DICT = parse(API_ROOT)
+
 # log files
 FILE = os.path.join(LOGS_PATH, 'processed_dump.log')
 FAIL = os.path.join(LOGS_PATH, 'processed_fail.log')
@@ -58,7 +60,7 @@ FAIL = os.path.join(LOGS_PATH, 'processed_fail.log')
 # mimetype class
 @dataclasses.dataclass
 class MIME:
-    content_type: str
+    media_type: str
     subtype: str
     name: str
 
@@ -67,12 +69,11 @@ class MIME:
 @functools.total_ordering
 @dataclasses.dataclass
 class Entry:
-    name: str
     path: str
     mime: MIME
 
     def __lt__(self, value):
-        return self.name < value.name
+        return self.path < value.path
 
 
 def print_file(s, file=FILE):
@@ -80,43 +81,101 @@ def print_file(s, file=FILE):
         print(s, file=LOG)
 
 
-def process(entry):
-    try:
-        api_args = API_CFG[entry.mime.content_type][entry.mime.subtype]
-        api_path = os.path.join(API_ROOT, entry.mime.content_type, entry.mime.subtype)
-    except (KeyError, TypeError):
-        api_args = API_CFG['example']
-        api_path = os.path.join(API_ROOT, 'example')
+class APIWarning(Warning):
+    pass
 
-    args = [os.path.expandvars(argv) for argv in api_args]
-    args.append(entry.path)
-    args.append(entry.name)
-    args.append(entry.mime.name)
+
+class APIError(Exception):
+    pass
+
+
+def run(command, cwd=None, env=None, file='unknown'):
+    # prepare log path
+    logs_path = os.path.join(API_LOGS, env['BROAPT_MIME'])
+    os.makedirs(logs_path, exist_ok=True)
+
+    # prepare runtime
+    log = os.path.join(logs_path, file)
+    args = os.path.expandvars(command)
+
+    print_file(f'# time: {time.ctime()}', file=log)
+    print_file(f'# args: {args}', file=log)
 
     try:
-        subprocess.check_call(args, cwd=api_path)
+        with open(log, 'at', 1) as stdout:
+            subprocess.check_call(args, shell=True, cwd=cwd, env=env,
+                                  stdout=stdout, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as error:
         print_file(error.args, file=FAIL)
+        return True
+    return False
+
+
+def issue(mime):
+    if mime == 'example':
+        raise APIError(f'default API script execution failed')
+
+    # issue warning
+    warnings.warn(f'{mime}: API script execution failed', APIWarning, 2)
+
+    # remove API entry
+    del API_DICT[mime]
+
+
+def process(entry):
+    if entry.mime.name in API_DICT:
+        mime = entry.mime.name
+        api = API_DICT[entry.mime]
+        cwd = os.path.join(API_ROOT, entry.mime.media_type, entry.mime.subtype, api.workdir)
+    else:
+        mime = 'example'
+        api = API_DICT['example']
+        cwd = os.path.join(API_ROOT, 'example', api.workdir)
+
+    # set up environ
+    env = os.environ
+    env.update(api.environ)
+    env['BROAPT_PATH'] = entry.path
+    env['BROAPT_MIME'] = entry.mime.name
+
+    # run install commands
+    if not api._inited:  # pylint: disable=protected-access
+        for command in api.install:
+            log = f'install.{api.install_log}'
+            if run(command, cwd, env, file=log):
+                issue(mime)
+                return
+            api.install_log += 1
+        api._inited = True  # pylint: disable=protected-access
+
+    # run scripts commands
+    for command in api.scripts:
+        log = f'scripts.{api.scripts_log}'
+        if run(command, cwd, env, file=log):
+            issue(mime)
+            return
+        api.scripts_log += 1
+
     print_file(entry.path)
 
 
 def list_dir(path):
     file_list = list()
     if MIME_MODE:
-        for content_type in filter(lambda entry: entry.is_dir(), os.scandir(path)):
-            for subtype in filter(lambda entry: entry.is_dir(), os.scandir(content_type.path)):
-                mime = MIME(content_type=content_type.name,
+        for media_type in filter(lambda entry: entry.is_dir(), os.scandir(path)):
+            for subtype in filter(lambda entry: entry.is_dir(), os.scandir(media_type.path)):
+                mime = MIME(media_type=media_type.name,
                             subtype=subtype.name,
-                            name=f'{content_type.name}/{subtype.name}')
-                file_list.extend(Entry(path=entry.path, name=entry.name, mime=mime)
+                            name=f'{media_type.name}/{subtype.name}'.lower())
+                file_list.extend(Entry(path=entry.path, mime=mime)
                                  for entry in filter(lambda entry: entry.is_file(), os.scandir(subtype.path)))
     else:
         for entry in os.scandir(path):
-            content_type, subtype = map(lambda s: s[1:], pathlib.Path(entry.name).suffixes[:2])
-            mime = MIME(content_type=content_type,
+            media_type, subtype = map(lambda s: s[1:], pathlib.Path(entry.name).suffixes[:2])
+            mime = MIME(media_type=media_type,
                         subtype=subtype,
-                        name=f'{content_type}/{subtype}')
-            file_list.append(Entry(path=entry.path, name=entry.name, mime=mime))
+                        name=f'{media_type}/{subtype}'.lower())
+            file_list.append(Entry(path=entry.path, mime=mime))
     return file_list
 
 

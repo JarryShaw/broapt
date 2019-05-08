@@ -36,15 +36,9 @@ MAX_SIZE = 32e6  # 32M
 
 
 def main():
-    ## sys.executable
-    ## [0] __file__
-    ## [1] path_to_file
-    ## [2] name_of_file
-    ## [3] mime_of_file
-
-    path = sys.argv[1]
-    name = sys.argv[2]
-    mime = sys.argv[3]  # pylint: disable=unused-variable
+    mime = os.environ['BROAPT_MIME']  # pylint: disable=unused-variable
+    path = os.environ['BROAPT_PATH']
+    name = os.path.split(path)[1]
 
     size = os.stat(path).st_size
     if size >= MAX_SIZE:

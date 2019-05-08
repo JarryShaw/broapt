@@ -21,6 +21,8 @@ For development environment, `make` and `pipenv` are the two things playing arou
 - `BROAPT_MIME_MODE` -- if store extracted files by MIME types (*default*: `true`)
 
 - `BROAPT_API_ROOT` -- root path to APIs (*default*: `/api/`)
+- `BROAPT_API_LOGS` -- path to API runtime logs (*default*: `/var/log/bro/api/`)
+
 - `BROAPT_DUMP_PATH` -- where extracted files will be stored (*default*: `FileExtract::prefix`)
 - `BROAPT_LOGS_PATH` -- path to log files (*default*: `/var/log/bro/`)
 

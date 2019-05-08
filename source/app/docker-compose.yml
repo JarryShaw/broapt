@@ -17,6 +17,8 @@ services:
       BROAPT_MIME_MODE: 1
       ## path to detection APIs
       BROAPT_API_ROOT: /api/
+      ## path to API runtime logs
+      BROAPT_API_LOGS: /var/log/bro/api/
       ## path to extract files
       BROAPT_DUMP_PATH: /dump/
       ## path to log files

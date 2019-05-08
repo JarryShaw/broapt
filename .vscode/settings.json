@@ -6,6 +6,7 @@
         "Zeek's",
         "apikey",
         "bufid",
+        "cfgparser",
         "conns",
         "emsp",
         "hosom",
@@ -30,6 +31,7 @@
         "tolist",
         "uids",
         "uint",
+        "workdir",
         "zeek"
     ],
     "python.pythonPath": "${workspaceFolder}/.venv/bin/python",
