@@ -139,18 +139,21 @@ def run(command, cwd=None, env=None,
     suffix = ''
     for retry in range(MAX_RETRY):
         log = logs + suffix
-        print_file(f'# time: {time.ctime()}', file=log)
+        print_file(f'# open: {time.ctime()}', file=log)
         print_file(f'# args: {args}', file=log)
         try:
             with open(log, 'at', 1) as stdout:
                 returncode = subprocess.check_call(args, shell=True, cwd=cwd, env=env,
                                                    stdout=stdout, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as error:
-            print_file(f'# exit: {error.returncode}', file=log)
+            print_file(f'# code: {error.returncode}', file=log)
+            print_file(f'# exit: {time.ctime()}', file=log)
             print_file(error.args, file=FAIL)
             suffix = f'_{retry+1}'
+            time.sleep(INTERVAL)
             continue
-        print_file(f'# exit: {returncode}', file=log)
+        print_file(f'# code: {returncode}', file=log)
+        print_file(f'# exit: {time.ctime()}', file=log)
         return EXIT_SUCCESS
     return EXIT_FAILURE
 
