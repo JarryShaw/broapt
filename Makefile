@@ -170,7 +170,5 @@ gitlab-commit: gitlab-copy
 gitlab-submodule: gitlab-copy
 	rm -rf ${REPO_PATH}/vendor/broker \
 	       ${REPO_PATH}/vendor/file\-extraction \
-	       ${REPO_PATH}/vendor/json \
-	       ${REPO_PATH}/vendor/pypcapkit \
 	       ${REPO_PATH}/vendor/zeek
 	$(MAKE) -C ${REPO_PATH}/vendor all

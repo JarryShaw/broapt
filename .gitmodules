@@ -1,18 +1,12 @@
-[submodule "vendor/file-extraction"]
-	path = vendor/file-extraction
-	url = https://github.com/hosom/file-extraction.git
-[submodule "vendor/zeek"]
-	path = vendor/zeek
-	url = https://github.com/zeek/zeek.git
 [submodule "gitlab"]
 	path = gitlab
 	url = https://gitlab.sjtu.edu.cn:443/bysj/2019bysj.git
+[submodule "vendor/zeek"]
+	path = vendor/zeek
+	url = https://github.com/zeek/zeek.git
 [submodule "vendor/broker"]
 	path = vendor/broker
 	url = https://github.com/zeek/broker.git
-[submodule "vendor/pypcapkit"]
-	path = vendor/pypcapkit
-	url = https://github.com/JarryShaw/PyPCAPKit.git
-[submodule "vendor/json"]
-	path = vendor/json
-	url = https://github.com/nlohmann/json.git
+[submodule "vendor/file-extraction"]
+	path = vendor/file-extraction
+	url = https://github.com/hosom/file-extraction.git

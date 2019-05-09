@@ -1,13 +1,13 @@
 .PHONY: all build clean link recursive \
-		broker file-extration json pypcapkit zeek
+		broker file-extration zeek
 
 ROOT := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 
-all: broker file-extraction json pypcapkit zeek
+all: broker file-extraction zeek
 build: broker-build-release zeek-build-release
-clean: broker-clean file-extraction-clean json-clean pypcapkit-clean zeek-clean
+clean: broker-clean file-extraction-clean zeek-clean
 link: link-cellar link-venv
-recursive: broker-recursive file-extraction zeek-recursive
+recursive: broker-recursive zeek-recursive
 
 .ONESHELL:
 link-cellar:
@@ -100,18 +100,6 @@ file-extraction: file-extraction-clean
 
 file-extraction-clean:
 	rm -rf $(ROOT)/file\-extraction
-
-json: json-clean
-	git submodule add https://github.com/nlohmann/json.git $(ROOT)/json
-
-json-clean:
-	rm -rf $(ROOT)json
-
-pypcapkit: pypcapkit-clean
-	git submodule add https://github.com/JarryShaw/PyPCAPKit.git $(ROOT)/pypcapkit
-
-pypcapkit-clean:
-	rm -rf $(ROOT)/pypcapkit
 
 zeek: zeek-clean
 	git submodule add https://github.com/zeek/zeek.git $(ROOT)/zeek
