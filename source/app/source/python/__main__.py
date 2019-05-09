@@ -37,8 +37,6 @@ except (TypeError, ValueError):
 # command retry
 try:
     MAX_RETRY = int(os.getenv('BROAPT_MAX_RETRY'))
-    if MAX_RETRY < 1:
-        MAX_RETRY = 3
 except (TypeError, ValueError):
     MAX_RETRY = 3
 
@@ -135,22 +133,24 @@ def run(command, cwd=None, env=None,
     os.makedirs(logs_path, exist_ok=True)
 
     # prepare runtime
-    log = os.path.join(logs_path, file)
+    logs = os.path.join(logs_path, file)
     args = os.path.expandvars(command)
 
     suffix = ''
     for retry in range(MAX_RETRY):
-        log += suffix
+        log = logs + suffix
         print_file(f'# time: {time.ctime()}', file=log)
         print_file(f'# args: {args}', file=log)
         try:
             with open(log, 'at', 1) as stdout:
-                subprocess.check_call(args, shell=True, cwd=cwd, env=env,
-                                      stdout=stdout, stderr=subprocess.STDOUT)
+                returncode = subprocess.check_call(args, shell=True, cwd=cwd, env=env,
+                                                   stdout=stdout, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as error:
+            print_file(f'# exit: {error.returncode}', file=log)
             print_file(error.args, file=FAIL)
-            suffix = f'_{retry}'
+            suffix = f'_{retry+1}'
             continue
+        print_file(f'# exit: {returncode}', file=log)
         return EXIT_SUCCESS
     return EXIT_FAILURE
 
@@ -240,9 +240,8 @@ def main():
             time.sleep(INTERVAL)
         except KeyboardInterrupt:
             return 0
-
+        processed_file.extend(map(lambda entry: entry.path, file_list))
         print('+ Starting another turn...')
-        processed_file.extend(file_list)
 
 
 if __name__ == '__main__':

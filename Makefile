@@ -7,7 +7,7 @@ export PIPENV_MAX_DEPTH
 export PIPENV_CLEAR
 
 build: build-bro build-broker
-commit: gitlab-commit submodule-pull git-commit
+commit: gitlab-commit git-commit
 docker: docker-build docker-run
 docker-compose: docker-compose-daemon docker-compose-exec docker-compose-stop
 download: requirements-download
@@ -22,6 +22,7 @@ pipenv-init:
 	pipenv install --dev
 
 pipenv-update:
+	pipenv run python -m pip install -U pip setuptools wheel
 	pipenv update
 	pipenv install --dev
 	pipenv clean
@@ -164,7 +165,6 @@ gitlab-copy: gitlab-clean
 	    -iname '.DS_Store' -print0 | xargs -0 rm -rf
 
 gitlab-commit: gitlab-copy
-	cd ${REPO_PATH} && git submodule sync
 	$(MAKE) -C ${REPO_PATH} git-commit
 
 gitlab-submodule: gitlab-copy

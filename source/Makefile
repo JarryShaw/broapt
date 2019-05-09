@@ -31,7 +31,7 @@ export BROAPT_FILE_BUFFER
 ## Bro extract file size limit
 export BROAPT_SIZE_LIMIT
 
-archive: archive-app archive-core archive-test
+archive: archive-app archive-core
 clean: clean-app clean-core
 docker-up: docker-up-app docker-up-core
 docker-stop: docker-stop-app docker-stop-core
