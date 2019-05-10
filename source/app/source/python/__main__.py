@@ -194,7 +194,7 @@ def process(entry):  # pylint: disable=inconsistent-return-statements
 
     if entry.mime.name in API_DICT:
         mime = entry.mime.name
-        api = API_DICT[entry.mime]
+        api = API_DICT[entry.mime.name]
         cwd = os.path.join(API_ROOT, entry.mime.media_type, entry.mime.subtype, api.workdir)
     else:
         mime = 'example'

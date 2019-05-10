@@ -77,16 +77,16 @@ environment:
 # APIs for `application` media type
 application:
   vnd.android.package-archive:
-    workdir: AndroPyTool
+    ## AndroPyTool
+    workdir: .
     environ:
-      APK_PATH: /apk/
       ANDROID_HOME: $HOME/android-sdk-linux
       PATH: $PATH:$ANDROID_HOME/tools
       PATH: $PATH:$ANDROID_HOME/platform-tools
     install:
-      - ${SHELL} AndroPyTool-setup.sh
+      - ${SHELL} AndroPyTool-install.sh
     scripts:
-      - ${PYTHON27} androPyTool.py -s ${APK_PATH}
+      - ${PYTHON36} AndroPyTool-detect.py
 
 # APIs for `audio` media type
 audio:

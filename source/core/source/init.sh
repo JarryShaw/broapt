@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -aex
+set -ax
 
 # change cwd
 cd /source
