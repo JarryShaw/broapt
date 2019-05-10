@@ -29,7 +29,6 @@ API_DICT = dict()
 # API entry
 @dataclasses.dataclass
 class API:
-    _inited: bool
     environ: dict
     install: list
     scripts: list
@@ -37,6 +36,9 @@ class API:
 
     install_log: int = 1
     scripts_log: int = 1
+
+    _inited: bool = False
+    _locked: bool = False
 
 
 class ConfigError(Exception):
@@ -64,7 +66,6 @@ def parse_cmd(context, mimetype):
         environ[str(env)] = os.path.expandvars(str(val))
 
     API_DICT[mimetype] = API(
-        _inited=False,
         environ=environ,
         install=cfg_install,
         scripts=cfg_scripts,

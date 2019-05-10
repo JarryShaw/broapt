@@ -10,6 +10,7 @@ import subprocess
 import sys
 import time
 import traceback
+import uuid
 import warnings
 
 from cfgparser import parse  # pylint: disable=import-error
@@ -58,6 +59,7 @@ if DUMP_PATH is None:
 API_ROOT = os.getenv('BROAPT_API_ROOT', '/api/')
 API_LOGS = os.getenv('BROAPT_API_LOGS', '/var/log/bro/api/')
 API_DICT = parse(API_ROOT)
+API_UUID = uuid.uuid4()
 
 # file name regex
 FILE_REGEX = re.compile(r'''
@@ -169,6 +171,23 @@ def issue(mime):
     del API_DICT[mime]
 
 
+def init(api, cwd, env, mime):  # pylint: disable=inconsistent-return-statements
+    while api._locked:  # pylint: disable=protected-access
+        time.sleep(INTERVAL)
+    if api._inited:  # pylint: disable=protected-access
+        return
+
+    api._locked = True  # pylint: disable=protected-access
+    for command in api.install:
+        log = f'{API_UUID}-install.{api.install_log}'
+        if run(command, cwd, env, mime, file=log):
+            api._locked = False  # pylint: disable=protected-access
+            return issue(mime)
+        api.install_log += 1
+    api._inited = True  # pylint: disable=protected-access
+    api._locked = False  # pylint: disable=protected-access
+
+
 @suppress
 def process(entry):  # pylint: disable=inconsistent-return-statements
     print(f'+ Processing {entry.path!r}')
@@ -190,16 +209,11 @@ def process(entry):  # pylint: disable=inconsistent-return-statements
 
     # run install commands
     if not api._inited:  # pylint: disable=protected-access
-        for command in api.install:
-            log = f'install.{api.install_log}'
-            if run(command, cwd, env, mime, file=log):
-                return issue(mime)
-            api.install_log += 1
-        api._inited = True  # pylint: disable=protected-access
+        init(api, cwd, env, mime)
 
     # run scripts commands
     for command in api.scripts:
-        log = f'scripts.{api.scripts_log}'
+        log = f'{API_UUID}-scripts.{api.scripts_log}'
         if run(command, cwd, env, mime, file=log):
             return issue(mime)
         api.scripts_log += 1
