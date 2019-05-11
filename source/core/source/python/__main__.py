@@ -77,14 +77,14 @@ BOOLEAN_STATES = {'1': True, '0': False,
 
 # macros
 inited = False
-## group by MIME flag
-MIME_MODE = None
 ## extract files path
 DUMP_PATH = None
 ## source PCAP path
 PCAP_PATH = os.getenv('BROAPT_PCAP_PATH', '/pcap/')
 ## log file path
 LOGS_PATH = os.getenv('BROAPT_LOGS_PATH', '/var/log/bro/')
+## group by MIME flag
+MIME_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_MIME_MODE', 'true').casefold(), True)
 ## run Bro in bare mode
 BARE_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_BARE_MODE', 'false').casefold(), False)
 ## run Bro with `-C` option
@@ -92,7 +92,7 @@ NO_CHKSUM = BOOLEAN_STATES.get(os.getenv('BROAPT_NO_CHKSUM', 'true').casefold(),
 
 
 def init():
-    global inited, DUMP_PATH, MIME_MODE
+    global inited, DUMP_PATH
     inited = True
 
     # Bro config
@@ -101,9 +101,11 @@ def init():
     ## source PCAP path
     # PCAP_PATH = os.getenv('PCAP_PATH', '/pcap/')
     ## group by MIME flag
-    MIME_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_MIME_MODE', 'true').casefold(), True)
+    # MIME_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_MIME_MODE', 'true').casefold(), True)
     ## include hash flag
-    HASH_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_HASH_MODE', 'false').casefold(), False)
+    HASH_MODE_MD5 = BOOLEAN_STATES.get(os.getenv('BROAPT_HASH_MD5', 'false').casefold(), False)
+    HASH_MODE_SHA1 = BOOLEAN_STATES.get(os.getenv('BROAPT_HASH_SHA1', 'false').casefold(), False)
+    HASH_MODE_SHA256 = BOOLEAN_STATES.get(os.getenv('BROAPT_HASH_SHA256', 'false').casefold(), False)
     ## include X509 flag
     X509_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_X509_MODE', 'false').casefold(), False)
     ## include entropy flag
@@ -171,7 +173,9 @@ def init():
     # prepare regex
     MIME_REGEX = re.compile(r'(?P<prefix>\s*redef mime\s*=\s*)[TF](?P<suffix>\s*;\s*)')
     LOGS_REGEX = re.compile(r'(?P<prefix>\s*redef logs\s*=\s*").*?(?P<suffix>"\s*;\s*)')
-    HASH_REGEX = re.compile(r'(?P<prefix>\s*redef hash\s*=\s*)[TF](?P<suffix>\s*;\s*)')
+    HASH_REGEX_MD5 = re.compile(r'(?P<prefix>\s*redef md5\s*=\s*)[TF](?P<suffix>\s*;\s*)')
+    HASH_REGEX_SHA1 = re.compile(r'(?P<prefix>\s*redef sha1\s*=\s*)[TF](?P<suffix>\s*;\s*)')
+    HASH_REGEX_SHA256 = re.compile(r'(?P<prefix>\s*redef sha256\s*=\s*)[TF](?P<suffix>\s*;\s*)')
     X509_REGEX = re.compile(r'(?P<prefix>\s*redef x509\s*=\s*)[TF](?P<suffix>\s*;\s*)')
     ENTR_REGEX = re.compile(r'(?P<prefix>\s*redef entropy\s*=\s*)[TF](?P<suffix>\s*;\s*)')
     JSON_REGEX = re.compile(r'(?P<prefix>\s*redef use_json\s*=\s*).*?(?P<suffix>\s*;\s*)')
@@ -187,7 +191,9 @@ def init():
         for line in config:
             line = MIME_REGEX.sub(rf'\g<prefix>{"T" if MIME_MODE else "F"}\g<suffix>', line)
             line = LOGS_REGEX.sub(rf'\g<prefix>{os.path.join(LOGS_PATH, "processed_mime.log")}\g<suffix>', line)
-            line = HASH_REGEX.sub(rf'\g<prefix>{"T" if HASH_MODE else "F"}\g<suffix>', line)
+            line = HASH_REGEX_MD5.sub(rf'\g<prefix>{"T" if HASH_MODE_MD5 else "F"}\g<suffix>', line)
+            line = HASH_REGEX_SHA1.sub(rf'\g<prefix>{"T" if HASH_MODE_SHA1 else "F"}\g<suffix>', line)
+            line = HASH_REGEX_SHA256.sub(rf'\g<prefix>{"T" if HASH_MODE_SHA256 else "F"}\g<suffix>', line)
             line = X509_REGEX.sub(rf'\g<prefix>{"T" if X509_MODE else "F"}\g<suffix>', line)
             line = ENTR_REGEX.sub(rf'\g<prefix>{"T" if ENTR_MODE else "F"}\g<suffix>', line)
             line = JSON_REGEX.sub(rf'\g<prefix>{JSON_MODE}\g<suffix>', line)
@@ -297,7 +303,7 @@ def rename_dump(local_name, mime_type):
     return name
 
 
-def generate_log(log_root):
+def generate_log(log_root, log_stem, log_uuid):
     log_file = os.path.join(log_root, 'files.log')
     if not os.path.isfile(log_file):
         return
@@ -305,7 +311,7 @@ def generate_log(log_root):
     LOG_FILE = parse(log_file)
     LOG_CONN = parse(os.path.join(log_root, 'conn.log'))
     for line in LOG_FILE.context.itertuples():
-        if (not hasattr(line, 'extracted')) or is_nan(line.extracted):
+        if is_nan(getattr(line, 'extracted', None)):
             continue
         hosts = [dict(tx=ipaddress.ip_address(tx),
                       rx=ipaddress.ip_address(rx))
@@ -344,13 +350,21 @@ def generate_log(log_root):
 
         info = dict(
             timestamp=line.ts if LOG_FILE.format == 'json' else line.ts.timestamp(),
+            log_uuid=str(log_uuid),
+            log_path=log_root,
+            log_name=log_stem,
             dump_path=dump_path,
             local_name=local_name,
-            source_name=line.filename if hasattr(line, 'filename') else None,
+            source_name=getattr(line, 'filename', None),
             hosts=hosts,
             conns=conns,
             bro_mime_type=line.mime_type,
             real_mime_type=mime_type,
+            hash=dict(
+                md5=getattr(line, 'md5', None),
+                sha1=getattr(line, 'sha1', None),
+                sha256=getattr(line, 'sha256', None),
+            )
         )
         print_file(json.dumps(info, cls=IPAddressJSONEncoder), file=INFO)
 
@@ -382,13 +396,14 @@ def process(file):
         print_file(f'+ Failed on PCAP: {file!r}')
     end = time.time()
 
-    dest = os.path.join(LOGS_PATH, f'{stem}-{uid}')
+    dest_stem = f'{stem}-{uid}'
+    dest = os.path.join(LOGS_PATH, dest_stem)
     os.makedirs(dest, exist_ok=True)
 
     for log in glob.glob(f'*.{uid}.log'):
         with contextlib.suppress(OSError):
             shutil.move(log, os.path.join(dest, log.replace(f'.{uid}.log', '.log')))
-    generate_log(dest)
+    generate_log(dest, dest_stem, uid)
 
     print_file(f'+ Bro processing: {end-start} seconds')
     print_file(file, file=FILE)

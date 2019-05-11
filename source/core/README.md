@@ -36,6 +36,14 @@ For development environment, `make` and `pipenv` are the two things playing arou
 
 - `BROAPT_MIME_MODE` -- store extracted files by MIME types (*default*: `true`)
 - `BROAPT_JSON_LOGS` -- log in JSON format (*default*: `true`)
+
+- `BROAPT_HASH_MD5` -- calculate MD5 value of extracted files (*default*: `false`)
+- `BROAPT_HASH_SHA1` -- calculate SHA1 value of extracted files (*default*: `false`)
+- `BROAPT_HASH_SHA256` -- calculate SHA256 value of extracted files (*default*: `false`)
+
+- `BROAPT_X509_MODE` -- include X509 information (*default*: `false`)
+- `BROAPT_ENTROPY_MODE` -- include entropy information (*default*: `false`)
+
 - `BROAPT_BARE_MODE` -- run Bro in bare mode (*default*: `false`)
 - `BROAPT_NO_CHKSUM` -- run Bro with `-C` option (*default*: `true`)
 

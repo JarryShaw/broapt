@@ -2,18 +2,20 @@
 # All other files may be overwritten during upgrade
 module FileExtraction;
 
-# Configure if store extracted files by MIME types
-redef mime = T;
-
 # Configure path to missing MIME log file
 redef logs = "/var/log/bro/processed_mime.log";
 
-# Configure if include hash information
-redef hash = F;
+# Configure if store extracted files by MIME types
+redef mime = T;
 
-@if ( hash )
-    @load base/files/hash
-@endif
+# Configure if calculate MD5 value of extracted files
+redef md5 = F;
+
+# Configure if calculate SHA1 value of extracted files
+redef sha1 = F;
+
+# Configure if calculate SHA256 value of extracted files
+redef sha256 = F;
 
 # Configure if include X509 information
 redef x509 = F;

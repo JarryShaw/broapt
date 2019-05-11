@@ -1,30 +1,36 @@
 @load base/files/extract
 @load base/frameworks/files
 
+@load base/files/hash
 @load base/utils/paths.bro
 @load ./file-extensions.bro
 
 module FileExtraction;
 
 export {
-    ## If store files by MIME types
-    option mime: bool = T;
-    ## Path to missing MIME log file
-    option logs: string = "/var/log/bro/processed_mime.log";
+    ## Log format
+    option use_json: bool = LogAscii::use_json;
+    ## Change hash salt
+    option file_salt: string = Files::salt;
+    ## Buffer size for file reassembly
+    option file_buffer: count = Files::reassembly_buffer_size;
 
-    ## Include hash information
-    option hash: bool = F;
     ## Include X509 information
     option x509: bool = F;
     ## Include entropy information
     option entropy: bool = F;
 
-    ## Log format
-    const use_json: bool = LogAscii::use_json &redef;
-    ## Change hash salt
-    const file_salt: string = Files::salt &redef;
-    ## Buffer size for file reassembly
-    const file_buffer: count = Files::reassembly_buffer_size &redef;
+    ## Path to missing MIME log file
+    const logs: string = "/var/log/bro/processed_mime.log" &redef;
+    ## If store files by MIME types
+    const mime: bool = T &redef;
+
+    ## Calculate MD5 value of extracted files
+    const md5: bool = F &redef;
+    ## Calculate SHA1 value of extracted files
+    const sha1: bool = F &redef;
+    ## Calculate SHA256 value of extracted files
+    const sha256: bool = F &redef;
 
     ## Path to store files
     const path_prefix: string = FileExtract::prefix &redef;
@@ -69,5 +75,12 @@ event file_sniff(f: fa_file, meta: fa_metadata) {
 
         local name = fmt("%s/%s-%s.%s", mgct, f$source, f$id, fext);
         Files::add_analyzer(f, Files::ANALYZER_EXTRACT, [$extract_filename=name]);
+
+        if ( md5 )
+            Files::add_analyzer(f, Files::ANALYZER_MD5);
+        if ( sha1 )
+            Files::add_analyzer(f, Files::ANALYZER_SHA1);
+        if ( sha256 )
+            Files::add_analyzer(f, Files::ANALYZER_SHA256);
     }
 }
