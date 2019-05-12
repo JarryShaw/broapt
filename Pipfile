@@ -12,6 +12,8 @@ pylint = "*"
 [packages]
 bro-pkg = "*"
 dataclasses = "*"
+Flask = "*"
+mmbot = "*"
 pandas = "*"
 peewee = "*"
 pefile = "*"

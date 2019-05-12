@@ -30,4 +30,4 @@ services:
       # - ../dump:/dump
       - /home/traffic/log/bro:/var/log/bro
       # - ../logs:/var/log/bro
-      - ./vendor/api:/api/
+      - ./vendor/api:/api

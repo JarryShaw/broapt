@@ -22,13 +22,12 @@ environment:
 ###############################################################################
 ## Example:
 ##
+## - Root: `/api/`
 ## - Target:
 ##   - MIME type: `application/pdf`
 ##   - file name: `/dump/application/pdf/test.pdf`
 ## - API:
 ##   - working directory: `./pdf_analysis`
-##   - command: `python2.7 detect.py`
-##   - API root: `/api/`
 ##   - environment: `ENV_FOO=1`, `ENV_BAR=this is an environment variable`
 ##
 ## The configuration section should then be:
@@ -36,6 +35,7 @@ environment:
 ## application:
 ##   ...  # other APIs
 ##   pdf:
+##     remote: false
 ##     workdir: pdf_analysis
 ##     environ:
 ##       ENV_FOO: 1
@@ -47,54 +47,62 @@ environment:
 ##       - rm -rf /var/lib/apt/lists/*
 ##       - apt-get remove -y --auto-remove python-pip
 ##       - apt-get clean
-##     scripts:
+##     scanner:
 ##       - ${PYTHON27} detect.py [...]                # refer to /usr/bin/python
 ##       - ...                                        # and some random command
+##     report: ${PYTHON27} report.py                  # generate final report
 ##
 ## BroAPT will work as following:
 ##
-## 0. if run for the first time, run the following commands:
+## 1. if run for the first time, run the following commands:
 ##    - `apt-get update`
 ##    - `apt-get install -y python python-pip`
 ##    - `python -m pip install -r requirements.txt`
 ##    - `rm -rf /var/lib/apt/lists/*`
 ##    - `apt-get remove -y --auto-remove python-pip`
 ##    - `apt-get clean`
-## 1. set the following environment variables
+## 2. set the following environment variables
 ##    # per target file
 ##    - BROAPT_FILE="/dump/application/pdf/test.pdf"
 ##    - BROAPT_MIME="application/pdf"
 ##    # per API configuration
 ##    - ENV_FOO=1
 ##    - ENV_BAR="this is an environment variable"
-## 2. change the current working directory to
+## 3. change the current working directory to
 ##    `/api/application/pdf/pdf_analysis`
-## 3. call the API as the following commands:
+## 4. run the following mid-stage commands:
 ##    - `/usr/bin/python detect.py [...]`
 ##    - `...`
+## 5. generate final report:
+##    `/usr/bin/python report.py`
 ##
-## NOTE: `scripts` section is MANDATORY.
+## NOTE: `scanner` section is MANDATORY.
+##       If `remote` is `true`, then BroAPT will run the
+##       corresponding API in the host machine.
 ##
 
 # APIs for `application` media type
 application:
   vnd.android.package-archive:
     ## AndroPyTool
-    workdir: .
+    remote: true
+    workdir: AndroPyTool
     environ:
       ANDROID_HOME: $HOME/android-sdk-linux
       PATH: $PATH:$ANDROID_HOME/tools
       PATH: $PATH:$ANDROID_HOME/platform-tools
     install:
-      - ${SHELL} AndroPyTool-install.sh
-    scripts:
-      - ${PYTHON36} AndroPyTool-detect.py
+      # - ${SHELL} install.sh
+      - docker pull alexmyg/andropytool
+    scanner:
+      # - ${PYTHON36} detect.py
+      - docker run --volume=</PATH/TO/FOLDER/WITH/APKS/>:/apks alexmyg/andropytool -s /apks/ <ARGUMENTS>
   vnd.openxmlformats-officedocument: &officedocument
     ## MaliciousMacroBot
     workdir: ${API_ROOT}/application/vnd.openxmlformats-officedocument/
     install:
       - docker build --tag broapt-app:officedocument .
-    scripts:
+    report:
       - ${SHELL} MaliciousMacroBot/wrapper.sh
   msword: *officedocument
   vnd.ms-excel: *officedocument
@@ -124,8 +132,7 @@ example:
     - apt-get update
     - apt-get install -y --no-install-recommends python3-requests
     - apt-get clean
-  scripts:
-    - ${PYTHON36} virustotal.py
+  report: ${PYTHON36} virustotal.py
 
 # APIs for `font` media type
 font:

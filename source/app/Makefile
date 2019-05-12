@@ -3,29 +3,28 @@
 include .env
 
 init: mkdir-dump mkdir-logs
+build: build-macos build-centos
 clean: clean-build clean-dump clean-logs
 
-build: build-macos build-centos
-
 build-macos: clean-build
-	pipenv run pyinstaller -F spec/broapt-app.macos.spec
-	cp dist/broapt-app.macos bin/broapt-app.macos
+	pipenv run pyinstaller -F spec/broapt-appd.macos.spec
+	cp dist/broapt-appd.macos bin/broapt-appd.macos
 
 build-centos: clean-build
 	mkdir -p build dist
 	docker build --tag broapt-app:centos --file docker/CentOS.dockerfile .
 	docker run \
 	    --volume ${CWD}/build:/app/build \
-	    --volume ${CWD}/dist:/app/dist broapt-app:centos  -F spec/broapt-app.centos.spec
-	cp dist/broapt-app.centos bin/broapt-app.centos
+	    --volume ${CWD}/dist:/app/dist broapt-app:centos  -F spec/broapt-appd.centos.spec
+	cp dist/broapt-appd.centos bin/broapt-appd.centos
 
 build-ubuntu: clean-build
 	mkdir -p build dist
 	docker build --tag broapt-app:ubuntu --file docker/Ubuntu.dockerfile .
 	docker run \
 	    --volume ${CWD}/build:/app/build \
-	    --volume ${CWD}/dist:/app/dist broapt-app:ubuntu -F spec/broapt-app.ubuntu.spec
-	cp dist/broapt-app.ubuntu bin/broapt-app.ubuntu
+	    --volume ${CWD}/dist:/app/dist broapt-app:ubuntu -F spec/broapt-appd.ubuntu.spec
+	cp dist/broapt-appd.ubuntu bin/broapt-appd.ubuntu
 
 docker:
 	sed -i "" "s/LABEL version.*/LABEL version=$(shell date +%Y.%m.%d)/" Dockerfile

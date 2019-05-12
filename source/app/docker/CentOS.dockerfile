@@ -13,9 +13,6 @@ RUN yum install -y \
         python36u \
         python36u-pip \
         python36u-setuptools \
-        ## dependency of PyYAML
-        ## PyYAML on yum is of Python 2.7
-        libyaml \
  && ln -sf /usr/bin/python3.6 /usr/bin/python3
 
 # install Python dependencies
@@ -25,8 +22,8 @@ RUN python3 -m pip install --upgrade --cache-dir=/tmp/pip \
         wheel \
  && python3 -m pip install --cache-dir=/tmp/pip \
         dataclasses \
-        pyinstaller \
-        PyYAML
+        Flask \
+        pyinstaller
 
 # cleanup process
 RUN rm -rf \

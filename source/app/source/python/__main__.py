@@ -1,68 +1,15 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=import-error, no-name-in-module
 
-import dataclasses
-import functools
 import multiprocessing
 import os
-import pathlib
 import re
-import subprocess
 import sys
 import time
-import traceback
-import uuid
-import warnings
 
-from cfgparser import parse  # pylint: disable=import-error
-
-# repo root path
-if getattr(sys, 'frozen', False):
-    ROOT = os.path.dirname(os.path.abspath(__file__))
-else:
-    ROOT = str(pathlib.Path(__file__).parents[1].resolve())
-
-# limit on CPU
-try:
-    CPU_CNT = int(os.getenv('BROAPT_APP_CPU'))
-except (ValueError, TypeError):
-    if os.name == 'posix' and 'SC_NPROCESSORS_CONF' in os.sysconf_names:
-        CPU_CNT = os.sysconf('SC_NPROCESSORS_CONF')
-    elif 'sched_getaffinity' in os.__all__:
-        CPU_CNT = len(os.sched_getaffinity(0))  # pylint: disable=E1101
-    else:
-        CPU_CNT = os.cpu_count() or 1
-
-# sleep interval
-try:
-    INTERVAL = int(os.getenv('BROAPT_APP_INTERVAL'))
-except (TypeError, ValueError):
-    INTERVAL = 10
-
-# command retry
-try:
-    MAX_RETRY = int(os.getenv('BROAPT_MAX_RETRY'))
-except (TypeError, ValueError):
-    MAX_RETRY = 3
-
-# macros
-EXIT_SUCCESS = 0
-EXIT_FAILURE = 1
-
-# Bro config
-LOGS_PATH = os.getenv('BROAPT_LOGS_PATH', '/var/log/bro/')
-DUMP_PATH = os.getenv('BROAPT_DUMP_PATH')
-if DUMP_PATH is None:
-    try:
-        DUMP_PATH = subprocess.check_output(['bro', '-e', 'print(FileExtract::prefix)'],
-                                            stderr=subprocess.DEVNULL, encoding='utf-8').strip()
-    except subprocess.CalledProcessError:
-        DUMP_PATH = './extract_files/'
-
-# parse API
-API_ROOT = os.getenv('BROAPT_API_ROOT', '/api/')
-API_LOGS = os.getenv('BROAPT_API_LOGS', '/var/log/bro/api/')
-API_DICT = parse(API_ROOT)
-API_UUID = uuid.uuid4()
+from const import CPU_CNT, DUMP_PATH, FILE, INTERVAL
+from process import process
+from utils import MIME, Entry
 
 # file name regex
 FILE_REGEX = re.compile(r'''
@@ -81,161 +28,6 @@ FILE_REGEX = re.compile(r'''
     # file extension
     (?P<extension>\S+)
 ''', re.IGNORECASE | re.VERBOSE)
-
-# log files
-FILE = os.path.join(LOGS_PATH, 'processed_dump.log')
-FAIL = os.path.join(LOGS_PATH, 'processed_fail.log')
-
-
-class APIWarning(Warning):
-    pass
-
-
-class APIError(Exception):
-    pass
-
-
-# mimetype class
-@dataclasses.dataclass
-class MIME:
-    media_type: str
-    subtype: str
-    name: str
-
-
-# entry class
-@functools.total_ordering
-@dataclasses.dataclass
-class Entry:
-    path: str
-    mime: MIME
-
-    def __lt__(self, value):
-        return self.path < value.path
-
-
-def print_file(s, file=FILE):
-    with open(file, 'at', 1) as LOG:
-        print(s, file=LOG)
-
-
-def suppress(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            func(*args, **kwargs)
-        except APIError:
-            raise
-        except Exception:
-            traceback.print_exc()
-    return wrapper
-
-
-def run(command, cwd=None, env=None,
-        mime='example', file='unknown'):
-    # prepare log path
-    logs_path = os.path.join(API_LOGS, mime)
-    os.makedirs(logs_path, exist_ok=True)
-
-    # prepare runtime
-    logs = os.path.join(logs_path, file)
-    args = os.path.expandvars(command)
-
-    suffix = ''
-    for retry in range(MAX_RETRY):
-        log = logs + suffix
-        print_file(f'# open: {time.ctime()}', file=log)
-        print_file(f'# args: {args}', file=log)
-        try:
-            with open(log, 'at', 1) as stdout:
-                returncode = subprocess.check_call(args, shell=True, cwd=cwd, env=env,
-                                                   stdout=stdout, stderr=subprocess.STDOUT)
-        except subprocess.CalledProcessError as error:
-            print_file(f'# code: {error.returncode}', file=log)
-            print_file(f'# exit: {time.ctime()}', file=log)
-            print_file(error.args, file=FAIL)
-            suffix = f'_{retry+1}'
-            time.sleep(INTERVAL)
-            continue
-        print_file(f'# code: {returncode}', file=log)
-        print_file(f'# exit: {time.ctime()}', file=log)
-        return EXIT_SUCCESS
-    return EXIT_FAILURE
-
-
-def issue(mime):
-    if mime == 'example':
-        raise APIError(f'default API script execution failed')
-
-    # issue warning
-    warnings.warn(f'{mime}: API script execution failed', APIWarning, 2)
-
-    # remove API entry
-    del API_DICT[mime]
-
-
-def init(api, cwd, env, mime):  # pylint: disable=inconsistent-return-statements
-    while api._locked:  # pylint: disable=protected-access
-        time.sleep(INTERVAL)
-    if api._inited:  # pylint: disable=protected-access
-        return
-
-    api._locked = True  # pylint: disable=protected-access
-    for command in api.install:
-        log = f'{API_UUID}-install.{api.install_log}'
-        if run(command, cwd, env, mime, file=log):
-            api._locked = False  # pylint: disable=protected-access
-            return issue(mime)
-        api.install_log += 1
-    api._inited = True  # pylint: disable=protected-access
-    api._locked = False  # pylint: disable=protected-access
-
-
-def make_cwd(api, entry=None, example=False):
-    def generate_cwd(workdir):
-        if os.path.isabs(workdir):
-            return workdir
-
-        if example:
-            return os.path.join(API_ROOT, 'example', workdir)
-        return os.path.join(API_ROOT, entry.mime.media_type, entry.mime.subtype, workdir)
-
-    cwd = os.path.realpath(generate_cwd(api.workdir))
-    if os.path.isdir(cwd):
-        return cwd
-    return os.path.realpath(generate_cwd('.'))
-
-
-@suppress
-def process(entry):  # pylint: disable=inconsistent-return-statements
-    print(f'+ Processing {entry.path!r}')
-
-    if entry.mime.name in API_DICT:
-        mime = entry.mime.name
-        api = API_DICT[entry.mime.name]
-        cwd = make_cwd(api, entry=entry)
-    else:
-        mime = 'example'
-        api = API_DICT['example']
-        cwd = make_cwd(api, example=True)
-
-    # set up environ
-    env = os.environ
-    env.update(api.environ)
-    env['BROAPT_PATH'] = entry.path
-    env['BROAPT_MIME'] = entry.mime.name
-
-    # run install commands
-    if not api._inited:  # pylint: disable=protected-access
-        init(api, cwd, env, mime)
-
-    # run scripts commands
-    for command in api.scripts:
-        log = f'{API_UUID}-scripts.{api.scripts_log}'
-        if run(command, cwd, env, mime, file=log):
-            return issue(mime)
-        api.scripts_log += 1
-    print_file(entry.path)
 
 
 def listdir(path):
@@ -280,5 +72,4 @@ def main():
 
 
 if __name__ == '__main__':
-    multiprocessing.freeze_support()
     sys.exit(main())

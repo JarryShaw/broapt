@@ -20,10 +20,6 @@ RUN apt-get update \
         python3-pip \
         python3-setuptools \
         python3-wheel \
-        ## do not directly install python3-yaml
-        ## install its dependency libyaml instead
-        # python3-yaml \
-        libyaml-0-2 \
  && ln -sf /usr/bin/python3.6 /usr/bin/python3
 
 # install Python dependencies
@@ -33,8 +29,8 @@ RUN python3 -m pip install --upgrade --cache-dir=/tmp/pip \
         wheel \
  && python3 -m pip install --cache-dir=/tmp/pip \
         dataclasses \
-        pyinstaller \
-        PyYAML
+        Flask \
+        pyinstaller
 
 # cleanup process
 RUN rm -rf \

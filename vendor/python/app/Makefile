@@ -30,7 +30,8 @@ install: init
 	# install dependencies
 	pipenv install \
 	    dataclasses \
-	    PyYAML
+	    PyYAML \
+	    requests
 
 .ONESHELL:
 update:
