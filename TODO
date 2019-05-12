@@ -2,7 +2,7 @@
 
 [x] revise report generation based on API returncode
 [ ] impl REST API server
-[ ] revise API log counting system & UUID usage
+[x] revise API log counting system & UUID usage
 
 ### May 11th, 2019
 

@@ -3,11 +3,9 @@
 
 import os
 import pathlib
-import re
 import subprocess
-import uuid
 
-from cfgparse import parse
+from .cfgparse import parse
 
 # repo root path
 ROOT = str(pathlib.Path(__file__).parents[1].resolve())
@@ -53,7 +51,6 @@ if DUMP_PATH is None:
 API_ROOT = os.getenv('BROAPT_API_ROOT', '/api/')
 API_LOGS = os.getenv('BROAPT_API_LOGS', '/var/log/bro/api/')
 API_DICT = parse(API_ROOT)
-API_UUID = uuid.uuid4()
 
 # log files
 FILE = os.path.join(LOGS_PATH, 'processed_dump.log')

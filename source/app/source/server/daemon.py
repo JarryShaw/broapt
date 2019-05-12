@@ -12,6 +12,8 @@ from .process import process
 # API info
 @dataclasses.dataclass
 class Info:
+    uuid: str
+    mime: str
     report: str
 
     _inited: bool
@@ -19,13 +21,6 @@ class Info:
     environ: typing.Mapping[str, str]
     install: typing.List[str]
     scanner: typing.List[str]
-
-    install_log: int
-    scanner_log: int
-
-    uuid: str
-    mime: str
-    code: int
 
 
 # main app
@@ -60,7 +55,7 @@ def invalid_id(error):
 
 
 @app.errorhandler(400)
-@app.errorhandler(TypeError)
+@app.errorhandler(KeyError)
 def invalid_info(error):
     return flask.jsonify(status=400,
                          error=error,
@@ -107,12 +102,20 @@ def get(id_):
 
 @app.route('/api/v1.0/scan', methods=['POST'])
 def scan():
-    request = flask.request
-    if not request.json:
+    if not flask.request.json:
         flask.abort(400)
-    info = Info(request.json)
+    json = flask.request.json
+    info = Info(uuid=json['uuid'],
+                mime=json['mime'],
+                report=json['report'],
+                _inited=json['_inited'],
+                workdir=json['workdir'],
+                environ=json['environ'],
+                install=json['install'],
+                scanner=json['scanner'])
     if process(info):
         return flask.jsonify()
+    return flask.jsonify()
 
 
 @app.route('/api/v1.0/delete', methods=['DELETE'])

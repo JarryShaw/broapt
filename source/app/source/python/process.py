@@ -6,9 +6,9 @@ import subprocess
 import time
 import warnings
 
-from const import (API_DICT, API_LOGS, API_ROOT, API_UUID, EXIT_FAILURE, EXIT_SUCCESS,
-                   FAIL, INTERVAL, MAX_RETRY)
-from utils import APIError, APIWarning, print_file, suppress
+from .const import (API_DICT, API_LOGS, API_ROOT, EXIT_FAILURE, EXIT_SUCCESS, FAIL, INTERVAL,
+                    MAX_RETRY)
+from .utils import APIError, APIWarning, print_file, suppress
 
 
 def run(command, cwd=None, env=None, mime='example', file='unknown'):
@@ -53,21 +53,26 @@ def issue(mime):
     del API_DICT[mime]
 
 
-def init(api, cwd, env, mime):  # pylint: disable=inconsistent-return-statements
+def init(api, cwd, env, mime, uuid):  # pylint: disable=inconsistent-return-statements
     while api._locked:  # pylint: disable=protected-access
         time.sleep(INTERVAL)
     if api._inited:  # pylint: disable=protected-access
         return
 
     api._locked = True  # pylint: disable=protected-access
+    install_log = 1
     for command in api.install:
-        log = f'{API_UUID}-install.{api.install_log}'
+        log = f'{uuid}-install.{install_log}'
         if run(command, cwd, env, mime, file=log):
             api._locked = False  # pylint: disable=protected-access
             return issue(mime)
-        api.install_log += 1
+        install_log += 1
     api._inited = True  # pylint: disable=protected-access
     api._locked = False  # pylint: disable=protected-access
+
+
+def remote(entry, mime, api, cwd):
+    pass
 
 
 def make_cwd(api, entry=None, example=False):
@@ -101,6 +106,9 @@ def process(entry):  # pylint: disable=inconsistent-return-statements
         api = API_DICT['example']
         cwd = make_cwd(api, example=True)
 
+    if api.remote:
+        return remote(entry, mime, api, cwd)
+
     # set up environ
     env = make_env(api)
     env['BROAPT_PATH'] = entry.path
@@ -108,17 +116,18 @@ def process(entry):  # pylint: disable=inconsistent-return-statements
 
     # run install commands
     if not api._inited:  # pylint: disable=protected-access
-        init(api, cwd, env, mime)
+        init(api, cwd, env, mime, entry.uuid)
 
     # run scanner commands
+    scanner_log = 1
     for command in api.scanner:
-        log = f'{API_UUID}-scanner.{api.scanner_log}'
+        log = f'{entry.uuid}-scanner.{scanner_log}'
         if run(command, cwd, env, mime, file=log):
             return issue(mime)
-        api.scanner_log += 1
+        scanner_log += 1
 
     # run report command
-    log = f'{API_UUID}-report.1'
+    log = f'{entry.uuid}-report.1'
     if run(api.report, cwd, env, mime, file=log):
         return issue(mime)
     print_file(entry.path)

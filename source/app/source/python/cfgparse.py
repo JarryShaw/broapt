@@ -37,9 +37,6 @@ class API:
     install: list
     scanner: list
 
-    install_log: int = 1
-    scanner_log: int = 1
-
     _inited: bool = False
     _locked: bool = False
 

@@ -2,14 +2,12 @@
 # pylint: disable=import-error, no-name-in-module
 
 import contextlib
-import dataclasses
-import functools
 import os
 import pathlib
 import time
 import traceback
 
-from const import FILE, INTERVAL
+from .const import FILE, INTERVAL
 
 
 class APIWarning(Warning):
@@ -18,25 +16,6 @@ class APIWarning(Warning):
 
 class APIError(Exception):
     pass
-
-
-# mimetype class
-@dataclasses.dataclass
-class MIME:
-    media_type: str
-    subtype: str
-    name: str
-
-
-# entry class
-@functools.total_ordering
-@dataclasses.dataclass
-class Entry:
-    path: str
-    mime: MIME
-
-    def __lt__(self, value):
-        return self.path < value.path
 
 
 @contextlib.contextmanager

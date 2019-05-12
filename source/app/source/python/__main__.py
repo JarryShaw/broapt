@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=import-error, no-name-in-module
 
+import dataclasses
+import functools
 import multiprocessing
 import os
 import re
 import sys
 import time
 
-from const import CPU_CNT, DUMP_PATH, FILE, INTERVAL
-from process import process
-from utils import MIME, Entry
+from .const import CPU_CNT, DUMP_PATH, FILE, INTERVAL
+from .process import process
 
 # file name regex
 FILE_REGEX = re.compile(r'''
@@ -30,6 +31,26 @@ FILE_REGEX = re.compile(r'''
 ''', re.IGNORECASE | re.VERBOSE)
 
 
+# mimetype class
+@dataclasses.dataclass
+class MIME:
+    media_type: str
+    subtype: str
+    name: str
+
+
+# entry class
+@functools.total_ordering
+@dataclasses.dataclass
+class Entry:
+    path: str
+    uuid: str
+    mime: MIME
+
+    def __lt__(self, value):
+        return self.path < value.path
+
+
 def listdir(path):
     file_list = list()
     for entry in os.scandir(path):
@@ -44,7 +65,7 @@ def listdir(path):
             mime = MIME(media_type=media_type,
                         subtype=subtype,
                         name=f'{media_type}/{subtype}'.lower())
-            file_list.append(Entry(path=entry.path, mime=mime))
+            file_list.append(Entry(path=entry.path, uuid=match.group('fuid'), mime=mime))
     return file_list
 
 
