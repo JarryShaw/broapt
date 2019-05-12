@@ -48,12 +48,12 @@ services:
     image: broapt-core
     restart: "always"
     volumes:
-      # - /home/traffic/pcapfile:/pcap
-      - ../sample:/pcap
-      # - /home/traffic/log/extract:/dump
-      - ./dump:/dump
-      # - /home/traffic/log/bro:/var/log/bro
-      - ./logs:/var/log/bro
+      - /home/traffic/pcapfile:/pcap
+      # - ../sample:/pcap
+      - /home/traffic/log/extract:/dump
+      # - ./dump:/dump
+      - /home/traffic/log/bro:/var/log/bro
+      # - ./logs:/var/log/bro
   app:
     build: app
     container_name: broapt-app
