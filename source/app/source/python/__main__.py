@@ -16,7 +16,10 @@ import warnings
 from cfgparser import parse  # pylint: disable=import-error
 
 # repo root path
-ROOT = str(pathlib.Path(__file__).parents[1].resolve())
+if getattr(sys, 'frozen', False):
+    ROOT = os.path.dirname(os.path.abspath(__file__))
+else:
+    ROOT = str(pathlib.Path(__file__).parents[1].resolve())
 
 # limit on CPU
 try:
@@ -188,6 +191,21 @@ def init(api, cwd, env, mime):  # pylint: disable=inconsistent-return-statements
     api._locked = False  # pylint: disable=protected-access
 
 
+def make_cwd(api, entry=None, example=False):
+    def generate_cwd(workdir):
+        if os.path.isabs(workdir):
+            return workdir
+
+        if example:
+            return os.path.join(API_ROOT, 'example', workdir)
+        return os.path.join(API_ROOT, entry.mime.media_type, entry.mime.subtype, workdir)
+
+    cwd = os.path.realpath(generate_cwd(api.workdir))
+    if os.path.isdir(cwd):
+        return cwd
+    return os.path.realpath(generate_cwd('.'))
+
+
 @suppress
 def process(entry):  # pylint: disable=inconsistent-return-statements
     print(f'+ Processing {entry.path!r}')
@@ -195,11 +213,11 @@ def process(entry):  # pylint: disable=inconsistent-return-statements
     if entry.mime.name in API_DICT:
         mime = entry.mime.name
         api = API_DICT[entry.mime.name]
-        cwd = os.path.join(API_ROOT, entry.mime.media_type, entry.mime.subtype, api.workdir)
+        cwd = make_cwd(api, entry=entry)
     else:
         mime = 'example'
         api = API_DICT['example']
-        cwd = os.path.join(API_ROOT, 'example', api.workdir)
+        cwd = make_cwd(api, example=True)
 
     # set up environ
     env = os.environ
@@ -262,4 +280,5 @@ def main():
 
 
 if __name__ == '__main__':
+    multiprocessing.freeze_support()
     sys.exit(main())

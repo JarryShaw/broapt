@@ -7,6 +7,8 @@
 ## according to the following values.
 ##
 environment:
+  # API root path
+  API_ROOT: ${BROAPT_API_ROOT}
   # Python 3.6
   PYTHON: /usr/bin/python3.6
   PYTHON36: /usr/bin/python3.6
@@ -87,6 +89,19 @@ application:
       - ${SHELL} AndroPyTool-install.sh
     scripts:
       - ${PYTHON36} AndroPyTool-detect.py
+  vnd.openxmlformats-officedocument: &officedocument
+    ## MaliciousMacroBot
+    workdir: ${API_ROOT}/application/vnd.openxmlformats-officedocument/
+    install:
+      - docker build --tag broapt-app:officedocument .
+    scripts:
+      - ${SHELL} MaliciousMacroBot/wrapper.sh
+  msword: *officedocument
+  vnd.ms-excel: *officedocument
+  vnd.openxmlformats-officedocument: *officedocument
+  vnd.openxmlformats-officedocument.custom-properties+xml: *officedocument
+  vnd.openxmlformats-officedocument.customxmlproperties+xml: *officedocument
+  vnd.openxmlformats-officedocument.drawing+xml: *officedocument
 
 # APIs for `audio` media type
 audio:

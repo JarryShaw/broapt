@@ -1,5 +1,11 @@
-1. revise `workdir` in API config
-2. try `PyInstaller` to bundle BroAPT-App functions
-3. try `MaliciousMacroBot`: https://github.com/egaus/MaliciousMacroBot
-4. try `JaSt`: https://github.com/Aurore54F/JaSt
-5. try `AndroPyTool`: https://github.com/alexMyG/AndroPyTool
+### May 12th, 2019
+
+[ ] revise report generation based on API returncode
+
+### May 11th, 2019
+
+[x] revise `workdir` in API config
+[x] try `PyInstaller` to bundle BroAPT-App functions
+[ ] try `MaliciousMacroBot`: https://github.com/egaus/MaliciousMacroBot
+[ ] try `JaSt`: https://github.com/Aurore54F/JaSt
+[ ] try `AndroPyTool`: https://github.com/alexMyG/AndroPyTool

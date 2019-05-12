@@ -1,7 +1,7 @@
 # Python packages
 pip==19.1.1
 setuptools==41.0.1
-wheel==0.33.3
+wheel==0.33.4
 
 # Python dependencies
 dataclasses==0.6

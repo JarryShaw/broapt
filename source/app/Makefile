@@ -1,7 +1,31 @@
-.PHONY: init clean docker vendor
+.PHONY: init clean docker vendor build
+
+include .env
 
 init: mkdir-dump mkdir-logs
-clean: clean-dump clean-logs
+clean: clean-build clean-dump clean-logs
+
+build: build-macos build-centos
+
+build-macos: clean-build
+	pipenv run pyinstaller -F spec/broapt-app.macos.spec
+	cp dist/broapt-app.macos bin/broapt-app.macos
+
+build-centos: clean-build
+	mkdir -p build dist
+	docker build --tag broapt-app:centos --file docker/CentOS.dockerfile .
+	docker run \
+	    --volume ${CWD}/build:/app/build \
+	    --volume ${CWD}/dist:/app/dist broapt-app:centos  -F spec/broapt-app.centos.spec
+	cp dist/broapt-app.centos bin/broapt-app.centos
+
+build-ubuntu: clean-build
+	mkdir -p build dist
+	docker build --tag broapt-app:ubuntu --file docker/Ubuntu.dockerfile .
+	docker run \
+	    --volume ${CWD}/build:/app/build \
+	    --volume ${CWD}/dist:/app/dist broapt-app:ubuntu -F spec/broapt-app.ubuntu.spec
+	cp dist/broapt-app.ubuntu bin/broapt-app.ubuntu
 
 docker:
 	sed -i "" "s/LABEL version.*/LABEL version=$(shell date +%Y.%m.%d)/" Dockerfile
@@ -14,6 +38,9 @@ vendor:
 	$(MAKE) -C ../../vendor/python/app download
 	find ../../vendor/python/app/download -iname '*.tar.gz' -type f -exec cp -f {} vendor/python \;
 	find ../../vendor/python/app/download -iname '*.whl' -type f -exec cp -f {} vendor/python \;
+
+clean-build:
+	rm -rf build dist
 
 clean-dump:
 	if [ -d /home/traffic/log/extract ]; then \
