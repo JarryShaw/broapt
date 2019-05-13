@@ -5,8 +5,8 @@ import os
 import subprocess
 import time
 
-from .const import API_LOGS, API_ROOT, EXIT_FAILURE, EXIT_SUCCESS, FAIL, INTERVAL, MAX_RETRY
-from .util import print_file, suppress
+from const import API_LOGS, API_ROOT, EXIT_FAILURE, EXIT_SUCCESS, FAIL, INTERVAL, MAX_RETRY
+from util import print_file, suppress
 
 
 def make_env(info):
@@ -56,33 +56,35 @@ def run(command, info, file='unknown'):
 
 
 def init(info):
+    install_log = 1
     for command in info.install:
-        log = f'{info.uuid}-install.{info.install_log}'
+        log = f'{info.uuid}-install.{install_log}'
         if run(command, info, file=log):
             return EXIT_FAILURE
-        info.install_log += 1
-    info._inited = True  # pylint: disable=protected-access
+        install_log += 1
+    info.inited = True
     return EXIT_SUCCESS
 
 
 @suppress
 def process(info):
     # run install commands
-    if not info._inited:  # pylint: disable=protected-access
+    if not info.inited:
         init(info)
 
     info.environ = make_env(info)
     info.workdir = os.path.join(API_ROOT, info.workdir)
 
-    # run scanner commands
-    for command in info.scanner:
-        log = f'{info.uuid}-scanner.{info.scanner_log}'
+    # run scripts commands
+    scripts_log = 1
+    for command in info.scripts:
+        log = f'{info.uuid}-scripts.{scripts_log}'
         if run(command, info, file=log):
-            return EXIT_FAILURE
-        info.scanner_log += 1
+            return False
+        scripts_log += 1
 
     # run report command
     log = f'{info.uuid}-report.1'
     if run(info.report, info, file=log):
-        return EXIT_FAILURE
-    return EXIT_SUCCESS
+        return False
+    return True

@@ -3,13 +3,15 @@
 
 import os
 
-from .cli import get_parser
+from cli import get_parser
 
 # parse arguments
 _parser = get_parser()
 _args = _parser.parse_args()
 
 # CLI arguments
+SERVER_NAME_HOST = _args.host
+SERVER_NAME_PORT = _args.port
 DOCKER_COMPOSE = _args.docker_compose
 DUMP_PATH = _args.dump_path
 LOGS_PATH = _args.logs_path

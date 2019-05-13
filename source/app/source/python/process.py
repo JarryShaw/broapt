@@ -6,9 +6,10 @@ import subprocess
 import time
 import warnings
 
-from .const import (API_DICT, API_LOGS, API_ROOT, EXIT_FAILURE, EXIT_SUCCESS, FAIL, INTERVAL,
-                    MAX_RETRY)
-from .utils import APIError, APIWarning, print_file, suppress
+from const import (API_DICT, API_LOGS, API_ROOT, EXIT_FAILURE, EXIT_SUCCESS, FAIL, INTERVAL,
+                   MAX_RETRY)
+from remote import remote
+from utils import APIError, APIWarning, print_file, suppress
 
 
 def run(command, cwd=None, env=None, mime='example', file='unknown'):
@@ -54,25 +55,21 @@ def issue(mime):
 
 
 def init(api, cwd, env, mime, uuid):  # pylint: disable=inconsistent-return-statements
-    while api._locked:  # pylint: disable=protected-access
+    while api.locked:
         time.sleep(INTERVAL)
-    if api._inited:  # pylint: disable=protected-access
+    if api.inited:
         return
 
-    api._locked = True  # pylint: disable=protected-access
+    api.locked = True
     install_log = 1
     for command in api.install:
         log = f'{uuid}-install.{install_log}'
         if run(command, cwd, env, mime, file=log):
-            api._locked = False  # pylint: disable=protected-access
+            api.locked = False
             return issue(mime)
         install_log += 1
-    api._inited = True  # pylint: disable=protected-access
-    api._locked = False  # pylint: disable=protected-access
-
-
-def remote(entry, mime, api, cwd):
-    pass
+    api.inited = True
+    api.locked = False
 
 
 def make_cwd(api, entry=None, example=False):
@@ -107,7 +104,9 @@ def process(entry):  # pylint: disable=inconsistent-return-statements
         cwd = make_cwd(api, example=True)
 
     if api.remote:
-        return remote(entry, mime, api, cwd)
+        if remote(entry, mime, api, cwd):
+            return issue(mime)
+        return print_file(entry.path)
 
     # set up environ
     env = make_env(api)
@@ -115,7 +114,7 @@ def process(entry):  # pylint: disable=inconsistent-return-statements
     env['BROAPT_MIME'] = entry.mime.name
 
     # run install commands
-    if not api._inited:  # pylint: disable=protected-access
+    if not api.inited:
         init(api, cwd, env, mime, entry.uuid)
 
     # run scanner commands

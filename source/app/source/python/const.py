@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=import-error, no-name-in-module
 
+import ipaddress
 import os
 import pathlib
 import subprocess
 
-from .cfgparse import parse
+from cfgparse import parse
 
 # repo root path
 ROOT = str(pathlib.Path(__file__).parents[1].resolve())
@@ -51,6 +52,17 @@ if DUMP_PATH is None:
 API_ROOT = os.getenv('BROAPT_API_ROOT', '/api/')
 API_LOGS = os.getenv('BROAPT_API_LOGS', '/var/log/bro/api/')
 API_DICT = parse(API_ROOT)
+
+# remote server
+try:
+    SERVER_NAME_HOST = ipaddress.ip_address(os.getenv('SERVER_NAME_HOST'))
+except (TypeError, ValueError):
+    SERVER_NAME_HOST = 'locolhost'
+try:
+    SERVER_NAME_PORT = int(os.getenv('SERVER_NAME_PORT'))
+except (TypeError, ValueError):
+    SERVER_NAME_PORT = 5000
+SERVER_NAME = f'http://{SERVER_NAME_HOST}:{SERVER_NAME_PORT}/api/v1.0/scan'
 
 # log files
 FILE = os.path.join(LOGS_PATH, 'processed_dump.log')

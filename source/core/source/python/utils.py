@@ -11,7 +11,7 @@ import pathlib
 import time
 import traceback
 
-from const import INTERVAL, TIME
+from const import TIME
 
 
 class IPAddressJSONEncoder(json.JSONEncoder):
@@ -46,11 +46,12 @@ def file_lock(file):
     path = f'{os.path.splitext(file)[0]}.lock'
     lock = pathlib.Path(path)
     while lock.exists():
-        time.sleep(INTERVAL)
-    lock.touch()
-    try:
+        time.sleep(.3)
+    with contextlib.suppress(OSError):
+        lock.touch()
+    with contextlib.suppress(BaseException):
         yield
-    finally:
+    with contextlib.suppress(OSError):
         lock.unlink()
 
 

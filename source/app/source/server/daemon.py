@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import contextlib
 import dataclasses
 import multiprocessing
 import typing
@@ -7,20 +8,21 @@ import uuid
 
 import flask
 
-from .process import process
+from process import process
 
 # API info
 @dataclasses.dataclass
 class Info:
     uuid: str
     mime: str
-    report: str
 
-    _inited: bool
+    report: str
+    inited: bool
+
     workdir: str
     environ: typing.Mapping[str, str]
     install: typing.List[str]
-    scanner: typing.List[str]
+    scripts: typing.List[str]
 
 
 # main app
@@ -81,8 +83,10 @@ def help_():
 
 @app.route('/api/v1.0/list', methods=['GET'])
 def list_():
-    return flask.jsonify(running=RUNNING,
-                         scanned=SCANNED)
+    info = list()
+    info.extend(dict(id=uid, scanned=True, reported=None, deleted=False) for uid in RUNNING)
+    info.extend(dict(id=uid, scanned=True, reported=flag, deleted=False) for (uid, flag) in SCANNED.items())
+    return flask.jsonify(info)
 
 
 @app.route('/api/v1.0/report', methods=['GET'])
@@ -94,9 +98,9 @@ def get_none():
 def get(id_):
     uid = uuid.UUID(id_)
     if uid in RUNNING:
-        return flask.jsonify(id=uid, scanned=False, report=None)
+        return flask.jsonify(id=uid, scanned=False, reported=None, deleted=False)
     if uid in SCANNED:
-        return flask.jsonify(id=uid, scanned=True, report=SCANNED[uid])
+        return flask.jsonify(id=uid, scanned=True, reported=SCANNED[uid], deleted=False)
     return flask.abort(404)
 
 
@@ -105,19 +109,39 @@ def scan():
     if not flask.request.json:
         flask.abort(400)
     json = flask.request.json
-    info = Info(uuid=json['uuid'],
-                mime=json['mime'],
-                report=json['report'],
-                _inited=json['_inited'],
-                workdir=json['workdir'],
-                environ=json['environ'],
-                install=json['install'],
-                scanner=json['scanner'])
-    if process(info):
-        return flask.jsonify()
-    return flask.jsonify()
+    info = Info(
+        uuid=json['uuid'],
+        mime=json['mime'],
+        report=json['report'],
+        inited=json['inited'],
+        workdir=json['workdir'],
+        environ=json['environ'],
+        install=json['install'],
+        scripts=json['scripts'],
+    )
+
+    RUNNING.append(info.uuid)
+    flag = process(info)
+
+    with contextlib.suppress(ValueError):
+        RUNNING.remove(info.uuid)
+    SCANNED[indo.uuid] = flag
+
+    return flask.jsonify(id=info.uuid, scanned=True, reported=flag, deleted=False)
 
 
 @app.route('/api/v1.0/delete', methods=['DELETE'])
-def delete():
-    pass
+def delete_none():
+    return 'ID Required: /api/v1.0/delete/<id>'
+
+
+@app.route('/api/v1.0/delete/<str:id_>', methods=['GET'])
+def delete(id_):
+    uid = uuid.UUID(id_)
+    if uid in RUNNING:
+        del RUNNING[uid]
+        return flask.jsonify(id=uid, scanned=False, reported=None, deleted=True)
+    if uid in SCANNED:
+        del SCANNED[uid]
+        return flask.jsonify(id=uid, scanned=True, reported=SCANNED[uid], deleted=True)
+    return flask.jsonify(id=uid, scanned=None, reported=None, deleted=True)

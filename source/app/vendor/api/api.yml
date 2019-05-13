@@ -47,7 +47,7 @@ environment:
 ##       - rm -rf /var/lib/apt/lists/*
 ##       - apt-get remove -y --auto-remove python-pip
 ##       - apt-get clean
-##     scanner:
+##     scripts:
 ##       - ${PYTHON27} detect.py [...]                # refer to /usr/bin/python
 ##       - ...                                        # and some random command
 ##     report: ${PYTHON27} report.py                  # generate final report
@@ -76,7 +76,7 @@ environment:
 ## 5. generate final report:
 ##    `/usr/bin/python report.py`
 ##
-## NOTE: `scanner` section is MANDATORY.
+## NOTE: `report` section is MANDATORY.
 ##       If `remote` is `true`, then BroAPT will run the
 ##       corresponding API in the host machine.
 ##
@@ -94,7 +94,7 @@ application:
     install:
       # - ${SHELL} install.sh
       - docker pull alexmyg/andropytool
-    scanner:
+    scripts:
       # - ${PYTHON36} detect.py
       - docker run --volume=</PATH/TO/FOLDER/WITH/APKS/>:/apks alexmyg/andropytool -s /apks/ <ARGUMENTS>
   vnd.openxmlformats-officedocument: &officedocument

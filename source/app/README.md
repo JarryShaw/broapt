@@ -15,6 +15,9 @@ For development environment, `make` and `pipenv` are the two things playing arou
 
 ## Environment
 
+- `SERVER_NAME_HOST` -- daemon server port (*default*: `localhost`)
+- `SERVER_NAME_PORT` -- daemon server port (*default*: 5000)
+
 - `BROAPT_APP_CPU` -- concurrent process limit (*default*: 10)
 - `BROAPT_APP_INTERVAL` -- sleep interval (*default*: 10s)
 - `BROAPT_MAX_RETRY` -- maximum times of retry for running commands (*default*: 3)

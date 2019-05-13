@@ -9,8 +9,8 @@ import re
 import sys
 import time
 
-from .const import CPU_CNT, DUMP_PATH, FILE, INTERVAL
-from .process import process
+from const import CPU_CNT, DUMP_PATH, FILE, INTERVAL
+from process import process
 
 # file name regex
 FILE_REGEX = re.compile(r'''

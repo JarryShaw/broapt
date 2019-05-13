@@ -37,8 +37,8 @@ class API:
     install: list
     scanner: list
 
-    _inited: bool = False
-    _locked: bool = False
+    inited: bool = False
+    locked: bool = False
 
 
 class ConfigError(Exception):
