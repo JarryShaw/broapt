@@ -49,7 +49,7 @@ build-broker:
 	$(MAKE) -C build broker
 
 docker-build: requirements-download
-	$(MAKE) -C source clean
+	$(MAKE) -C cluster clean
 	sed -i "" "s/LABEL version.*/LABEL version=$(shell date +%Y.%m.%d)/" Dockerfile
 	docker build --rm --tag broapt .
 	$(MAKE) docker-prune
@@ -127,20 +127,22 @@ gitlab-copy: gitlab-clean
 	mkdir -p ${REPO_PATH}/build
 	find build \
 	    ! -iname 'venv' -depth 1 -exec cp -rf {} ${REPO_PATH}/build \;
+    # copy cluster
+	mkdir -p ${REPO_PATH}/cluster
+	cp -f \
+	    cluster/docker-compose.yml \
+	    cluster/Makefile ${REPO_PATH}/cluster
+	$(MAKE) -C cluster/app clean vendor
+	find cluster -iname 'app' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
+	$(MAKE) -C cluster/core clean vendor
+	find cluster -iname 'core' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
+	$(MAKE) -C cluster archive
+	find cluster -iname 'archive' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
+	find cluster -iname 'utils' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
 	# copy docker
 	cp -rf docker ${REPO_PATH}
 	# copy source
 	mkdir -p ${REPO_PATH}/source
-	cp -f \
-	    source/docker-compose.yml \
-	    source/Makefile ${REPO_PATH}/source
-	$(MAKE) -C source/app clean vendor
-	find source -iname 'app' -depth 1 -exec cp -rf {} ${REPO_PATH}/source \;
-	$(MAKE) -C source/core clean vendor
-	find source -iname 'core' -depth 1 -exec cp -rf {} ${REPO_PATH}/source \;
-	$(MAKE) -C source archive
-	find source -iname 'archive' -depth 1 -exec cp -rf {} ${REPO_PATH}/source \;
-	find source -iname 'utils' -depth 1 -exec cp -rf {} ${REPO_PATH}/source \;
 	# copy vendor
 	mkdir -p ${REPO_PATH}/vendor
 	find vendor -depth 1 -type f -exec cp -rf {} ${REPO_PATH}/vendor \;

@@ -1,0 +1,36 @@
+# docker-compose version
+version: "3"
+
+# BroAPT services
+services:
+  app:
+    build: .
+    container_name: broapt-app
+    entrypoint: ["bash", "/source/init.sh"]
+    # app environ
+    environment:
+      ## concurrent process limit
+      BROAPT_APP_CPU: 5
+      ## sleep interval
+      BROAPT_APP_INTERVAL: 10
+      ## command retry
+      BROAPT_MAX_RETRY: 3
+      ## path to detection APIs
+      BROAPT_API_ROOT: /api/
+      ## path to API runtime logs
+      BROAPT_API_LOGS: /var/log/bro/api/
+      ## path to extract files
+      BROAPT_DUMP_PATH: /dump/
+      ## path to log files
+      BROAPT_LOGS_PATH: /var/log/bro/
+      ## daemon server
+      SERVER_NAME_HOST: 127.0.0.1
+      SERVER_NAME_PORT: 5000
+    image: broapt-app
+    restart: "always"
+    volumes:
+      - /home/traffic/log/extract:/dump
+      # - ../dump:/dump
+      - /home/traffic/log/bro:/var/log/bro
+      # - ../logs:/var/log/bro
+      - ./include/api:/api
