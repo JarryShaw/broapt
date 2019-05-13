@@ -1,7 +1,11 @@
+### May 14th, 2019
+
+[ ] figure out Python import issues in function hooks
+
 ### May 12th, 2019
 
 [x] revise report generation based on API returncode
-[ ] impl REST API server
+[x] impl REST API server
 [x] revise API log counting system & UUID usage
 
 ### May 11th, 2019

@@ -125,6 +125,7 @@ with open(os.path.join(ROOT, 'scripts', 'config.bro')) as config:
         line = PATH_REGEX.sub(rf'\g<prefix>{DUMP_PATH}\g<suffix>', line)
         line = SIZE_REGEX.sub(rf'\g<prefix>{SIZE_LIMIT}\g<suffix>', line)
         if LOAD_REGEX.match(line) is not None:
+            context.append(f'@load site\n')
             break
         context.append(line)
 context.extend(f'@load {file_name}\n' for file_name in load_file)

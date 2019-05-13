@@ -15,7 +15,7 @@ import uuid
 
 import magic
 
-from const import BARE_MODE, DUMP_PATH, FILE, INFO, LOGS_PATH, MIME_MODE, NO_CHKSUM, ROOT
+from const import BARE_MODE, DUMP_PATH, FILE, INFO, LOGS_PATH, MIME_MODE, NO_CHKSUM, QUEUE, ROOT
 from logparse import parse
 from utils import IPAddressJSONEncoder, is_nan, print_file, suppress
 
@@ -153,6 +153,7 @@ def process(file):
     for log in glob.glob(f'*.{uid}.log'):
         with contextlib.suppress(OSError):
             shutil.move(log, os.path.join(dest, log.replace(f'.{uid}.log', '.log')))
+    QUEUE.put(dest_stem)
     generate_log(dest, dest_stem, uid)
 
     print_file(f'+ Bro processing: {end-start} seconds')

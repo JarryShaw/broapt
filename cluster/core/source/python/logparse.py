@@ -118,15 +118,13 @@ def parse_text(file, line):
         match_set = re.match(r'set\[(?P<type>.+)\]', type_)
         if match_set is not None:
             set_type = match_set.group('type')
-            field_parser.append((field, lambda s: set_parser(
-                s, type_parser[set_type])))  # pylint: disable=cell-var-from-loop
+            field_parser.append((field, lambda s: set_parser(s, type_parser[set_type])))  # pylint: disable=cell-var-from-loop
             continue
 
         match_vector = re.match(r'^vector\[(.+?)\]', type_)
         if match_vector is not None:
             vector_type = match_vector.groups()[0]
-            field_parser.append((field, lambda s: vector_parser(
-                s, type_parser[vector_type])))  # pylint: disable=cell-var-from-loop
+            field_parser.append((field, lambda s: vector_parser(s, type_parser[vector_type])))  # pylint: disable=cell-var-from-loop
             continue
 
         field_parser.append((field, type_parser[type_]))

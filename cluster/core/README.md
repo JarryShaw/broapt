@@ -56,8 +56,6 @@ For development environment, `make` and `pipenv` are the two things playing arou
 
 ## Usage
 
-### Extraction Framework
-
 ```shell
 $ cd ./source/
 $ python3 ./python/ [<path-to-pcap> ...]
@@ -74,14 +72,3 @@ MIME type.
 - otherwise, files will be named as `${PROTOCOL}-${FILE_UID}.${CONTENT_TYPE}.${SUBTYPE}.${FILE_EXT}`
 
 For now, known supported protocols are: DTLS, FTP, HTTP, IRC and SMTP.
-
-### Generation Utility
-
-In `./source/python/gen/` folder, two scripts are provided.
-
-`fix-missing.py` is to read `${LOGS_PATH}/processed_mime.log`, which lists unexpected MIMEs missing
-in Bro script `./source/scripts/file-extensions.bro`, and try to fix and update the missing
-mappings.
-
-`mime2ext.py` is to generate and update the mappings listed in Bro script
-`./source/scripts/file-extensions.bro`.
