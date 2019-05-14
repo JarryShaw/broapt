@@ -2,13 +2,14 @@
 # pylint: disable=all
 
 import base64
+import contextlib
 import json
 import math
 import os
 import urllib.parse
 
 from const import LOGS_PATH
-from logparse import parse, str_parser
+from logparse import parse
 from utils import is_nan, print_file
 
 HTTP_LOG = os.path.join(LOGS_PATH, 'http.log')
@@ -49,7 +50,12 @@ def make_json(line):
     headers = line.get('headers')
     if is_nan(headers):
         return None
-    return base64.b64encode(headers.encode()).decode()
+    data = dict()
+    for pair in headers.splitlines():
+        with contextlib.suppress(ValueError):
+            name, value = pair.split(':', maxsplit=1)
+            data[name.strip()] = value.strip()
+    return data
 
 
 def generate(log_name):
@@ -59,11 +65,7 @@ def generate(log_name):
     if not os.path.isfile(http_log):
         return
 
-    hook = dict(
-        header_rec=str_parser
-    )
-
-    LOG_HTTP = parse(http_log, hook=hook)
+    LOG_HTTP = parse(http_log)
     for (index, line) in LOG_HTTP.context.iterrows():
         record = dict(
             srcip=line['id.orig_h'],
