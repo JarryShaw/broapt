@@ -8,7 +8,7 @@ import os
 import urllib.parse
 
 from const import LOGS_PATH
-from logparser import parse
+from logparse import parse
 from utils import is_nan, print_file
 
 HTTP_LOG = os.path.join(LOGS_PATH, 'http.log')
@@ -60,7 +60,7 @@ def generate(log_name):
         return
 
     LOG_HTTP = parse(http_log)
-    for (index, line) in LOG_HTTP.iterrows():
+    for (index, line) in LOG_HTTP.context.iterrows():
         record = dict(
             srcip=line['id.orig_h'],
             ad=None,

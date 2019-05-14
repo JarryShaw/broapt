@@ -31,7 +31,7 @@ class JSONInfo:
     context: pandas.DataFrame
 
 
-def parse_text(file, line):
+def parse_text(file, line, hook=None):
     temp = line.strip().split(' ', maxsplit=1)[1]
     separator = urllib.parse.unquote(temp.replace('\\x', '%'))
 
@@ -107,6 +107,8 @@ def parse_text(file, line):
         double=float_parser,
         bool=bool_parser,
     ))
+    if hook is not None:
+        type_parser.update(hook)
 
     path = file.readline().strip().split(separator)[1]
     open_time = datetime.datetime.strptime(file.readline().strip().split(separator)[1], '%Y-%m-%d-%H-%M-%S')
@@ -167,11 +169,11 @@ def parse_json(file, line):
     return loginfo
 
 
-def parse(filename):
+def parse(filename, hook=None):
     with open(filename) as file:
         line = file.readline()
         if line.startswith('#'):
-            loginfo = parse_text(file, line)
+            loginfo = parse_text(file, line, hook)
         else:
             loginfo = parse_json(file, line)
     return loginfo
