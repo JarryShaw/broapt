@@ -14,6 +14,9 @@ import urllib.parse
 
 import pandas
 
+###############################################################################
+# data classes
+
 
 @dataclasses.dataclass
 class TEXTInfo:
@@ -31,84 +34,111 @@ class JSONInfo:
     context: pandas.DataFrame
 
 
+###############################################################################
+# parsers & macros
+
+set_separator = None
+empty_field = None
+unset_field = None
+
+
+def set_parser(s, t):
+    return set(t(e) for e in s.split(set_separator))
+
+
+def vector_parser(s, t):
+    return list(t(e) for e in s.split(set_separator))
+
+
+def str_parser(s):
+    if s == empty_field:
+        return str()
+    if s == unset_field:
+        return None
+    b = ast.literal_eval(f'b{s!r}'.replace('\\\\x', '\\x'))
+    return b.decode()
+
+
+def port_parser(s):
+    if s == unset_field:
+        return None
+    return ctypes.c_uint16(int(s)).value
+
+
+def int_parser(s):
+    if s == unset_field:
+        return None
+    return ctypes.c_int64(int(s)).value
+
+
+def count_parser(s):
+    if s == unset_field:
+        return None
+    return ctypes.c_uint64(int(s)).value
+
+
+def addr_parser(s):
+    if s == unset_field:
+        return None
+    return ipaddress.ip_address(s)
+
+
+def subnet_parser(s):
+    if s == unset_field:
+        return None
+    return ipaddress.ip_network(s)
+
+
+def time_parser(s):
+    if s == unset_field:
+        return None
+    return datetime.datetime.fromtimestamp(float(s))
+
+
+def float_parser(s):
+    if s == unset_field:
+        return None
+    return float(s)
+
+
+def bool_parser(s):
+    if s == unset_field:
+        return None
+    if s == 'T':
+        return True
+    if s == 'F':
+        return False
+    raise ValueError
+
+
+type_parser = collections.defaultdict(lambda: str_parser, dict(
+    string=str_parser,
+    port=port_parser,
+    enum=str_parser,
+    interval=str_parser,
+    addr=addr_parser,
+    subnet=subnet_parser,
+    int=int_parser,
+    count=count_parser,
+    time=time_parser,
+    double=float_parser,
+    bool=bool_parser,
+))
+
+###############################################################################
+
+
 def parse_text(file, line, hook=None):
+    global set_separator, empty_field, unset_field
+    if hook is not None:
+        type_parser.update(hook)
+
     temp = line.strip().split(' ', maxsplit=1)[1]
     separator = urllib.parse.unquote(temp.replace('\\x', '%'))
 
     set_separator = file.readline().strip().split(separator)[1]
-    def set_parser(s, t): return set(t(e) for e in s.split(set_separator))
-    def vector_parser(s, t): return list(t(e) for e in s.split(set_separator))
-
     empty_field = file.readline().strip().split(separator)[1]
     unset_field = file.readline().strip().split(separator)[1]
-
-    def str_parser(s):
-        if s == empty_field:
-            return str()
-        if s == unset_field:
-            return None
-        b = ast.literal_eval(f'b{s!r}'.replace('\\\\x', '\\x'))
-        return b.decode()
-
-    def port_parser(s):
-        if s == unset_field:
-            return None
-        return ctypes.c_uint16(int(s)).value
-
-    def int_parser(s):
-        if s == unset_field:
-            return None
-        return ctypes.c_int64(int(s)).value
-
-    def count_parser(s):
-        if s == unset_field:
-            return None
-        return ctypes.c_uint64(int(s)).value
-
-    def addr_parser(s):
-        if s == unset_field:
-            return None
-        return ipaddress.ip_address(s)
-
-    def subnet_parser(s):
-        if s == unset_field:
-            return None
-        return ipaddress.ip_network(s)
-
-    def time_parser(s):
-        if s == unset_field:
-            return None
-        return datetime.datetime.fromtimestamp(float(s))
-
-    def float_parser(s):
-        if s == unset_field:
-            return None
-        return float(s)
-
-    def bool_parser(s):
-        if s == unset_field:
-            return None
-        if s == 'T':
-            return True
-        if s == 'F':
-            return False
-        raise ValueError
-
-    type_parser = collections.defaultdict(lambda: str_parser, dict(
-        string=str_parser,
-        port=port_parser,
-        enum=str_parser,
-        interval=str_parser,
-        addr=addr_parser,
-        subnet=subnet_parser,
-        int=int_parser,
-        count=count_parser,
-        time=time_parser,
-        double=float_parser,
-        bool=bool_parser,
-    ))
-    if hook is not None:
-        type_parser.update(hook)
 
     path = file.readline().strip().split(separator)[1]
     open_time = datetime.datetime.strptime(file.readline().strip().split(separator)[1], '%Y-%m-%d-%H-%M-%S')

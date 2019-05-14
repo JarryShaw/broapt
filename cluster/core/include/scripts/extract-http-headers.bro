@@ -20,7 +20,7 @@ event http_all_headers(c: connection, is_orig: bool, hlist: mime_header_list) &p
 		{
 		mime_header = hlist[cnt];
 		headers += [$name=mime_header$name,
-			    $value=mime_header$value]
+					$value=mime_header$value]
 		}
-    	c$http$headers = headers;
+		c$http$headers = headers;
 	}

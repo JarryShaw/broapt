@@ -8,7 +8,7 @@ import os
 import urllib.parse
 
 from const import LOGS_PATH
-from logparse import parse
+from logparse import parse, str_parser
 from utils import is_nan, print_file
 
 HTTP_LOG = os.path.join(LOGS_PATH, 'http.log')
@@ -59,7 +59,11 @@ def generate(log_name):
     if not os.path.isfile(http_log):
         return
 
-    LOG_HTTP = parse(http_log)
+    hook = dict(
+        header_rec=str_parser
+    )
+
+    LOG_HTTP = parse(http_log, hook=hook)
     for (index, line) in LOG_HTTP.context.iterrows():
         record = dict(
             srcip=line['id.orig_h'],
