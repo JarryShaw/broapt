@@ -14,6 +14,7 @@ from process import process
 # API info
 @dataclasses.dataclass
 class Info:
+    name: str
     uuid: str
     mime: str
 
@@ -116,6 +117,7 @@ def scan():
         flask.abort(400)
     json = flask.request.json
     info = Info(
+        name=json['name'],
         uuid=json['uuid'],
         mime=json['mime'],
         report=json['report'],

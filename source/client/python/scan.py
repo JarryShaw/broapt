@@ -41,6 +41,7 @@ def remote(entry, mime, api, cwd):
     api.locked = True
 
     info = dict(
+        name=os.path.relpath(entry.path, DUMP_PATH),
         mime=mime,
         uuid=entry.uuid,
         report=api.report,

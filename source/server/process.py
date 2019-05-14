@@ -5,7 +5,7 @@ import os
 import subprocess
 import time
 
-from const import API_LOGS, API_ROOT, EXIT_FAILURE, EXIT_SUCCESS, FAIL, INTERVAL, MAX_RETRY
+from const import API_LOGS, API_ROOT, DUMP_PATH, EXIT_FAILURE, EXIT_SUCCESS, FAIL, INTERVAL, MAX_RETRY
 from util import print_file, suppress
 
 
@@ -68,6 +68,11 @@ def init(info):
 
 @suppress
 def process(info):
+    # set up environ
+    env = make_env(info)
+    env['BROAPT_PATH'] = os.path.join(DUMP_PATH, info.name)
+    env['BROAPT_MIME'] = info.mime
+
     # run install commands
     if not info.inited:
         init(info)

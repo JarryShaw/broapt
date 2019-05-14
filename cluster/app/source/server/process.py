@@ -68,6 +68,11 @@ def init(info):
 
 @suppress
 def process(info):
+    # set up environ
+    env = make_env(info)
+    env['BROAPT_PATH'] = os.path.join(DUMP_PATH, info.name)
+    env['BROAPT_MIME'] = info.mime
+
     # run install commands
     if not info.inited:
         init(info)

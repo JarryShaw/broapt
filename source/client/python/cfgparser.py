@@ -65,7 +65,8 @@ def parse_cmd(context, mimetype, environ):
         raise ReportNotFoundError
 
     cfg_environ = copy.deepcopy(environ)
-    cfg_environ.update(context.get('environ', dict()))
+    for (env, val) in context.get('environ', dict()).items():
+        cfg_environ[str(env)] = str(val)
 
     API_DICT[mimetype] = API(
         remote=cfg_remote,
@@ -83,7 +84,6 @@ def parse(root):
 
     environ = dict()
     for (env, val) in context.get('environment', dict()).items():
-        os.environ[str(env)] = os.path.expandvars(str(val))
         environ[str(env)] = str(val)
 
     example = context.get('example')
