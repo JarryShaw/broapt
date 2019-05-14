@@ -54,5 +54,5 @@ services:
       # - ../dump:/dump
       - /home/traffic/log/bro:/var/log/bro
       # - ../logs:/var/log/bro
-      - ./include/scripts:/opt/bro/share/bro/site
+      - ./include/scripts:/source/scripts/sites
       - ./include/python:/source/python/sites
