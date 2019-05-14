@@ -1,15 +1,63 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=import-error, no-name-in-module
 
+import dataclasses
+import functools
 import os
 import subprocess
 import time
 import warnings
 
-from .const import (API_DICT, API_LOGS, API_ROOT, DUMP, EXIT_FAILURE, EXIT_SUCCESS, FAIL, INTERVAL,
-                   MAX_RETRY)
-from .server import remote
+import requests
+
+from .const import (API_DICT, API_LOGS, API_ROOT, DUMP, DUMP_PATH, EXIT_FAILURE, EXIT_SUCCESS, FAIL, INTERVAL,
+                   MAX_RETRY, FILE_REGEX, SERVER_NAME)
 from .utils import APIError, APIWarning, print_file, suppress
+
+
+# mimetype class
+@dataclasses.dataclass
+class MIME:
+    media_type: str
+    subtype: str
+    name: str
+
+
+# entry class
+@functools.total_ordering
+@dataclasses.dataclass
+class Entry:
+    path: str
+    uuid: str
+    mime: MIME
+
+    def __lt__(self, value):
+        return self.path < value.path
+
+
+def remote(entry, mime, api, cwd):
+    while api.locked:
+        time.sleep(INTERVAL)
+    api.locked = True
+
+    info = dict(
+        mime=mime,
+        uuid=entry.uuid,
+        report=api.report,
+        inited=api.inited,
+        workdir=api.workdir,
+        environ=api.environ,
+        install=api.install,
+        scripts=api.scripts,
+    )
+
+    try:
+        resp = requests.post(SERVER_NAME, data=info)
+        if resp.json()['reported']:
+            return EXIT_SUCCESS
+        return EXIT_FAILURE
+    except (KeyError, ValueError, requests.RequestException):
+        return EXIT_FAILURE
 
 
 def run(command, cwd=None, env=None, mime='example', file='unknown'):
@@ -130,3 +178,21 @@ def process(entry):  # pylint: disable=inconsistent-return-statements
     if run(api.report, cwd, env, mime, file=log):
         return issue(mime)
     print_file(entry.path, file=DUMP)
+
+
+def scan(local_name):
+    match = FILE_REGEX.match(os.path.split(local_name)[1])
+    if match is None:
+        return
+
+    media_type = match.group('media_type')
+    subtype = match.group('subtype')
+    fuid = match.group('fuid')
+
+    mime = MIME(media_type=media_type,
+                subtype=subtype,
+                name=f'{media_type}/{subtype}')
+    entry = Entry(path=os.path.join(DUMP_PATH, local_name),
+                  uuid=fuid,
+                  mime=mime)
+    process(entry)

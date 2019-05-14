@@ -1,6 +1,7 @@
 ### May 14th, 2019
 
-[ ] impl. all-in-one BroAPT framework (merge core & app)
+[ ] bugfix in server-client communication (missing correct BROAPT_FILE)
+[x] impl. all-in-one BroAPT framework (merge core & app)
 
 ### May 13th, 2019
 

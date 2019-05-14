@@ -7,7 +7,6 @@ import ipaddress
 import json
 import os
 import pathlib
-import re
 import shutil
 import subprocess
 import time
@@ -16,26 +15,8 @@ import uuid
 import magic
 
 from .const import BARE_MODE, DUMP_PATH, FILE, INFO, LOGS_PATH, MIME_MODE, NO_CHKSUM, QUEUE_DUMP, QUEUE_LOGS, ROOT
-from .logparse import parse
+from .logparser import parse
 from .utils import IPAddressJSONEncoder, is_nan, print_file, suppress
-
-# file name regex
-FILE_REGEX = re.compile(r'''
-    # protocol prefix
-    (?P<protocol>DTLS|FTP_DATA|HTTP|IRC_DATA|SMTP|\S+)
-    -
-    # file UID
-    (?P<fuid>F\w+)
-    \.
-    # media-type
-    (?P<media_type>application|audio|example|font|image|message|model|multipart|text|video|\S+)
-    \.
-    # subtype
-    (?P<subtype>\S+)
-    \.
-    # file extension
-    (?P<extension>\S+)
-''', re.IGNORECASE | re.VERBOSE)
 
 
 def rename_dump(local_name, mime_type):

@@ -4,8 +4,9 @@
 import ipaddress
 import multiprocessing
 import os
+import re
 
-from .cfgparse import parse
+from .cfgparser import parse
 from .compose import (BOOLEAN_STATES, DUMP_PATH, LOGS_PATH,  # pylint: disable=unused-import
                      MIME_MODE, PCAP_PATH, ROOT)
 
@@ -69,3 +70,21 @@ SERVER_NAME = f'http://{SERVER_NAME_HOST}:{SERVER_NAME_PORT}/api/v1.0/scan'
 # log files
 DUMP = os.path.join(LOGS_PATH, 'processed_dump.log')
 FAIL = os.path.join(LOGS_PATH, 'processed_fail.log')
+
+# file name regex
+FILE_REGEX = re.compile(r'''
+    # protocol prefix
+    (?P<protocol>DTLS|FTP_DATA|HTTP|IRC_DATA|SMTP|\S+)
+    -
+    # file UID
+    (?P<fuid>F\w+)
+    \.
+    # media-type
+    (?P<media_type>application|audio|example|font|image|message|model|multipart|text|video|\S+)
+    \.
+    # subtype
+    (?P<subtype>\S+)
+    \.
+    # file extension
+    (?P<extension>\S+)
+''', re.IGNORECASE | re.VERBOSE)
