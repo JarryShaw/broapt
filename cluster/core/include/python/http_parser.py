@@ -9,7 +9,7 @@ import os
 import urllib.parse
 
 from const import LOGS_PATH
-from logparse import parse
+from logparser import parse
 from utils import IPAddressJSONEncoder, is_nan, print_file
 
 HTTP_LOG = os.path.join(LOGS_PATH, 'http.log')

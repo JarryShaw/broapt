@@ -6,7 +6,7 @@ import os
 import pathlib
 import subprocess
 
-from cfgparse import parse
+from cfgparser import parse
 
 # repo root path
 ROOT = str(pathlib.Path(__file__).parents[1].resolve())

@@ -16,7 +16,7 @@ import uuid
 import magic
 
 from const import BARE_MODE, DUMP_PATH, FILE, INFO, LOGS_PATH, MIME_MODE, NO_CHKSUM, QUEUE, ROOT
-from logparse import parse
+from logparser import parse
 from utils import IPAddressJSONEncoder, is_nan, print_file, suppress
 
 # file name regex
