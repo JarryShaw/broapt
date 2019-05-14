@@ -2,6 +2,7 @@
 # pylint: disable=import-error, no-name-in-module
 
 import contextlib
+import functools
 import os
 import pathlib
 import time
