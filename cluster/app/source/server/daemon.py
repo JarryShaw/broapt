@@ -3,6 +3,7 @@
 import contextlib
 import dataclasses
 import multiprocessing
+import os
 import typing
 import uuid
 
@@ -29,19 +30,24 @@ class Info:
 app = flask.Flask(__name__)
 
 # help message
-HELP_v1_0 = '''\
-- GET    /api/v1.0/list
-- GET    /api/v1.0/report/<id>
-- POST   /api/v1.0/scan data={"key": "value"}
-- DELETE /api/v1.0/delete/<id>
-'''
-__help__ = f'''\
-BroAPT-App Daemon API Usage:
-
-# v1.0
-
-{HELP_v1_0}
-'''
+HELP_v1_0 = os.path.sep.join((
+    'BroAPT-App Daemon APIv1.0 Usage:',
+    '',
+    '- GET    /api/v1.0/list',
+    '- GET    /api/v1.0/report/<id>',
+    '- POST   /api/v1.0/scan data={"key": "value"}',
+    '- DELETE /api/v1.0/delete/<id>',
+))
+__help__ = os.path.sep.join((
+    'BroAPT-App Daemon API Usage:',
+    '',
+    '# v1.0',
+    '',
+    '- GET    /api/v1.0/list',
+    '- GET    /api/v1.0/report/<id>',
+    '- POST   /api/v1.0/scan data={"key": "value"}',
+    '- DELETE /api/v1.0/delete/<id>',
+))
 
 # worker pool
 manager = multiprocessing.Manager()
@@ -52,7 +58,7 @@ SCANNED = manager.dict()  # dict[uuid.UUID, bool]
 @app.errorhandler(ValueError)
 def invalid_id(error):
     return flask.jsonify(status=400,
-                         error=error,
+                         error=str(error),
                          message='invalid ID format')
 
 
@@ -60,14 +66,14 @@ def invalid_id(error):
 @app.errorhandler(KeyError)
 def invalid_info(error):
     return flask.jsonify(status=400,
-                         error=error,
+                         error=str(error),
                          message='invalid info format')
 
 
 @app.errorhandler(404)
 def id_not_found(error):
     return flask.jsonify(status=404,
-                         error=error,
+                         error=str(error),
                          message='ID not found')
 
 
@@ -94,7 +100,7 @@ def get_none():
     return 'ID Required: /api/v1.0/report/<id>'
 
 
-@app.route('/api/v1.0/report/<str:id_>', methods=['GET'])
+@app.route('/api/v1.0/report/<id_>', methods=['GET'])
 def get(id_):
     uid = uuid.UUID(id_)
     if uid in RUNNING:
@@ -135,7 +141,7 @@ def delete_none():
     return 'ID Required: /api/v1.0/delete/<id>'
 
 
-@app.route('/api/v1.0/delete/<str:id_>', methods=['GET'])
+@app.route('/api/v1.0/delete/<id_>', methods=['GET'])
 def delete(id_):
     uid = uuid.UUID(id_)
     if uid in RUNNING:

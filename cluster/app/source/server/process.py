@@ -10,9 +10,9 @@ from util import print_file, suppress
 
 
 def make_env(info):
-    environ = os.environ
+    environ = dict(os.environ)
     for (env, val) in info.environ.items():
-        environ[str(env)] = os.path.expandvars(str(val))
+        environ[env] = os.path.expandvars(val)
     return environ
 
 

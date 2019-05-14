@@ -97,13 +97,18 @@ application:
     scripts:
       # - ${PYTHON36} detect.py
       - docker run --volume=</PATH/TO/FOLDER/WITH/APKS/>:/apks alexmyg/andropytool -s /apks/ <ARGUMENTS>
+    report: ${SHELL} wrapper.sh
   vnd.openxmlformats-officedocument: &officedocument
     ## MaliciousMacroBot
     workdir: ${API_ROOT}/application/vnd.openxmlformats-officedocument/
     install:
-      - docker build --tag broapt-app:officedocument .
+      - apt-get update
+      - apt-get install -y --no-install-recommends python3-pip
+      - ${PYTHON36} -m pip install mmbot
+      - rm -rf /var/lib/apt/lists/*
+      - apt-get clean
     report:
-      - ${SHELL} MaliciousMacroBot/wrapper.sh
+      - ${PYTHON36} MaliciousMacroBot/detect.py
   msword: *officedocument
   vnd.ms-excel: *officedocument
   vnd.openxmlformats-officedocument: *officedocument

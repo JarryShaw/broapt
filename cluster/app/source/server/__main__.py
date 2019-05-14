@@ -8,5 +8,5 @@ from util import docker_compose
 if __name__ == '__main__':
     with docker_compose():
         app.run(host=SERVER_NAME_HOST,
-        		port=SERVER_NAME_PORT)
+                port=SERVER_NAME_PORT)
     manager.shutdown()

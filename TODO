@@ -1,6 +1,10 @@
 ### May 14th, 2019
 
-[ ] figure out Python import issues in function hooks
+[ ] impl. all-in-one BroAPT framework (merge core & app)
+
+### May 13th, 2019
+
+[x] figure out Python import issues in function hooks
 
 ### May 12th, 2019
 

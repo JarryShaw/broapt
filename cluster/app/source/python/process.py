@@ -84,9 +84,9 @@ def make_cwd(api, entry=None, example=False):
 
 
 def make_env(api):
-    environ = os.environ
+    environ = dict(os.environ)
     for (env, val) in api.environ.items():
-        environ[str(env)] = os.path.expandvars(str(val))
+        environ[env] = os.path.expandvars(val)
     return environ
 
 

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import argparse
-import ipaddress
 
 
 def get_parser():
@@ -10,7 +9,7 @@ def get_parser():
     parser.add_argument('-v', '--version', action='version', version='1.0')
 
     server_parser = parser.add_argument_group(title='server arguments')
-    server_parser.add_argument('-t', '--host', default='0.0.0.0', type=ipaddress.ip_address,
+    server_parser.add_argument('-t', '--host', default='0.0.0.0',
                                help='the hostname to listen on')
     server_parser.add_argument('-p', '--port', default='5000', type=int,
                                help='the port of the webserver')

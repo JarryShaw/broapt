@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import copy
 import dataclasses
 import os
 
@@ -53,9 +54,8 @@ class ReportNotFoundError(ConfigError):
     pass
 
 
-def parse_cmd(context, mimetype):
+def parse_cmd(context, mimetype, environ):
     cfg_workdir = context.get('workdir', '.')
-    cfg_environ = context.get('environ', dict())
     cfg_install = context.get('install', list())
     cfg_scanner = context.get('scanner', list())
 
@@ -63,6 +63,9 @@ def parse_cmd(context, mimetype):
     cfg_report = context.get('report')
     if cfg_report is None:
         raise ReportNotFoundError
+
+    cfg_environ = copy.deepcopy(environ)
+    cfg_environ.update(context.get('environ', dict()))
 
     API_DICT[mimetype] = API(
         remote=cfg_remote,
@@ -78,13 +81,15 @@ def parse(root):
     with open(os.path.join(root, 'api.yml')) as yaml_file:
         context = yaml.load(yaml_file, Loader=Loader)
 
+    environ = dict()
     for (env, val) in context.get('environment', dict()).items():
         os.environ[str(env)] = os.path.expandvars(str(val))
+        environ[str(env)] = str(val)
 
     example = context.get('example')
     if example is None:
         raise DefaultNotFoundError
-    parse_cmd(example, 'example')
+    parse_cmd(example, 'example', environ)
 
     for media_type in MEDIA_TYPE:
         top_level = context.get(media_type)
@@ -94,6 +99,6 @@ def parse(root):
             if value is None:
                 continue
             mimetype = f'{media_type}/{subtype}'.lower()
-            parse_cmd(value, mimetype)
+            parse_cmd(value, mimetype, environ)
 
     return API_DICT
