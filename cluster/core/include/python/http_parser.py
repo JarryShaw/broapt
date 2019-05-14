@@ -39,7 +39,7 @@ def make_ua(line):
 
 
 def make_cookie(line):
-    cookies = line.get('cookie')
+    cookies = line.get('cookies')
     if is_nan(cookies):
         return None
     return base64.b64encode(cookies.encode()).decode()
