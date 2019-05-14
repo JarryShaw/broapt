@@ -1,0 +1,71 @@
+# -*- coding: utf-8 -*-
+# pylint: disable=import-error, no-name-in-module
+
+import ipaddress
+import multiprocessing
+import os
+
+from .cfgparse import parse
+from .compose import (BOOLEAN_STATES, DUMP_PATH, LOGS_PATH,  # pylint: disable=unused-import
+                     MIME_MODE, PCAP_PATH, ROOT)
+
+# limit on CPU
+try:
+    CPU_CNT = int(os.getenv('BROAPT_CPU'))
+except (ValueError, TypeError):
+    if os.name == 'posix' and 'SC_NPROCESSORS_CONF' in os.sysconf_names:
+        CPU_CNT = os.sysconf('SC_NPROCESSORS_CONF')
+    elif 'sched_getaffinity' in os.__all__:
+        CPU_CNT = len(os.sched_getaffinity(0))  # pylint: disable=E1101
+    else:
+        CPU_CNT = os.cpu_count() or 1
+
+# sleep interval
+try:
+    INTERVAL = int(os.getenv('BROAPT_INTERVAL'))
+except (TypeError, ValueError):
+    INTERVAL = 10
+
+## run Bro in bare mode
+BARE_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_BARE_MODE', 'false').casefold(), False)
+## run Bro with `-C` option
+NO_CHKSUM = BOOLEAN_STATES.get(os.getenv('BROAPT_NO_CHKSUM', 'true').casefold(), True)
+
+# log files
+FILE = os.path.join(LOGS_PATH, 'processed_file.log')
+TIME = os.path.join(LOGS_PATH, 'processed_time.log')
+INFO = os.path.join(LOGS_PATH, 'processed_info.log')
+
+# log queue
+LOGS_QUEUE = multiprocessing.Queue()
+DUMP_QUEUE = multiprocessing.Queue()
+
+# command retry
+try:
+    MAX_RETRY = int(os.getenv('BROAPT_MAX_RETRY'))
+except (TypeError, ValueError):
+    MAX_RETRY = 3
+
+# macros
+EXIT_SUCCESS = 0
+EXIT_FAILURE = 1
+
+# parse API
+API_ROOT = os.getenv('BROAPT_API_ROOT', '/api/')
+API_LOGS = os.getenv('BROAPT_API_LOGS', '/var/log/bro/api/')
+API_DICT = parse(API_ROOT)
+
+# remote server
+try:
+    SERVER_NAME_HOST = ipaddress.ip_address(os.getenv('SERVER_NAME_HOST'))
+except (TypeError, ValueError):
+    SERVER_NAME_HOST = 'locolhost'
+try:
+    SERVER_NAME_PORT = int(os.getenv('SERVER_NAME_PORT'))
+except (TypeError, ValueError):
+    SERVER_NAME_PORT = 5000
+SERVER_NAME = f'http://{SERVER_NAME_HOST}:{SERVER_NAME_PORT}/api/v1.0/scan'
+
+# log files
+DUMP = os.path.join(LOGS_PATH, 'processed_dump.log')
+FAIL = os.path.join(LOGS_PATH, 'processed_fail.log')
