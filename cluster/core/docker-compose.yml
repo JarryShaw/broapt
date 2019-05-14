@@ -45,6 +45,8 @@ services:
       BROAPT_FILE_BUFFER: 0xffffffffffffffff
       ## Bro extract file size limit
       BROAPT_SIZE_LIMIT: 0
+      ## concurrent hook processes
+      BROAPT_HOOK_CPU: 2
     image: broapt-core
     restart: "always"
     volumes:

@@ -3,7 +3,7 @@
 set -ax
 
 # change cwd
-cd /source
+cd /broapt
 
 # load environs
 if [ -f .env ] ; then

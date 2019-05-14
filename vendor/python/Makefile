@@ -21,7 +21,7 @@ init:
 	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 	# create pipenv
-	pipenv --python 3.5 || true
+	pipenv --python 3.6 || true
 
 .ONESHELL:
 install: init
@@ -35,6 +35,11 @@ install: init
 update:
 	set -ex
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
+	# update pip, setuptools, wheel
+	pipenv run pip install -U \
+	    pip \
+	    setuptools \
+	    wheel
 	# update pipenv
 	pipenv update
 	pipenv install
@@ -54,7 +59,7 @@ download: update clean
 	cd $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 	pipenv run python -m pip download --requirement=requirements.txt \
                               		  --platform=manylinux1_x86_64 \
-                              		  --python-version=35 \
+                              		  --python-version=36 \
                               		  --implementation=cp \
                               		  --dest=download \
                               		  --no-deps

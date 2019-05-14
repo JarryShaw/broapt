@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=import-error, no-name-in-module
 
-import ipaddress
 import multiprocessing
 import os
 import re
 
-from .cfgparser import parse
-from .compose import (BOOLEAN_STATES, DUMP_PATH, LOGS_PATH,  # pylint: disable=unused-import
+from cfgparser import parse
+from compose import (BOOLEAN_STATES, DUMP_PATH, LOGS_PATH,  # pylint: disable=unused-import
                      MIME_MODE, PCAP_PATH, ROOT)
 
 # limit on CPU
@@ -23,7 +22,7 @@ except (ValueError, TypeError):
 
 # sleep interval
 try:
-    INTERVAL = int(os.getenv('BROAPT_INTERVAL'))
+    INTERVAL = float(os.getenv('BROAPT_INTERVAL'))
 except (TypeError, ValueError):
     INTERVAL = 10
 
@@ -57,10 +56,7 @@ API_LOGS = os.getenv('BROAPT_API_LOGS', '/var/log/bro/api/')
 API_DICT = parse(API_ROOT)
 
 # remote server
-try:
-    SERVER_NAME_HOST = ipaddress.ip_address(os.getenv('SERVER_NAME_HOST'))
-except (TypeError, ValueError):
-    SERVER_NAME_HOST = 'locolhost'
+SERVER_NAME_HOST = os.getenv('SERVER_NAME_HOST', 'localhost')
 try:
     SERVER_NAME_PORT = int(os.getenv('SERVER_NAME_PORT'))
 except (TypeError, ValueError):
@@ -88,3 +84,15 @@ FILE_REGEX = re.compile(r'''
     # file extension
     (?P<extension>\S+)
 ''', re.IGNORECASE | re.VERBOSE)
+
+# hook limit for CPU
+try:
+    HOOK_CPU = int(os.getenv('BROAPT_HOOK_CPU'))
+except (TypeError, ValueError):
+    HOOK_CPU = 1
+
+# scan limit for CPU
+try:
+    SCAN_CPU = int(os.getenv('BROAPT_SCAN_CPU'))
+except (TypeError, ValueError):
+    SCAN_CPU = 10

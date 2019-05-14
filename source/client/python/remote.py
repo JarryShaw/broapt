@@ -2,6 +2,7 @@
 # pylint: disable=import-error, no-name-in-module
 
 import contextlib
+import math
 import multiprocessing
 import os
 import queue
@@ -9,9 +10,9 @@ import signal
 import time
 import warnings
 
-from .const import INTERVAL, QUEUE_DUMP, QUEUE_LOGS
-from .scan import scan
-from .sites import hook
+from const import INTERVAL, QUEUE_DUMP, QUEUE_LOGS, SCAN_CPU
+from scan import scan
+from sites import hook
 
 ###############################################################################
 
@@ -20,17 +21,17 @@ JOIN_DUMP = multiprocessing.Value('B', False)
 JOIN_LOGS = multiprocessing.Value('B', False)
 
 
-def join_dump(*args):
+def join_dump(*args, **kwargs):  # pylint: disable=unused-argument
     JOIN_DUMP.value = True
 
 
-def join_logs(*args):
+def join_logs(*args, **kwargs):  # pylint: disable=unused-argument
     JOIN_LOGS.value = True
 
 
 # signal handling
-signal.signal(SIGUSR1, join_dump)
-signal.signal(SIGUSR2, join_logs)
+signal.signal(signal.SIGUSR1, join_dump)
+signal.signal(signal.SIGUSR2, join_logs)
 
 ###############################################################################
 
@@ -50,17 +51,26 @@ def remote_logs():
         except queue.Empty:
             if JOIN_DUMP.value:
                 break
-            time.sleep(INTERVAL)
+        time.sleep(INTERVAL)
 
 
 def remote_dump():
+    max_list = SCAN_CPU * math.ceil(INTERVAL)
     while True:
-        try:
-            scan(QUEUE_DUMP.get_nowait())
-        except queue.Empty:
-            if JOIN_DUMP.value:
+        dump_list = list()
+        for _ in range(max_list):
+            try:
+                dump = QUEUE_DUMP.get_nowait()
+                dump_list.append(dump)
+            except queue.Empty:
                 break
-            time.sleep(INTERVAL)
+        if SCAN_CPU <= 1:
+            [scan(dump) for dump in dump_list]  # pylint: disable=expression-not-assigned
+        else:
+            multiprocessing.Pool(SCAN_CPU).map(scan, dump_list)
+        if JOIN_DUMP.value:
+            break
+        time.sleep(INTERVAL)
 
 
 @contextlib.contextmanager

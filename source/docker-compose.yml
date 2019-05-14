@@ -1,0 +1,72 @@
+# docker-compose version
+version: "3"
+
+# BroAPT services
+services:
+  broapt:
+    build: .
+    container_name: broapt
+    entrypoint: ["bash", "/broapt/init.sh"]
+    environment:
+      ## concurrent process limit
+      BROAPT_CPU: 5
+      ## sleep interval
+      BROAPT_INTERVAL: 10
+      ## path to extract files
+      BROAPT_DUMP_PATH: /dump/
+      ## path to source PCAP files
+      BROAPT_PCAP_PATH: /pcap/
+      ## path to log files
+      BROAPT_LOGS_PATH: /var/log/bro/
+      ## group extracted file by MIME types
+      BROAPT_MIME_MODE: 1
+      ## log in JSON format
+      BROAPT_JSON_MODE: 1
+      ## run Bro in bare mode
+      BROAPT_BARE_MODE: 0
+      ## run Bro with `-C` option
+      BROAPT_NO_CHKSUM: 1
+      ## calculate MD5 value of extracted files
+      BROAPT_HASH_MD5: 1
+      ## calculate SHA1 value of extracted files
+      BROAPT_HASH_SHA1: 1
+      ## calculate SHA256 value of extracted files
+      BROAPT_HASH_SHA256: 1
+      ## include X509 information
+      BROAPT_X509_MODE: 0
+      ## include entropy information
+      BROAPT_ENTROPY_MODE: 0
+      ## Bro MIME white list
+      BROAPT_LOAD_MIME: application/vnd.microsoft.portable-executable;application/x-dosexec;application/msword;application/pdf;application/vnd.android.package-archive;message/rfc822
+      ## Bro protocol white list
+      BROAPT_LOAD_PROTOCOL: SMTP
+      ## Bro file reassembly buffer size
+      BROAPT_FILE_BUFFER: 0xffffffffffffffff
+      ## Bro extract file size limit
+      BROAPT_SIZE_LIMIT: 0
+      ## concurrent hook processes
+      BROAPT_HOOK_CPU: 1
+      ## command retry
+      BROAPT_MAX_RETRY: 3
+      ## path to detection APIs
+      BROAPT_API_ROOT: /api/
+      ## path to API runtime logs
+      BROAPT_API_LOGS: /var/log/bro/api/
+    networks:
+      - default
+    restart: "always"
+    volumes:
+      - /home/traffic/pcapfile:/pcap
+      # - ../sample:/pcap
+      - /home/traffic/log/extract:/dump
+      # - ./dump:/dump
+      - /home/traffic/log/bro:/var/log/bro
+      # - ./logs:/var/log/bro
+      - ./include/scripts:/broapt/scripts/sites
+      - ./include/python:/broapt/python/sites
+      - ./include/api:/api/
+
+# network settings
+networks:
+  default:
+    driver: bridge

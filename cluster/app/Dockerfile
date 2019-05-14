@@ -1,6 +1,6 @@
 # basic info
 FROM library/ubuntu:16.04
-LABEL version=2019.05.14
+LABEL version=2019.05.15
 
 # set up environment variables
 ENV LANG "C.UTF-8"
@@ -46,15 +46,16 @@ RUN rm -rf \
         ## Python dependencies
         /tmp/python \
         /tmp/pip \
- && python3 -m pip uninstall -y \
-        wheel \
-        setuptools \
-        pip \
+ ## do not uninstall pip, setuptools & wheel at all
+ # && python3 -m pip uninstall -y \
+ #        wheel \
+ #        setuptools \
+ #        pip \
  && apt-get remove -y --auto-remove \
         software-properties-common \
-        python3-pip \
-        python3-setuptools \
-        python3-wheel \
+ #        python3-pip \
+ #        python3-setuptools \
+ #        python3-wheel \
  && apt-get autoremove -y \
  && apt-get autoclean \
  && apt-get clean

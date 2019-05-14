@@ -10,15 +10,10 @@ import warnings
 
 import magic
 
-from .const import CPU_CNT, FILE, INTERVAL, PCAP_PATH
-from .process import process
-from .remote import remote_proc
-from .utils import print_file
-
-try:
-    import threading
-except ImportError:
-    import dummy_threading as threading
+from const import CPU_CNT, FILE, INTERVAL, PCAP_PATH
+from process import process
+from remote import remote_proc
+from utils import print_file
 
 # PCAP magic numbers
 PCAP_MGC = (b'\xa1\xb2\x3c\x4d',
@@ -96,8 +91,7 @@ def main():
     with remote_proc():
         if sys.argv[1:]:
             return main_with_args()
-        else:
-            return main_with_no_args()
+        return main_with_no_args()
 
 
 if __name__ == '__main__':

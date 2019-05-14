@@ -49,3 +49,21 @@ def suppress(func):
         except Exception:
             traceback.print_exc()
     return wrapper
+
+
+@contextlib.contextmanager
+def temp_env(env):
+    new_keys = list()
+    old_keys = dict()
+    for (key, val) in env.items():
+        if key in os.environ:
+            old_keys[key] = os.environ[key]
+        else:
+            new_keys.append(key)
+        os.environ[key] = val
+    try:
+        yield
+    finally:
+        for key in new_keys:
+            del os.environ[key]
+        os.environ.update(old_keys)

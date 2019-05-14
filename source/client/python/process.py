@@ -14,9 +14,10 @@ import uuid
 
 import magic
 
-from .const import BARE_MODE, DUMP_PATH, FILE, INFO, LOGS_PATH, MIME_MODE, NO_CHKSUM, QUEUE_DUMP, QUEUE_LOGS, ROOT
-from .logparser import parse
-from .utils import IPAddressJSONEncoder, is_nan, print_file, suppress
+from const import (BARE_MODE, DUMP_PATH, FILE, FILE_REGEX, INFO, LOGS_PATH, MIME_MODE, NO_CHKSUM,
+                   QUEUE_DUMP, QUEUE_LOGS, ROOT)
+from logparser import parse
+from utils import IPAddressJSONEncoder, is_nan, print_file, suppress
 
 
 def rename_dump(local_name, mime_type):

@@ -12,13 +12,8 @@ import magic
 
 from const import CPU_CNT, FILE, INTERVAL, PCAP_PATH
 from process import process
-from remote import remote
+from remote import remote_proc
 from utils import print_file
-
-try:
-    import threading
-except ImportError:
-    import dummy_threading as threading
 
 # PCAP magic numbers
 PCAP_MGC = (b'\xa1\xb2\x3c\x4d',
@@ -93,14 +88,10 @@ def main_with_no_args():
 
 
 def main():
-    proxy = multiprocessing.Process(target=remote)
-    proxy.start()
-    if sys.argv[1:]:
-        returncode = main_with_args()
-    else:
-        returncode = main_with_no_args()
-    proxy.close()
-    return returncode
+    with remote_proc():
+        if sys.argv[1:]:
+            return main_with_args()
+        return main_with_no_args()
 
 
 if __name__ == '__main__':

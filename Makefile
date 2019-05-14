@@ -143,6 +143,11 @@ gitlab-copy: gitlab-clean
 	cp -rf docker ${REPO_PATH}
 	# copy source
 	mkdir -p ${REPO_PATH}/source
+	$(MAKE) -C source clean vendor
+	find source \
+	    ! -iname 'dump' \
+	    ! -iname 'logs' \
+	    ! -iname '.env' -depth 1 -exec cp -rf {} ${REPO_PATH}/source \;
 	# copy vendor
 	mkdir -p ${REPO_PATH}/vendor
 	find vendor -depth 1 -type f -exec cp -rf {} ${REPO_PATH}/vendor \;

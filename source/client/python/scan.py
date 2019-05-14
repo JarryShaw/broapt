@@ -10,9 +10,9 @@ import warnings
 
 import requests
 
-from .const import (API_DICT, API_LOGS, API_ROOT, DUMP, DUMP_PATH, EXIT_FAILURE, EXIT_SUCCESS, FAIL, INTERVAL,
-                   MAX_RETRY, FILE_REGEX, SERVER_NAME)
-from .utils import APIError, APIWarning, print_file, suppress
+from const import (API_DICT, API_LOGS, API_ROOT, DUMP, DUMP_PATH, EXIT_FAILURE, EXIT_SUCCESS, FAIL,
+                   FILE_REGEX, INTERVAL, MAX_RETRY, SERVER_NAME)
+from utils import APIError, APIWarning, print_file, suppress, temp_env
 
 
 # mimetype class
@@ -35,17 +35,13 @@ class Entry:
         return self.path < value.path
 
 
-def remote(entry, mime, api, cwd):
-    while api.locked:
-        time.sleep(INTERVAL)
-    api.locked = True
-
+def remote(entry, mime, api):
     info = dict(
         name=os.path.relpath(entry.path, DUMP_PATH),
         mime=mime,
         uuid=entry.uuid,
         report=api.report,
-        inited=api.inited,
+        inited=api.inited.value,
         workdir=api.workdir,
         environ=api.environ,
         install=api.install,
@@ -54,7 +50,9 @@ def remote(entry, mime, api, cwd):
 
     try:
         resp = requests.post(SERVER_NAME, data=info)
-        if resp.json()['reported']:
+        json = resp.json()
+        if json['reported']:
+            api.inited.value = True
             return EXIT_SUCCESS
         return EXIT_FAILURE
     except (KeyError, ValueError, requests.RequestException):
@@ -68,7 +66,8 @@ def run(command, cwd=None, env=None, mime='example', file='unknown'):
 
     # prepare runtime
     logs = os.path.join(logs_path, file)
-    args = os.path.expandvars(command)
+    with temp_env(env):
+        args = os.path.expandvars(command)
 
     suffix = ''
     for retry in range(MAX_RETRY):
@@ -104,21 +103,21 @@ def issue(mime):
 
 
 def init(api, cwd, env, mime, uuid):  # pylint: disable=inconsistent-return-statements
-    while api.locked:
+    while api.locked.value:
         time.sleep(INTERVAL)
-    if api.inited:
+    if api.inited.value:
         return
 
-    api.locked = True
+    api.locked.value = True
     install_log = 1
     for command in api.install:
         log = f'{uuid}-install.{install_log}'
         if run(command, cwd, env, mime, file=log):
-            api.locked = False
+            api.locked.value = False
             return issue(mime)
         install_log += 1
-    api.inited = True
-    api.locked = False
+    api.inited.value = True
+    api.locked.value = False
 
 
 def make_cwd(api, entry=None, example=False):
@@ -153,7 +152,7 @@ def process(entry):  # pylint: disable=inconsistent-return-statements
         cwd = make_cwd(api, example=True)
 
     if api.remote:
-        if remote(entry, mime, api, cwd):
+        if remote(entry, mime, api):
             return issue(mime)
         return print_file(entry.path)
 
@@ -163,7 +162,7 @@ def process(entry):  # pylint: disable=inconsistent-return-statements
     env['BROAPT_MIME'] = entry.mime.name
 
     # run install commands
-    if not api.inited:
+    if not api.inited.value:
         init(api, cwd, env, mime, entry.uuid)
 
     # run scanner commands

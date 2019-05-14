@@ -33,6 +33,7 @@ clean-logs-local:
 
 clean-logs-processed:
 	if [ -d /home/traffic/log/bro ]; then \
+	    > /home/traffic/log/bro/http.log; \
 	    > /home/traffic/log/bro/processed_file.log; \
 	    > /home/traffic/log/bro/processed_info.log; \
 	    > /home/traffic/log/bro/processed_mime.log; \
@@ -43,6 +44,7 @@ clean-logs-processed:
 		    rm -rf "/home/traffic/log/bro/$${file}" || true; \
 	    done \
 	else \
+	    > ../logs/http.log; \
 	    > ../logs/processed_file.log; \
 	    > ../logs/processed_info.log; \
 	    > ../logs/processed_mime.log; \

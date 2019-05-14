@@ -56,8 +56,8 @@ RUN rm -rf \
 RUN ln -sf /usr/bin/python3.6 /usr/bin/python3
 
 # copy source
-COPY . /app
-WORKDIR /app
+COPY . /broaptd
+WORKDIR /broaptd
 
 # entrypoint
 ENTRYPOINT [ "pyinstaller" ]

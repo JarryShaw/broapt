@@ -20,7 +20,7 @@ except (ValueError, TypeError):
 
 # sleep interval
 try:
-    INTERVAL = int(os.getenv('BROAPT_CORE_INTERVAL'))
+    INTERVAL = float(os.getenv('BROAPT_CORE_INTERVAL'))
 except (TypeError, ValueError):
     INTERVAL = 10
 
@@ -36,3 +36,9 @@ INFO = os.path.join(LOGS_PATH, 'processed_info.log')
 
 # log queue
 QUEUE = multiprocessing.Queue()
+
+# hook limit for CPU
+try:
+    HOOK_CPU = int(os.getenv('BROAPT_HOOK_CPU'))
+except (TypeError, ValueError):
+    HOOK_CPU = 1

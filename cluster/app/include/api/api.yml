@@ -102,13 +102,8 @@ application:
     ## MaliciousMacroBot
     workdir: ${API_ROOT}/application/vnd.openxmlformats-officedocument/
     install:
-      - apt-get update
-      - apt-get install -y --no-install-recommends python3-pip
       - ${PYTHON36} -m pip install mmbot
-      - rm -rf /var/lib/apt/lists/*
-      - apt-get clean
-    report:
-      - ${PYTHON36} MaliciousMacroBot/detect.py
+    report: ${PYTHON36} MaliciousMacroBot/detect.py
   msword: *officedocument
   vnd.ms-excel: *officedocument
   vnd.openxmlformats-officedocument: *officedocument
@@ -134,9 +129,7 @@ example:
     ## path to VT file scan reports
     VT_LOG: /var/log/bro/tmp/
   install:
-    - apt-get update
-    - apt-get install -y --no-install-recommends python3-requests
-    - apt-get clean
+    - ${PYTHON36} -m pip install requests
   report: ${PYTHON36} virustotal.py
 
 # APIs for `font` media type

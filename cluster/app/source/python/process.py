@@ -9,7 +9,7 @@ import warnings
 from const import (API_DICT, API_LOGS, API_ROOT, EXIT_FAILURE, EXIT_SUCCESS, FAIL, INTERVAL,
                    MAX_RETRY)
 from remote import remote
-from utils import APIError, APIWarning, print_file, suppress
+from utils import APIError, APIWarning, print_file, suppress, temp_env
 
 
 def run(command, cwd=None, env=None, mime='example', file='unknown'):
@@ -19,7 +19,8 @@ def run(command, cwd=None, env=None, mime='example', file='unknown'):
 
     # prepare runtime
     logs = os.path.join(logs_path, file)
-    args = os.path.expandvars(command)
+    with temp_env(env):
+        args = os.path.expandvars(command)
 
     suffix = ''
     for retry in range(MAX_RETRY):
@@ -55,21 +56,21 @@ def issue(mime):
 
 
 def init(api, cwd, env, mime, uuid):  # pylint: disable=inconsistent-return-statements
-    while api.locked:
+    while api.locked.value:
         time.sleep(INTERVAL)
-    if api.inited:
+    if api.inited.value:
         return
 
-    api.locked = True
+    api.locked.value = True
     install_log = 1
     for command in api.install:
         log = f'{uuid}-install.{install_log}'
         if run(command, cwd, env, mime, file=log):
-            api.locked = False
+            api.locked.value = False
             return issue(mime)
         install_log += 1
-    api.inited = True
-    api.locked = False
+    api.inited.value = True
+    api.locked.value = False
 
 
 def make_cwd(api, entry=None, example=False):
@@ -104,7 +105,7 @@ def process(entry):  # pylint: disable=inconsistent-return-statements
         cwd = make_cwd(api, example=True)
 
     if api.remote:
-        if remote(entry, mime, api, cwd):
+        if remote(entry, mime, api):
             return issue(mime)
         return print_file(entry.path)
 
@@ -114,7 +115,7 @@ def process(entry):  # pylint: disable=inconsistent-return-statements
     env['BROAPT_MIME'] = entry.mime.name
 
     # run install commands
-    if not api.inited:
+    if not api.inited.value:
         init(api, cwd, env, mime, entry.uuid)
 
     # run scanner commands

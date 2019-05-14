@@ -2,6 +2,7 @@
 
 import copy
 import dataclasses
+import multiprocessing
 import os
 
 import yaml
@@ -75,6 +76,8 @@ def parse_cmd(context, mimetype, environ):
         environ=cfg_environ,
         install=cfg_install,
         scanner=cfg_scanner,
+        inited=multiprocessing.Value('B', False),
+        locked=multiprocessing.Value('B', False),
     )
 
 

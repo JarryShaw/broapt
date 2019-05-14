@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=import-error, no-name-in-module
 
-import ipaddress
 import os
 import pathlib
 import subprocess
@@ -24,7 +23,7 @@ except (ValueError, TypeError):
 
 # sleep interval
 try:
-    INTERVAL = int(os.getenv('BROAPT_APP_INTERVAL'))
+    INTERVAL = float(os.getenv('BROAPT_APP_INTERVAL'))
 except (TypeError, ValueError):
     INTERVAL = 10
 
@@ -54,10 +53,7 @@ API_LOGS = os.getenv('BROAPT_API_LOGS', '/var/log/bro/api/')
 API_DICT = parse(API_ROOT)
 
 # remote server
-try:
-    SERVER_NAME_HOST = ipaddress.ip_address(os.getenv('SERVER_NAME_HOST'))
-except (TypeError, ValueError):
-    SERVER_NAME_HOST = 'locolhost'
+SERVER_NAME_HOST = os.getenv('SERVER_NAME_HOST', 'localhost')
 try:
     SERVER_NAME_PORT = int(os.getenv('SERVER_NAME_PORT'))
 except (TypeError, ValueError):

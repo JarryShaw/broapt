@@ -40,8 +40,8 @@ RUN rm -rf \
  && yum clean all -y
 
 # copy source
-COPY . /app
-WORKDIR /app
+COPY . /broaptd
+WORKDIR /broaptd
 
 # entrypoint
 ENTRYPOINT [ "pyinstaller" ]
