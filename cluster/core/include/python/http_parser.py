@@ -10,7 +10,7 @@ import urllib.parse
 
 from const import LOGS_PATH
 from logparse import parse
-from utils import is_nan, print_file
+from utils import IPAddressJSONEncoder, is_nan, print_file
 
 HTTP_LOG = os.path.join(LOGS_PATH, 'http.log')
 
@@ -79,4 +79,5 @@ def generate(log_name):
             src_port=int(line['id.orig_p']),
             json=make_json(line),
         )
-        print_file(json.dumps(record), file=HTTP_LOG)
+        data = json.dumps(record, cls=IPAddressJSONEncoder)
+        print_file(data, file=HTTP_LOG)
