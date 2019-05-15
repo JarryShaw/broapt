@@ -33,6 +33,7 @@ clean-logs-local:
 
 clean-logs-processed:
 	if [ -d /home/traffic/log/bro ]; then \
+	    rm -f /home/traffic/log/bro/*.lock; \
 	    > /home/traffic/log/bro/http.log; \
 	    > /home/traffic/log/bro/processed_file.log; \
 	    > /home/traffic/log/bro/processed_info.log; \
@@ -44,12 +45,15 @@ clean-logs-processed:
 		    rm -rf "/home/traffic/log/bro/$${file}" || true; \
 	    done \
 	else \
+	    rm -f ../logs/*.lock; \
 	    > ../logs/http.log; \
 	    > ../logs/processed_file.log; \
 	    > ../logs/processed_info.log; \
 	    > ../logs/processed_mime.log; \
 	    > ../logs/processed_time.log; \
-	    find ../logs ! -iname 'tmp' -type d -depth 1 -print0 | xargs -0 rm -rf; \
+	    find ./logs \
+		    ! -iname 'tmp' \
+		    ! -iname 'api' -type d -depth 1 -print0 | xargs -0 rm -rf; \
 	fi
 
 clean-nohup:

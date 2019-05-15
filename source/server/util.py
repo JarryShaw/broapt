@@ -50,7 +50,7 @@ def print_file(s, file=FILE):
 
 @contextlib.contextmanager
 def docker_compose():
-    subprocess.check_call(['docker-compose', '--file', DOCKER_COMPOSE, 'up', '--detach'])
+    subprocess.check_call(['docker-compose', '--file', DOCKER_COMPOSE, 'up', '--build', '--detach'])
     try:
         yield
     finally:

@@ -12,18 +12,18 @@ build-macos: clean-build
 
 build-centos: clean-build
 	mkdir -p build dist
-	docker build --tag broapt-app:centos --file docker/CentOS.dockerfile .
+	docker build --tag broapt-appd:centos --file docker/CentOS.dockerfile .
 	docker run \
 	    --volume ${CWD}/build:/app/build \
-	    --volume ${CWD}/dist:/app/dist broapt-app:centos  -F spec/broapt-appd.centos.spec
+	    --volume ${CWD}/dist:/app/dist broapt-appd:centos  -F spec/broapt-appd.centos.spec
 	cp dist/broapt-appd.centos bin/broapt-appd.centos
 
 build-ubuntu: clean-build
 	mkdir -p build dist
-	docker build --tag broapt-app:ubuntu --file docker/Ubuntu.dockerfile .
+	docker build --tag broapt-appd:ubuntu --file docker/Ubuntu.dockerfile .
 	docker run \
 	    --volume ${CWD}/build:/app/build \
-	    --volume ${CWD}/dist:/app/dist broapt-app:ubuntu -F spec/broapt-appd.ubuntu.spec
+	    --volume ${CWD}/dist:/app/dist broapt-appd:ubuntu -F spec/broapt-appd.ubuntu.spec
 	cp dist/broapt-appd.ubuntu bin/broapt-appd.ubuntu
 
 docker:
@@ -52,6 +52,7 @@ clean-dump:
 
 clean-logs:
 	if [ -d /home/traffic/log/bro ]; then \
+	    rm -f /home/traffic/log/bro/*.lock; \
 	    > /home/traffic/log/bro/processed_dump.log; \
 	    > /home/traffic/log/bro/processed_fail.log; \
 	    > /home/traffic/log/bro/processed_rate.log; \
@@ -60,6 +61,7 @@ clean-logs:
 	    rm -rf /home/traffic/log/bro/api; \
 	    mkdir -p /home/traffic/log/bro/api; \
 	else \
+	    rm -f ../logs/*.lock; \
 	    > ../logs/processed_dump.log; \
 	    > ../logs/processed_fail.log; \
 	    > ../logs/processed_rate.log; \

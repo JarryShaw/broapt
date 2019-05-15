@@ -54,7 +54,12 @@ clean-dump:
 
 clean-logs:
 	if [ -d /home/traffic/log/bro ]; then \
+	    rm -f /home/traffic/log/bro/*.lock; \
 	    > /home/traffic/log/bro/http.log; \
+	    > /home/traffic/log/bro/processed_file.log; \
+	    > /home/traffic/log/bro/processed_info.log; \
+	    > /home/traffic/log/bro/processed_mime.log; \
+	    > /home/traffic/log/bro/processed_time.log; \
 	    > /home/traffic/log/bro/processed_dump.log; \
 	    > /home/traffic/log/bro/processed_fail.log; \
 	    > /home/traffic/log/bro/processed_rate.log; \
@@ -62,11 +67,24 @@ clean-logs:
 	    mkdir -p /home/traffic/log/bro/tmp; \
 	    rm -rf /home/traffic/log/bro/api; \
 	    mkdir -p /home/traffic/log/bro/api; \
+	    for file in $$(ls /home/traffic/log/bro) ; do \
+	        [ -d "/home/traffic/log/bro/$${file}" ] && \
+		    [ "/home/traffic/log/bro/$${file}" != "tmp" ] && \
+		    rm -rf "/home/traffic/log/bro/$${file}" || true; \
+	    done \
 	else \
+	    rm -f ./logs/*.lock; \
 	    > ./logs/http.log; \
 	    > ./logs/processed_dump.log; \
 	    > ./logs/processed_fail.log; \
 	    > ./logs/processed_rate.log; \
+	    > ./logs/processed_file.log; \
+	    > ./logs/processed_info.log; \
+	    > ./logs/processed_mime.log; \
+	    > ./logs/processed_time.log; \
+	    find ./logs \
+		    ! -iname 'tmp' \
+		    ! -iname 'api' -type d -depth 1 -print0 | xargs -0 rm -rf; \
 		find ./logs/api -depth 1 -print0 | xargs -0 rm -rf; \
 	    find ./logs/tmp -iname '*.json' -depth 1 -type f -print0 | xargs -0 rm -rf; \
 	fi

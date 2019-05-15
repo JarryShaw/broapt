@@ -1,6 +1,6 @@
 # basic info
 FROM library/centos:7
-LABEL version=2019.05.14
+LABEL version=2019.05.15
 
 # set up environment variables
 ENV PYTHONIOENCODING="UTF-8"

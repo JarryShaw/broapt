@@ -32,7 +32,7 @@ class Info:
 app = flask.Flask(__name__)
 
 # help message
-HELP_v1_0 = os.path.sep.join((
+HELP_v1_0 = os.linesep.join((
     'BroAPT-App Daemon APIv1.0 Usage:',
     '',
     '- GET    /api/v1.0/list',
@@ -40,7 +40,7 @@ HELP_v1_0 = os.path.sep.join((
     '- POST   /api/v1.0/scan data={"key": "value"}',
     '- DELETE /api/v1.0/delete/<id>',
 ))
-__help__ = os.path.sep.join((
+__help__ = os.linesep.join((
     'BroAPT-App Daemon API Usage:',
     '',
     '# v1.0',

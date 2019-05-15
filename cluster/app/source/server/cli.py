@@ -15,7 +15,7 @@ def get_parser():
                                help='the port of the webserver')
 
     compose_parser = parser.add_argument_group(title='compose arguments')
-    compose_parser.add_argument('-c', '--docker-compose', required=True,
+    compose_parser.add_argument('-c', '--docker-compose', default='docker-compose.yml',
                                 help='path to BroAPT-App docker-compose.yml')
     compose_parser.add_argument('-d', '--dump-path', required=True,
                                 help='path to extracted files')

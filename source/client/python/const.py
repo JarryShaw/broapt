@@ -36,10 +36,6 @@ FILE = os.path.join(LOGS_PATH, 'processed_file.log')
 TIME = os.path.join(LOGS_PATH, 'processed_time.log')
 INFO = os.path.join(LOGS_PATH, 'processed_info.log')
 
-# log queue
-LOGS_QUEUE = multiprocessing.Queue()
-DUMP_QUEUE = multiprocessing.Queue()
-
 # command retry
 try:
     MAX_RETRY = int(os.getenv('BROAPT_MAX_RETRY'))
@@ -96,3 +92,7 @@ try:
     SCAN_CPU = int(os.getenv('BROAPT_SCAN_CPU'))
 except (TypeError, ValueError):
     SCAN_CPU = 10
+
+# queues
+QUEUE_LOGS = multiprocessing.Queue()
+QUEUE_DUMP = multiprocessing.Queue()
