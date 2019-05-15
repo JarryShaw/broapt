@@ -37,7 +37,7 @@ class API:
     workdir: str
     environ: dict
     install: list
-    scanner: list
+    scripts: list
 
     inited: bool = False
     locked: bool = False
@@ -58,7 +58,7 @@ class ReportNotFoundError(ConfigError):
 def parse_cmd(context, mimetype, environ):
     cfg_workdir = context.get('workdir', '.')
     cfg_install = context.get('install', list())
-    cfg_scanner = context.get('scanner', list())
+    cfg_scripts = context.get('scripts', list())
 
     cfg_remote = context.get('remote', False)
     cfg_report = context.get('report')
@@ -75,7 +75,7 @@ def parse_cmd(context, mimetype, environ):
         workdir=cfg_workdir,
         environ=cfg_environ,
         install=cfg_install,
-        scanner=cfg_scanner,
+        scripts=cfg_scripts,
         inited=multiprocessing.Value('B', False),
         locked=multiprocessing.Value('B', False),
     )

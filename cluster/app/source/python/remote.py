@@ -22,7 +22,7 @@ def remote(entry, mime, api):
     )
 
     try:
-        resp = requests.post(SERVER_NAME, data=info)
+        resp = requests.post(SERVER_NAME, json=info)
         json = resp.json()
         if json['reported']:
             api.inited.value = True

@@ -85,9 +85,19 @@ def make_cwd(api, entry=None, example=False):
 
 
 def make_env(api):
+    new_keys = list()
+    old_keys = dict()
+    for (key, val) in api.environ.items():
+        if key in os.environ:
+            old_keys[key] = os.environ[key]
+        else:
+            new_keys.append(key)
+        os.environ[key] = os.path.expandvars(val)
     environ = dict(os.environ)
-    for (env, val) in api.environ.items():
-        environ[env] = os.path.expandvars(val)
+
+    for key in new_keys:
+        del os.environ[key]
+    os.environ.update(old_keys)
     return environ
 
 
@@ -118,13 +128,13 @@ def process(entry):  # pylint: disable=inconsistent-return-statements
     if not api.inited.value:
         init(api, cwd, env, mime, entry.uuid)
 
-    # run scanner commands
-    scanner_log = 1
-    for command in api.scanner:
-        log = f'{entry.uuid}-scanner.{scanner_log}'
+    # run scripts commands
+    scripts_log = 1
+    for command in api.scripts:
+        log = f'{entry.uuid}-scripts.{scripts_log}'
         if run(command, cwd, env, mime, file=log):
             return issue(mime)
-        scanner_log += 1
+        scripts_log += 1
 
     # run report command
     log = f'{entry.uuid}-report.1'

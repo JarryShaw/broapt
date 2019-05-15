@@ -78,6 +78,9 @@ services:
       BROAPT_DUMP_PATH: /dump/
       ## path to log files
       BROAPT_LOGS_PATH: /var/log/bro/
+      ## daemon server
+      SERVER_NAME_HOST: host.docker.internal
+      SERVER_NAME_PORT: 5000
     image: broapt-app
     restart: "always"
     volumes:

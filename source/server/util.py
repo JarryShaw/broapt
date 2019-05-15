@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=import-error, no-name-in-module
 
 import contextlib
 import functools
+import os
+import pathlib
 import subprocess
+import time
 import traceback
 
 from const import DOCKER_COMPOSE, FILE
@@ -51,3 +55,21 @@ def docker_compose():
         yield
     finally:
         subprocess.check_call(['docker-compose', '--file', DOCKER_COMPOSE, 'stop'])
+
+
+@contextlib.contextmanager
+def temp_env(env):
+    new_keys = list()
+    old_keys = dict()
+    for (key, val) in env.items():
+        if key in os.environ:
+            old_keys[key] = os.environ[key]
+        else:
+            new_keys.append(key)
+        os.environ[key] = val
+    try:
+        yield
+    finally:
+        for key in new_keys:
+            del os.environ[key]
+        os.environ.update(old_keys)

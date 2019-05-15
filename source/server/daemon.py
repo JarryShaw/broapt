@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=import-error, no-name-in-module
 
 import contextlib
 import dataclasses
@@ -113,9 +114,9 @@ def get(id_):
 
 @app.route('/api/v1.0/scan', methods=['POST'])
 def scan():
-    if not flask.request.json:
+    json = flask.request.get_json()
+    if json is None:
         flask.abort(400)
-    json = flask.request.json
     info = Info(
         name=json['name'],
         uuid=json['uuid'],
@@ -133,7 +134,7 @@ def scan():
 
     with contextlib.suppress(ValueError):
         RUNNING.remove(info.uuid)
-    SCANNED[indo.uuid] = flag
+    SCANNED[info.uuid] = flag
 
     return flask.jsonify(id=info.uuid, scanned=True, reported=flag, deleted=False)
 
@@ -147,7 +148,7 @@ def delete_none():
 def delete(id_):
     uid = uuid.UUID(id_)
     if uid in RUNNING:
-        del RUNNING[uid]
+        RUNNING.remove(uid)
         return flask.jsonify(id=uid, scanned=False, reported=None, deleted=True)
     if uid in SCANNED:
         del SCANNED[uid]

@@ -5,14 +5,25 @@ import os
 import subprocess
 import time
 
-from const import API_LOGS, API_ROOT, DUMP_PATH, EXIT_FAILURE, EXIT_SUCCESS, FAIL, INTERVAL, MAX_RETRY
-from util import print_file, suppress
+from const import (API_LOGS, API_ROOT, DUMP_PATH, EXIT_FAILURE, EXIT_SUCCESS, FAIL, INTERVAL,
+                   MAX_RETRY)
+from util import print_file, suppress, temp_env
 
 
 def make_env(info):
+    new_keys = list()
+    old_keys = dict()
+    for (key, val) in info.environ.items():
+        if key in os.environ:
+            old_keys[key] = os.environ[key]
+        else:
+            new_keys.append(key)
+        os.environ[key] = os.path.expandvars(val)
     environ = dict(os.environ)
-    for (env, val) in info.environ.items():
-        environ[env] = os.path.expandvars(val)
+
+    for key in new_keys:
+        del os.environ[key]
+    os.environ.update(old_keys)
     return environ
 
 
@@ -31,7 +42,8 @@ def run(command, info, file='unknown'):
 
     # prepare runtime
     logs = os.path.join(logs_path, file)
-    args = os.path.expandvars(command)  # pylint: disable=redefined-outer-name
+    with temp_env(info.environ):
+        args = os.path.expandvars(command)  # pylint: disable=redefined-outer-name
 
     suffix = ''
     for retry in range(MAX_RETRY):
@@ -68,17 +80,19 @@ def init(info):
 
 @suppress
 def process(info):
+    print(f'+ Processing {info.name!r}')
+
     # set up environ
     env = make_env(info)
     env['BROAPT_PATH'] = os.path.join(DUMP_PATH, info.name)
     env['BROAPT_MIME'] = info.mime
 
+    info.environ = make_env(info)
+    info.workdir = make_cwd(info)
+
     # run install commands
     if not info.inited:
         init(info)
-
-    info.environ = make_env(info)
-    info.workdir = os.path.join(API_ROOT, info.workdir)
 
     # run scripts commands
     scripts_log = 1

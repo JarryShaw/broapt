@@ -52,8 +52,9 @@ services:
       BROAPT_API_ROOT: /api/
       ## path to API runtime logs
       BROAPT_API_LOGS: /var/log/bro/api/
-    networks:
-      - default
+      ## daemon server
+      SERVER_NAME_HOST: host.docker.internal
+      SERVER_NAME_PORT: 5000
     restart: "always"
     volumes:
       - /home/traffic/pcapfile:/pcap
@@ -65,8 +66,3 @@ services:
       - ./include/scripts:/broapt/scripts/sites
       - ./include/python:/broapt/python/sites
       - ./include/api:/api/
-
-# network settings
-networks:
-  default:
-    driver: bridge

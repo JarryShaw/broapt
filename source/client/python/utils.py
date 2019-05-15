@@ -86,7 +86,7 @@ def temp_env(env):
             old_keys[key] = os.environ[key]
         else:
             new_keys.append(key)
-        os.environ[key] = val
+        os.environ[key] = os.path.expandvars(val)
     try:
         yield
     finally:
