@@ -1,5 +1,9 @@
 ### May 15th, 2019
 
+[ ] analyse phishing emails
+[x] add method, HTTP POST body to http.log
+[x] add `inited` to server response
+[x] revise hook registration
 [x] fix client-server network issue
 
 ### May 14th, 2019

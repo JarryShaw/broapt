@@ -14,14 +14,6 @@ import traceback
 from const import INTERVAL, TIME
 
 
-class APIWarning(Warning):
-    pass
-
-
-class APIError(Exception):
-    pass
-
-
 class IPAddressJSONEncoder(json.JSONEncoder):
 
     def default(self, o):  # pylint: disable=method-hidden
@@ -44,8 +36,6 @@ def suppress(func):
     def wrapper(*args, **kwargs):
         try:
             func(*args, **kwargs)
-        except APIError:
-            raise
         except Exception:
             traceback.print_exc()
     return wrapper

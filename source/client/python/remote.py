@@ -10,9 +10,9 @@ import signal
 import time
 import warnings
 
-from const import INTERVAL, QUEUE_DUMP, QUEUE_LOGS, SCAN_CPU
+from const import HOOK_CPU, INTERVAL, QUEUE_DUMP, QUEUE_LOGS, SCAN_CPU
 from scan import scan
-from sites import hook
+from sites import HOOK
 
 ###############################################################################
 
@@ -38,6 +38,18 @@ signal.signal(signal.SIGUSR2, join_logs)
 
 class HookWarning(Warning):
     pass
+
+
+def wrapper(args):
+    func, log_name = args
+    return func(log_name)
+
+
+def hook(log_name):
+    if HOOK_CPU <= 1:
+        [func(log_name) for func in HOOK]  # pylint: disable=expression-not-assigned
+    else:
+        multiprocessing.Pool(HOOK_CPU).map(wrapper, map(lambda func: (func, log_name), HOOK))  ## pylint: disable=map-builtin-not-iterating
 
 
 def remote_logs():

@@ -49,6 +49,7 @@
         "tolist",
         "uids",
         "uint",
+        "vars",
         "workdir",
         "zeek"
     ],

@@ -92,8 +92,8 @@ def help_():
 @app.route('/api/v1.0/list', methods=['GET'])
 def list_():
     info = list()
-    info.extend(dict(id=uid, scanned=True, reported=None, deleted=False) for uid in RUNNING)
-    info.extend(dict(id=uid, scanned=True, reported=flag, deleted=False) for (uid, flag) in SCANNED.items())
+    info.extend(dict(id=uid, inited=None, scanned=True, reported=None, deleted=False) for uid in RUNNING)
+    info.extend(dict(id=uid, inited=None, scanned=True, reported=flag, deleted=False) for (uid, flag) in SCANNED.items())
     return flask.jsonify(info)
 
 
@@ -106,9 +106,9 @@ def get_none():
 def get(id_):
     uid = uuid.UUID(id_)
     if uid in RUNNING:
-        return flask.jsonify(id=uid, scanned=False, reported=None, deleted=False)
+        return flask.jsonify(id=uid, inited=None, scanned=False, reported=None, deleted=False)
     if uid in SCANNED:
-        return flask.jsonify(id=uid, scanned=True, reported=SCANNED[uid], deleted=False)
+        return flask.jsonify(id=uid, inited=None, scanned=True, reported=SCANNED[uid], deleted=False)
     return flask.abort(404)
 
 
@@ -136,7 +136,7 @@ def scan():
         RUNNING.remove(info.uuid)
     SCANNED[info.uuid] = flag
 
-    return flask.jsonify(id=info.uuid, scanned=True, reported=flag, deleted=False)
+    return flask.jsonify(id=info.uuid, inited=info.inited, scanned=True, reported=flag, deleted=False)
 
 
 @app.route('/api/v1.0/delete', methods=['DELETE'])
@@ -149,8 +149,8 @@ def delete(id_):
     uid = uuid.UUID(id_)
     if uid in RUNNING:
         RUNNING.remove(uid)
-        return flask.jsonify(id=uid, scanned=False, reported=None, deleted=True)
+        return flask.jsonify(id=uid, inited=None, scanned=False, reported=None, deleted=True)
     if uid in SCANNED:
         del SCANNED[uid]
-        return flask.jsonify(id=uid, scanned=True, reported=SCANNED[uid], deleted=True)
-    return flask.jsonify(id=uid, scanned=None, reported=None, deleted=True)
+        return flask.jsonify(id=uid, inited=None, scanned=True, reported=SCANNED[uid], deleted=True)
+    return flask.jsonify(id=uid, inited=None, scanned=None, reported=None, deleted=True)

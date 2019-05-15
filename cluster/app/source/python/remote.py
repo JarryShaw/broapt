@@ -24,8 +24,8 @@ def remote(entry, mime, api):
     try:
         resp = requests.post(SERVER_NAME, json=info)
         json = resp.json()
+        api.inited.value = json['inited']
         if json['reported']:
-            api.inited.value = True
             return EXIT_SUCCESS
         return EXIT_FAILURE
     except (KeyError, ValueError, requests.RequestException):

@@ -20,9 +20,9 @@ HTTP_LOG = os.path.join(LOGS_PATH, 'http.log')
 SEPARATOR = '\t'
 SET_SEPARATOR = ','
 EMPTY_FIELD = '(empty)'
-UNSET_FIELD = '-'
-FIELDS = ('scrip', 'ad', 'ts', 'url', 'ref', 'ua', 'dstip', 'cookie', 'src_port', 'json')
-TYPES = ('addr', 'string', 'time', 'string', 'string', 'string', 'addr', 'string', 'port', 'string')
+UNSET_FIELD = 'NoDef'
+FIELDS = ('scrip', 'ad', 'ts', 'url', 'ref', 'ua', 'dstip', 'cookie', 'src_port', 'json', 'method', 'body')
+TYPES = ('addr', 'string', 'time', 'string', 'string', 'string', 'addr', 'string', 'port', 'string', 'string', 'string')
 
 
 def hexlify(string):
@@ -47,29 +47,19 @@ def make_url(line):
     if is_nan(uri):
         uri = str()
     url = urllib.parse.urljoin(host, uri)
-    base = 'http://%s:%s' % (line['id.resp_h'], line['id.resp_p'])
+
+    port = int(line['id.resp_p'])
+    if port == 80:
+        base = 'http://%s' % line['id.resp_h']
+    else:
+        base = 'http://%s:%s' % (line['id.resp_h'], line['id.resp_p'])
     return urllib.parse.urljoin(base, url)
 
 
-def make_ref(line):
-    referrer = line.get('referrer')
-    if is_nan(referrer):
+def make_b64(data):
+    if is_nan(data):
         return None
-    return base64.b64encode(referrer.encode()).decode()
-
-
-def make_ua(line):
-    user_agent = line.get('user_agent')
-    if is_nan(user_agent):
-        return None
-    return base64.b64encode(user_agent.encode()).decode()
-
-
-def make_cookie(line):
-    cookies = line.get('cookies')
-    if is_nan(cookies):
-        return None
-    return base64.b64encode(cookies.encode()).decode()
+    return base64.b64encode(data.encode()).decode()
 
 
 # def make_json(line):
@@ -108,12 +98,14 @@ def generate(log_name):
         #     ad=None,
         #     ts=math.floor((line['ts'] if LOG_HTTP.format == 'json' else line['ts'].timestamp()) * 1000),
         #     url=make_url(line),
-        #     ref=make_ref(line),
+        #     ref=make_b64(line.get('referrer')),
         #     ua=make_ua(line),
         #     dstip=line['id.resp_h'],
         #     cookie=make_cookie(line),
         #     src_port=int(line['id.orig_p']),
         #     # json=make_json(line),
+        #     method=line['method'],
+        #     body=line['post_body'],
         # )
         record = (
             # scrip
@@ -125,17 +117,21 @@ def generate(log_name):
             # url
             make_url(line),
             # ref
-            make_ref(line),
+            make_b64(line.get('referrer')),
             # ua
-            make_ua(line),
+            make_b64(line.get('user_agent')),
             # dstip
             line['id.resp_h'],
             # cookie
-            make_cookie(line),
+            make_b64(line.get('cookies')),
             # src_port
             int(line['id.orig_p']),
             # json
             None,
+            # method
+            line['method'],
+            # body
+            make_b64(line.get('post_body')),
         )
         # data = json.dumps(record, cls=IPAddressJSONEncoder)
         data = '\t'.join(map(lambda obj: beautify(obj), record))

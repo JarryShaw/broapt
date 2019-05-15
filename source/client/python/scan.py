@@ -12,7 +12,15 @@ import requests
 
 from const import (API_DICT, API_LOGS, API_ROOT, DUMP, DUMP_PATH, EXIT_FAILURE, EXIT_SUCCESS, FAIL,
                    FILE_REGEX, INTERVAL, MAX_RETRY, SERVER_NAME)
-from utils import APIError, APIWarning, print_file, suppress, temp_env
+from utils import print_file, suppress, temp_env
+
+
+class APIWarning(Warning):
+    pass
+
+
+class APIError(Exception):
+    pass
 
 
 # mimetype class
@@ -51,6 +59,7 @@ def remote(entry, mime, api):
     try:
         resp = requests.post(SERVER_NAME, json=info)
         json = resp.json()
+        api.inited.value = json['inited']
         if json['reported']:
             api.inited.value = True
             return EXIT_SUCCESS
