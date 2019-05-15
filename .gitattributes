@@ -7,3 +7,6 @@ vendor/archive/macos/bro-2.6.1.mojave.bottle.tar.gz filter=lfs diff=lfs merge=lf
 vendor/archive/macos/bro-2.6.1.sierra.bottle.tar.gz filter=lfs diff=lfs merge=lfs -text
 vendor/archive/linux/bro-2.6.1.centos.7.6.tar.gz filter=lfs diff=lfs merge=lfs -text
 vendor/archive/linux/bro-2.6.1.ubuntu.16.04.tar.gz filter=lfs diff=lfs merge=lfs -text
+cluster/archive/bro.tar.gz filter=lfs diff=lfs merge=lfs -text
+cluster/archive/broapt-app.tar.gz filter=lfs diff=lfs merge=lfs -text
+cluster/archive/broapt-core.tar.gz filter=lfs diff=lfs merge=lfs -text
