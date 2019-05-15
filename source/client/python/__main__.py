@@ -40,12 +40,21 @@ def is_pcap(file):
     return False
 
 
+def listdir(path):
+    file_list = list()
+    for entry in os.scandir(path):
+        if entry.is_dir():
+            file_list.extend(listdir(entry.path))
+        else:
+            file_list.append(entry.path)
+    return file_list
+
+
 def parse_args(argv):
     file_list = list()
     for arg in argv:
         if os.path.isdir(arg):
-            file_list.extend(entry.path for entry in os.scandir(arg)
-                             if entry.is_file() and is_pcap(entry.path))
+            file_list.extend(filter(is_pcap, listdir(arg)))
         elif os.path.isfile(arg) and is_pcap(arg):  # pylint: disable=else-if-used
             file_list.append(arg)
         else:
