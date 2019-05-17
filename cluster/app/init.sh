@@ -12,12 +12,12 @@ os=`uname | tr "[[:upper:]]" "[[:lower:]]"`
 
 # start server
 bin/broapt-appd.${os} \
-    --host="127.0.0.1" \
+    --host="localhost" \
     --port="5000" \
-    --docker-compose="./docker-compose.yml" \
-    --dump-path="./dump/" \
-    --logs-path="./logs/" \
+    --docker-compose="./docker/docker-compose.${os}.yml" \
+    --dump-path="../dump/" \
+    --logs-path="../logs/" \
     --api-root="./include/api/" \
-    --api-logs="./logs/api/" \
+    --api-logs="../logs/api/" \
     --interval="10" \
     --max-retry="3"

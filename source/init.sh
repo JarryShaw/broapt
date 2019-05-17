@@ -12,9 +12,9 @@ os=`uname | tr "[[:upper:]]" "[[:lower:]]"`
 
 # start server
 bin/broaptd.${os} \
-    --host="127.0.0.1" \
+    --host="localhost" \
     --port="5000" \
-    --docker-compose="./docker-compose.yml" \
+    --docker-compose="./docker/docker-compose.${os}.yml" \
     --dump-path="./dump/" \
     --logs-path="./logs/" \
     --api-root="./include/api/" \

@@ -11,8 +11,6 @@ COPY vendor/archive/network-bro.repo /etc/yum.repos.d/
 RUN yum install -y \
         https://centos7.iuscommunity.org/ius-release.rpm \
  && yum install -y \
-        ## https://github.com/bufferings/docker-access-host
-        iproute \
         ## pre-built Bro 2.6.1 distribution
         bro \
         ## python36u is actually dependency of the latters

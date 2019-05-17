@@ -7,11 +7,11 @@ build: build-macos build-linux
 clean: clean-build clean-dump clean-logs
 
 bundle:
-	pipenv run pyinstaller -F spec/broaptd.spec
+	pipenv run pyinstaller -F server/spec/broaptd.spec
 	cp dist/broaptd bin/broaptd
 
 build-macos: clean-build
-	pipenv run pyinstaller -F spec/broaptd.macos.spec
+	pipenv run pyinstaller -F server/spec/broaptd.macos.spec
 	cp dist/broaptd.macos bin/broaptd.darwin
 
 build-linux: build-centos
@@ -19,19 +19,19 @@ build-linux: build-centos
 
 build-centos: clean-build
 	mkdir -p build dist
-	docker build --tag broaptd:centos --file docker/CentOS.dockerfile .
+	docker build --tag broaptd:centos --file server/docker/CentOS.dockerfile .
 	docker run \
 	    --volume ${CWD}/build:/broaptd/build \
-	    --volume ${CWD}/dist:/broaptd/dist broaptd:centos  -F spec/broaptd.centos.spec
-	cp dist/broaptd.centos bin/broaptd.centos
+	    --volume ${CWD}/dist:/broaptd/dist broaptd:centos  -F server/spec/broaptd.centos.spec
+	cp dist/broaptd.centos bin/broaptd.linux
 
 build-ubuntu: clean-build
 	mkdir -p build dist
-	docker build --tag broaptd:ubuntu --file docker/Ubuntu.dockerfile .
+	docker build --tag broaptd:ubuntu --file server/docker/Ubuntu.dockerfile .
 	docker run \
 	    --volume ${CWD}/build:/broaptd/build \
-	    --volume ${CWD}/dist:/broaptd/dist broaptd:ubuntu -F spec/broaptd.ubuntu.spec
-	cp dist/broaptd.ubuntu bin/broaptd.ubuntu
+	    --volume ${CWD}/dist:/broaptd/dist broaptd:ubuntu -F server/spec/broaptd.ubuntu.spec
+	cp dist/broaptd.ubuntu bin/broaptd.linux
 
 docker:
 	sed -i "" "s/LABEL version.*/LABEL version=$(shell date +%Y.%m.%d)/" Dockerfile

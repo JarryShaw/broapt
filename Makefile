@@ -130,7 +130,7 @@ gitlab-copy: gitlab-clean
     # copy cluster
 	mkdir -p ${REPO_PATH}/cluster
 	cp -f \
-	    cluster/docker-compose.yml \
+	    cluster/init.sh \
 	    cluster/Makefile ${REPO_PATH}/cluster
 	$(MAKE) -C cluster/app clean vendor
 	find cluster -iname 'app' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
@@ -138,6 +138,7 @@ gitlab-copy: gitlab-clean
 	find cluster -iname 'core' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
 	$(MAKE) -C cluster archive
 	find cluster -iname 'archive' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
+	find cluster -iname 'docker' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
 	find cluster -iname 'utils' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
 	# copy docker
 	cp -rf docker ${REPO_PATH}
