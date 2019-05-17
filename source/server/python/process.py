@@ -28,11 +28,13 @@ def make_env(info):
 
 
 def make_cwd(info):
+    with temp_env(info.environ):
+        workdir = os.path.expandvars(info.workdir)
     def generate_cwd(workdir):
         if os.path.isabs(workdir):
             return workdir
         return os.path.join(API_ROOT, info.mime, workdir)
-    return os.path.realpath(generate_cwd(info.workdir))
+    return os.path.realpath(generate_cwd(workdir))
 
 
 def run(command, info, file='unknown'):

@@ -14,6 +14,7 @@ import uuid
 
 import magic
 
+from compose import file_salt
 from const import (BARE_MODE, DUMP_PATH, FILE, FILE_REGEX, INFO, LOGS_PATH, MIME_MODE, NO_CHKSUM,
                    QUEUE_DUMP, QUEUE_LOGS, ROOT)
 from logparser import parse
@@ -111,6 +112,7 @@ def process(file):
 
     stem = pathlib.Path(file).stem
     uid = uuid.uuid4()
+    file_salt(uid)
 
     env = os.environ
     env['BRO_LOG_SUFFIX'] = f'{uid}.log'

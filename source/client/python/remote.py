@@ -66,6 +66,7 @@ def remote_logs():
 
 
 def remote_dump():
+    max_list = SCAN_CPU ** 2
     while True:
         dump_list = list()
         for _ in range(max_list):

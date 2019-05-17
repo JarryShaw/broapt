@@ -6,7 +6,6 @@ import os
 import pathlib
 import re
 import subprocess
-import uuid
 
 # repo root path
 ROOT = str(pathlib.Path(__file__).parents[1].resolve())
@@ -120,7 +119,6 @@ with open(os.path.join(ROOT, 'scripts', 'config.bro')) as config:
         line = X509_REGEX.sub(rf'\g<prefix>{"T" if X509_MODE else "F"}\g<suffix>', line)
         line = ENTR_REGEX.sub(rf'\g<prefix>{"T" if ENTR_MODE else "F"}\g<suffix>', line)
         line = JSON_REGEX.sub(rf'\g<prefix>{JSON_MODE}\g<suffix>', line)
-        line = SALT_REGEX.sub(rf'\g<prefix>"{uuid.uuid4()}"\g<suffix>', line)
         line = FILE_REGEX.sub(rf'\g<prefix>{FILE_BUFFER}\g<suffix>', line)
         line = PATH_REGEX.sub(rf'\g<prefix>{DUMP_PATH}\g<suffix>', line)
         line = SIZE_REGEX.sub(rf'\g<prefix>{SIZE_LIMIT}\g<suffix>', line)
@@ -140,3 +138,10 @@ if DUMP_PATH_ENV is None:
     except subprocess.CalledProcessError:
         DUMP_PATH_ENV = './extract_files/'
 DUMP_PATH = DUMP_PATH_ENV
+
+
+def file_salt(uid):
+    with open(os.path.join(ROOT, 'scripts', 'config.bro')) as config:  # pylint: disable=redefined-outer-name
+        context = [SALT_REGEX.sub(rf'\g<prefix>"{uid}"\g<suffix>', line) for line in config]
+    with open(os.path.join(ROOT, 'scripts', 'config.bro'), 'w') as config:
+        config.writelines(context)

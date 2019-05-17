@@ -130,14 +130,15 @@ def init(api, cwd, env, mime, uuid):  # pylint: disable=inconsistent-return-stat
 
 
 def make_cwd(api, entry=None, example=False):
+    with temp_env(api.environ):
+        workdir = os.path.expandvars(api.workdir)
     def generate_cwd(workdir):
         if os.path.isabs(workdir):
             return workdir
-
         if example:
             return os.path.join(API_ROOT, 'example', workdir)
         return os.path.join(API_ROOT, entry.mime.media_type, entry.mime.subtype, workdir)
-    return os.path.realpath(generate_cwd(api.workdir))
+    return os.path.realpath(generate_cwd(workdir))
 
 
 def make_env(api):

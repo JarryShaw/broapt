@@ -45,7 +45,9 @@ services:
       ## Bro extract file size limit
       BROAPT_SIZE_LIMIT: 0
       ## concurrent hook processes
-      BROAPT_HOOK_CPU: 1
+      BROAPT_HOOK_CPU: 5
+      ## concurrent scan processes
+      BROAPT_SCAN_CPU: 10
       ## command retry
       BROAPT_MAX_RETRY: 3
       ## path to detection APIs

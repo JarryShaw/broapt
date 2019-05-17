@@ -3,16 +3,19 @@
 include .env
 
 init: mkdir-dump mkdir-logs
-build: build-macos build-linux
+build: build-darwin build-linux
 clean: clean-build clean-dump clean-logs
 
 bundle:
 	pipenv run pyinstaller -F server/spec/broaptd.spec
 	cp dist/broaptd bin/broaptd
 
+build-darwin: build-macos
+	mv bin/broaptd.macos bin/broaptd.darwin
+
 build-macos: clean-build
 	pipenv run pyinstaller -F server/spec/broaptd.macos.spec
-	cp dist/broaptd.macos bin/broaptd.darwin
+	cp dist/broaptd.macos bin/broaptd.macos
 
 build-linux: build-centos
 	mv bin/broaptd.centos bin/broaptd.linux
@@ -23,7 +26,7 @@ build-centos: clean-build
 	docker run \
 	    --volume ${CWD}/build:/broaptd/build \
 	    --volume ${CWD}/dist:/broaptd/dist broaptd:centos  -F server/spec/broaptd.centos.spec
-	cp dist/broaptd.centos bin/broaptd.linux
+	cp dist/broaptd.centos bin/broaptd.centos
 
 build-ubuntu: clean-build
 	mkdir -p build dist
@@ -31,7 +34,7 @@ build-ubuntu: clean-build
 	docker run \
 	    --volume ${CWD}/build:/broaptd/build \
 	    --volume ${CWD}/dist:/broaptd/dist broaptd:ubuntu -F server/spec/broaptd.ubuntu.spec
-	cp dist/broaptd.ubuntu bin/broaptd.linux
+	cp dist/broaptd.ubuntu bin/broaptd.ubuntu
 
 docker:
 	sed -i "" "s/LABEL version.*/LABEL version=$(shell date +%Y.%m.%d)/" Dockerfile

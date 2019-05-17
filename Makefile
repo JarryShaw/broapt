@@ -129,10 +129,11 @@ gitlab-copy: gitlab-clean
 	    ! -iname 'venv' -depth 1 -exec cp -rf {} ${REPO_PATH}/build \;
     # copy cluster
 	mkdir -p ${REPO_PATH}/cluster
+	$(MAKE) -C cluster archive
 	cp -f \
 	    cluster/init.sh \
 	    cluster/Makefile ${REPO_PATH}/cluster
-	$(MAKE) -C cluster/app clean vendor
+	$(MAKE) -C cluster/app build clean vendor
 	find cluster -iname 'app' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
 	$(MAKE) -C cluster/core clean vendor
 	find cluster -iname 'core' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
@@ -144,7 +145,7 @@ gitlab-copy: gitlab-clean
 	cp -rf docker ${REPO_PATH}
 	# copy source
 	mkdir -p ${REPO_PATH}/source
-	$(MAKE) -C source clean
+	$(MAKE) -C source build clean
 	find source \
 	    ! -iname 'dump' \
 	    ! -iname 'logs' \

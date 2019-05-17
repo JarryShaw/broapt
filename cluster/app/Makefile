@@ -3,19 +3,22 @@
 include .env
 
 init: mkdir-dump mkdir-logs
-build: build-macos build-linux
+build: build-darwin build-linux
 clean: clean-build clean-dump clean-logs
 
 bundle:
 	pipenv run pyinstaller -F bundle/spec/broaptd.spec
 	cp dist/broaptd bin/broaptd
 
+build-darwin: build-macos
+	mv bin/broapt-appd.macos bin/broapt-appd.darwin
+
 build-macos: clean-build
 	pipenv run pyinstaller -F bundle/spec/broapt-appd.macos.spec
-	cp dist/broapt-appd.macos bin/broapt-appd.darwin
+	cp dist/broapt-appd.macos bin/broapt-appd.macos
 
 build-linux: build-centos
-	mv bin/broaptd.centos bin/broaptd.linux
+	mv bin/broapt-appd.centos bin/broapt-appd.linux
 
 build-centos: clean-build
 	mkdir -p build dist
@@ -23,7 +26,7 @@ build-centos: clean-build
 	docker run \
 	    --volume ${CWD}/build:/app/build \
 	    --volume ${CWD}/dist:/app/dist broapt-appd:centos -F bundle/spec/broapt-appd.centos.spec
-	cp dist/broapt-appd.centos bin/broapt-appd.linux
+	cp dist/broapt-appd.centos bin/broapt-appd.centos
 
 build-ubuntu: clean-build
 	mkdir -p build dist
@@ -31,7 +34,7 @@ build-ubuntu: clean-build
 	docker run \
 	    --volume ${CWD}/build:/app/build \
 	    --volume ${CWD}/dist:/app/dist broapt-appd:ubuntu -F bundle/spec/broapt-appd.ubuntu.spec
-	cp dist/broapt-appd.ubuntu bin/broapt-appd.linux
+	cp dist/broapt-appd.ubuntu bin/broapt-appd.ubuntu
 
 docker:
 	sed -i "" "s/LABEL version.*/LABEL version=$(shell date +%Y.%m.%d)/" Dockerfile
