@@ -3,7 +3,7 @@
 include .env
 
 init: mkdir-dump mkdir-logs
-build: build-macos build-centos
+build: build-macos build-linux
 clean: clean-build clean-dump clean-logs
 
 bundle:
@@ -12,7 +12,10 @@ bundle:
 
 build-macos: clean-build
 	pipenv run pyinstaller -F spec/broapt-appd.macos.spec
-	cp dist/broapt-appd.macos bin/broapt-appd.macos
+	cp dist/broapt-appd.macos bin/broapt-appd.darwin
+
+build-linux: build-centos
+	mv bin/broaptd.centos bin/broaptd.linux
 
 build-centos: clean-build
 	mkdir -p build dist

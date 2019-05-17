@@ -14,6 +14,9 @@ RUN apt-get update \
  && add-apt-repository --yes ppa:deadsnakes/ppa
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
+        ## https://github.com/bufferings/docker-access-host
+        iputils-ping \
+        iproute2 \
         ## python3.6 is actually dependency of the latters
         ## but we keep it here as a good remainder
         python3.6 \
