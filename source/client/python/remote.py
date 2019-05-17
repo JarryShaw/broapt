@@ -2,7 +2,6 @@
 # pylint: disable=import-error, no-name-in-module
 
 import contextlib
-import math
 import multiprocessing
 import os
 import queue
@@ -67,7 +66,6 @@ def remote_logs():
 
 
 def remote_dump():
-    max_list = SCAN_CPU * math.ceil(INTERVAL)
     while True:
         dump_list = list()
         for _ in range(max_list):

@@ -132,7 +132,7 @@ gitlab-copy: gitlab-clean
 	cp -f \
 	    cluster/docker-compose.yml \
 	    cluster/Makefile ${REPO_PATH}/cluster
-	$(MAKE) -C cluster/app build clean vendor
+	$(MAKE) -C cluster/app clean vendor
 	find cluster -iname 'app' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
 	$(MAKE) -C cluster/core clean vendor
 	find cluster -iname 'core' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
@@ -143,7 +143,7 @@ gitlab-copy: gitlab-clean
 	cp -rf docker ${REPO_PATH}
 	# copy source
 	mkdir -p ${REPO_PATH}/source
-	$(MAKE) -C source build clean
+	$(MAKE) -C source clean
 	find source \
 	    ! -iname 'dump' \
 	    ! -iname 'logs' \
@@ -162,6 +162,9 @@ gitlab-copy: gitlab-clean
 	mkdir -p ${REPO_PATH}/vendor/python/core
 	find vendor/python/core \
 	    ! -iname '.venv' -depth 1 -exec cp -rf {} ${REPO_PATH}/vendor/python/core \;
+	mkdir -p ${REPO_PATH}/vendor/python/src
+	find vendor/python/src \
+	    ! -iname '.venv' -depth 1 -exec cp -rf {} ${REPO_PATH}/vendor/python/src \;
 	mkdir -p ${REPO_PATH}/vendor/tools
 	find vendor/tools -depth 1 -exec cp -rf {} ${REPO_PATH}/vendor/tools \;
 	# remove unexpected files

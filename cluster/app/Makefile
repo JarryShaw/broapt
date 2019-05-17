@@ -1,10 +1,14 @@
-.PHONY: init clean docker vendor build
+.PHONY: init bundle clean docker vendor build
 
 include .env
 
 init: mkdir-dump mkdir-logs
 build: build-macos build-centos
 clean: clean-build clean-dump clean-logs
+
+bundle:
+	pipenv run pyinstaller -F spec/broaptd.spec
+	cp dist/broaptd bin/broaptd
 
 build-macos: clean-build
 	pipenv run pyinstaller -F spec/broapt-appd.macos.spec

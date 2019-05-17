@@ -33,7 +33,7 @@ app = flask.Flask(__name__)
 
 # help message
 HELP_v1_0 = os.linesep.join((
-    'BroAPT-App Daemon APIv1.0 Usage:',
+    'BroAPT Daemon APIv1.0 Usage:',
     '',
     '- GET    /api/v1.0/list',
     '- GET    /api/v1.0/report/<id>',
@@ -41,7 +41,7 @@ HELP_v1_0 = os.linesep.join((
     '- DELETE /api/v1.0/delete/<id>',
 ))
 __help__ = os.linesep.join((
-    'BroAPT-App Daemon API Usage:',
+    'BroAPT Daemon API Usage:',
     '',
     '# v1.0',
     '',
