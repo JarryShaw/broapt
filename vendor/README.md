@@ -4,6 +4,9 @@
 - [`file-extraction`](https://github.com/hosom/file-extraction): Bro Module for File Extraction
 - [`zeek`](https:github.com/zeek/zeek): Zeek Network Security Monitor
 
+- [`tools/bro-phishing`](https://github.com/hosom/bro-phishing): Detect Phishing with Bro IDS
+- [`tools/smtp-url-analysis`](https://github.com/initconf/smtp-url-analysis): Extracting and analysing URLs from Emails for phishing events
+
 # Tools
 
 - [`Image ExifTool`](https://sno.phy.queensu.ca/~phil/exiftool): reading, writing and editing meta information (v11.37)

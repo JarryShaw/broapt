@@ -10,7 +10,11 @@ import time
 import warnings
 
 from const import INTERVAL, QUEUE
-from sites import HOOK
+
+try:
+    from sites import HOOK
+except ImportError:
+    HOOK = list()
 
 ###############################################################################
 

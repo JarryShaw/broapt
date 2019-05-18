@@ -9,6 +9,6 @@ redef record Info += {
 
 event http_entity_data(c: connection, is_orig: bool, length: count, data: string)
 	{
-	if ( is_orig && c$http$method == "POST" )
+	if ( c$http?$method && c$http$method == "POST" )
 		c$http$post_body += data;
 	}

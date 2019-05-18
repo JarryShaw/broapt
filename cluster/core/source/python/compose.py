@@ -123,7 +123,8 @@ with open(os.path.join(ROOT, 'scripts', 'config.bro')) as config:
         line = PATH_REGEX.sub(rf'\g<prefix>{DUMP_PATH}\g<suffix>', line)
         line = SIZE_REGEX.sub(rf'\g<prefix>{SIZE_LIMIT}\g<suffix>', line)
         if LOAD_REGEX.match(line) is not None:
-            load_file.append(os.path.join('.', 'sites'))
+            if os.path.isdir(os.path.join(ROOT, 'scripts', 'sites')):
+                load_file.append(os.path.join('.', 'sites'))
             break
         context.append(line)
 context.extend(f'@load {file_name}\n' for file_name in load_file)
@@ -142,6 +143,6 @@ DUMP_PATH = DUMP_PATH_ENV
 
 def file_salt(uid):
     with open(os.path.join(ROOT, 'scripts', 'config.bro')) as config:  # pylint: disable=redefined-outer-name
-        context = [SALT_REGEX.sub(rf'\g<prefix>"{uid}"\g<suffix>', line) for line in config]
+        context = [SALT_REGEX.sub(rf'\g<prefix>"{uid}"\g<suffix>', line) for line in config]  # pylint: disable=redefined-outer-name
     with open(os.path.join(ROOT, 'scripts', 'config.bro'), 'w') as config:
         config.writelines(context)

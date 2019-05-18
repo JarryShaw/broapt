@@ -11,7 +11,11 @@ import warnings
 
 from const import HOOK_CPU, INTERVAL, QUEUE_DUMP, QUEUE_LOGS, SCAN_CPU
 from scan import scan
-from sites import HOOK
+
+try:
+    from sites import HOOK
+except ImportError:
+    HOOK = list()
 
 ###############################################################################
 
