@@ -103,7 +103,7 @@ application:
     workdir: ${API_ROOT}/application/vnd.openxmlformats-officedocument/
     install:
       - ${PYTHON36} -m pip install mmbot
-    report: ${PYTHON36} MaliciousMacroBot/detect.py
+    report: ${PYTHON36} MaliciousMacroBot-detect.py
   msword: *officedocument
   vnd.ms-excel: *officedocument
   vnd.openxmlformats-officedocument: *officedocument
