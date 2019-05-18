@@ -7,6 +7,7 @@ import os
 import queue
 import signal
 import time
+import traceback
 import warnings
 
 from const import HOOK_CPU, INTERVAL, QUEUE_DUMP, QUEUE_LOGS, SCAN_CPU
@@ -61,7 +62,8 @@ def remote_logs():
             log_name = QUEUE_LOGS.get_nowait()
             try:
                 hook(log_name)
-            except BaseException:
+            except Exception:
+                traceback.print_exc()
                 warnings.warn(f'hook execution failed on {log_name!r}', HookWarning)
         except queue.Empty:
             if JOIN_DUMP.value:
@@ -79,10 +81,11 @@ def remote_dump():
                 dump_list.append(dump)
             except queue.Empty:
                 break
-        if SCAN_CPU <= 1:
-            [scan(dump) for dump in dump_list]  # pylint: disable=expression-not-assigned
-        else:
-            multiprocessing.Pool(SCAN_CPU).map(scan, dump_list)
+        if dump_list:
+            if SCAN_CPU <= 1:
+                [scan(dump) for dump in dump_list]  # pylint: disable=expression-not-assigned
+            else:
+                multiprocessing.Pool(SCAN_CPU).map(scan, dump_list)
         if JOIN_DUMP.value:
             break
         time.sleep(INTERVAL)

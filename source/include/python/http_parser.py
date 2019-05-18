@@ -129,7 +129,7 @@ def generate(log_name):
             # json
             None,
             # method
-            line['method'],
+            line.get('method'),
             # body
             make_b64(line.get('post_body')),
         )
