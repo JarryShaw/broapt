@@ -10,3 +10,9 @@
 [submodule "vendor/file-extraction"]
 	path = vendor/file-extraction
 	url = https://github.com/hosom/file-extraction.git
+[submodule "vendor/tools/bro-phishing"]
+	path = vendor/tools/bro-phishing
+	url = https://github.com/hosom/bro-phishing.git
+[submodule "vendor/tools/smtp-url-analysis"]
+	path = vendor/tools/smtp-url-analysis
+	url = https://github.com/initconf/smtp-url-analysis.git
