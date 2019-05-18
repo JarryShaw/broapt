@@ -45,7 +45,12 @@ def run(command, info, file='unknown'):
     # prepare runtime
     logs = os.path.join(logs_path, file)
     with temp_env(info.environ):
-        args = os.path.expandvars(command)  # pylint: disable=redefined-outer-name
+        if isinstance(command, str):
+            shell = True
+            args = os.path.expandvars(command)
+        else:
+            shell = False
+            args = [os.path.expandvars(arg) for arg in command]
 
     suffix = ''
     for retry in range(MAX_RETRY):
@@ -54,7 +59,7 @@ def run(command, info, file='unknown'):
         print_file(f'# args: {args}', file=log)
         try:
             with open(log, 'at', 1) as stdout:
-                returncode = subprocess.check_call(args, shell=True, cwd=info.workdir, env=info.environ,
+                returncode = subprocess.check_call(args, shell=shell, cwd=info.workdir, env=info.environ,
                                                    stdout=stdout, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as error:
             print_file(f'# code: {error.returncode}', file=log)

@@ -129,7 +129,6 @@ gitlab-copy: gitlab-clean
 	    ! -iname 'venv' -depth 1 -exec cp -rf {} ${REPO_PATH}/build \;
     # copy cluster
 	mkdir -p ${REPO_PATH}/cluster
-	$(MAKE) -C cluster archive
 	cp -f \
 	    cluster/init.sh \
 	    cluster/Makefile ${REPO_PATH}/cluster

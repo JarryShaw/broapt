@@ -119,9 +119,9 @@ example:
   workdir: .
   environ:
     ## sleep interval
-    VT_INTERVAL: 10
+    VT_INTERVAL: 30
     ## max retry for report
-    VT_RETRY: 6
+    VT_RETRY: 10
     ## percentage of positive threshold
     VT_PERCENT: 50
     ## VT API key
@@ -130,7 +130,7 @@ example:
     VT_LOG: /var/log/bro/tmp/
   install:
     - ${PYTHON36} -m pip install requests
-  report: ${PYTHON36} virustotal.py
+  report: ${PYTHON36} virustotal.py || exit 0 # always EXIT_SUCCESS
 
 # APIs for `font` media type
 font:

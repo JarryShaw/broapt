@@ -140,10 +140,14 @@ def process(file):
     args.extend(['--readfile', file, os.path.join(ROOT, 'scripts')])
 
     start = time.time()
+    stdout = open(f'stdout.{uid}.log', 'w')
+    stderr = open(f'stderr.{uid}.log', 'w')
     try:
-        subprocess.check_call(args, env=env)
+        subprocess.check_call(args, env=env, stdout=stdout, stderr=stderr)
     except subprocess.CalledProcessError:
         print_file(f'+ Failed on PCAP: {file!r}')
+    stdout.close()
+    stderr.close()
     end = time.time()
 
     dest_stem = f'{stem}-{uid}'

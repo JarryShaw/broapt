@@ -2,6 +2,7 @@
 
 import json
 import os
+import pprint
 import sys
 import time
 
@@ -13,7 +14,11 @@ VT_LOG = os.getenv('VT_LOG', '/var/log/bro/tmp/')
 os.makedirs(VT_LOG, exist_ok=True)
 
 # VirusTotal API key
-VT_API = os.environ['VT_API']
+try:
+    VT_API = os.environ['VT_API']
+except KeyError:
+    print('API key for VirusTotal is required.', file=sys.stderr)
+    raise
 
 # time interval
 try:
@@ -41,6 +46,14 @@ EXIT_FAILURE = 408  # Request Timeout
 MAX_SIZE = 32e6  # 32M
 
 
+def log_response(response):
+    print(f'+ [{response.status_code}] {response.request.method} {response.url}')
+    try:
+        pprint.pprint(response.json())
+    except json.JSONDecodeError:
+        print(response.text)
+
+
 def main():
     mime = os.environ['BROAPT_MIME']  # pylint: disable=unused-variable
     path = os.environ['BROAPT_PATH']
@@ -50,6 +63,7 @@ def main():
     if size >= MAX_SIZE:
         VT_REQUEST = requests.get('https://www.virustotal.com/vtapi/v2/file/scan/upload_url',
                                   params={'apikey': VT_API})
+        log_response(VT_REQUEST)
         if VT_REQUEST.status_code != 200:
             return VT_REQUEST.status_code
         VT_URL = VT_REQUEST.json()['upload_url']
@@ -60,7 +74,7 @@ def main():
         VT_RESPONSE = requests.post(VT_URL,
                                     files={'file': (name, file)},
                                     params={'apikey': VT_API})
-
+    log_response(VT_RESPONSE)
     if VT_RESPONSE.status_code != 200:
         return VT_RESPONSE.status_code
     response_json = VT_RESPONSE.json()
@@ -69,6 +83,7 @@ def main():
         VT_REPORT = requests.get('https://www.virustotal.com/vtapi/v2/file/report',
                                  params={'apikey': VT_API,
                                          'resource': response_json['scan_id']})
+        log_response(VT_REPORT)
         if VT_REPORT.status_code == 200:
             report_json = VT_REPORT.json()
             if report_json['response_code'] == 1:
