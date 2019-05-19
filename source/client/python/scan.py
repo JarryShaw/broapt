@@ -221,3 +221,24 @@ def scan(local_name):
                   uuid=fuid,
                   mime=mime)
     process(entry)
+
+
+def lookup(path):
+    # processed log
+    processed_file = list()
+    if os.path.isfile(DUMP):
+        with open(DUMP) as file:
+            processed_file.extend(line.strip() for line in file)
+
+    def listdir(path):
+        file_list = list()
+        for entry in os.scandir(path):
+            if entry.is_dir():
+                file_list.extend(listdir(entry.path))
+            else:
+                match = FILE_REGEX.match(entry.name)
+                if match is None or entry.path in processed_file:
+                    continue
+                file_list.append(os.path.relpath(entry.path, DUMP_PATH))
+        return sorted(file_list)
+    return listdir(DUMP_PATH)
