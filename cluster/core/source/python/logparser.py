@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import ast
 import collections
 import ctypes
 import dataclasses
@@ -55,8 +54,7 @@ def str_parser(s):
         return str()
     if s == unset_field:
         return None
-    b = ast.literal_eval(f'b{s!r}'.replace('\\\\x', '\\x'))
-    return b.decode()
+    return s.encode().decode('unicode_escape')
 
 
 def port_parser(s):

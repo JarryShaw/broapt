@@ -39,8 +39,8 @@ class API:
     install: list
     scripts: list
 
-    inited: bool = False
-    locked: bool = False
+    inited: bool
+    locked: bool
 
 
 class ConfigError(Exception):

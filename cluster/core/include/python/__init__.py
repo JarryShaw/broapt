@@ -10,9 +10,15 @@ sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 ###############################################################################
 
-from http_parser import generate
+from http_parser import generate as http_log
+from http_parser import close as http_log_exit
 
-# hook list
+# log analysis hook list
 HOOK = [
-    generate,
+    http_log,
+]
+
+# exit hooks
+EXIT = [
+    http_log_exit,
 ]

@@ -81,6 +81,15 @@ FILE_REGEX = re.compile(r'''
     (?P<extension>\S+)
 ''', re.IGNORECASE | re.VERBOSE)
 
+# MIME type regex
+MIME_REGEX = re.compile(r'''
+    # media-type
+    (?P<media_type>application|audio|example|font|image|message|model|multipart|text|video|\S+)
+    /
+    # subtype
+    (?P<subtype>\S+)
+''', re.VERBOSE | re.IGNORECASE)
+
 # hook limit for CPU
 try:
     HOOK_CPU = int(os.getenv('BROAPT_HOOK_CPU'))

@@ -16,6 +16,11 @@ try:
 except ImportError:
     HOOK = list()
 
+try:
+    from sites import EXIT
+except ImportError:
+    EXIT = list()
+
 ###############################################################################
 
 # join flags
@@ -36,19 +41,25 @@ class HookWarning(Warning):
     pass
 
 
-def wrapper(args):
+def wrapper_logs(args):
     func, log_name = args
     return func(log_name)
+
+
+def wrapper_func(func):
+    return func()
 
 
 def hook(log_name):
     if HOOK_CPU <= 1:
         [func(log_name) for func in HOOK]  # pylint: disable=expression-not-assigned
     else:
-        multiprocessing.Pool(HOOK_CPU).map(wrapper, map(lambda func: (func, log_name), HOOK))  ## pylint: disable=map-builtin-not-iterating
+        multiprocessing.Pool(HOOK_CPU).map(wrapper_logs, map(lambda func: (func, log_name), HOOK))  ## pylint: disable=map-builtin-not-iterating
 
 
-def remote():
+def remote():  # pylint: disable=inconsistent-return-statements
+    if len(HOOK) < 1:
+        return
     while True:
         try:
             log_name = QUEUE.get_nowait()
@@ -60,6 +71,10 @@ def remote():
             if JOIN.value:
                 break
             time.sleep(INTERVAL)
+    if HOOK_CPU <= 1:
+        [func(log_name) for func in EXIT]  # pylint: disable=expression-not-assigned
+    else:
+        multiprocessing.Pool(HOOK_CPU).map(wrapper_func, EXIT)  ## pylint: disable=map-builtin-not-iterating
 
 
 @contextlib.contextmanager

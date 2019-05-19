@@ -7,6 +7,7 @@ import contextlib
 import math
 import os
 import textwrap
+import time
 import urllib.parse
 
 from const import LOGS_PATH
@@ -37,6 +38,7 @@ print_file(f'#empty_field{SEPARATOR}{EMPTY_FIELD}', file=HTTP_LOG)
 print_file(f'#unset_field{SEPARATOR}{UNSET_FIELD}', file=HTTP_LOG)
 print_file(f'#fields{SEPARATOR}{SEPARATOR.join(FIELDS)}', file=HTTP_LOG)
 print_file(f'#types{SEPARATOR}{SEPARATOR.join(TYPES)}', file=HTTP_LOG)
+print_file(f'#open{SEPARATOR}{time.strftime("%Y-%m-%d-%H-%M-%S")}', file=HTTP_LOG)
 
 
 def make_url(line):
@@ -129,10 +131,14 @@ def generate(log_name):
             # json
             None,
             # method
-            line['method'],
+            line.get('method'),
             # body
             make_b64(line.get('post_body')),
         )
         # data = json.dumps(record, cls=IPAddressJSONEncoder)
         data = '\t'.join(map(lambda obj: beautify(obj), record))
         print_file(data, file=HTTP_LOG)
+
+
+def close():
+    print_file(f'#close{SEPARATOR}{time.strftime("%Y-%m-%d-%H-%M-%S")}', file=HTTP_LOG)

@@ -15,8 +15,8 @@ import uuid
 import magic
 
 from compose import file_salt
-from const import (BARE_MODE, DUMP_PATH, FILE, FILE_REGEX, INFO, LOGS_PATH, MIME_MODE, NO_CHKSUM,
-                   QUEUE_DUMP, QUEUE_LOGS, ROOT)
+from const import (BARE_MODE, DUMP_PATH, FILE, FILE_REGEX, INFO, LOGS_PATH, MIME_MODE, MIME_REGEX,
+                   NO_CHKSUM, QUEUE_DUMP, QUEUE_LOGS, ROOT)
 from logparser import parse
 from utils import IPAddressJSONEncoder, is_nan, print_file, suppress
 
@@ -78,8 +78,12 @@ def generate_log(log_root, log_stem, log_uuid):
         if os.path.exists(dump_path):
             with contextlib.suppress(magic.MagicException):
                 mime_type = magic.from_file(dump_path, mime=True)
-            if MIME_MODE or (mime_type != line.mime_type):
-                local_name = rename_dump(local_name, mime_type)
+            if mime_type is None or MIME_REGEX.match(mime_type) is None:
+                if MIME_MODE:
+                    local_name = rename_dump(local_name, line.mime_type)
+            else:
+                if MIME_MODE or (mime_type != line.mime_type):  # pylint: disable=else-if-used
+                    local_name = rename_dump(local_name, mime_type)
         else:
             dump_path = None
 

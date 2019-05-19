@@ -22,7 +22,7 @@ services:
       ## group extracted file by MIME types
       BROAPT_MIME_MODE: 1
       ## log in JSON format
-      BROAPT_JSON_MODE: 1
+      BROAPT_JSON_MODE: 0
       ## run Bro in bare mode
       BROAPT_BARE_MODE: 0
       ## run Bro with `-C` option
