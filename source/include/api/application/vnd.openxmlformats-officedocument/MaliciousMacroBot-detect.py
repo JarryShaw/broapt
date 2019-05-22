@@ -32,17 +32,18 @@ def main():
     path = os.environ['BROAPT_PATH']
     name = os.path.split(path)[1]
 
+    # run prediction
     prediction = mmb.mmb_predict(path, datatype='filepath')
-    prediction_json = mmb.mmb_prediction_to_json(prediction)[0]
+    records = prediction.to_dict(orient='records')
 
     log_name = f'{os.path.splitext(name)[0]}.json'
     with open(os.path.join(MMB_LOG, log_name), 'w') as log:
-        json.dump(prediction_json, log, indent=2)
+        json.dump(records, log, indent=2)
 
     result = {'time': time.time(),
               'path': path,
               'mime': mime,
-              'rate': MMB_MAP[prediction_json['prediction']]}
+              'rate': MMB_MAP[prediction.loc[0].prediction]}
     with open(os.path.join(LOGS_PATH, 'processed_rate.log'), 'at', 1) as file:
         print(json.dumps(result), file=file)
     return EXIT_SUCCESS

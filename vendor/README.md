@@ -7,6 +7,8 @@
 - [`tools/bro-phishing`](https://github.com/hosom/bro-phishing): Detect Phishing with Bro IDS
 - [`tools/smtp-url-analysis`](https://github.com/initconf/smtp-url-analysis): Extracting and analysing URLs from Emails for phishing events
 
+- [`tools/MaliciousMacroBot`](https://github.com/egaus/MaliciousMacroBot): Malicious Macro Bot Project
+
 # Tools
 
 - [`Image ExifTool`](https://sno.phy.queensu.ca/~phil/exiftool): reading, writing and editing meta information (v11.37)
