@@ -1,6 +1,6 @@
 # basic info
 FROM library/ubuntu:16.04
-LABEL version=2019.05.19
+LABEL version=2019.05.22
 
 # set up environment variables
 ENV LANG "C.UTF-8"
@@ -14,7 +14,7 @@ RUN apt-get update \
  && add-apt-repository --yes ppa:deadsnakes/ppa
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
-        ## python3.6 is actually dependency of the latters
+        ## python3.6 is actually dependency of the latter
         ## but we keep it here as a good remainder
         python3.6 \
         python3-pip \

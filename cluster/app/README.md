@@ -70,4 +70,4 @@ should be a **one-line** JSON string, with following fields:
 - `path` -- `str`, path to the extracted file
 - `name` -- `str`, name of the extracted file
 - `mime` -- `str`, MIME type of the extracted file
-- `ratio` -- `float`, a `positive/total` ratio
+- `rate` -- `bool`, malicious or not

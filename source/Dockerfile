@@ -1,6 +1,6 @@
 # basic info
 FROM library/centos:7
-LABEL version=2019.05.19
+LABEL version=2019.05.22
 
 # set up environment variables
 ENV PYTHONIOENCODING="UTF-8"
@@ -13,7 +13,7 @@ RUN yum install -y \
  && yum install -y \
         ## pre-built Bro 2.6.1 distribution
         bro \
-        ## python36u is actually dependency of the latters
+        ## python36u is actually dependency of the latter
         ## but we keep it here as a good remainder
         python36u \
         python36u-pip \

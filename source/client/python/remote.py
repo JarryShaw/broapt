@@ -87,13 +87,6 @@ def remote_logs():  # pylint: disable=inconsistent-return-statements
 
 
 def remote_dump():
-    dump_list = lookup(DUMP_PATH)
-    if dump_list:
-        if SCAN_CPU <= 1:
-            [scan(dump) for dump in dump_list]  # pylint: disable=expression-not-assigned
-        else:
-            multiprocessing.Pool(SCAN_CPU).map(scan, dump_list)
-
     max_list = SCAN_CPU ** 2
     while True:
         dump_list = list()
@@ -115,6 +108,10 @@ def remote_dump():
 
 @contextlib.contextmanager
 def remote_proc():
+    # check for remaining extracted files
+    [QUEUE_DUMP.put(file) for file in lookup(DUMP_PATH)]  # pylint: disable=expression-not-assigned
+
+    # start main loop
     proc_dump = multiprocessing.Process(target=remote_dump)
     proc_logs = multiprocessing.Process(target=remote_logs)
     proc_dump.start()

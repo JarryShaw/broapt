@@ -103,7 +103,8 @@ def process(info):
 
     # run install commands
     if not info.inited:
-        init(info)
+        if init(info):
+            return False
 
     # run scripts commands
     scripts_log = 1

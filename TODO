@@ -25,6 +25,6 @@
 
 [x] revise `workdir` in API config
 [x] try `PyInstaller` to bundle BroAPT-App functions
-[ ] try `MaliciousMacroBot`: https://github.com/egaus/MaliciousMacroBot
+[x] try `MaliciousMacroBot`: https://github.com/egaus/MaliciousMacroBot
 [ ] try `JaSt`: https://github.com/Aurore54F/JaSt
-[ ] try `AndroPyTool`: https://github.com/alexMyG/AndroPyTool
+[x] try `AndroPyTool`: https://github.com/alexMyG/AndroPyTool

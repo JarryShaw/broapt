@@ -94,15 +94,18 @@ application:
     install:
       # - ${SHELL} install.sh
       - docker pull alexmyg/andropytool
-    scripts:
-      # - ${PYTHON36} detect.py
-      - docker run --volume=</PATH/TO/FOLDER/WITH/APKS/>:/apks alexmyg/andropytool -s /apks/ <ARGUMENTS>
-    report: ${SHELL} wrapper.sh
+    # report: ${PYTHON36} detect.py
+    report: ${SHELL} detect.sh
   vnd.openxmlformats-officedocument: &officedocument
     ## MaliciousMacroBot
     workdir: ${API_ROOT}/application/vnd.openxmlformats-officedocument/
     install:
-      - ${PYTHON36} -m pip install mmbot
+      - yum install -y git
+      - git clone https://github.com/egaus/MaliciousMacroBot.git
+      - ${PYTHON36} -m pip install ./MaliciousMacroBot/
+      # - rm -rf ./MaliciousMacroBot/
+      # - yum erase git -y
+      - yum clean all -y
     report: ${PYTHON36} MaliciousMacroBot-detect.py
   msword: *officedocument
   vnd.ms-excel: *officedocument

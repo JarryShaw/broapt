@@ -12,7 +12,7 @@ pylint = "*"
 [packages]
 bro-pkg = "*"
 dataclasses = "*"
-Flask = "*"
+Flask = {extras = ["dotenv"],version = "*"}
 mmbot = "*"
 pandas = "*"
 peewee = "*"

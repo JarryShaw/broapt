@@ -55,7 +55,7 @@ def log_response(response):
 
 
 def main():
-    mime = os.environ['BROAPT_MIME']  # pylint: disable=unused-variable
+    mime = os.environ['BROAPT_MIME']
     path = os.environ['BROAPT_PATH']
     name = os.path.split(path)[1]
 

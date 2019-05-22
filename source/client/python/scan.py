@@ -118,13 +118,14 @@ def issue(mime):
 
     ## remove API entry
     # del API_DICT[mime]
+    return EXIT_FAILURE
 
 
 def init(api, cwd, env, mime, uuid):  # pylint: disable=inconsistent-return-statements
     while api.locked.value:
         time.sleep(INTERVAL)
     if api.inited.value:
-        return
+        return EXIT_SUCCESS
 
     api.locked.value = True
     install_log = 1
@@ -132,10 +133,11 @@ def init(api, cwd, env, mime, uuid):  # pylint: disable=inconsistent-return-stat
         log = f'{uuid}-install.{install_log}'
         if run(command, cwd, env, mime, file=log):
             api.locked.value = False
-            return issue(mime)
+            return EXIT_FAILURE
         install_log += 1
     api.inited.value = True
     api.locked.value = False
+    return EXIT_SUCCESS
 
 
 def make_cwd(api, entry=None, example=False):
@@ -192,7 +194,8 @@ def process(entry):  # pylint: disable=inconsistent-return-statements
 
     # run install commands
     if not api.inited.value:
-        init(api, cwd, env, mime, entry.uuid)
+        if init(api, cwd, env, mime, entry.uuid):
+            return issue(mime)
 
     # run scripts commands
     scripts_log = 1
