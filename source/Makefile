@@ -4,7 +4,7 @@ include .env
 
 init: mkdir-dump mkdir-logs
 build: build-darwin build-linux
-clean: clean-build clean-dump clean-logs
+clean: clean-api clean-build clean-dump clean-logs
 
 bundle:
 	pipenv run pyinstaller -F server/spec/broaptd.spec
@@ -98,6 +98,9 @@ clean-logs:
 		find ./logs/api -depth 1 -print0 | xargs -0 rm -rf; \
 	    find ./logs/tmp -iname '*.json' -depth 1 -type f -print0 | xargs -0 rm -rf; \
 	fi
+
+clean-api:
+	rm -rf include/api/application/vnd.openxmlformats-officedocument/MaliciousMacroBot
 
 mkdir-dump:
 	mkdir -p ./dump
