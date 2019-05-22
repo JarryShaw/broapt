@@ -45,12 +45,12 @@ docker-compose:
 	docker-compose up -d
 	docker system prune --volumes -f
 
-archive-app:
+archive-app: clean-app
 	mkdir -p archive
 	tar -cvzf broapt-app.tar.gz app
 	mv broapt-app.tar.gz archive
 
-archive-core:
+archive-core: clean-core
 	mkdir -p archive
 	tar -cvzf broapt-core.tar.gz core
 	mv broapt-core.tar.gz archive

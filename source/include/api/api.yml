@@ -88,9 +88,10 @@ application:
     remote: true
     workdir: AndroPyTool
     environ:
-      ANDROID_HOME: $HOME/android-sdk-linux
-      PATH: $PATH:$ANDROID_HOME/tools
-      PATH: $PATH:$ANDROID_HOME/platform-tools
+      # ANDROID_HOME: $HOME/android-sdk-linux
+      # PATH: $PATH:$ANDROID_HOME/tools
+      # PATH: $PATH:$ANDROID_HOME/platform-tools
+      APK_LOG: /var/log/bro/tmp/
     install:
       # - ${SHELL} install.sh
       - docker pull alexmyg/andropytool
@@ -99,6 +100,8 @@ application:
   vnd.openxmlformats-officedocument: &officedocument
     ## MaliciousMacroBot
     workdir: ${API_ROOT}/application/vnd.openxmlformats-officedocument/
+    environ:
+      MMB_LOG: /var/log/bro/tmp/
     install:
       - yum install -y git
       - git clone https://github.com/egaus/MaliciousMacroBot.git
