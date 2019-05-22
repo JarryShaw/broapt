@@ -16,3 +16,6 @@
 [submodule "vendor/tools/smtp-url-analysis"]
 	path = vendor/tools/smtp-url-analysis
 	url = https://github.com/initconf/smtp-url-analysis.git
+[submodule "vendor/tools/MaliciousMacroBot"]
+	path = vendor/tools/MaliciousMacroBot
+	url = https://github.com/egaus/MaliciousMacroBot.git
