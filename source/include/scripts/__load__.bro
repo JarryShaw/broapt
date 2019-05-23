@@ -1,7 +1,12 @@
-@load ./extract-http-cookies.bro
-# @load ./extract-http-headers.bro
-@load ./extract-http-post-body.bro
+# redefined constants
+@load ./const
 
+# add new fields to http.log
+@load ./extract-http-cookies.bro
+@load ./extract-http-post-body.bro
+@load ./extract-http-headers
+
+# calculate hash value of all files
 @load ./hash-all-files.bro
 
 ## https://github.com/hosom/bro-phishing

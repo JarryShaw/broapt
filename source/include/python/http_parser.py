@@ -23,7 +23,7 @@ SET_SEPARATOR = ','
 EMPTY_FIELD = '(empty)'
 UNSET_FIELD = 'NoDef'
 FIELDS = ('scrip', 'ad', 'ts', 'url', 'ref', 'ua', 'dstip', 'cookie', 'src_port', 'json', 'method', 'body')
-TYPES = ('addr', 'string', 'time', 'string', 'string', 'string', 'addr', 'string', 'port', 'string', 'string', 'string')
+TYPES = ('addr', 'string', 'time', 'string', 'string', 'string', 'addr', 'string', 'port', 'vector[string]', 'string', 'string')
 
 
 def hexlify(string):
@@ -36,9 +36,10 @@ print_file(f'#separator {hexlify(SEPARATOR)}', file=HTTP_LOG)
 print_file(f'#set_separator{SEPARATOR}{SET_SEPARATOR}', file=HTTP_LOG)
 print_file(f'#empty_field{SEPARATOR}{EMPTY_FIELD}', file=HTTP_LOG)
 print_file(f'#unset_field{SEPARATOR}{UNSET_FIELD}', file=HTTP_LOG)
+print_file(f'#path{SEPARATOR}http', file=HTTP_LOG)
+print_file(f'#open{SEPARATOR}{time.strftime("%Y-%m-%d-%H-%M-%S")}', file=HTTP_LOG)
 print_file(f'#fields{SEPARATOR}{SEPARATOR.join(FIELDS)}', file=HTTP_LOG)
 print_file(f'#types{SEPARATOR}{SEPARATOR.join(TYPES)}', file=HTTP_LOG)
-print_file(f'#open{SEPARATOR}{time.strftime("%Y-%m-%d-%H-%M-%S")}', file=HTTP_LOG)
 
 
 def make_url(line):
@@ -64,16 +65,18 @@ def make_b64(data):
     return base64.b64encode(data.encode()).decode()
 
 
-# def make_json(line):
-#     headers = line.get('headers')
-#     if is_nan(headers):
-#         return None
-#     data = dict()
-#     for pair in headers.splitlines():
-#         with contextlib.suppress(ValueError):
-#             name, value = pair.split(':', maxsplit=1)
-#             data[name.strip()] = value.strip()
-#     return data
+def make_json(line):
+    client_headers = line.get('client_header_names')
+    if is_nan(client_headers):
+        client_headers = list()
+    server_headers = line.get('server_header_names')
+    if is_nan(server_headers):
+        server_headers = list()
+
+    headers = list()
+    headers.extend(filter(lambda header: not is_nan(header), client_headers))
+    headers.extend(filter(lambda header: not is_nan(header), server_headers))
+    return ','.join(make_b64(header) for header in headers)
 
 
 def beautify(obj):
@@ -129,7 +132,7 @@ def generate(log_name):
             # src_port
             int(line['id.orig_p']),
             # json
-            None,
+            make_json(line),
             # method
             line.get('method'),
             # body
