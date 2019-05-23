@@ -30,8 +30,8 @@ install: init
 	# install dependencies
 	pipenv install \
 	    dataclasses \
-	    pandas \
-	    python-magic
+	    file-magic \
+	    pandas
 
 .ONESHELL:
 update:

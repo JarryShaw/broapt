@@ -12,6 +12,7 @@ pylint = "*"
 [packages]
 bro-pkg = "*"
 dataclasses = "*"
+file-magic = "*"
 Flask = {extras = ["dotenv"],version = "*"}
 mmbot = "*"
 pandas = "*"
@@ -19,7 +20,6 @@ peewee = "*"
 pefile = "*"
 PyMySQL = "*"
 pypcapkit = {extras = ["dpkt"],version = ">=0.13.3.post2"}
-python-magic = "*"
 PyYAML = "*"
 requests-futures = "*"
 

@@ -25,11 +25,11 @@ PCAP_MGC = (b'\xa1\xb2\x3c\x4d',
 
 def is_pcap(file):
     with contextlib.suppress(Exception):
-        mime = magic.from_file(file, mime=True)
-        if mime == 'application/vnd.tcpdump.pcap':
+        report = magic.detect_from_filename(file)
+        if report.mime_type == 'application/vnd.tcpdump.pcap':
             return True
-        if mime == 'application/octet-stream':
-            info = magic.from_file(file).casefold()
+        if report.mime_type == 'application/octet-stream':
+            info = report.name.casefold()
             if 'pcap' in info:
                 return True
             if 'capture' in info:

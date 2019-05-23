@@ -1,3 +1,9 @@
+### May 22nd, 2019
+
+[ ] try https://github.com/dchad/malware-detection
+[ ] try https://github.com/rfxn/linux-malware-detect
+[ ] try https://github.com/jacob-baines/elfparser
+
 ### May 15th, 2019
 
 [ ] analyse phishing emails
@@ -25,6 +31,6 @@
 
 [x] revise `workdir` in API config
 [x] try `PyInstaller` to bundle BroAPT-App functions
-[x] try `MaliciousMacroBot`: https://github.com/egaus/MaliciousMacroBot
+[ ] try `MaliciousMacroBot`: https://github.com/egaus/MaliciousMacroBot
 [ ] try `JaSt`: https://github.com/Aurore54F/JaSt
 [x] try `AndroPyTool`: https://github.com/alexMyG/AndroPyTool

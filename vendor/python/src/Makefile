@@ -30,8 +30,8 @@ install: init
 	# install dependencies
 	pipenv install \
 	    dataclasses \
+	    file-magic \
 	    pandas \
-	    python-magic \
 	    PyYAML \
 	    requests
 

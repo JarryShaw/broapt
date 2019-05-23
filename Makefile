@@ -7,7 +7,7 @@ export PIPENV_MAX_DEPTH
 export PIPENV_CLEAR
 
 run:
-	cd source && bash init.sh
+	$(MAKE) -C source run
 
 build: build-bro build-broker
 commit: gitlab-commit git-commit

@@ -106,9 +106,9 @@ application:
       - yum install -y git
       - git clone https://github.com/egaus/MaliciousMacroBot.git
       - ${PYTHON36} -m pip install ./MaliciousMacroBot/
-      # - rm -rf ./MaliciousMacroBot/
-      # - yum erase git -y
-      - yum clean all -y
+      - rm -rf ./MaliciousMacroBot/
+      # - yum erase -y git
+      - yum clean -y all
     report: ${PYTHON36} MaliciousMacroBot-detect.py
   msword: *officedocument
   vnd.ms-excel: *officedocument
@@ -116,6 +116,17 @@ application:
   vnd.openxmlformats-officedocument.custom-properties+xml: *officedocument
   vnd.openxmlformats-officedocument.customxmlproperties+xml: *officedocument
   vnd.openxmlformats-officedocument.drawing+xml: *officedocument
+  # x-executable:
+  #   ## ELF Parser
+  #   workdir: ELF-Parser
+  #   install:
+  #     - yum install -y git cmake make boost-devel gcc gcc-g++
+  #     - git clone https://github.com/jacob-baines/elfparser.git
+  #     - ${SHELL} build.sh
+  #     - rm -rf ./elfparser/
+  #     # - yum erase -y git cmake make
+  #     - yum clean -y all
+  #   report:
 
 # APIs for `audio` media type
 audio:

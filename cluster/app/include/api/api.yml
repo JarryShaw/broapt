@@ -106,7 +106,7 @@ application:
       - apt-get install -y --no-install-recommends git
       - git clone https://github.com/egaus/MaliciousMacroBot.git
       - ${PYTHON36} -m pip install ./MaliciousMacroBot/
-      # - rm -rf ./MaliciousMacroBot/
+      - rm -rf ./MaliciousMacroBot/
       # - apt-get remove -y --auto-remove git
       - apt-get clean
     report: ${PYTHON36} MaliciousMacroBot-detect.py

@@ -102,8 +102,8 @@ def generate_log(log_root, log_stem, log_uuid):
         mime_type = None
         dump_path = os.path.join(DUMP_PATH, local_name)
         if os.path.exists(dump_path):
-            with contextlib.suppress(magic.MagicException):
-                mime_type = magic.from_file(dump_path, mime=True)
+            with contextlib.suppress(Exception):
+                mime_type = magic.detect_from_filename(dump_path).mime_type
             if mime_type is None or MIME_REGEX.match(mime_type) is None:
                 if MIME_MODE:
                     local_name = rename_dump(local_name, line.mime_type)

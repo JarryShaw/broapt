@@ -6,6 +6,9 @@ init: mkdir-dump mkdir-logs
 build: build-darwin build-linux
 clean: clean-api clean-build clean-dump clean-logs
 
+run:
+	bash init.sh
+
 bundle:
 	pipenv run pyinstaller -F server/spec/broaptd.spec
 	cp dist/broaptd bin/broaptd

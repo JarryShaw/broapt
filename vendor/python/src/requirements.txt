@@ -7,11 +7,11 @@ wheel==0.33.4
 certifi==2019.3.9
 chardet==3.0.4
 dataclasses==0.6
+file-magic==0.4.0
 idna==2.8
 numpy==1.16.3
 pandas==0.24.2
 python-dateutil==2.8.0
-python-magic==0.4.15
 pytz==2019.1
 PyYAML==5.1
 requests==2.22.0
