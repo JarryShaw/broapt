@@ -50,6 +50,7 @@ def remote(entry, mime, api):
         mime=mime,
         uuid=entry.uuid,
         report=api.report,
+        shared=api.shared,
         inited=api.inited.value,
         workdir=api.workdir,
         environ=api.environ,
@@ -122,21 +123,16 @@ def issue(mime):
 
 
 def init(api, cwd, env, mime, uuid):  # pylint: disable=inconsistent-return-statements
-    while api.locked.value:
-        time.sleep(INTERVAL)
     if api.inited.value:
         return EXIT_SUCCESS
 
-    api.locked.value = True
     install_log = 1
     for command in api.install:
         log = f'{uuid}-install.{install_log}'
         if run(command, cwd, env, mime, file=log):
-            api.locked.value = False
             return EXIT_FAILURE
         install_log += 1
     api.inited.value = True
-    api.locked.value = False
     return EXIT_SUCCESS
 
 
@@ -194,8 +190,9 @@ def process(entry):  # pylint: disable=inconsistent-return-statements
 
     # run install commands
     if not api.inited.value:
-        if init(api, cwd, env, mime, entry.uuid):
-            return issue(mime)
+        with api.locked:
+            if init(api, cwd, env, mime, entry.uuid):
+                return issue(mime)
 
     # run scripts commands
     scripts_log = 1

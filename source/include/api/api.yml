@@ -54,22 +54,22 @@ environment:
 ##
 ## BroAPT will work as following:
 ##
-## 1. if run for the first time, run the following commands:
+## 1. set the following environment variables
+##    # per target file
+##    - BROAPT_PATH="/dump/application/pdf/test.pdf"
+##    - BROAPT_MIME="application/pdf"
+##    # per API configuration
+##    - ENV_FOO=1
+##    - ENV_BAR="this is an environment variable"
+## 2. change the current working directory to
+##    `/api/application/pdf/pdf_analysis`
+## 3. if run for the first time, run the following commands:
 ##    - `apt-get update`
 ##    - `apt-get install -y python python-pip`
 ##    - `python -m pip install -r requirements.txt`
 ##    - `rm -rf /var/lib/apt/lists/*`
 ##    - `apt-get remove -y --auto-remove python-pip`
 ##    - `apt-get clean`
-## 2. set the following environment variables
-##    # per target file
-##    - BROAPT_FILE="/dump/application/pdf/test.pdf"
-##    - BROAPT_MIME="application/pdf"
-##    # per API configuration
-##    - ENV_FOO=1
-##    - ENV_BAR="this is an environment variable"
-## 3. change the current working directory to
-##    `/api/application/pdf/pdf_analysis`
 ## 4. run the following mid-stage commands:
 ##    - `/usr/bin/python detect.py [...]`
 ##    - `...`
@@ -104,24 +104,94 @@ application:
       MMB_LOG: /var/log/bro/tmp/
     install:
       - yum install -y git
-      - git clone https://github.com/egaus/MaliciousMacroBot.git
+      - test -d ./MaliciousMacroBot/ ||
+        git clone https://github.com/egaus/MaliciousMacroBot.git
       - ${PYTHON36} -m pip install ./MaliciousMacroBot/
-      - rm -rf ./MaliciousMacroBot/
+      # - rm -rf ./MaliciousMacroBot/
       # - yum erase -y git
       - yum clean -y all
     report: ${PYTHON36} MaliciousMacroBot-detect.py
+    shared: officedocument
   msword: *officedocument
   vnd.ms-excel: *officedocument
-  vnd.openxmlformats-officedocument: *officedocument
   vnd.openxmlformats-officedocument.custom-properties+xml: *officedocument
   vnd.openxmlformats-officedocument.customxmlproperties+xml: *officedocument
   vnd.openxmlformats-officedocument.drawing+xml: *officedocument
+  vnd.openxmlformats-officedocument.drawingml.chart+xml: *officedocument
+  vnd.openxmlformats-officedocument.drawingml.chartshapes+xml: *officedocument
+  vnd.openxmlformats-officedocument.drawingml.diagramcolors+xml: *officedocument
+  vnd.openxmlformats-officedocument.drawingml.diagramdata+xml: *officedocument
+  vnd.openxmlformats-officedocument.drawingml.diagramlayout+xml: *officedocument
+  vnd.openxmlformats-officedocument.drawingml.diagramstyle+xml: *officedocument
+  vnd.openxmlformats-officedocument.extended-properties+xml: *officedocument
+  vnd.openxmlformats-officedocument.presentationml.commentauthors+xml: *officedocument
+  vnd.openxmlformats-officedocument.presentationml.comments+xml: *officedocument
+  vnd.openxmlformats-officedocument.presentationml.handoutmaster+xml: *officedocument
+  vnd.openxmlformats-officedocument.presentationml.notesmaster+xml: *officedocument
+  vnd.openxmlformats-officedocument.presentationml.notesslide+xml: *officedocument
+  vnd.openxmlformats-officedocument.presentationml.presentation: *officedocument
+  vnd.openxmlformats-officedocument.presentationml.presentation.main+xml: *officedocument
+  vnd.openxmlformats-officedocument.presentationml.presprops+xml: *officedocument
+  vnd.openxmlformats-officedocument.presentationml.slide: *officedocument
+  vnd.openxmlformats-officedocument.presentationml.slide+xml: *officedocument
+  vnd.openxmlformats-officedocument.presentationml.slidelayout+xml: *officedocument
+  vnd.openxmlformats-officedocument.presentationml.slidemaster+xml: *officedocument
+  vnd.openxmlformats-officedocument.presentationml.slideshow: *officedocument
+  vnd.openxmlformats-officedocument.presentationml.slideshow.main+xml: *officedocument
+  vnd.openxmlformats-officedocument.presentationml.slideupdateinfo+xml: *officedocument
+  vnd.openxmlformats-officedocument.presentationml.tablestyles+xml: *officedocument
+  vnd.openxmlformats-officedocument.presentationml.tags+xml: *officedocument
+  vnd.openxmlformats-officedocument.presentationml.template: *officedocument
+  vnd.openxmlformats-officedocument.presentationml.template.main+xml: *officedocument
+  vnd.openxmlformats-officedocument.presentationml.viewprops+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.calcchain+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.chartsheet+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.comments+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.connections+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.dialogsheet+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.externallink+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.pivotcachedefinition+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.pivotcacherecords+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.pivottable+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.querytable+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.revisionheaders+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.revisionlog+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.sharedstrings+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.sheet: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.sheetmetadata+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.styles+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.table+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.tablesinglecells+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.template: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.template.main+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.usernames+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.volatiledependencies+xml: *officedocument
+  vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml: *officedocument
+  vnd.openxmlformats-officedocument.theme+xml: *officedocument
+  vnd.openxmlformats-officedocument.themeoverride+xml: *officedocument
+  vnd.openxmlformats-officedocument.vmldrawing: *officedocument
+  vnd.openxmlformats-officedocument.wordprocessingml.comments+xml: *officedocument
+  vnd.openxmlformats-officedocument.wordprocessingml.document: *officedocument
+  vnd.openxmlformats-officedocument.wordprocessingml.document.glossary+xml: *officedocument
+  vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml: *officedocument
+  vnd.openxmlformats-officedocument.wordprocessingml.endnotes+xml: *officedocument
+  vnd.openxmlformats-officedocument.wordprocessingml.fonttable+xml: *officedocument
+  vnd.openxmlformats-officedocument.wordprocessingml.footer+xml: *officedocument
+  vnd.openxmlformats-officedocument.wordprocessingml.footnotes+xml: *officedocument
+  vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml: *officedocument
+  vnd.openxmlformats-officedocument.wordprocessingml.settings+xml: *officedocument
+  vnd.openxmlformats-officedocument.wordprocessingml.styles+xml: *officedocument
+  vnd.openxmlformats-officedocument.wordprocessingml.template: *officedocument
+  vnd.openxmlformats-officedocument.wordprocessingml.template.main+xml: *officedocument
+  vnd.openxmlformats-officedocument.wordprocessingml.websettings+xml: *officedocument
   # x-executable:
   #   ## ELF Parser
   #   workdir: ELF-Parser
   #   install:
   #     - yum install -y git cmake make boost-devel gcc gcc-g++
-  #     - git clone https://github.com/jacob-baines/elfparser.git
+  #     - test -d ./elfparser/ ||
+  #       git clone https://github.com/jacob-baines/elfparser.git
   #     - ${SHELL} build.sh
   #     - rm -rf ./elfparser/
   #     # - yum erase -y git cmake make

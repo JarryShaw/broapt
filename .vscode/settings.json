@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "APIINIT",
         "APKS",
         "CHKSUM",
         "CPPFLAGS",
@@ -24,6 +25,7 @@
         "cvzf",
         "datas",
         "deps",
+        "drawingml",
         "dstip",
         "dylib",
         "emsp",
@@ -51,6 +53,7 @@
         "parityfec",
         "pcapfile",
         "pefile",
+        "presentationml",
         "pyyaml",
         "r'filename",
         "r'set",
@@ -61,12 +64,15 @@
         "resp",
         "rsplit",
         "sched",
+        "spreadsheetml",
         "srcip",
         "sysconf",
         "tolist",
         "uids",
         "uint",
         "vars",
+        "vmldrawing",
+        "wordprocessingml",
         "workdir",
         "zeek"
     ],

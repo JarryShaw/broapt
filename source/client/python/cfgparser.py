@@ -26,21 +26,23 @@ MEDIA_TYPE = ('application',
 
 # API entries
 API_DICT = dict()
+API_LOCK = dict()
+API_INIT = dict()
 
 
 # API entry
 @dataclasses.dataclass
 class API:
-    remote: bool
-    report: str
-
     workdir: str
     environ: dict
     install: list
     scripts: list
+    report: str
 
-    inited: bool
-    locked: bool
+    remote: bool
+    shared: str
+    inited: multiprocessing.Value
+    locked: multiprocessing.Lock
 
 
 class ConfigError(Exception):
@@ -65,6 +67,11 @@ def parse_cmd(context, mimetype, environ):
     if cfg_report is None:
         raise ReportNotFoundError
 
+    cfg_shared = context.get('shared', mimetype)
+    if cfg_shared not in API_LOCK:
+        API_LOCK[cfg_shared] = multiprocessing.Lock()
+        API_INIT[cfg_shared] = multiprocessing.Value('B', False)
+
     cfg_environ = copy.deepcopy(environ)
     for (env, val) in context.get('environ', dict()).items():
         cfg_environ[str(env)] = str(val)
@@ -76,8 +83,9 @@ def parse_cmd(context, mimetype, environ):
         environ=cfg_environ,
         install=cfg_install,
         scripts=cfg_scripts,
-        inited=multiprocessing.Value('B', False),
-        locked=multiprocessing.Value('B', False),
+        shared=cfg_shared,
+        inited=API_INIT[cfg_shared],
+        locked=API_LOCK[cfg_shared],
     )
 
 

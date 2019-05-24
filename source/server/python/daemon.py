@@ -21,6 +21,7 @@ class Info:
 
     report: str
     inited: bool
+    locked: typing.Any
 
     workdir: str
     environ: typing.Mapping[str, str]
@@ -55,6 +56,8 @@ __help__ = os.linesep.join((
 manager = multiprocessing.Manager()
 RUNNING = manager.list()  # list[uuid.UUID]
 SCANNED = manager.dict()  # dict[uuid.UUID, bool]
+APILOCK = manager.dict()  # dict[shared, manager.Lock]
+APIINIT = manager.dict()  # dict[shared, manager.Value]
 
 
 @app.errorhandler(ValueError)
@@ -93,7 +96,7 @@ def help_():
 def list_():
     info = list()
     info.extend(dict(id=uid, inited=None, scanned=True, reported=None, deleted=False) for uid in RUNNING)
-    info.extend(dict(id=uid, inited=None, scanned=True, reported=flag, deleted=False) for (uid, flag) in SCANNED.items())
+    info.extend(dict(id=uid, inited=None, scanned=True, reported=flag, deleted=False) for (uid, flag) in SCANNED.items())  # pylint: disable=line-too-long
     return flask.jsonify(info)
 
 
@@ -117,12 +120,19 @@ def scan():
     json = flask.request.get_json()
     if json is None:
         flask.abort(400)
+
+    shared = json['shared']
+    if shared not in APILOCK:
+        APILOCK[shared] = manager.Lock()  # pylint: disable=no-member
+        APIINIT[shared] = manager.Value('B', json['inited'])
+
     info = Info(
         name=json['name'],
         uuid=json['uuid'],
         mime=json['mime'],
         report=json['report'],
-        inited=json['inited'],
+        inited=APIINIT[shared],
+        locked=APILOCK[shared],
         workdir=json['workdir'],
         environ=json['environ'],
         install=json['install'],
@@ -136,7 +146,7 @@ def scan():
         RUNNING.remove(info.uuid)
     SCANNED[info.uuid] = flag
 
-    return flask.jsonify(id=info.uuid, inited=info.inited, scanned=True, reported=flag, deleted=False)
+    return flask.jsonify(id=info.uuid, inited=info.inited.value, scanned=True, reported=flag, deleted=False)
 
 
 @app.route('/api/v1.0/delete', methods=['DELETE'])

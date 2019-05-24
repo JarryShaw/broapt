@@ -12,17 +12,11 @@ import traceback
 from const import DOCKER_COMPOSE, FILE
 
 
-class APIError(Exception):
-    pass
-
-
 def suppress(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         try:
             func(*args, **kwargs)
-        except APIError:
-            raise
         except Exception:
             traceback.print_exc()
     return wrapper

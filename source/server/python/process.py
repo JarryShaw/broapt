@@ -85,7 +85,7 @@ def init(info):
         if run(command, info, file=log):
             return EXIT_FAILURE
         install_log += 1
-    info.inited = True
+    info.inited.value = True
     return EXIT_SUCCESS
 
 
@@ -102,9 +102,10 @@ def process(info):
     info.workdir = make_cwd(info)
 
     # run install commands
-    if not info.inited:
-        if init(info):
-            return False
+    if not info.inited.value:
+        with info.locked:
+            if init(info):
+                return False
 
     # run scripts commands
     scripts_log = 1

@@ -57,7 +57,7 @@ services:
       ## daemon server
       SERVER_NAME_HOST: host.docker.internal
       SERVER_NAME_PORT: 5000
-    restart: "always"
+    restart: "on-failure"
     volumes:
       - ../../sample:/pcap
       - ../dump:/dump
