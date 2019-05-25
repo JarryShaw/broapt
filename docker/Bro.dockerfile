@@ -47,7 +47,7 @@ RUN rm -rf \
         ## Bro build & archive
         /bro-2.6.1 \
         /tmp/bro-2.6.1.tar.gz \
- &&  apt-get remove -y --auto-remove \
+ && apt-get remove -y --auto-remove \
         wget \
         software-properties-common \
         ## Bro & Broker

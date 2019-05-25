@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 
-set -ex
+set -aex
+
+# load environs
+if [ -f .env ] ; then
+    source .env
+fi
 
 # paths
-LOGS_PATH=${BROAPT_LOGS_PATH="/var/log/bro/"}
-APK_PATH=${APK_PATH="/var/log/bro/tmp/"}
+LOGS_PATH=${BROAPT_LOGS_PATH="/home/traffic/log/bro/"}
+APK_PATH=${APK_PATH="/home/traffic/log/bro/tmp/"}
 
 # macros
 mime=${BROAPT_MIME}

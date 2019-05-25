@@ -104,6 +104,8 @@ clean-logs:
 
 clean-api:
 	rm -rf include/api/application/vnd.openxmlformats-officedocument/MaliciousMacroBot
+	rm -rf include/api/application/x-executable/elfparser
+	rm -rf include/api/application/javascript/JaSt
 
 mkdir-dump:
 	mkdir -p ./dump
