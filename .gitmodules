@@ -19,3 +19,12 @@
 [submodule "vendor/tools/MaliciousMacroBot"]
 	path = vendor/tools/MaliciousMacroBot
 	url = https://github.com/egaus/MaliciousMacroBot.git
+[submodule "vendor/tools/elfparser"]
+	path = vendor/tools/elfparser
+	url = https://github.com/jacob-baines/elfparser
+[submodule "vendor/tools/JaSt"]
+	path = vendor/tools/JaSt
+	url = https://github.com/Aurore54F/JaSt
+[submodule "vendor/tools/AndroPyTool"]
+	path = vendor/tools/AndroPyTool
+	url = https://github.com/alexMyG/AndroPyTool
