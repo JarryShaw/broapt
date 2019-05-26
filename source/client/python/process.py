@@ -28,7 +28,7 @@ def rename_dump(local_name, mime_type):
         match = FILE_REGEX.match(local_name)
         if match is None:
             return local_name
-        stem = f'{match.group("protocol")}-{match.group("fuid")}'
+        stem = f'{match.group("protocol")}-{match.group("fuid")}.{match.group("pcap")}'
         fext = match.group('extension')
     mime = mime_type.replace('/', '.', 1)
 
@@ -116,10 +116,13 @@ def process(file):
 
     stem = pathlib.Path(file).stem
     uid = uuid.uuid4()
+
+    dest_stem = f'{stem}-{uid}'
     file_salt(uid)
 
     env = os.environ
     env['BRO_LOG_SUFFIX'] = f'{uid}.log'
+    env['BROAPT_PCAP'] = dest_stem
 
     args = ['bro']
     if BARE_MODE:
@@ -139,7 +142,6 @@ def process(file):
     stderr.close()
     end = time.time()
 
-    dest_stem = f'{stem}-{uid}'
     dest = os.path.join(LOGS_PATH, dest_stem)
     os.makedirs(dest, exist_ok=True)
 

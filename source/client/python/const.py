@@ -71,6 +71,9 @@ FILE_REGEX = re.compile(r'''
     # file UID
     (?P<fuid>F\w+)
     \.
+    # PCAP source
+    (?P<pcap>\w+)
+    \.
     # media-type
     (?P<media_type>application|audio|example|font|image|message|model|multipart|text|video|\S+)
     \.

@@ -73,6 +73,11 @@ event file_sniff(f: fa_file, meta: fa_metadata) {
             fext = cat(sub(mgct, /\//, "."), ".", fext);
         }
 
+        local pcap = getenv("BROAPT_PCAP");
+        if ( pcap == "" )
+            pcap = "unknown";
+        fext = fmt("%s.%s", pcap, fext);
+
         local name = fmt("%s/%s-%s.%s", mgct, f$source, f$id, fext);
         Files::add_analyzer(f, Files::ANALYZER_EXTRACT, [$extract_filename=name]);
 
