@@ -112,7 +112,7 @@ context = list()
 with open(os.path.join(ROOT, 'scripts', 'config.bro')) as config:
     for line in config:
         line = MIME_REGEX.sub(rf'\g<prefix>{"T" if MIME_MODE else "F"}\g<suffix>', line)
-        line = LOGS_REGEX.sub(rf'\g<prefix>{os.path.join(LOGS_PATH, "processed_mime.log")}\g<suffix>', line)
+        line = LOGS_REGEX.sub(rf'\g<prefix>{os.path.join(LOGS_PATH, "mime.log")}\g<suffix>', line)
         line = HASH_REGEX_MD5.sub(rf'\g<prefix>{"T" if HASH_MODE_MD5 else "F"}\g<suffix>', line)
         line = HASH_REGEX_SHA1.sub(rf'\g<prefix>{"T" if HASH_MODE_SHA1 else "F"}\g<suffix>', line)
         line = HASH_REGEX_SHA256.sub(rf'\g<prefix>{"T" if HASH_MODE_SHA256 else "F"}\g<suffix>', line)

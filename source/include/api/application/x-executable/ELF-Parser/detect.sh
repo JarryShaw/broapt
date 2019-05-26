@@ -19,7 +19,7 @@ mime=${BROAPT_MIME}
 path=${BROAPT_PATH}
 root=$(dirname ${path})
 name=$(basename ${path})
-logs="${ELF_PATH}/${name%\.+}.out"
+logs="${ELF_PATH}/${name%\.+}.log"
 
 # run ELF-Parser
 docker run -it -v${root}:/elf elfparser:1.4.0 \
@@ -43,4 +43,4 @@ fi
 # generate report
 time=$(date +%s.%N)
 report="{\"time\": ${time}, \"path\": \"${path}\", \"mime\": \"${mime}\", \"rate\": ${rate}}"
-echo ${report} > "${LOGS_PATH}/processed_rate.log"
+echo ${report} > "${LOGS_PATH}/rate.log"

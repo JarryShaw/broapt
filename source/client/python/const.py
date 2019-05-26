@@ -32,9 +32,9 @@ BARE_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_BARE_MODE', 'false').casefold()
 NO_CHKSUM = BOOLEAN_STATES.get(os.getenv('BROAPT_NO_CHKSUM', 'true').casefold(), True)
 
 # log files
-FILE = os.path.join(LOGS_PATH, 'processed_file.log')
-TIME = os.path.join(LOGS_PATH, 'processed_time.log')
-INFO = os.path.join(LOGS_PATH, 'processed_info.log')
+FILE = os.path.join(LOGS_PATH, 'file.log')
+TIME = os.path.join(LOGS_PATH, 'time.log')
+INFO = os.path.join(LOGS_PATH, 'info.log')
 
 # command retry
 try:
@@ -60,8 +60,8 @@ except (TypeError, ValueError):
 SERVER_NAME = f'http://{SERVER_NAME_HOST}:{SERVER_NAME_PORT}/api/v1.0/scan'
 
 # log files
-DUMP = os.path.join(LOGS_PATH, 'processed_dump.log')
-FAIL = os.path.join(LOGS_PATH, 'processed_fail.log')
+DUMP = os.path.join(LOGS_PATH, 'dump.log')
+FAIL = os.path.join(LOGS_PATH, 'fail.log')
 
 # file name regex
 FILE_REGEX = re.compile(r'''
@@ -72,7 +72,7 @@ FILE_REGEX = re.compile(r'''
     (?P<fuid>F\w+)
     \.
     # PCAP source
-    (?P<pcap>\w+)
+    (?P<pcap>.+?)
     \.
     # media-type
     (?P<media_type>application|audio|example|font|image|message|model|multipart|text|video|\S+)

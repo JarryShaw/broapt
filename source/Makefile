@@ -69,13 +69,15 @@ clean-logs:
 	if [ -d /home/traffic/log/bro ]; then \
 	    rm -f /home/traffic/log/bro/*.lock; \
 	    > /home/traffic/log/bro/http.log; \
-	    > /home/traffic/log/bro/processed_file.log; \
-	    > /home/traffic/log/bro/processed_info.log; \
-	    > /home/traffic/log/bro/processed_mime.log; \
-	    > /home/traffic/log/bro/processed_time.log; \
-	    > /home/traffic/log/bro/processed_dump.log; \
-	    > /home/traffic/log/bro/processed_fail.log; \
-	    > /home/traffic/log/bro/processed_rate.log; \
+	    > /home/traffic/log/bro/file.log; \
+	    > /home/traffic/log/bro/info.log; \
+	    > /home/traffic/log/bro/mime.log; \
+	    > /home/traffic/log/bro/time.log; \
+	    > /home/traffic/log/bro/dump.log; \
+	    > /home/traffic/log/bro/fail.log; \
+	    > /home/traffic/log/bro/rate.log; \
+	    > /home/traffic/log/bro/stdout.log; \
+	    > /home/traffic/log/bro/stderr.log; \
 	    rm -rf /home/traffic/log/bro/tmp; \
 	    mkdir -p /home/traffic/log/bro/tmp; \
 	    rm -rf /home/traffic/log/bro/api; \
@@ -88,13 +90,15 @@ clean-logs:
 	else \
 	    rm -f ./logs/*.lock; \
 	    > ./logs/http.log; \
-	    > ./logs/processed_dump.log; \
-	    > ./logs/processed_fail.log; \
-	    > ./logs/processed_rate.log; \
-	    > ./logs/processed_file.log; \
-	    > ./logs/processed_info.log; \
-	    > ./logs/processed_mime.log; \
-	    > ./logs/processed_time.log; \
+	    > ./logs/dump.log; \
+	    > ./logs/fail.log; \
+	    > ./logs/rate.log; \
+	    > ./logs/file.log; \
+	    > ./logs/info.log; \
+	    > ./logs/mime.log; \
+	    > ./logs/time.log; \
+	    > ./logs/stderr.log; \
+	    > ./logs/stdout.log; \
 	    find ./logs \
 		    ! -iname 'tmp' \
 		    ! -iname 'api' -type d -depth 1 -print0 | xargs -0 rm -rf; \

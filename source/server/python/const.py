@@ -25,5 +25,5 @@ EXIT_SUCCESS = 0
 EXIT_FAILURE = 1
 
 # log files
-FILE = os.path.join(LOGS_PATH, 'processed_dump.log')
-FAIL = os.path.join(LOGS_PATH, 'processed_fail.log')
+FILE = os.path.join(LOGS_PATH, 'dump.log')
+FAIL = os.path.join(LOGS_PATH, 'fail.log')

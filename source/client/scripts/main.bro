@@ -21,7 +21,7 @@ export {
     option entropy: bool = F;
 
     ## Path to missing MIME log file
-    const logs: string = "/var/log/bro/processed_mime.log" &redef;
+    const logs: string = "/var/log/bro/mime.log" &redef;
     ## If store files by MIME types
     const mime: bool = T &redef;
 

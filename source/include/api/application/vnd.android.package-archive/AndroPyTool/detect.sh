@@ -34,4 +34,4 @@ else
 # generate report
 time=$(date +%s.%N)
 report="{\"time\": ${time}, \"path\": \"${path}\", \"mime\": \"${mime}\", \"rate\": ${rate}}"
-echo ${report} > "${LOGS_PATH}/processed_rate.log"
+echo ${report} > "${LOGS_PATH}/rate.log"
