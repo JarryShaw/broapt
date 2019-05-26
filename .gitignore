@@ -2,9 +2,6 @@
 tmp/
 temp/
 
-build/
-!/build/
-
 *.dat
 nohup.out
 
@@ -19,10 +16,10 @@ logs/
 contents/
 dump/
 dumps/
-extecte_files/
+extract_files/
 
 test/
-sample/
+/sample/
 extract_files/
 
 vendor/bro*

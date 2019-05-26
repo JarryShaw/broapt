@@ -22,7 +22,7 @@ name=$(basename ${path})
 logs="${ELF_PATH}/${name%\.+}.log"
 
 # run ELF-Parser
-docker run -it -v${root}:/elf elfparser:1.4.0 \
+docker run --volume=${root}:/elf elfparser:1.4.0 \
     --file "/elf/${name}" \
     --reasons \
     --capabilities \

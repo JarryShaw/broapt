@@ -104,18 +104,25 @@ submodule-pull:
 gitlab-clean:
 	find ${REPO_PATH} \
 	    ! -iname 'README' \
+	    ! -iname '.git' \
 	    ! -iname '.gitkeep' \
 	    ! -iname 'vendor' -depth 1 -print0 | xargs -0 rm -rf
 	find ${REPO_PATH}/vendor \
 	    ! -iname 'broker' \
 	    ! -iname 'file-extraction' \
-	    ! -iname 'json' \
-		! -iname 'pypcapkit' \
+	    ! -iname 'tools' \
 	    ! -iname 'zeek' -depth 1 -print0 | xargs -0 rm -rf
+	find ${REPO_PATH}/vendor/tools \
+	    ! -iname 'AndroPyTool' \
+	    ! -iname 'bro-phishing' \
+	    ! -iname 'elfparser' \
+	    ! -iname 'JaSt' \
+	    ! -iname 'MaliciousMacroBot' \
+	    ! -iname 'smtp-url-analysis' -depth 1 -print 0 | xargs -0 rm -rf
 
 gitlab-copy: gitlab-clean
 	# copy .gitmodules
-	cat .gitmodules | sed "s/vendor/xiaojiawei\/vendor/" > gitlab/.gitmodules
+	cat .gitmodules | sed "/gitlab/d" > gitlab/.gitmodules
 	# copy top-level files
 	find . \
 	    ! -iname '.gitmodules' \
@@ -126,10 +133,6 @@ gitlab-copy: gitlab-clean
 	mkdir -p ${REPO_PATH}/archive
 	find archive \
 	    -depth 1 -exec cp -rf {} ${REPO_PATH}/archive \;
-	# copy build
-	mkdir -p ${REPO_PATH}/build
-	find build \
-	    ! -iname 'venv' -depth 1 -exec cp -rf {} ${REPO_PATH}/build \;
     # copy cluster
 	mkdir -p ${REPO_PATH}/cluster
 	cp -f \
@@ -145,6 +148,10 @@ gitlab-copy: gitlab-clean
 	find cluster -iname 'utils' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
 	# copy docker
 	cp -rf docker ${REPO_PATH}
+	# copy make
+	mkdir -p ${REPO_PATH}/make
+	find make \
+	    ! -iname 'venv' -depth 1 -exec cp -rf {} ${REPO_PATH}/make \;
 	# copy source
 	mkdir -p ${REPO_PATH}/source
 	$(MAKE) -C source build clean

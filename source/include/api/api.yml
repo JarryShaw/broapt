@@ -89,6 +89,7 @@ application:
     environ:
       JS_LOG: /var/log/bro/tmp/
     install:
+      - yum install -y epel-release
       - yum install -y git nodejs
       - test -d ./JaSt/ ||
         git clone https://github.com/Aurore54F/JaSt.git
