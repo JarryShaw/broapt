@@ -76,7 +76,7 @@ def make_json(line):
     headers = list()
     headers.extend(filter(lambda header: not is_nan(header), client_headers))
     headers.extend(filter(lambda header: not is_nan(header), server_headers))
-    return ','.join(make_b64(header) for header in headers)
+    return ','.join(filter(lambda header: len(header), headers))
 
 
 def beautify(obj):

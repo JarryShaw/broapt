@@ -118,6 +118,8 @@ def remote_proc():
     proc_logs.start()
     try:
         yield
+    except BaseException:
+        traceback.print_exc()
     finally:
         os.kill(proc_dump.pid, signal.SIGUSR1)
         os.kill(proc_logs.pid, signal.SIGUSR2)

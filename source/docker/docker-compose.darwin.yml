@@ -39,9 +39,28 @@ services:
       ## Bro MIME white list
       BROAPT_LOAD_MIME: application/msword;
                         application/ms-excel;
+                        application/octet-stream;
                         application/pdf;
                         application/vnd.android.package-archive;
                         application/vnd.microsoft.portable-executable;
+                        application/vnd.ms-excel;
+                        application/vnd.ms-excel.addin.macroenabled.12;
+                        application/vnd.ms-excel.sheet.binary.macroenabled.12;
+                        application/vnd.ms-excel.sheet.macroenabled.12;
+                        application/vnd.ms-excel.template.macroenabled.12;
+                        application/vnd.ms-office.activex+xml;
+                        application/vnd.ms-officetheme;
+                        application/vnd.ms-powerpoint;
+                        application/vnd.ms-powerpoint.addin.macroenabled.12;
+                        application/vnd.ms-powerpoint.presentation.macroenabled.12;
+                        application/vnd.ms-powerpoint.slide.macroenabled.12;
+                        application/vnd.ms-powerpoint.slideshow.macroenabled.12;
+                        application/vnd.ms-powerpoint.template.macroenabled.12;
+                        application/vnd.ms-word.document.macroenabled.12;
+                        application/vnd.ms-word.template.macroenabled.12;
+                        application/vnd.ms-works;
+                        application/vnd.ms-wpl;
+                        application/vnd.ms-xpsdocument;
                         application/vnd.openxmlformats-officedocument;
                         application/vnd.openxmlformats-officedocument.custom-properties+xml;
                         application/vnd.openxmlformats-officedocument.customxmlproperties+xml;
@@ -124,9 +143,9 @@ services:
       ## Bro extract file size limit
       BROAPT_SIZE_LIMIT: 0
       ## concurrent hook processes
-      BROAPT_HOOK_CPU: 5
+      BROAPT_HOOK_CPU: 1
       ## concurrent scan processes
-      BROAPT_SCAN_CPU: 10
+      BROAPT_SCAN_CPU: 2
       ## command retry
       BROAPT_MAX_RETRY: 3
       ## path to detection APIs

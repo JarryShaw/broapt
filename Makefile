@@ -20,6 +20,9 @@ pipenv: pipenv-init
 submodule: submodule-clone
 update: pipenv-update download submodule-pull
 
+clean:
+	$(MAKE) -C source clean
+
 pipenv-init:
 	pipenv --python 3.7
 	pipenv install --dev

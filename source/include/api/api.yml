@@ -142,6 +142,24 @@ application:
     shared: officedocument
   msword: *officedocument
   vnd.ms-excel: *officedocument
+  vnd.ms-excel: *officedocument
+  vnd.ms-excel.addin.macroenabled.12: *officedocument
+  vnd.ms-excel.sheet.binary.macroenabled.12: *officedocument
+  vnd.ms-excel.sheet.macroenabled.12: *officedocument
+  vnd.ms-excel.template.macroenabled.12: *officedocument
+  vnd.ms-office.activex+xml: *officedocument
+  vnd.ms-officetheme: *officedocument
+  vnd.ms-powerpoint: *officedocument
+  vnd.ms-powerpoint.addin.macroenabled.12: *officedocument
+  vnd.ms-powerpoint.presentation.macroenabled.12: *officedocument
+  vnd.ms-powerpoint.slide.macroenabled.12: *officedocument
+  vnd.ms-powerpoint.slideshow.macroenabled.12: *officedocument
+  vnd.ms-powerpoint.template.macroenabled.12: *officedocument
+  vnd.ms-word.document.macroenabled.12: *officedocument
+  vnd.ms-word.template.macroenabled.12: *officedocument
+  vnd.ms-works: *officedocument
+  vnd.ms-wpl: *officedocument
+  vnd.ms-xpsdocument: *officedocument
   vnd.openxmlformats-officedocument.custom-properties+xml: *officedocument
   vnd.openxmlformats-officedocument.customxmlproperties+xml: *officedocument
   vnd.openxmlformats-officedocument.drawing+xml: *officedocument
@@ -267,7 +285,7 @@ multipart:
 
 # APIs for `text` media type
 text:
-  # javascript: *javascript
+  javascript: *javascript
 
 # APIs for `video` media type
 video:
