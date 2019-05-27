@@ -50,6 +50,7 @@
         "jsonify",
         "libyaml",
         "linesep",
+        "maldet",
         "mfdocument",
         "mgct",
         "mmbot",

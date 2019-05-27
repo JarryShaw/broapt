@@ -110,6 +110,17 @@ application:
           --f ${BROAPT_PATH}
           --m ./models/broapt-jast
     report: "false"
+  octet-stream: &lmd
+    ## LMD
+    workdir: ${API_ROOT}/application/octet-stream/LMD
+    environ:
+      LMD_LOG: /var/log/bro/tmp/
+    install:
+      - yum install -y git which
+      - test -d ./linux-malware-detect/ ||
+        git clone https://github.com/rfxn/linux-malware-detect.git
+      - ${SHELL} install.sh
+    report: ${SHELL} detect.sh
   vnd.android.package-archive:
     ## AndroPyTool
     remote: true
@@ -285,7 +296,11 @@ multipart:
 
 # APIs for `text` media type
 text:
+  html: *lmd
   javascript: *javascript
+  x-c: *lmd
+  x-perl: *lmd
+  x-php: *lmd
 
 # APIs for `video` media type
 video:
