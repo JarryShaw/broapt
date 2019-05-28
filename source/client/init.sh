@@ -15,6 +15,9 @@ LOGS_PATH=${BROAPT_LOGS_PATH="/var/log/bro/"}
 STDOUT="${LOGS_PATH}/stdout.log"
 STDERR="${LOGS_PATH}/stderr.log"
 
+# compose Bro scripts
+/usr/bin/python3.6 python/compose.py
+
 # run scripts
 /usr/bin/python3.6 python $@ \
     >> ${STDOUT} 2>> ${STDERR} || true
