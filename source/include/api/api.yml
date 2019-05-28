@@ -153,7 +153,6 @@ application:
     shared: officedocument
   msword: *officedocument
   vnd.ms-excel: *officedocument
-  vnd.ms-excel: *officedocument
   vnd.ms-excel.addin.macroenabled.12: *officedocument
   vnd.ms-excel.sheet.binary.macroenabled.12: *officedocument
   vnd.ms-excel.sheet.macroenabled.12: *officedocument

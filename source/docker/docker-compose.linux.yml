@@ -135,7 +135,12 @@ services:
                         application/vnd.openxmlformats-officedocument.wordprocessingml.websettings+xml;
                         application/x-dosexec;
                         application/x-executable;
-                        message/rfc822
+                        message/rfc822;
+                        text/javascript;
+                        text/html;
+                        text/x-c;
+                        text/x-perl;
+                        text/x-php
       ## Bro protocol white list
       BROAPT_LOAD_PROTOCOL: SMTP
       ## Bro file reassembly buffer size
