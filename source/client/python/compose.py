@@ -35,9 +35,12 @@ ENTR_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_ENTROPY_MODE', 'false').casefol
 ## extract files path
 DUMP_PATH_ENV = os.getenv('BROAPT_DUMP_PATH')
 if DUMP_PATH_ENV is None:
-    DUMP_PATH = 'FileExtract::prefix'
-else:
-    DUMP_PATH = '"%s"' % DUMP_PATH_ENV.replace('"', '\\"')
+    try:
+        DUMP_PATH_ENV = subprocess.check_output(['bro', '-e', 'print_file(FileExtract::prefix)'],
+                                                stderr=subprocess.DEVNULL, encoding='utf-8').strip()
+    except subprocess.CalledProcessError:
+        DUMP_PATH_ENV = './extract_files/'
+DUMP_PATH = DUMP_PATH_ENV
 ## buffer size
 try:
     FILE_BUFFER = ctypes.c_uint64(ast.literal_eval(os.getenv('BROAPT_FILE_BUFFER'))).value
@@ -92,6 +95,13 @@ LOAD_PROTOCOL = os.getenv('BROAPT_LOAD_PROTOCOL')
 
 
 def compose():
+    ## extract files path
+    DUMP_PATH_ENV = os.getenv('BROAPT_DUMP_PATH')  # pylint: disable=redefined-outer-name
+    if DUMP_PATH_ENV is None:
+        DUMP_PATH = 'FileExtract::prefix'  # pylint: disable=redefined-outer-name
+    else:
+        DUMP_PATH = '"%s"' % DUMP_PATH_ENV.replace('"', '\\"')
+
     if LOAD_MIME is not None:
         load_file = list()
         for mime_type in filter(len, re.split(r'\s*[,;|]\s*', LOAD_MIME.casefold())):
@@ -133,16 +143,6 @@ def compose():
     context.extend(f'@load {file_name}\n' for file_name in load_file)
     with open(os.path.join(ROOT, 'scripts', 'config.bro'), 'w') as config:
         config.writelines(context)
-
-
-# get real DUMP_PATH
-if DUMP_PATH_ENV is None:
-    try:
-        DUMP_PATH_ENV = subprocess.check_output(['bro', '-e', 'print_file(FileExtract::prefix)'],
-                                                stderr=subprocess.DEVNULL, encoding='utf-8').strip()
-    except subprocess.CalledProcessError:
-        DUMP_PATH_ENV = './extract_files/'
-DUMP_PATH = DUMP_PATH_ENV
 
 
 def file_salt(uid):
