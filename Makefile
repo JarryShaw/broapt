@@ -157,7 +157,8 @@ gitlab-copy: gitlab-clean
 	    ! -iname 'venv' -depth 1 -exec cp -rf {} ${REPO_PATH}/make \;
 	# copy source
 	mkdir -p ${REPO_PATH}/source
-	$(MAKE) -C source build clean
+	$(MAKE) -C source build
+	$(MAKE) -C source clean
 	find source \
 	    ! -iname 'dump' \
 	    ! -iname 'logs' \
