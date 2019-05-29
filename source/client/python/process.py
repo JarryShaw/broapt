@@ -5,6 +5,7 @@ import contextlib
 import glob
 import ipaddress
 import json
+import multiprocessing
 import os
 import pathlib
 import shutil
@@ -118,7 +119,8 @@ def process(file):
     uid = uuid.uuid4()
 
     dest_stem = f'{stem}-{uid}'
-    file_salt(uid)
+    with multiprocessing.Lock():
+        file_salt(uid)
 
     env = os.environ
     env['BRO_LOG_SUFFIX'] = f'{uid}.log'
