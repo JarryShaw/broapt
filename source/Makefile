@@ -110,7 +110,7 @@ clean-api:
 	rm -rf include/api/application/vnd.openxmlformats-officedocument/MaliciousMacroBot
 	rm -rf include/api/application/x-executable/ELF-Parser/elfparser/
 	rm -rf include/api/application/javascript/JaSt/JaSt
-	rm -rf include/api/application/octet-stream/LDM/linux-malware-detection
+	rm -rf include/api/application/octet-stream/LMD/linux-malware-detect
 
 mkdir-dump:
 	mkdir -p ./dump

@@ -160,6 +160,7 @@ services:
       ## daemon server
       SERVER_NAME_HOST: localhost
       SERVER_NAME_PORT: 5000
+    image: broapt
     network_mode: "host"
     restart: "always"
     volumes:
