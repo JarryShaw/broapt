@@ -163,9 +163,14 @@ services:
     image: broapt
     restart: "on-failure"
     volumes:
+      ## path mappings
       - ../../sample:/pcap
       - ../dump:/dump
       - ../logs:/var/log/bro
+      ## site functions
       - ../include/scripts:/broapt/scripts/sites
       - ../include/python:/broapt/python/sites
       - ../include/api:/api/
+      ## change timezone
+      - /etc:/etc
+      - /var/db/timezone/zoneinfo:/usr/share/zoneinfo

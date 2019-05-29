@@ -164,9 +164,14 @@ services:
     network_mode: "host"
     restart: "always"
     volumes:
+      ## path mapping
       - /home/traffic/pcapfile:/pcap
       - /home/traffic/log/extract:/dump
       - /home/traffic/log/bro:/var/log/bro
+      ## site functions
       - ../include/scripts:/broapt/scripts/sites
       - ../include/python:/broapt/python/sites
       - ../include/api:/api/
+      ## change timezone
+      - /etc:/etc
+      - /usr/share/zoneinfo:/usr/share/zoneinfo
