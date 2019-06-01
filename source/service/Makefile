@@ -1,4 +1,5 @@
 setup:
+	cp ../bin/broaptd.linux /usr/local/bin/broaptd
 	cp broaptd.service /usr/lib/systemd/system/
 	cp broaptd.env /etc/sysconfig/
 	systemctl enable broaptd.service
