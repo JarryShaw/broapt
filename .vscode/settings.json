@@ -39,6 +39,7 @@
         "endpointcostparams",
         "endpointpropparams",
         "epel",
+        "excinfo",
         "fext",
         "fuid",
         "gpdash",
