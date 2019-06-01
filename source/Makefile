@@ -2,12 +2,22 @@
 
 include .env
 
+OS = $(shell uname | tr "[[:upper:]]" "[[:lower:]]")
+DAEMONPID = $(shell pgrep bin/broaptd.${OS} | xargs)
+
 init: mkdir-dump mkdir-logs
 build: build-darwin build-linux
 clean: clean-api clean-build clean-dump clean-logs
 
+setup:
+	$(MAKE) -C service setup
+
 run:
 	bash init.sh
+
+kill:
+	docker-compose -f docker/docker-compose.${OS}.yml stop
+	kill -KILL ${DAEMONPID}
 
 bundle:
 	pipenv run pyinstaller -F server/spec/broaptd.spec

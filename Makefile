@@ -6,8 +6,14 @@ export PIPENV_VENV_IN_PROJECT
 export PIPENV_MAX_DEPTH
 export PIPENV_CLEAR
 
+setup:
+	$(MAKE) -C source setup
+
 run:
 	$(MAKE) -C source run
+
+kill:
+	$(MAKE) -C source kill
 
 build: build-bro build-broker
 commit: gitlab-commit git-commit
