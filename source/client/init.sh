@@ -18,9 +18,19 @@ STDERR="${LOGS_PATH}/stderr.log"
 # compose Bro scripts
 /usr/bin/python3.6 python/compose.py
 
+# start logs
+echo "###########################################" >> ${STDOUT}
+echo "$ $(date)" >> ${STDOUT}
+echo "###########################################" >> ${STDERR}
+echo "$ $(date)" >> ${STDERR}
+
 # run scripts
 /usr/bin/python3.6 python $@ \
     >> ${STDOUT} 2>> ${STDERR} || true
+
+# end logs
+echo "###########################################" >> ${STDOUT}
+echo "###########################################" >> ${STDERR}
 
 # sleep
 sleep infinity

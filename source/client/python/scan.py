@@ -243,8 +243,6 @@ def lookup(path):
                 file_list.extend(listdir(entry.path))
             else:
                 match = FILE_REGEX.match(entry.name)
-                print(entry.name)
-                print(match)
                 if match is None or entry.path in processed_file:
                     continue
                 file_list.append(os.path.relpath(entry.path, DUMP_PATH))
