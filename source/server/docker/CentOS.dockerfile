@@ -8,7 +8,7 @@ ENV PYTHONIOENCODING="UTF-8"
 RUN yum install -y \
         https://centos7.iuscommunity.org/ius-release.rpm \
  && yum install -y \
-        ## python36u is actually dependency of the latters
+        ## python36u is actually dependency of the latter
         ## but we keep it here as a good remainder
         python36u \
         python36u-pip \
@@ -22,7 +22,7 @@ RUN python3 -m pip install --upgrade --cache-dir=/tmp/pip \
         wheel \
  && python3 -m pip install --cache-dir=/tmp/pip \
         dataclasses \
-        Flask \
+        Flask[dotenv] \
         pyinstaller
 
 # cleanup process
@@ -39,10 +39,10 @@ RUN rm -rf \
  #        python36u-setuptools \
  && yum clean all -y
 
-# copy source
-COPY . /broaptd
-WORKDIR /broaptd
-
 # entrypoint
 ENTRYPOINT [ "pyinstaller" ]
 CMD [ "--help" ]
+
+# copy source
+COPY . /broaptd
+WORKDIR /broaptd

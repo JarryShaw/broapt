@@ -13,7 +13,7 @@ RUN apt-get update \
  && add-apt-repository --yes ppa:deadsnakes/ppa
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
-        ## python3.6 is actually dependency of the latters
+        ## python3.6 is actually dependency of the latter
         ## but we keep it here as a good remainder
         python3.6 \
         python3.6-dev \
@@ -29,7 +29,7 @@ RUN python3 -m pip install --upgrade --cache-dir=/tmp/pip \
         wheel \
  && python3 -m pip install --cache-dir=/tmp/pip \
         dataclasses \
-        Flask \
+        Flask[dotenv] \
         pyinstaller
 
 # cleanup process
@@ -55,10 +55,10 @@ RUN rm -rf \
 # final setup
 RUN ln -sf /usr/bin/python3.6 /usr/bin/python3
 
-# copy source
-COPY . /broaptd
-WORKDIR /broaptd
-
 # entrypoint
 ENTRYPOINT [ "pyinstaller" ]
 CMD [ "--help" ]
+
+# copy source
+COPY . /broaptd
+WORKDIR /broaptd
