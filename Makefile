@@ -12,6 +12,9 @@ setup:
 run:
 	$(MAKE) -C source run
 
+stop:
+	$(MAKE) -C source stop
+
 kill:
 	$(MAKE) -C source kill
 

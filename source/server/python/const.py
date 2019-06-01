@@ -3,11 +3,10 @@
 
 import os
 
-from cli import get_parser
+from cli import parse_args
 
 # parse arguments
-_parser = get_parser()
-_args = _parser.parse_args()
+_args = parse_args()
 
 # CLI arguments
 SERVER_NAME_HOST = _args.host
@@ -27,3 +26,6 @@ EXIT_FAILURE = 1
 # log files
 FILE = os.path.join(LOGS_PATH, 'dump.log')
 FAIL = os.path.join(LOGS_PATH, 'fail.log')
+
+# unset args
+del _args

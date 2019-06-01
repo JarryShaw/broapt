@@ -15,9 +15,13 @@ setup:
 run:
 	bash init.sh
 
-kill:
+stop:
+	kill -2 ${DAEMONPID} || true
 	docker-compose -f docker/docker-compose.${OS}.yml stop
-	kill -KILL ${DAEMONPID}
+
+kill:
+	kill -9 ${DAEMONPID} || true
+	docker-compose -f docker/docker-compose.${OS}.yml kill
 
 bundle:
 	pipenv run pyinstaller -F server/spec/broaptd.spec

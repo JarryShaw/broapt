@@ -171,6 +171,3 @@ services:
       - ../include/scripts:/broapt/scripts/sites
       - ../include/python:/broapt/python/sites
       - ../include/api:/api/
-      ## change timezone
-      - /etc:/etc
-      - /var/db/timezone/zoneinfo:/usr/share/zoneinfo

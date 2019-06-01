@@ -1,10 +1,9 @@
 [Unit]
-Description=BroAPT daemon
+Description=BroAPT Daemon
 
 [Service]
-ExecStart=/usr/bin/make -C /root/deepocean/broapt/ run
-ExecReload=/usr/bin/make -C /root/deepocean/broapt/ -e"DAEMONPID=$MAINPID" kill
-KillMode=process
+ExecStart=/usr/local/bin/broaptd --env /etc/sysconfig/broaptd
+ExecReload=/usr/bin/kill -INT $MAINPID
 Restart=always
 RestartSec=60s
 
