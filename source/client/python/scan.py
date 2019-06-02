@@ -211,8 +211,6 @@ def process(entry):  # pylint: disable=inconsistent-return-statements
 
 def scan(local_name):
     match = FILE_REGEX.match(os.path.split(local_name)[1])
-    print(local_name)
-    print(match)
     if match is None:
         return
 

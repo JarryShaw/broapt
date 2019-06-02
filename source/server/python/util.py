@@ -5,11 +5,10 @@ import contextlib
 import functools
 import os
 import pathlib
-import subprocess
 import time
 import traceback
 
-from const import DOCKER_COMPOSE, FILE
+from const import FILE
 
 
 def suppress(func):
@@ -40,15 +39,6 @@ def print_file(s, file=FILE):
     with file_lock(file):
         with open(file, 'at', 1) as LOG:
             print(s, file=LOG)
-
-
-@contextlib.contextmanager
-def docker_compose():
-    subprocess.check_call(['docker-compose', '--file', DOCKER_COMPOSE, 'up', '--build', '--detach'])
-    try:
-        yield
-    finally:
-        subprocess.check_call(['docker-compose', '--file', DOCKER_COMPOSE, 'stop'])
 
 
 @contextlib.contextmanager

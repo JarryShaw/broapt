@@ -9,6 +9,7 @@ from cli import parse_args
 _args = parse_args()
 
 # CLI arguments
+KILL_SIGNAL = _args.signal
 SERVER_NAME_HOST = _args.host
 SERVER_NAME_PORT = _args.port
 DOCKER_COMPOSE = _args.docker_compose

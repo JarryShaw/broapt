@@ -25,7 +25,7 @@ INTERVAL=${BROAPT_INTERVAL=10}
 MAX_RETRY=${BROAPT_MAX_RETRY=3}
 
 # start server
-bin/broaptd.${os} \
+server/bin/broaptd.${os} \
     --host=${SERVER_NAME} \
     --port=${SERVER_PORT} \
     --docker-compose="./docker/docker-compose.${os}.yml" \

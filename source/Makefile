@@ -3,14 +3,14 @@
 include .env
 
 OS = $(shell uname | tr "[[:upper:]]" "[[:lower:]]")
-DAEMONPID = $(shell pgrep bin/broaptd.${OS} | xargs)
+DAEMONPID = $(shell pgrep server/bin/broaptd.${OS} | xargs)
 
 init: mkdir-dump mkdir-logs
 build: build-darwin build-linux
 clean: clean-api clean-build clean-dump clean-logs
 
 setup:
-	$(MAKE) -C service setup
+	$(MAKE) -C server setup
 
 run:
 	bash init.sh
@@ -23,35 +23,11 @@ kill:
 	kill -9 ${DAEMONPID} || true
 	docker-compose -f docker/docker-compose.${OS}.yml kill
 
-bundle:
-	pipenv run pyinstaller -F server/spec/broaptd.spec
-	cp dist/broaptd bin/broaptd
+build-darwin:
+	$(MAKE) -C server build-darwin
 
-build-darwin: build-macos
-	mv bin/broaptd.macos bin/broaptd.darwin
-
-build-macos: clean-build
-	pipenv run pyinstaller -F server/spec/broaptd.macos.spec
-	cp dist/broaptd.macos bin/broaptd.macos
-
-build-linux: build-centos
-	mv bin/broaptd.centos bin/broaptd.linux
-
-build-centos: clean-build
-	mkdir -p build dist
-	docker build --tag broaptd:centos --file server/docker/CentOS.dockerfile .
-	docker run \
-	    --volume ${CWD}/build:/broaptd/build \
-	    --volume ${CWD}/dist:/broaptd/dist broaptd:centos  -F server/spec/broaptd.centos.spec
-	cp dist/broaptd.centos bin/broaptd.centos
-
-build-ubuntu: clean-build
-	mkdir -p build dist
-	docker build --tag broaptd:ubuntu --file server/docker/Ubuntu.dockerfile .
-	docker run \
-	    --volume ${CWD}/build:/broaptd/build \
-	    --volume ${CWD}/dist:/broaptd/dist broaptd:ubuntu -F server/spec/broaptd.ubuntu.spec
-	cp dist/broaptd.ubuntu bin/broaptd.ubuntu
+build-linux:
+	$(MAKE) -C server build-linux
 
 docker:
 	sed -i "" "s/LABEL version.*/LABEL version=$(shell date +%Y.%m.%d)/" Dockerfile
@@ -68,7 +44,7 @@ vendor:
 	find ../vendor/python/src/download -iname '*.whl' -type f -exec cp -f {} vendor/python \;
 
 clean-build:
-	rm -rf build dist
+	$(MAKE) -C server clean
 
 clean-dump:
 	if [ -d /home/traffic/log/extract ]; then \
@@ -90,8 +66,6 @@ clean-logs:
 	    > /home/traffic/log/bro/dump.log; \
 	    > /home/traffic/log/bro/fail.log; \
 	    > /home/traffic/log/bro/rate.log; \
-	    > /home/traffic/log/bro/stdout.log; \
-	    > /home/traffic/log/bro/stderr.log; \
 	    rm -rf /home/traffic/log/bro/tmp; \
 	    mkdir -p /home/traffic/log/bro/tmp; \
 	    rm -rf /home/traffic/log/bro/api; \
@@ -111,8 +85,6 @@ clean-logs:
 	    > ./logs/info.log; \
 	    > ./logs/mime.log; \
 	    > ./logs/time.log; \
-	    > ./logs/stderr.log; \
-	    > ./logs/stdout.log; \
 	    find ./logs \
 		    ! -iname 'tmp' \
 		    ! -iname 'api' -type d -depth 1 -print0 | xargs -0 rm -rf; \

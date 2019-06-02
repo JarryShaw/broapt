@@ -9,7 +9,10 @@ def parse_env():
     parser = argparse.ArgumentParser(prog='broaptd',
                                      description='BroAPT Daemon')
     parser.add_argument('-v', '--version', action='version', version='1.0')
-    parser.add_argument('-e', '--env', help='path to dotenv file')
+
+    environ_parser = parser.add_argument_group(title='environment arguments')
+    environ_parser.add_argument('-e', '--env', help='path to dotenv file')
+    environ_parser.add_argument('-s', '--signal', help='daemon kill signal')
 
     server_parser = parser.add_argument_group(title='server arguments')
     server_parser.add_argument('-t', '--host', help='the hostname to listen on')
@@ -43,6 +46,7 @@ def parse_args():
     env = parse_env()
 
     # get default values
+    signal = env.get('BROAPT_KILL_SIGNAL', '15')
     host = env.get('BROAPT_SERVER_HOST', '0.0.0.0')
     port = env.get('BROAPT_SERVER_PORT', '5000')
     docker_compose = env.get('BROAPT_DOCKER_COMPOSE', 'docker-compose.yml')
@@ -56,6 +60,7 @@ def parse_args():
     # prepare parser
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument('-e', '--env')
+    parser.add_argument('-s', '--signal', default=signal, type=int)
     parser.add_argument('-t', '--host', default=host)
     parser.add_argument('-p', '--port', default=port, type=int)
     parser.add_argument('-c', '--docker-compose', default=docker_compose)

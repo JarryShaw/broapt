@@ -3,12 +3,13 @@
 
 import sys
 
+from compose import docker_compose, register
 from const import SERVER_NAME_HOST, SERVER_NAME_PORT
 from daemon import app, manager
-from util import docker_compose
 
 
 def run():
+    register()
     with docker_compose():
         app.run(host=SERVER_NAME_HOST,
                 port=SERVER_NAME_PORT)

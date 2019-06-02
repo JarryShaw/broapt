@@ -8,6 +8,8 @@ services:
     container_name: broapt
     entrypoint: ["bash", "/broapt/init.sh"]
     environment:
+      ## [PYTHON] force the stdout and stderr streams to be unbuffered
+      PYTHONUNBUFFERED: 1
       ## concurrent process limit
       BROAPT_CPU: 1
       ## sleep interval
