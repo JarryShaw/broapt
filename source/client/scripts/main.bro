@@ -68,10 +68,9 @@ event file_sniff(f: fa_file, meta: fa_metadata) {
             local root = split_string(mgct, /\//)[0];
             mkdir(fmt("%s/%s", path_prefix, root));
             mkdir(fmt("%s/%s", path_prefix, mgct));
-        } else {
+        } else
             mgct = ".";
-            fext = cat(sub(mgct, /\//, "."), ".", fext);
-        }
+        fext = cat(sub(mgct, /\//, "."), ".", fext);
 
         local pcap = getenv("BROAPT_PCAP");
         if ( pcap == "" )

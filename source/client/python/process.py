@@ -12,6 +12,7 @@ import shutil
 import subprocess
 import time
 import uuid
+import warnings
 
 import magic
 
@@ -25,6 +26,10 @@ from utils import IPAddressJSONEncoder, file_lock, is_nan, print_file, redirect,
 SALT_LOCK = multiprocessing.Lock()
 STDOUT_LOCK = multiprocessing.Lock()
 STDERR_LOCK = multiprocessing.Lock()
+
+
+class ExtractWarning(Warning):
+    pass
 
 
 def rename_dump(local_name, mime_type):
@@ -84,13 +89,14 @@ def generate_log(log_root, log_stem, log_uuid):
         if os.path.exists(dump_path):
             with contextlib.suppress(Exception):
                 mime_type = magic.detect_from_filename(dump_path).mime_type
-            if mime_type is None or MIME_REGEX.match(mime_type) is None:
-                if MIME_MODE:
-                    local_name = rename_dump(local_name, line.mime_type)
-            else:
-                if MIME_MODE or (mime_type != line.mime_type):  # pylint: disable=else-if-used
-                    local_name = rename_dump(local_name, mime_type)
+            # if mime_type is None or MIME_REGEX.match(mime_type) is None:
+            #     if MIME_MODE:
+            #         local_name = rename_dump(local_name, line.mime_type)
+            # else:
+            #     if MIME_MODE or (mime_type != line.mime_type):  # pylint: disable=else-if-used
+            #         local_name = rename_dump(local_name, mime_type)
         else:
+            warnings.warn(f'No such file or directory: {local_name!r}', ExtractWarning)
             dump_path = None
 
         info = dict(
@@ -112,7 +118,8 @@ def generate_log(log_root, log_stem, log_uuid):
             )
         )
         print_file(json.dumps(info, cls=IPAddressJSONEncoder), file=INFO)
-        QUEUE_DUMP.put(local_name)
+        if dump_path is not None:
+            QUEUE_DUMP.put(local_name)
 
 
 @suppress
