@@ -66,6 +66,8 @@ clean-logs:
 	    > /home/traffic/log/bro/dump.log; \
 	    > /home/traffic/log/bro/fail.log; \
 	    > /home/traffic/log/bro/rate.log; \
+	    > /home/traffic/log/bro/stdout.log; \
+	    > /home/traffic/log/bro/stderr.log; \
 	    rm -rf /home/traffic/log/bro/tmp; \
 	    mkdir -p /home/traffic/log/bro/tmp; \
 	    rm -rf /home/traffic/log/bro/api; \
@@ -85,6 +87,8 @@ clean-logs:
 	    > ./logs/info.log; \
 	    > ./logs/mime.log; \
 	    > ./logs/time.log; \
+	    > ./logs/stdout.log; \
+	    > ./logs/stderr.log; \
 	    find ./logs \
 		    ! -iname 'tmp' \
 		    ! -iname 'api' -type d -depth 1 -print0 | xargs -0 rm -rf; \

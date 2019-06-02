@@ -83,3 +83,11 @@ def temp_env(env):
         for key in new_keys:
             del os.environ[key]
         os.environ.update(old_keys)
+
+
+def redirect(src, dst, label='unknown'):
+    dst_file = open(dst, 'a')
+    with open(src) as src_file:
+        for line in src_file:
+            dst_file.write(f'<{label}> {line}')
+    dst_file.close()

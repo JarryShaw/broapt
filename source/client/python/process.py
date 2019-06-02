@@ -17,9 +17,9 @@ import magic
 
 from compose import file_salt
 from const import (BARE_MODE, DUMP_PATH, FILE, FILE_REGEX, INFO, LOGS_PATH, MIME_MODE, MIME_REGEX,
-                   NO_CHKSUM, QUEUE_DUMP, QUEUE_LOGS, ROOT)
+                   NO_CHKSUM, QUEUE_DUMP, QUEUE_LOGS, ROOT, STDERR, STDOUT)
 from logparser import parse
-from utils import IPAddressJSONEncoder, is_nan, print_file, suppress
+from utils import IPAddressJSONEncoder, file_lock, is_nan, print_file, redirect, suppress
 
 
 def rename_dump(local_name, mime_type):
@@ -143,6 +143,11 @@ def process(file):
     stdout.close()
     stderr.close()
     end = time.time()
+
+    with file_lock(STDOUT):
+        redirect(src=stdout.name, dst=STDOUT, label=dest_stem)
+    with file_lock(STDERR):
+        redirect(src=stderr.name, dst=STDERR, label=dest_stem)
 
     dest = os.path.join(LOGS_PATH, dest_stem)
     os.makedirs(dest, exist_ok=True)

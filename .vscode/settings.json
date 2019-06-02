@@ -20,6 +20,7 @@
         "SIGKILL",
         "SIGQUIT",
         "UUIDs",
+        "Werkzeug",
         "Zeek's",
         "activex",
         "addin",

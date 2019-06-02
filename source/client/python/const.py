@@ -35,6 +35,8 @@ NO_CHKSUM = BOOLEAN_STATES.get(os.getenv('BROAPT_NO_CHKSUM', 'true').casefold(),
 FILE = os.path.join(LOGS_PATH, 'file.log')
 TIME = os.path.join(LOGS_PATH, 'time.log')
 INFO = os.path.join(LOGS_PATH, 'info.log')
+STDOUT = os.path.join(LOGS_PATH, 'stdout.log')
+STDERR = os.path.join(LOGS_PATH, 'stderr.log')
 
 # command retry
 try:
