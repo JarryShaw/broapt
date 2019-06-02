@@ -146,7 +146,20 @@ def compose():
 
 
 def file_salt(uid):
-    with open(os.path.join(ROOT, 'scripts', 'config.bro')) as config:  # pylint: disable=redefined-outer-name
+    args = ['bro', '--parse-only', os.path.join(ROOT, 'scripts')]
+
+    stdout = open(f'stdout.{uid}.log', 'at', 1)
+    stderr = open(f'stderr.{uid}.log', 'at', 1)
+    print(f'+ {" ".join(args)}', file=stdout)
+    print(f'+ {" ".join(args)}', file=stderr)
+    try:
+        subprocess.check_call(args, stdout=stdout, stderr=stderr)
+    except subprocess.CalledProcessError:
+        compose()
+    stdout.close()
+    stderr.close()
+
+    with open(os.path.join(ROOT, 'scripts', 'config.bro'), 'r') as config:  # pylint: disable=redefined-outer-name
         context = [SALT_REGEX.sub(rf'\g<prefix>"{uid}"\g<suffix>', line) for line in config]  # pylint: disable=redefined-outer-name
     with open(os.path.join(ROOT, 'scripts', 'config.bro'), 'w') as config:
         config.writelines(context)

@@ -21,6 +21,11 @@ from const import (BARE_MODE, DUMP_PATH, FILE, FILE_REGEX, INFO, LOGS_PATH, MIME
 from logparser import parse
 from utils import IPAddressJSONEncoder, file_lock, is_nan, print_file, redirect, suppress
 
+# synchronize locks
+SALT_LOCK = multiprocessing.Lock()
+STDOUT_LOCK = multiprocessing.Lock()
+STDERR_LOCK = multiprocessing.Lock()
+
 
 def rename_dump(local_name, mime_type):
     if MIME_MODE:
@@ -119,7 +124,7 @@ def process(file):
     uid = uuid.uuid4()
 
     dest_stem = f'{stem}-{uid}'
-    with multiprocessing.Lock():
+    with SALT_LOCK:
         file_salt(uid)
 
     env = os.environ
@@ -134,8 +139,10 @@ def process(file):
     args.extend(['--readfile', file, os.path.join(ROOT, 'scripts')])
 
     start = time.time()
-    stdout = open(f'stdout.{uid}.log', 'w')
-    stderr = open(f'stderr.{uid}.log', 'w')
+    stdout = open(f'stdout.{uid}.log', 'at', 1)
+    stderr = open(f'stderr.{uid}.log', 'at', 1)
+    print(f'+ {" ".join(args)}', file=stdout)
+    print(f'+ {" ".join(args)}', file=stderr)
     try:
         subprocess.check_call(args, env=env, stdout=stdout, stderr=stderr)
     except subprocess.CalledProcessError:
@@ -144,9 +151,9 @@ def process(file):
     stderr.close()
     end = time.time()
 
-    with file_lock(STDOUT):
+    with STDOUT_LOCK:
         redirect(src=stdout.name, dst=STDOUT, label=dest_stem)
-    with file_lock(STDERR):
+    with STDERR_LOCK:
         redirect(src=stderr.name, dst=STDERR, label=dest_stem)
 
     dest = os.path.join(LOGS_PATH, dest_stem)
