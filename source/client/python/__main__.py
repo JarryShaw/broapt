@@ -81,7 +81,8 @@ def main_with_no_args():
     # main loop
     while True:
         try:
-            file_list = sorted(filter(lambda file: file not in processed_file, parse_args([PCAP_PATH])))
+            pcap_file = parse_args([PCAP_PATH])
+            file_list = sorted(filter(lambda file: file not in processed_file, pcap_file))
             if file_list:
                 if CPU_CNT <= 1:
                     [process(file) for file in file_list]  # pylint: disable=expression-not-assigned
@@ -90,6 +91,7 @@ def main_with_no_args():
             time.sleep(INTERVAL)
         except KeyboardInterrupt:
             return 0
+        processed_file = sorted(filter(lambda file: file not in pcap_file, processed_file))
 
         print_file('+ Starting another turn...')
         print('+ Starting another turn...')

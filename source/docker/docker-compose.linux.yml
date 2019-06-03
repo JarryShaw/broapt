@@ -42,7 +42,6 @@ services:
       BROAPT_LOAD_MIME: application/msword;
                         application/ms-excel;
                         application/octet-stream;
-                        application/pdf;
                         application/vnd.android.package-archive;
                         application/vnd.microsoft.portable-executable;
                         application/vnd.ms-excel;
@@ -138,11 +137,6 @@ services:
                         application/x-dosexec;
                         application/x-executable;
                         message/rfc822;
-                        text/javascript;
-                        text/html;
-                        text/x-c;
-                        text/x-perl;
-                        text/x-php
       ## Bro protocol white list
       BROAPT_LOAD_PROTOCOL: SMTP
       ## Bro file reassembly buffer size
