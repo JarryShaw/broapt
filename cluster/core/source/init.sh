@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -ax
+set -aex
 
 # change cwd
 cd /source
@@ -9,6 +9,9 @@ cd /source
 if [ -f .env ] ; then
     source .env
 fi
+
+# compose Bro scripts
+/usr/bin/python3.6 python/compose.py
 
 # run scripts
 /usr/bin/python3.6 python $@

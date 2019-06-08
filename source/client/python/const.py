@@ -34,7 +34,6 @@ NO_CHKSUM = BOOLEAN_STATES.get(os.getenv('BROAPT_NO_CHKSUM', 'true').casefold(),
 # log files
 FILE = os.path.join(LOGS_PATH, 'file.log')
 TIME = os.path.join(LOGS_PATH, 'time.log')
-INFO = os.path.join(LOGS_PATH, 'info.log')
 STDOUT = os.path.join(LOGS_PATH, 'stdout.log')
 STDERR = os.path.join(LOGS_PATH, 'stderr.log')
 
@@ -64,6 +63,7 @@ SERVER_NAME = f'http://{SERVER_NAME_HOST}:{SERVER_NAME_PORT}/api/v1.0/scan'
 # log files
 DUMP = os.path.join(LOGS_PATH, 'dump.log')
 FAIL = os.path.join(LOGS_PATH, 'fail.log')
+TIME = os.path.join(LOGS_PATH, 'time.log')
 
 # file name regex
 FILE_REGEX = re.compile(r'''

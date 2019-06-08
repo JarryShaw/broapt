@@ -2,6 +2,9 @@
 
 set -aex
 
+# change curdir
+cd /broapt
+
 # load environs
 if [ -f .env ] ; then
     source .env

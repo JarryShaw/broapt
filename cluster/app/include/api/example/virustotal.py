@@ -105,7 +105,7 @@ def main():
               'path': path,
               'mime': mime,
               'rate': rate}
-    with open(os.path.join(LOGS_PATH, 'processed_rate.log'), 'at', 1) as file:
+    with open(os.path.join(LOGS_PATH, 'rate.log'), 'at', 1) as file:
         print(json.dumps(result), file=file)
     return EXIT_SUCCESS
 

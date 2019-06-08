@@ -9,8 +9,10 @@ services:
     entrypoint: ["bash", "/source/init.sh"]
     # app environ
     environment:
+      ## [PYTHON] force the stdout and stderr streams to be unbuffered
+      PYTHONUNBUFFERED: 1
       ## concurrent process limit
-      BROAPT_APP_CPU: 5
+      BROAPT_APP_CPU: 2
       ## sleep interval
       BROAPT_APP_INTERVAL: 10
       ## command retry
@@ -27,8 +29,10 @@ services:
       SERVER_NAME_HOST: host.docker.internal
       SERVER_NAME_PORT: 5000
     image: broapt-app
-    restart: "always"
+    restart: "on-failure"
     volumes:
-      - ../../dump:/dump
-      - ../../logs:/var/log/bro
-      - ../include/api:/api
+      ## path mappings
+      - ../dump:/dump
+      - ../logs:/var/log/bro
+      ## site functions
+      - ../include/api:/api/

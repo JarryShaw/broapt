@@ -30,9 +30,10 @@ BARE_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_BARE_MODE', 'false').casefold()
 NO_CHKSUM = BOOLEAN_STATES.get(os.getenv('BROAPT_NO_CHKSUM', 'true').casefold(), True)
 
 # log files
-FILE = os.path.join(LOGS_PATH, 'processed_file.log')
-TIME = os.path.join(LOGS_PATH, 'processed_time.log')
-INFO = os.path.join(LOGS_PATH, 'processed_info.log')
+FILE = os.path.join(LOGS_PATH, 'file.log')
+TIME = os.path.join(LOGS_PATH, 'time.log')
+STDOUT = os.path.join(LOGS_PATH, 'stdout.log')
+STDERR = os.path.join(LOGS_PATH, 'stderr.log')
 
 # log queue
 QUEUE = multiprocessing.Queue()

@@ -1,6 +1,6 @@
 # basic info
 FROM library/centos:7
-LABEL version=2019.05.29
+LABEL version=2019.06.08
 
 # set up environment variables
 ENV PYTHONIOENCODING="UTF-8"
@@ -49,6 +49,12 @@ RUN rm -rf \
  #        python36u-pip \
  #        python36u-setuptools \
  && yum clean all -y
+
+# set working directory
+WORKDIR /source
+
+# set entry point
+ENTRYPOINT [ "bash", "/source/init.sh" ]
 
 # copy source
 COPY source /source

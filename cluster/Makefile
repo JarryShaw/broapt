@@ -2,6 +2,9 @@
 
 include .env
 
+# OS
+os = $(shell uname | tr "[[:upper:]]" "[[:lower:]]")
+
 # pipenv
 export PIPENV_DONT_LOAD_ENV
 
@@ -31,8 +34,8 @@ export BROAPT_FILE_BUFFER
 ## Bro extract file size limit
 export BROAPT_SIZE_LIMIT
 
-archive: archive-app archive-core
-clean: clean-app clean-core
+archive: archive-app archive-core archive-daemon
+clean: clean-app clean-core clean-daemon
 docker-up: docker-up-app docker-up-core
 docker-stop: docker-stop-app docker-stop-core
 docker-ps: docker-ps-app docker-ps-core
@@ -55,6 +58,11 @@ archive-core: clean-core
 	tar -cvzf broapt-core.tar.gz core
 	mv broapt-core.tar.gz archive
 
+archive-daemon: clean-daemon
+	mkdir -p archive
+	tar -cvzf broapt-daemon.tar.gz daemon
+	mv broapt-daemon.tar.gz archive
+
 archive-test:
 	[ -d test ] || false
 	cp -rf test bro
@@ -63,11 +71,20 @@ archive-test:
 	mv bro.tar.gz archive
 	rm -rf bro
 
+build-darwin: clean-daemon
+	$(MAKE) -C daemon build-darwin
+
+build-linux: clean-daemon
+	$(MAKE) -C daemon build-linux
+
 clean-app:
 	$(MAKE) -C app clean
 
 clean-core:
 	$(MAKE) -C core clean
+
+clean-daemon:
+	$(MAKE) -C daemon clean
 
 docker-app:
 	$(MAKE) -C app docker
@@ -76,28 +93,34 @@ docker-core:
 	$(MAKE) -C core docker
 
 docker-up-app:
-	cd app && docker-compose up -d
+	docker-compose -f app/docker/docker-compose.${os}.yml up -d
 
 docker-up-core:
-	cd core && docker-compose up -d
+	docker-compose -f core/docker/docker-compose.${os}.yml up -d
 
 docker-stop-app:
-	cd app && docker-compose stop
+	docker-compose -f app/docker/docker-compose.${os}.yml stop
 
 docker-stop-core:
-	cd core && docker-compose stop
+	docker-compose -f core/docker/docker-compose.${os}.yml stop
 
 docker-ps-app:
-	cd app && docker-compose ps
+	docker-compose -f app/docker/docker-compose.${os}.yml ps
 
 docker-ps-core:
-	cd core && docker-compose ps
+	docker-compose -f core/docker/docker-compose.${os}.yml ps
 
 docker-logs-app:
-	cd app && docker-compose logs
+	docker-compose -f app/docker/docker-compose.${os}.yml logs
 
 docker-logs-core:
-	cd core && docker-compose logs
+	docker-compose -f core/docker/docker-compose.${os}.yml logs
 
 parse:
-	pipenv run python utils/logparse.py
+	pipenv run python utils/logparse.py $@
+
+run:
+	bash init.sh
+
+setup:
+	$(MAKE) -C daemon setup

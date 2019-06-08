@@ -100,7 +100,7 @@ def compose():
     if DUMP_PATH_ENV is None:
         DUMP_PATH = 'FileExtract::prefix'  # pylint: disable=redefined-outer-name
     else:
-        DUMP_PATH = '"%s"' % DUMP_PATH_ENV.replace('"', '\\"')
+        DUMP_PATH = '"%s"' % DUMP_PATH_ENV.replace('\\', '\\\\').replace('"', '\\"')
 
     if LOAD_MIME is not None:
         load_file = list()

@@ -41,7 +41,6 @@ services:
       ## Bro MIME white list
       BROAPT_LOAD_MIME: application/msword;
                         application/ms-excel;
-                        application/octet-stream;
                         application/vnd.android.package-archive;
                         application/vnd.microsoft.portable-executable;
                         application/vnd.ms-excel;

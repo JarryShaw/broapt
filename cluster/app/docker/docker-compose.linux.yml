@@ -9,8 +9,10 @@ services:
     entrypoint: ["bash", "/source/init.sh"]
     # app environ
     environment:
+      ## [PYTHON] force the stdout and stderr streams to be unbuffered
+      PYTHONUNBUFFERED: 1
       ## concurrent process limit
-      BROAPT_APP_CPU: 5
+      BROAPT_APP_CPU: 10
       ## sleep interval
       BROAPT_APP_INTERVAL: 10
       ## command retry
@@ -30,6 +32,11 @@ services:
     network_mode: "host"
     restart: "always"
     volumes:
+      ## path mapping
       - /home/traffic/log/extract:/dump
       - /home/traffic/log/bro:/var/log/bro
-      - ./include/api:/api
+      ## site functions
+      - ../include/api:/api/
+      ## change timezone
+      - /etc:/etc
+      - /usr/share/zoneinfo:/usr/share/zoneinfo

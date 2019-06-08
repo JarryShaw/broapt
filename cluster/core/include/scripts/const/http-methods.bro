@@ -1,0 +1,45 @@
+module HTTP;
+
+export {
+    ## HTTP Method Registry from IANA
+    ## https://www.iana.org/assignments/http-methods/http-methods.xhtml
+    redef HTTP::http_methods += {
+        "ACL",
+        "BIND",
+        "CHECKIN",
+        "CHECKOUT",
+        "CONNECT",
+        "COPY",
+        "DELETE",
+        "GET",
+        "HEAD",
+        "LABEL",
+        "LINK",
+        "LOCK",
+        "MERGE",
+        "MKACTIVITY",
+        "MKCALENDAR",
+        "MKCOL",
+        "MKREDIRECTREF",
+        "MKWORKSPACE",
+        "MOVE",
+        "OPTIONS",
+        "ORDERPATCH",
+        "PATCH",
+        "POST",
+        "PRI",
+        "PROPFIND",
+        "PROPPATCH",
+        "PUT",
+        "REBIND",
+        "REPORT",
+        "SEARCH",
+        "TRACE",
+        "UNBIND",
+        "UNCHECKOUT",
+        "UNLINK",
+        "UNLOCK",
+        "UPDATE",
+        "UPDATEREDIRECTREF",
+    };
+}

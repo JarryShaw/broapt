@@ -94,7 +94,7 @@ def run(command, cwd=None, env=None, mime='example', file='unknown'):
         print_file(f'# env: {env_line}', file=log)
         print_file(f'# args: {args}', file=log)
         try:
-            with open(log, 'at', 1) as stdout:
+            with open(log, 'w') as stdout:
                 returncode = subprocess.check_call(args, shell=shell, cwd=cwd, env=env,
                                                    stdout=stdout, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as error:
@@ -122,7 +122,7 @@ def issue(mime):
     return EXIT_FAILURE
 
 
-def init(api, cwd, env, mime, uuid):  # pylint: disable=inconsistent-return-statements
+def init(api, cwd, env, mime, uuid):
     if api.inited.value:
         return EXIT_SUCCESS
 

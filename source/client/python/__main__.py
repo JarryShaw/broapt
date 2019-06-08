@@ -62,6 +62,14 @@ def parse_args(argv):
     return file_list
 
 
+def check_history():
+    processed_file = list()
+    if os.path.isfile(FILE):
+        with open(FILE) as file:
+            processed_file.extend(line.strip() for line in file)
+    return processed_file
+
+
 def main_with_args():
     file_list = parse_args(sys.argv[1:])
     if CPU_CNT <= 1:
@@ -72,17 +80,14 @@ def main_with_args():
 
 
 def main_with_no_args():
-    # processed log
-    processed_file = list()
-    if os.path.isfile(FILE):
-        with open(FILE) as file:
-            processed_file.extend(line.strip() for line in file)
-
     # main loop
     while True:
         try:
-            pcap_file = parse_args([PCAP_PATH])
-            file_list = sorted(filter(lambda file: file not in processed_file, pcap_file))
+            processed_file = set(check_history())
+            pcap_file = set(parse_args([PCAP_PATH]))
+            file_list = sorted(pcap_file - processed_file)
+            del processed_file
+
             if file_list:
                 if CPU_CNT <= 1:
                     [process(file) for file in file_list]  # pylint: disable=expression-not-assigned
@@ -91,11 +96,9 @@ def main_with_no_args():
             time.sleep(INTERVAL)
         except KeyboardInterrupt:
             return 0
-        processed_file = sorted(filter(lambda file: file not in pcap_file, processed_file))
 
         print_file('+ Starting another turn...')
         print('+ Starting another turn...')
-        processed_file.extend(file_list)
 
 
 def main():

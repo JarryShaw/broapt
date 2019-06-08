@@ -34,26 +34,37 @@ clean-logs-local:
 clean-logs-processed:
 	if [ -d /home/traffic/log/bro ]; then \
 	    rm -f /home/traffic/log/bro/*.lock; \
-	    > /home/traffic/log/bro/http.log; \
-	    > /home/traffic/log/bro/processed_file.log; \
-	    > /home/traffic/log/bro/processed_info.log; \
-	    > /home/traffic/log/bro/processed_mime.log; \
-	    > /home/traffic/log/bro/processed_time.log; \
+	    > /home/traffic/log/bro/file.log; \
+	    > /home/traffic/log/bro/mime.log; \
+	    > /home/traffic/log/bro/time.log; \
+	    > /home/traffic/log/bro/stdout.log; \
+	    > /home/traffic/log/bro/stderr.log; \
+	    rm -rf /home/traffic/log/bro/http; \
+	    mkdir -p /home/traffic/log/bro/http; \
+		rm -rf /home/traffic/log/bro/info; \
+	    mkdir -p /home/traffic/log/bro/info; \
 	    for file in $$(ls /home/traffic/log/bro) ; do \
 	        [ -d "/home/traffic/log/bro/$${file}" ] && \
-		    [ "/home/traffic/log/bro/$${file}" != "tmp" ] && \
-		    rm -rf "/home/traffic/log/bro/$${file}" || true; \
+	        [ "/home/traffic/log/bro/$${file}" != "api" ] && \
+	        [ "/home/traffic/log/bro/$${file}" != "http" ] && \
+	        [ "/home/traffic/log/bro/$${file}" != "info" ] && \
+	        [ "/home/traffic/log/bro/$${file}" != "tmp" ] && \
+	        rm -rf "/home/traffic/log/bro/$${file}" || true; \
 	    done \
 	else \
 	    rm -f ../logs/*.lock; \
-	    > ../logs/http.log; \
-	    > ../logs/processed_file.log; \
-	    > ../logs/processed_info.log; \
-	    > ../logs/processed_mime.log; \
-	    > ../logs/processed_time.log; \
-	    find ./logs \
-		    ! -iname 'tmp' \
-		    ! -iname 'api' -type d -depth 1 -print0 | xargs -0 rm -rf; \
+	    > ../logs/file.log; \
+	    > ../logs/mime.log; \
+	    > ../logs/time.log; \
+	    > ../logs/stdout.log; \
+	    > ../logs/stderr.log; \
+	    find ../logs \
+	        ! -iname 'api' \
+	        ! -iname 'http' \
+	        ! -iname 'info' \
+	        ! -iname 'tmp' -type d -depth 1 -print0 | xargs -0 rm -rf; \
+	    find ../logs/http -iname '*.log' -depth 1 -type f -print0 | xargs -0 rm -rf; \
+	    find ../logs/info -iname '*.log' -depth 1 -type f -print0 | xargs -0 rm -rf; \
 	fi
 
 clean-nohup:

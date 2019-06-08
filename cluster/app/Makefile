@@ -1,40 +1,9 @@
-.PHONY: init bundle clean docker vendor build
+.PHONY: init clean docker vendor
 
 include .env
 
 init: mkdir-dump mkdir-logs
-build: build-darwin build-linux
 clean: clean-api clean-build clean-dump clean-logs
-
-bundle:
-	pipenv run pyinstaller -F bundle/spec/broaptd.spec
-	cp dist/broaptd bin/broaptd
-
-build-darwin: build-macos
-	mv bin/broapt-appd.macos bin/broapt-appd.darwin
-
-build-macos: clean-build
-	pipenv run pyinstaller -F bundle/spec/broapt-appd.macos.spec
-	cp dist/broapt-appd.macos bin/broapt-appd.macos
-
-build-linux: build-centos
-	mv bin/broapt-appd.centos bin/broapt-appd.linux
-
-build-centos: clean-build
-	mkdir -p build dist
-	docker build --tag broapt-appd:centos --file bundle/docker/CentOS.dockerfile .
-	docker run \
-	    --volume ${CWD}/build:/app/build \
-	    --volume ${CWD}/dist:/app/dist broapt-appd:centos -F bundle/spec/broapt-appd.centos.spec
-	cp dist/broapt-appd.centos bin/broapt-appd.centos
-
-build-ubuntu: clean-build
-	mkdir -p build dist
-	docker build --tag broapt-appd:ubuntu --file bundle/docker/Ubuntu.dockerfile .
-	docker run \
-	    --volume ${CWD}/build:/app/build \
-	    --volume ${CWD}/dist:/app/dist broapt-appd:ubuntu -F bundle/spec/broapt-appd.ubuntu.spec
-	cp dist/broapt-appd.ubuntu bin/broapt-appd.ubuntu
 
 docker:
 	sed -i "" "s/LABEL version.*/LABEL version=$(shell date +%Y.%m.%d)/" Dockerfile
@@ -63,24 +32,40 @@ clean-dump:
 clean-logs:
 	if [ -d /home/traffic/log/bro ]; then \
 	    rm -f /home/traffic/log/bro/*.lock; \
-	    > /home/traffic/log/bro/processed_dump.log; \
-	    > /home/traffic/log/bro/processed_fail.log; \
-	    > /home/traffic/log/bro/processed_rate.log; \
-	    rm -rf /home/traffic/log/bro/tmp; \
-	    mkdir -p /home/traffic/log/bro/tmp; \
+	    > /home/traffic/log/bro/dump.log; \
+	    > /home/traffic/log/bro/fail.log; \
+	    > /home/traffic/log/bro/rate.log; \
 	    rm -rf /home/traffic/log/bro/api; \
 	    mkdir -p /home/traffic/log/bro/api; \
+	    rm -rf /home/traffic/log/bro/tmp; \
+	    mkdir -p /home/traffic/log/bro/tmp; \
+	    for file in $$(ls /home/traffic/log/bro) ; do \
+	        [ -d "/home/traffic/log/bro/$${file}" ] && \
+	        [ "/home/traffic/log/bro/$${file}" != "api" ] && \
+	        [ "/home/traffic/log/bro/$${file}" != "http" ] && \
+	        [ "/home/traffic/log/bro/$${file}" != "info" ] && \
+	        [ "/home/traffic/log/bro/$${file}" != "tmp" ] && \
+	        rm -rf "/home/traffic/log/bro/$${file}" || true; \
+	    done \
 	else \
 	    rm -f ../logs/*.lock; \
-	    > ../logs/processed_dump.log; \
-	    > ../logs/processed_fail.log; \
-	    > ../logs/processed_rate.log; \
-		find ../logs/api -depth 1 -print0 | xargs -0 rm -rf; \
+	    > ../logs/dump.log; \
+	    > ../logs/fail.log; \
+	    > ../logs/rate.log; \
+	    find ../logs \
+	        ! -iname 'api' \
+	        ! -iname 'http' \
+	        ! -iname 'info' \
+	        ! -iname 'tmp' -type d -depth 1 -print0 | xargs -0 rm -rf; \
+	    find ../logs/api -depth 1 -print0 | xargs -0 rm -rf; \
 	    find ../logs/tmp -iname '*.json' -depth 1 -type f -print0 | xargs -0 rm -rf; \
 	fi
 
 clean-api:
 	rm -rf include/api/application/vnd.openxmlformats-officedocument/MaliciousMacroBot
+	rm -rf include/api/application/x-executable/ELF-Parser/elfparser/
+	rm -rf include/api/application/javascript/JaSt/JaSt
+	rm -rf include/api/application/octet-stream/LMD/linux-malware-detect
 
 mkdir-dump:
 	mkdir -p ../dump

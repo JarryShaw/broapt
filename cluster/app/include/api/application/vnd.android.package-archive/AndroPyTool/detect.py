@@ -28,7 +28,6 @@ def main():
 
     dirname = os.path.splitext(name)[0]
     tempdir = os.path.join(APK_LOG, dirname)
-    os.makedirs(tempdir, exist_ok=True)
 
     # move target to a temporary directory
     shutil.copyfile(path, os.path.join(tempdir, name))
@@ -56,7 +55,7 @@ def main():
               'path': path,
               'mime': mime,
               'rate': rate}
-    with open(os.path.join(LOGS_PATH, 'processed_rate.log'), 'at', 1) as file:
+    with open(os.path.join(LOGS_PATH, 'rate.log'), 'at', 1) as file:
         print(json.dumps(result), file=file)
     return EXIT_SUCCESS
 

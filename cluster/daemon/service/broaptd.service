@@ -1,0 +1,11 @@
+[Unit]
+Description=BroAPT Daemon
+
+[Service]
+ExecStart=/usr/local/bin/broaptd --env /etc/sysconfig/broaptd
+ExecReload=/usr/bin/kill -INT $MAINPID
+Restart=always
+RestartSec=60s
+
+[Install]
+WantedBy=multi-user.target

@@ -3,7 +3,7 @@
 module FileExtraction;
 
 # Configure path to missing MIME log file
-redef logs = "/var/log/bro/processed_mime.log";
+redef logs = "/var/log/bro/mime.log";
 
 # Configure if store extracted files by MIME types
 redef mime = T;

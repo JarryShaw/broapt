@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -ax
+set -aex
 
 # change cwd
 cd /source
@@ -11,7 +11,7 @@ if [ -f .env ] ; then
 fi
 
 # run scripts
-/usr/bin/python3.6 client
+/usr/bin/python3.6 python
 
 # sleep
 sleep infinity

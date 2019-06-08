@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 
-set -ex
+set -aex
+
+# load environs
+if [ -f .env ] ; then
+    source .env
+fi
 
 # paths
-LOGS_PATH=${BROAPT_LOGS_PATH="/var/log/bro/"}
-APK_PATH=${APK_PATH="/var/log/bro/tmp/"}
-mkdir -p ${APK_PATH}
+LOGS_PATH=${BROAPT_LOGS_PATH="/home/traffic/log/bro/"}
+APK_PATH=${APK_PATH="/home/traffic/log/bro/tmp/"}
 
 # macros
 mime=${BROAPT_MIME}
@@ -14,7 +18,6 @@ name=$(basename ${path})
 
 # move target to a temporary directory
 tempdir="${APK_PATH}/${name%\.apk}"
-mkdir -p ${tempdir}
 cp ${path} "${tempdir}/${name}"
 
 # run AndroPyTool
@@ -31,4 +34,4 @@ else
 # generate report
 time=$(date +%s.%N)
 report="{\"time\": ${time}, \"path\": \"${path}\", \"mime\": \"${mime}\", \"rate\": ${rate}}"
-echo ${report} > "${LOGS_PATH}/processed_rate.log"
+echo ${report} > "${LOGS_PATH}/rate.log"

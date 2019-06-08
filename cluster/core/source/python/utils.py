@@ -3,32 +3,13 @@
 
 import contextlib
 import functools
-import ipaddress
-import json
 import math
 import os
 import pathlib
 import time
 import traceback
 
-from const import INTERVAL, TIME
-
-
-class IPAddressJSONEncoder(json.JSONEncoder):
-
-    def default(self, o):  # pylint: disable=method-hidden
-        if isinstance(o, ipaddress._IPAddressBase):  # pylint: disable=protected-access
-            return str(o)
-        return super().default(o)
-
-
-def is_nan(value):
-    if value is None:
-        return True
-    try:
-        return math.isnan(value)
-    except TypeError:
-        return False
+from const import INTERVAL
 
 
 def suppress(func):
@@ -61,7 +42,24 @@ def file_lock(file):
         lock.unlink()
 
 
-def print_file(s, file=TIME):
+def print_file(s, file):
     with file_lock(file):
         with open(file, 'at', 1) as LOG:
             print(s, file=LOG)
+
+
+def redirect(src, dst, label='unknown'):
+    dst_file = open(dst, 'a')
+    with open(src) as src_file:
+        for line in src_file:
+            dst_file.write(f'<{label}> {line}')
+    dst_file.close()
+
+
+def is_nan(value):
+    if value is None:
+        return True
+    try:
+        return math.isnan(value)
+    except TypeError:
+        return False

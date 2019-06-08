@@ -21,7 +21,7 @@ export {
     option entropy: bool = F;
 
     ## Path to missing MIME log file
-    const logs: string = "/var/log/bro/processed_mime.log" &redef;
+    const logs: string = "/var/log/bro/mime.log" &redef;
     ## If store files by MIME types
     const mime: bool = T &redef;
 
@@ -68,10 +68,14 @@ event file_sniff(f: fa_file, meta: fa_metadata) {
             local root = split_string(mgct, /\//)[0];
             mkdir(fmt("%s/%s", path_prefix, root));
             mkdir(fmt("%s/%s", path_prefix, mgct));
-        } else {
+        } else
             mgct = ".";
-            fext = cat(sub(mgct, /\//, "."), ".", fext);
-        }
+        fext = cat(sub(mgct, /\//, "."), ".", fext);
+
+        local pcap = getenv("BROAPT_PCAP");
+        if ( pcap == "" )
+            pcap = "unknown";
+        fext = fmt("%s.%s", pcap, fext);
 
         local name = fmt("%s/%s-%s.%s", mgct, f$source, f$id, fext);
         Files::add_analyzer(f, Files::ANALYZER_EXTRACT, [$extract_filename=name]);

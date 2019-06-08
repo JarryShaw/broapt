@@ -15,7 +15,15 @@ from logparser import parse
 from utils import is_nan, print_file
 # from utils import IPAddressJSONEncoder, is_nan, print_file
 
-HTTP_LOG = os.path.join(LOGS_PATH, 'http.log')
+# today
+DATE = time.strftime('%Y-%m-%d')
+
+# log path
+LOGS = os.path.join(LOGS_PATH, 'http')
+os.makedirs(LOGS, exist_ok=True)
+
+# http log
+HTTP_LOG = os.path.join(LOGS_PATH, 'http', f'{DATE}.log')
 
 # macros
 SEPARATOR = '\t'
@@ -31,15 +39,15 @@ def hexlify(string):
     return ''.join(map(lambda s: f'\\x{s}', textwrap.wrap(hex_string, 2)))
 
 
-# initialisation
-print_file(f'#separator {hexlify(SEPARATOR)}', file=HTTP_LOG)
-print_file(f'#set_separator{SEPARATOR}{SET_SEPARATOR}', file=HTTP_LOG)
-print_file(f'#empty_field{SEPARATOR}{EMPTY_FIELD}', file=HTTP_LOG)
-print_file(f'#unset_field{SEPARATOR}{UNSET_FIELD}', file=HTTP_LOG)
-print_file(f'#path{SEPARATOR}http', file=HTTP_LOG)
-print_file(f'#open{SEPARATOR}{time.strftime("%Y-%m-%d-%H-%M-%S")}', file=HTTP_LOG)
-print_file(f'#fields{SEPARATOR}{SEPARATOR.join(FIELDS)}', file=HTTP_LOG)
-print_file(f'#types{SEPARATOR}{SEPARATOR.join(TYPES)}', file=HTTP_LOG)
+def init(HTTP_LOG):
+    print_file(f'#separator {hexlify(SEPARATOR)}', file=HTTP_LOG)
+    print_file(f'#set_separator{SEPARATOR}{SET_SEPARATOR}', file=HTTP_LOG)
+    print_file(f'#empty_field{SEPARATOR}{EMPTY_FIELD}', file=HTTP_LOG)
+    print_file(f'#unset_field{SEPARATOR}{UNSET_FIELD}', file=HTTP_LOG)
+    print_file(f'#path{SEPARATOR}http', file=HTTP_LOG)
+    print_file(f'#open{SEPARATOR}{time.strftime("%Y-%m-%d-%H-%M-%S")}', file=HTTP_LOG)
+    print_file(f'#fields{SEPARATOR}{SEPARATOR.join(FIELDS)}', file=HTTP_LOG)
+    print_file(f'#types{SEPARATOR}{SEPARATOR.join(TYPES)}', file=HTTP_LOG)
 
 
 def make_url(line):
@@ -90,6 +98,15 @@ def beautify(obj):
 
 
 def generate(log_name):
+    global DATE, HTTP_LOG
+    date = time.strftime('%Y-%m-%d')
+    if date != DATE:
+        close()
+        DATE = date
+
+        HTTP_LOG = os.path.join(LOGS_PATH, 'http', f'{DATE}.log')
+        init(HTTP_LOG)
+
     log_root = os.path.join(LOGS_PATH, log_name)
     http_log = os.path.join(log_root, 'http.log')
 

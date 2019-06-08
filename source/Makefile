@@ -23,10 +23,10 @@ kill:
 	kill -9 ${DAEMONPID} || true
 	docker-compose -f docker/docker-compose.${OS}.yml kill
 
-build-darwin:
+build-darwin: clean-build
 	$(MAKE) -C server build-darwin
 
-build-linux:
+build-linux: clean-build
 	$(MAKE) -C server build-linux
 
 docker:
@@ -58,9 +58,7 @@ clean-dump:
 clean-logs:
 	if [ -d /home/traffic/log/bro ]; then \
 	    rm -f /home/traffic/log/bro/*.lock; \
-	    > /home/traffic/log/bro/http.log; \
 	    > /home/traffic/log/bro/file.log; \
-	    > /home/traffic/log/bro/info.log; \
 	    > /home/traffic/log/bro/mime.log; \
 	    > /home/traffic/log/bro/time.log; \
 	    > /home/traffic/log/bro/dump.log; \
@@ -68,31 +66,40 @@ clean-logs:
 	    > /home/traffic/log/bro/rate.log; \
 	    > /home/traffic/log/bro/stdout.log; \
 	    > /home/traffic/log/bro/stderr.log; \
-	    rm -rf /home/traffic/log/bro/tmp; \
-	    mkdir -p /home/traffic/log/bro/tmp; \
 	    rm -rf /home/traffic/log/bro/api; \
 	    mkdir -p /home/traffic/log/bro/api; \
+	    rm -rf /home/traffic/log/bro/http; \
+	    mkdir -p /home/traffic/log/bro/http; \
+		rm -rf /home/traffic/log/bro/info; \
+	    mkdir -p /home/traffic/log/bro/info; \
+	    rm -rf /home/traffic/log/bro/tmp; \
+	    mkdir -p /home/traffic/log/bro/tmp; \
 	    for file in $$(ls /home/traffic/log/bro) ; do \
 	        [ -d "/home/traffic/log/bro/$${file}" ] && \
-		    [ "/home/traffic/log/bro/$${file}" != "tmp" ] && \
-		    rm -rf "/home/traffic/log/bro/$${file}" || true; \
+	        [ "/home/traffic/log/bro/$${file}" != "api" ] && \
+	        [ "/home/traffic/log/bro/$${file}" != "http" ] && \
+	        [ "/home/traffic/log/bro/$${file}" != "info" ] && \
+	        [ "/home/traffic/log/bro/$${file}" != "tmp" ] && \
+	        rm -rf "/home/traffic/log/bro/$${file}" || true; \
 	    done \
 	else \
 	    rm -f ./logs/*.lock; \
-	    > ./logs/http.log; \
 	    > ./logs/dump.log; \
 	    > ./logs/fail.log; \
 	    > ./logs/rate.log; \
 	    > ./logs/file.log; \
-	    > ./logs/info.log; \
 	    > ./logs/mime.log; \
 	    > ./logs/time.log; \
 	    > ./logs/stdout.log; \
 	    > ./logs/stderr.log; \
 	    find ./logs \
-		    ! -iname 'tmp' \
-		    ! -iname 'api' -type d -depth 1 -print0 | xargs -0 rm -rf; \
-		find ./logs/api -depth 1 -print0 | xargs -0 rm -rf; \
+	        ! -iname 'api' \
+	        ! -iname 'http' \
+	        ! -iname 'info' \
+	        ! -iname 'tmp' -type d -depth 1 -print0 | xargs -0 rm -rf; \
+	    find ./logs/api -depth 1 -print0 | xargs -0 rm -rf; \
+	    find ./logs/http -iname '*.log' -depth 1 -type f -print0 | xargs -0 rm -rf; \
+	    find ./logs/info -iname '*.log' -depth 1 -type f -print0 | xargs -0 rm -rf; \
 	    find ./logs/tmp -iname '*.json' -depth 1 -type f -print0 | xargs -0 rm -rf; \
 	fi
 

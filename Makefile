@@ -150,20 +150,17 @@ gitlab-copy: gitlab-clean
 	cp -f \
 	    cluster/init.sh \
 	    cluster/Makefile ${REPO_PATH}/cluster
-	$(MAKE) -C cluster/app build clean vendor
+	$(MAKE) -C cluster/app clean vendor
 	find cluster -iname 'app' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
 	$(MAKE) -C cluster/core clean vendor
 	find cluster -iname 'core' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
+	$(MAKE) -C cluster/daemon build
+	$(MAKE) -C cluster/daemon clean
+	find cluster -iname 'daemon' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
 	$(MAKE) -C cluster archive
 	find cluster -iname 'archive' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
 	find cluster -iname 'docker' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
 	find cluster -iname 'utils' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
-	# copy docker
-	cp -rf docker ${REPO_PATH}
-	# copy make
-	mkdir -p ${REPO_PATH}/make
-	find make \
-	    ! -iname 'venv' -depth 1 -exec cp -rf {} ${REPO_PATH}/make \;
 	# copy source
 	mkdir -p ${REPO_PATH}/source
 	$(MAKE) -C source build

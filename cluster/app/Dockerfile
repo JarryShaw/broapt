@@ -1,6 +1,6 @@
 # basic info
 FROM library/ubuntu:16.04
-LABEL version=2019.05.29
+LABEL version=2019.06.08
 
 # set up environment variables
 ENV LANG "C.UTF-8"
@@ -62,6 +62,12 @@ RUN rm -rf \
 
 # final setup
 RUN ln -sf /usr/bin/python3.6 /usr/bin/python3
+
+# set working directory
+WORKDIR /source
+
+# set entry point
+ENTRYPOINT [ "bash", "/source/init.sh" ]
 
 # copy source
 COPY source /source

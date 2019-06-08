@@ -9,10 +9,12 @@ services:
     entrypoint: ["bash", "/source/init.sh"]
     # core environ
     environment:
+      ## [PYTHON] force the stdout and stderr streams to be unbuffered
+      PYTHONUNBUFFERED: 1
       ## concurrent process limit
-      BROAPT_CORE_CPU: 5
+      BROAPT_CPU: 1
       ## sleep interval
-      BROAPT_CORE_INTERVAL: 10
+      BROAPT_INTERVAL: 10
       ## path to extract files
       BROAPT_DUMP_PATH: /dump/
       ## path to source PCAP files
@@ -22,7 +24,7 @@ services:
       ## group extracted file by MIME types
       BROAPT_MIME_MODE: 1
       ## log in JSON format
-      BROAPT_JSON_MODE: 1
+      BROAPT_JSON_MODE: 0
       ## run Bro in bare mode
       BROAPT_BARE_MODE: 0
       ## run Bro with `-C` option
@@ -38,7 +40,103 @@ services:
       ## include entropy information
       BROAPT_ENTROPY_MODE: 0
       ## Bro MIME white list
-      BROAPT_LOAD_MIME: application/vnd.microsoft.portable-executable;application/x-dosexec;application/msword;application/pdf;application/vnd.android.package-archive;message/rfc822
+      BROAPT_LOAD_MIME: application/msword;
+                        application/ms-excel;
+                        application/vnd.android.package-archive;
+                        application/vnd.microsoft.portable-executable;
+                        application/vnd.ms-excel;
+                        application/vnd.ms-excel.addin.macroenabled.12;
+                        application/vnd.ms-excel.sheet.binary.macroenabled.12;
+                        application/vnd.ms-excel.sheet.macroenabled.12;
+                        application/vnd.ms-excel.template.macroenabled.12;
+                        application/vnd.ms-office.activex+xml;
+                        application/vnd.ms-officetheme;
+                        application/vnd.ms-powerpoint;
+                        application/vnd.ms-powerpoint.addin.macroenabled.12;
+                        application/vnd.ms-powerpoint.presentation.macroenabled.12;
+                        application/vnd.ms-powerpoint.slide.macroenabled.12;
+                        application/vnd.ms-powerpoint.slideshow.macroenabled.12;
+                        application/vnd.ms-powerpoint.template.macroenabled.12;
+                        application/vnd.ms-word.document.macroenabled.12;
+                        application/vnd.ms-word.template.macroenabled.12;
+                        application/vnd.ms-works;
+                        application/vnd.ms-wpl;
+                        application/vnd.ms-xpsdocument;
+                        application/vnd.openxmlformats-officedocument;
+                        application/vnd.openxmlformats-officedocument.custom-properties+xml;
+                        application/vnd.openxmlformats-officedocument.customxmlproperties+xml;
+                        application/vnd.openxmlformats-officedocument.drawing+xml;
+                        application/vnd.openxmlformats-officedocument.drawingml.chart+xml;
+                        application/vnd.openxmlformats-officedocument.drawingml.chartshapes+xml;
+                        application/vnd.openxmlformats-officedocument.drawingml.diagramcolors+xml;
+                        application/vnd.openxmlformats-officedocument.drawingml.diagramdata+xml;
+                        application/vnd.openxmlformats-officedocument.drawingml.diagramlayout+xml;
+                        application/vnd.openxmlformats-officedocument.drawingml.diagramstyle+xml;
+                        application/vnd.openxmlformats-officedocument.extended-properties+xml;
+                        application/vnd.openxmlformats-officedocument.presentationml.commentauthors+xml;
+                        application/vnd.openxmlformats-officedocument.presentationml.comments+xml;
+                        application/vnd.openxmlformats-officedocument.presentationml.handoutmaster+xml;
+                        application/vnd.openxmlformats-officedocument.presentationml.notesmaster+xml;
+                        application/vnd.openxmlformats-officedocument.presentationml.notesslide+xml;
+                        application/vnd.openxmlformats-officedocument.presentationml.presentation;
+                        application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml;
+                        application/vnd.openxmlformats-officedocument.presentationml.presprops+xml;
+                        application/vnd.openxmlformats-officedocument.presentationml.slide;
+                        application/vnd.openxmlformats-officedocument.presentationml.slide+xml;
+                        application/vnd.openxmlformats-officedocument.presentationml.slidelayout+xml;
+                        application/vnd.openxmlformats-officedocument.presentationml.slidemaster+xml;
+                        application/vnd.openxmlformats-officedocument.presentationml.slideshow;
+                        application/vnd.openxmlformats-officedocument.presentationml.slideshow.main+xml;
+                        application/vnd.openxmlformats-officedocument.presentationml.slideupdateinfo+xml;
+                        application/vnd.openxmlformats-officedocument.presentationml.tablestyles+xml;
+                        application/vnd.openxmlformats-officedocument.presentationml.tags+xml;
+                        application/vnd.openxmlformats-officedocument.presentationml.template;
+                        application/vnd.openxmlformats-officedocument.presentationml.template.main+xml;
+                        application/vnd.openxmlformats-officedocument.presentationml.viewprops+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.calcchain+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.chartsheet+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.comments+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.connections+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.dialogsheet+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.externallink+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.pivotcachedefinition+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.pivotcacherecords+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.pivottable+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.querytable+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.revisionheaders+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.revisionlog+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.sharedstrings+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.sheetmetadata+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.table+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.tablesinglecells+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.template;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.template.main+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.usernames+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.volatiledependencies+xml;
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml;
+                        application/vnd.openxmlformats-officedocument.theme+xml;
+                        application/vnd.openxmlformats-officedocument.themeoverride+xml;
+                        application/vnd.openxmlformats-officedocument.vmldrawing;
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml;
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.document;
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.document.glossary+xml;
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml;
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.endnotes+xml;
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.fonttable+xml;
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml;
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.footnotes+xml;
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml;
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml;
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml;
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.template;
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.template.main+xml;
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.websettings+xml;
+                        application/x-dosexec;
+                        application/x-executable;
+                        message/rfc822;
       ## Bro protocol white list
       BROAPT_LOAD_PROTOCOL: SMTP
       ## Bro file reassembly buffer size
@@ -48,21 +146,25 @@ services:
       ## concurrent hook processes
       BROAPT_HOOK_CPU: 1
     image: broapt-core
-    restart: "always"
+    restart: "on-failure"
     volumes:
+      ## path mappings
       - ../../sample:/pcap
       - ../dump:/dump
       - ../logs:/var/log/bro
-      - ../core/include/scripts:/source/scripts/sites
-      - ../core/include/python:/source/python/sites
+      ## site functions
+      - ../core/include/scripts:/broapt/scripts/sites
+      - ../core/include/python:/broapt/python/sites
   app:
     build: ../app
     container_name: broapt-app
     entrypoint: ["bash", "/source/init.sh"]
     # app environ
     environment:
+      ## [PYTHON] force the stdout and stderr streams to be unbuffered
+      PYTHONUNBUFFERED: 1
       ## concurrent process limit
-      BROAPT_APP_CPU: 5
+      BROAPT_APP_CPU: 2
       ## sleep interval
       BROAPT_APP_INTERVAL: 10
       ## command retry
@@ -79,8 +181,10 @@ services:
       SERVER_NAME_HOST: host.docker.internal
       SERVER_NAME_PORT: 5000
     image: broapt-app
-    restart: "always"
+    restart: "on-failure"
     volumes:
+      ## path mappings
       - ../dump:/dump
       - ../logs:/var/log/bro
+      ## site functions
       - ../app/include/api:/api/

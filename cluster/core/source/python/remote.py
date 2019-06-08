@@ -7,9 +7,10 @@ import os
 import queue
 import signal
 import time
+import traceback
 import warnings
 
-from const import INTERVAL, QUEUE
+from const import INTERVAL, QUEUE, HOOK_CPU
 
 try:
     from sites import HOOK
@@ -58,23 +59,24 @@ def hook(log_name):
 
 
 def remote():  # pylint: disable=inconsistent-return-statements
-    if len(HOOK) < 1:
+    if len(HOOK) < 1:  # pylint: disable=len-as-condition
         return
     while True:
         try:
             log_name = QUEUE.get_nowait()
             try:
                 hook(log_name)
-            except BaseException:
+            except Exception:
+                traceback.print_exc()
                 warnings.warn(f'hook execution failed on {log_name!r}', HookWarning)
         except queue.Empty:
             if JOIN.value:
                 break
-            time.sleep(INTERVAL)
+        time.sleep(INTERVAL)
     if HOOK_CPU <= 1:
-        [func(log_name) for func in EXIT]  # pylint: disable=expression-not-assigned
+        [func() for func in EXIT]  # pylint: disable=expression-not-assigned
     else:
-        multiprocessing.Pool(HOOK_CPU).map(wrapper_func, EXIT)  ## pylint: disable=map-builtin-not-iterating
+        multiprocessing.Pool(HOOK_CPU).map(wrapper_func, EXIT)
 
 
 @contextlib.contextmanager
@@ -83,6 +85,8 @@ def remote_proc():
     proc.start()
     try:
         yield
+    except BaseException:
+        traceback.print_exc()
     finally:
         os.kill(proc.pid, signal.SIGUSR1)
     proc.join()
