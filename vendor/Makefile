@@ -3,7 +3,7 @@
 
 ROOT := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 
-all: broker file-extraction zeek
+all: broker file-extraction zeek tools
 build: broker-build-release zeek-build-release
 clean: broker-clean file-extraction-clean zeek-clean
 link: link-cellar link-venv
@@ -174,3 +174,6 @@ zeek-build-release-make: zeek-build-release-download
 
 zeek-recursive: zeek-clean
 	git clone --recursive https://github.com/zeek/zeek.git $(ROOT)/zeek
+
+tools:
+	$(MAKE) -C tools all

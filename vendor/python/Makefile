@@ -8,6 +8,11 @@ export PIPENV_CLEAR
 
 DIR ?= "vendor"
 
+root-download:
+	$(MAKE) -C app download
+	$(MAKE) -C core download
+	$(MAKE) -C src download
+
 .ONESHELL:
 new:
 	set -ex

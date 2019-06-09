@@ -110,5 +110,6 @@
         "zeek"
     ],
     "python.pythonPath": ".venv/bin/python",
-    "python.linting.pylintEnabled": true
+    "python.linting.pylintEnabled": true,
+    "restructuredtext.confPath": "${workspaceFolder}/docs/conf.py"
 }

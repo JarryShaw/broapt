@@ -21,10 +21,10 @@
 	url = https://github.com/egaus/MaliciousMacroBot.git
 [submodule "vendor/tools/elfparser"]
 	path = vendor/tools/elfparser
-	url = https://github.com/jacob-baines/elfparser
+	url = https://github.com/jacob-baines/elfparser.git
 [submodule "vendor/tools/JaSt"]
 	path = vendor/tools/JaSt
-	url = https://github.com/Aurore54F/JaSt
+	url = https://github.com/Aurore54F/JaSt.git
 [submodule "vendor/tools/AndroPyTool"]
 	path = vendor/tools/AndroPyTool
-	url = https://github.com/alexMyG/AndroPyTool
+	url = https://github.com/alexMyG/AndroPyTool.git

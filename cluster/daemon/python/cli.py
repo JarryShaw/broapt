@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import argparse
+import os
 
 import dotenv
 
@@ -11,7 +12,7 @@ def parse_env():
     parser.add_argument('-v', '--version', action='version', version='1.0')
 
     environ_parser = parser.add_argument_group(title='environment arguments')
-    environ_parser.add_argument('-e', '--env', help='path to dotenv file')
+    environ_parser.add_argument('-e', '--env', help='path to dotenv file', default='/etc/sysconfig/broaptd')
     environ_parser.add_argument('-s', '--signal', help='daemon kill signal')
 
     server_parser = parser.add_argument_group(title='server arguments')
@@ -19,7 +20,7 @@ def parse_env():
     server_parser.add_argument('-p', '--port', help='the port of the webserver')
 
     compose_parser = parser.add_argument_group(title='compose arguments')
-    compose_parser.add_argument('-c', '--docker-compose', help="path to BroAPT's docker-compose.yml")
+    compose_parser.add_argument('-f', '--docker-compose', help="path to BroAPT's compose file")
     compose_parser.add_argument('-d', '--dump-path', help='path to extracted files')
     compose_parser.add_argument('-l', '--logs-path', help='path to log files')
 
@@ -36,7 +37,7 @@ def parse_env():
     path = args.env
 
     # load dotenv
-    if path is not None:
+    if os.path.isfile(path):
         return dotenv.dotenv_values(dotenv_path=path)
     return dict()
 
@@ -63,7 +64,7 @@ def parse_args():
     parser.add_argument('-s', '--signal', default=signal, type=int)
     parser.add_argument('-t', '--host', default=host)
     parser.add_argument('-p', '--port', default=port, type=int)
-    parser.add_argument('-c', '--docker-compose', default=docker_compose)
+    parser.add_argument('-f', '--docker-compose', default=docker_compose)
     parser.add_argument('-d', '--dump-path', default=dump_path, required=(dump_path is None))
     parser.add_argument('-l', '--logs-path', default=logs_path, required=(logs_path is None))
     parser.add_argument('-r', '--api-root', default=api_root, required=(api_root is None))

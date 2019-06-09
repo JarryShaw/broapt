@@ -8,6 +8,7 @@ if [ -f .env ] ; then
 fi
 
 # install chkconfig
+# from https://uni.edu/~prefect/devel/chkconfig/index.shtml
 [ `which chkconfig` ] || cp chkconfig /usr/local/bin/chkconfig
 
 # install LMD

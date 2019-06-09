@@ -8,6 +8,7 @@ export PIPENV_CLEAR
 
 setup:
 	$(MAKE) -C source setup
+	$(MAKE) -C docs setup
 
 run:
 	$(MAKE) -C source run
@@ -26,8 +27,11 @@ download: requirements-download
 gitlab: gitlab-submodule
 link: submodule-link
 pipenv: pipenv-init
-submodule: submodule-clone
 update: pipenv-update download submodule-pull
+
+submodule:
+	git submodule init
+	git submodule update
 
 clean:
 	$(MAKE) -C source clean
@@ -52,7 +56,7 @@ requirements-update:
 	$(MAKE) -C vendor/python update
 
 requirements-download:
-	$(MAKE) -C vendor/python download
+	$(MAKE) -C vendor/python root-download
 
 requirements-remove:
 	$(MAKE) -C vendor/python remove
@@ -101,7 +105,7 @@ submodule-build:
 
 submodule-clone:
 	cd vendor && $(MAKE) all
-	git clone http://202.120.1.158/bysj.git gitlab
+	git clone https://gitlab.sjtu.edu.cn:443/bysj/2019bysj.git gitlab
 
 submodule-link:
 	cd vendor && $(MAKE) link
@@ -161,6 +165,10 @@ gitlab-copy: gitlab-clean
 	find cluster -iname 'archive' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
 	find cluster -iname 'docker' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
 	find cluster -iname 'utils' -depth 1 -exec cp -rf {} ${REPO_PATH}/cluster \;
+	# copy docs
+	mkdir -p ${REPO_PATH}/docs
+	find docs \
+	    -depth 1 -exec cp -rf {} ${REPO_PATH}/docs \;
 	# copy source
 	mkdir -p ${REPO_PATH}/source
 	$(MAKE) -C source build
@@ -199,7 +207,4 @@ gitlab-commit: gitlab-copy
 	$(MAKE) -C ${REPO_PATH} git-commit
 
 gitlab-submodule: gitlab-copy
-	rm -rf ${REPO_PATH}/vendor/broker \
-	       ${REPO_PATH}/vendor/file\-extraction \
-	       ${REPO_PATH}/vendor/zeek
-	$(MAKE) -C ${REPO_PATH}/vendor all
+	$(MAKE) -C $(REPO_PATH) submodule
