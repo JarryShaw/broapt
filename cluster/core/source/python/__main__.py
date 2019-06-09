@@ -10,7 +10,7 @@ import warnings
 
 import magic
 
-from const import CPU_CNT, FILE, INTERVAL, PCAP_PATH
+from const import CPU_CNT, FILE, INTERVAL, PCAP_PATH, TIME
 from process import process
 from remote import remote_proc
 from utils import print_file
@@ -97,7 +97,7 @@ def main_with_no_args():
         except KeyboardInterrupt:
             return 0
 
-        print_file('+ Starting another turn...')
+        print_file('+ Starting another turn...', file=TIME)
         print('+ Starting another turn...')
 
 

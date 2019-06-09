@@ -124,7 +124,7 @@ def process(entry):  # pylint: disable=inconsistent-return-statements
     if api.remote:
         if remote(entry, mime, api):
             return issue(mime)
-        return print_file(entry.path)
+        return print_file(entry.path, DUMP)
 
     # set up environ
     env = make_env(api)

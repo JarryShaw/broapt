@@ -47,7 +47,7 @@ def communicate(log_root):
 
 @suppress
 def process(file):
-    print_file(f'+ Working on PCAP: {file!r}', TIME)
+    print_file(f'+ Working on PCAP: {file!r}', file=TIME)
     print(f'+ Working on PCAP: {file!r}')
 
     stem = pathlib.Path(file).stem
@@ -76,7 +76,7 @@ def process(file):
     try:
         subprocess.check_call(args, env=env, stdout=stdout, stderr=stderr)
     except subprocess.CalledProcessError:
-        print_file(f'+ Failed on PCAP: {file!r}', TIME)
+        print_file(f'+ Failed on PCAP: {file!r}', file=TIME)
     stdout.close()
     stderr.close()
     end = time.time()
@@ -94,6 +94,6 @@ def process(file):
             shutil.move(log, os.path.join(dest, log.replace(f'.{uid}.log', '.log')))
     communicate(dest)
 
-    print_file(f'+ Bro processing: {end-start} seconds', TIME)
+    print_file(f'+ Bro processing: {end-start} seconds', file=TIME)
     print_file(file, file=FILE)
     QUEUE.put(dest_stem)

@@ -36,7 +36,7 @@ ENTR_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_ENTROPY_MODE', 'false').casefol
 DUMP_PATH_ENV = os.getenv('BROAPT_DUMP_PATH')
 if DUMP_PATH_ENV is None:
     try:
-        DUMP_PATH_ENV = subprocess.check_output(['bro', '-e', 'print_file(FileExtract::prefix)'],
+        DUMP_PATH_ENV = subprocess.check_output(['bro', '-e', 'print(FileExtract::prefix)'],
                                                 stderr=subprocess.DEVNULL, encoding='utf-8').strip()
     except subprocess.CalledProcessError:
         DUMP_PATH_ENV = './extract_files/'
