@@ -10,6 +10,7 @@ pyinstaller = "*"
 pylint = "*"
 
 [packages]
+aenum = "*"
 bro-pkg = "*"
 dataclasses = "*"
 file-magic = "*"

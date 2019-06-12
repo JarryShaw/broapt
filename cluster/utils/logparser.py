@@ -3,7 +3,9 @@
 import collections
 import ctypes
 import dataclasses
+import decimal
 import datetime
+import enum
 import ipaddress
 import json
 import pprint
@@ -12,6 +14,8 @@ import sys
 import urllib.parse
 
 import pandas
+
+decimal.getcontext().prec = 6
 
 ###############################################################################
 # data classes
@@ -96,7 +100,19 @@ def time_parser(s):
 def float_parser(s):
     if s == unset_field:
         return None
-    return float(s)
+    return decimal.Decimal(s)
+
+
+def interval_parser(s):
+    if s == unset_field:
+        return None
+    return datetime.timedelta(seconds=float(s))
+
+
+def enum_parser(s):
+    if s == unset_field:
+        return None
+    return enum.Enum('<unknown>', [(s, 0)])[s]
 
 
 def bool_parser(s):
@@ -112,8 +128,8 @@ def bool_parser(s):
 type_parser = collections.defaultdict(lambda: str_parser, dict(
     string=str_parser,
     port=port_parser,
-    enum=str_parser,
-    interval=str_parser,
+    enum=enum_parser,
+    interval=interval_parser,
     addr=addr_parser,
     subnet=subnet_parser,
     int=int_parser,
