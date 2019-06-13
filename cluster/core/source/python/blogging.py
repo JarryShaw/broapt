@@ -20,6 +20,24 @@ import warnings
 
 from const import LOGS_PATH
 
+__all__ = [
+    # Bro types
+    'bro_addr', 'bro_bool', 'bro_count', 'bro_double', 'bro_enum', 'bro_int',
+    'bro_interval', 'bro_list', 'bro_port', 'bro_set', 'bro_string',
+    'bro_subnet', 'bro_time',
+
+    # logging fields
+    'AddrField', 'BoolField', 'CountField', 'DoubleField', 'EnumField',
+    'IntField', 'IntervalField', 'PortField', 'StringField', 'SubnetField',
+    'TimeField',
+
+    # logging model
+    'Model',
+
+    # logging writers
+    'Logger', 'JSONLogger', 'TEXTLogger',
+]
+
 ###############################################################################
 # warnings & exceptions
 
@@ -57,16 +75,34 @@ def _type_check(func):
     def check(self, value):
         if self.predicate(value):
             return func(self, self.cast(value))
-        raise FieldError(f'{self.type()} is required (got type {type(value).__name__!r})')
+        raise FieldError(f'{self.type} is required (got type {type(value).__name__!r})')
     return check
 
 
 class _Field(metaclass=abc.ABCMeta):  # pylint: disable=abstract-method
 
+    ###########################################################################
+    # APIs for overload
+
+    type: str
+
     @staticmethod
-    @abc.abstractmethod
-    def type():
-        pass
+    def jsonify(value):
+        return json.dumps(value)
+
+    @staticmethod
+    def textify(value):
+        return str(value)
+
+    @staticmethod
+    def predicate(value):  # pylint: disable=unused-argument
+        return True
+
+    @staticmethod
+    def cast(value):
+        return value
+
+    ###########################################################################
 
     @property
     def context(self):
@@ -78,13 +114,10 @@ class _Field(metaclass=abc.ABCMeta):  # pylint: disable=abstract-method
             return cls._to_json(cls, value)
         return cls._to_text(cls, value)
 
-    @staticmethod
-    def jsonify(value):
-        return json.dumps(value)
-
-    @staticmethod
-    def textify(value):
-        return str(value)
+    def __new__(cls, *args, **kwargs):
+        if not hasattr(cls, 'type'):
+            raise NotImplementedError
+        return super().__new__(cls)
 
     def __init__(self, value, *, use_json=False):
         self._json = use_json
@@ -96,15 +129,7 @@ class _Field(metaclass=abc.ABCMeta):  # pylint: disable=abstract-method
         return self._to_text(self._value)
 
     def __repr__(self):
-        return f'<{self.type()} {self}>'
-
-    @staticmethod
-    def predicate(value):  # pylint: disable=unused-argument
-        return True
-
-    @staticmethod
-    def cast(value):
-        return value
+        return f'<{self.type} {self}>'
 
     @_type_check
     def _to_json(self, value):
@@ -117,9 +142,7 @@ class _Field(metaclass=abc.ABCMeta):  # pylint: disable=abstract-method
 
 class StringField(_Field):
 
-    @staticmethod
-    def type():
-        return 'string'
+    type = 'string'
 
     @staticmethod
     def cast(value):
@@ -128,9 +151,7 @@ class StringField(_Field):
 
 class PortField(_Field):
 
-    @staticmethod
-    def type():
-        return 'port'
+    type = 'port'
 
     @staticmethod
     def predicate(value):
@@ -151,9 +172,7 @@ class PortField(_Field):
 
 class EnumField(_Field):
 
-    @staticmethod
-    def type():
-        return 'enum'
+    type = 'enum'
 
     @staticmethod
     def predicate(value):
@@ -168,9 +187,7 @@ class EnumField(_Field):
 
 class IntervalField(_Field):
 
-    @staticmethod
-    def type():
-        return 'interval'
+    type = 'interval'
 
     @staticmethod
     def predicate(value):
@@ -199,9 +216,7 @@ class IntervalField(_Field):
 
 class AddrField(_Field):
 
-    @staticmethod
-    def type():
-        return 'addr'
+    type = 'addr'
 
     @staticmethod
     def predicate(value):
@@ -218,9 +233,7 @@ class AddrField(_Field):
 
 class SubnetField(_Field):
 
-    @staticmethod
-    def type():
-        return 'subnet'
+    type = 'subnet'
 
     @staticmethod
     def predicate(value):
@@ -237,9 +250,7 @@ class SubnetField(_Field):
 
 class IntField(_Field):
 
-    @staticmethod
-    def type():
-        return 'int'
+    type = 'int'
 
     @staticmethod
     def predicate(value):
@@ -260,9 +271,7 @@ class IntField(_Field):
 
 class CountField(_Field):
 
-    @staticmethod
-    def type():
-        return 'count'
+    type = 'count'
 
     @staticmethod
     def predicate(value):
@@ -285,9 +294,7 @@ class CountField(_Field):
 
 class TimeField(_Field):
 
-    @staticmethod
-    def type():
-        return 'time'
+    type = 'time'
 
     @staticmethod
     def predicate(value):
@@ -312,9 +319,7 @@ class TimeField(_Field):
 
 class DoubleField(_Field):
 
-    @staticmethod
-    def type():
-        return 'double'
+    type = 'double'
 
     @staticmethod
     def predicate(value):
@@ -339,9 +344,7 @@ class DoubleField(_Field):
 
 class BoolField(_Field):
 
-    @staticmethod
-    def type():
-        return 'bool'
+    type = 'bool'
 
     @staticmethod
     def predicate(value):
@@ -398,71 +401,59 @@ bro_set = _bro_set
 
 class Model(metaclass=abc.ABCMeta):
 
+    ###########################################################################
+    # APIs for overload
+
+    def default(self, field_typing):  # pylint: disable=unused-argument, no-self-use
+        return False
+
+    def fallback(self, field_typing):  # pylint: disable=no-self-use
+        raise ModelError(f'unknown field type: {field_typing.__name__}')
+
     @property
     def json(self):
         return False
 
-    @property
-    def dataclass_args(self):
-        return dict(init=self.dataclass_init(),
-                    repr=self.dataclass_repr(),
-                    eq=self.dataclass_eq(),
-                    order=self.dataclass_order(),
-                    unsafe_hash=self.dataclass_unsafe_hash(),
-                    frozen=False)
+    ###########################################################################
 
-    @staticmethod
-    def dataclass_init():
-        return True
-
-    @staticmethod
-    def dataclass_repr():
-        return True
-
-    @staticmethod
-    def dataclass_eq():
-        return True
-
-    @staticmethod
-    def dataclass_order():
-        return False
-
-    @staticmethod
-    def dataclass_unsafe_hash():
-        return False
+    __dataclass_init__ = True
+    __dataclass_repr__ = True
+    __dataclass_eq__ = True
+    __dataclass_order__ = False
+    __dataclass_unsafe_hash__ = False
 
     def __new__(cls, *args, **kwargs):  # pylint: disable=unused-argument
         if dataclasses.is_dataclass(cls):
+            if cls.__dataclass_params__.frozen:
+                raise ModelError('frozen model')
             cls = dataclasses.make_dataclass(cls.__name__,  # pylint: disable=self-cls-assignment
                                              [(field.name, field.type, field) for field in dataclasses.fields(cls)],
                                              bases=cls.mro(),
                                              namespace=cls.__dict__,
-                                             init=cls.dataclass_init(),
-                                             repr=cls.dataclass_repr(),
-                                             eq=cls.dataclass_eq(),
-                                             order=cls.dataclass_order(),
-                                             unsafe_hash=cls.dataclass_unsafe_hash(),
+                                             init=cls.__dataclass_init__,
+                                             repr=cls.__dataclass_repr__,
+                                             eq=cls.__dataclass_eq__,
+                                             order=cls.__dataclass_order__,
+                                             unsafe_hash=cls.__dataclass_unsafe_hash__,
                                              frozen=False)
         else:
             cls = dataclasses._process_class(cls,  # pylint: disable=protected-access, self-cls-assignment
-                                             init=cls.dataclass_init(),
-                                             repr=cls.dataclass_repr(),
-                                             eq=cls.dataclass_eq(),
-                                             order=cls.dataclass_order(),
-                                             unsafe_hash=cls.dataclass_unsafe_hash(),
+                                             init=cls.__dataclass_init__,
+                                             repr=cls.__dataclass_repr__,
+                                             eq=cls.__dataclass_eq__,
+                                             order=cls.__dataclass_order__,
+                                             unsafe_hash=cls.__dataclass_unsafe_hash__,
                                              frozen=False)
         return super().__new__(cls)
 
     def __post_init__(self):
         try:
-            orig_exists = True
-            try:
+            orig_exists = hasattr(self, '__foo')
+            if orig_exists:
                 orig = getattr(self, '__foo')
-            except AttributeError:
-                orig_exists = False
-            setattr(self, '__foo', 1)
+            setattr(self, '__foo', 'foo')
         except dataclasses.FrozenInstanceError as error:
-            raise ModelError(f'invalid model: {error}').with_traceback(error.__traceback__) from None
+            raise ModelError(f'frozen model: {error}').with_traceback(error.__traceback__) from None
         if orig_exists:
             setattr(self, '__foo', orig)
         else:
@@ -471,12 +462,20 @@ class Model(metaclass=abc.ABCMeta):
         for field in dataclasses.fields(self):
             self._typing_check(field.type)
             value = getattr(self, field.name)
-            factory = self._get_name(field.type)
+            factory = self._get_factory(field.type)
             setattr(self, field.name, factory(value))
 
     def _typing_check(self, field_typing):  # pylint: disable=inconsistent-return-statements
+        if self.default(field_typing):
+            return
+        if isinstance(field_typing, type):
+            if issubclass(field_typing, _Field):
+                return
+            raise FieldError(f'unknown Bro type: {field_typing.__name__}')
+        if isinstance(field_typing, _Field):
+            return
         if field_typing in (bro_list, bro_set):
-            raise FieldError(f'container Bro type not initialised')
+            raise FieldError('container Bro type not initialised')
         if hasattr(field_typing, '__supertype__'):
             if field_typing in _bro_type.__constraints__:  # pylint: disable=no-member
                 return
@@ -492,18 +491,22 @@ class Model(metaclass=abc.ABCMeta):
             return self._typing_check(__args__[0])
         raise FieldError(f'unknown Bro type: {field_typing.__name__}')
 
-    def _get_name(self, field_typing):
+    def _get_factory(self, field_typing):
+        if isinstance(field_typing, type) and issubclass(field_typing, _Field):
+            return lambda value: type(field_typing)(value, use_json=self.json)
+        if isinstance(field_typing, _Field):
+            return lambda value: type(field_typing)(value, use_json=self.json)
         if hasattr(field_typing, '__supertype__'):
             supertype = field_typing.__supertype__
             return lambda value: supertype(value, use_json=self.json)
         if hasattr(field_typing, '__origin__'):
             if field_typing.__origin__ is bro_set:
-                factory = self._get_name(field_typing.__args__[0])
+                factory = self._get_factory(field_typing.__args__[0])
                 return lambda iterable: set(factory(element, use_json=self.json) for element in iterable)
             if field_typing.__origin__ is bro_list:
-                factory = self._get_name(field_typing.__args__[0])
+                factory = self._get_factory(field_typing.__args__[0])
                 return lambda iterable: list(factory(element, use_json=self.json) for element in iterable)
-        raise ModelError(f'unknown field type: {field_typing.__name__}')
+        return self.fallback(field_typing)
 
 
 ###############################################################################
@@ -512,22 +515,44 @@ class Model(metaclass=abc.ABCMeta):
 
 class Logger(metaclass=abc.ABCMeta):
 
+    ###########################################################################
+    # APIs for overload
+
     @property
     @abc.abstractmethod
     def format(self):
         pass
 
     @property
-    def path(self):
-        return self._path
-
-    @property
     def json(self):
         return False
+
+    def init(self, file):
+        pass
+
+    def exit(self):
+        pass
+
+    @abc.abstractmethod
+    def log(self, model):
+        pass
+
+    def fallback(self, field_typing):  # pylint: disable=no-self-use
+        raise ModelError(f'unknown field type: {field_typing.__name__}')
+
+    def __pre_init__(self, path, model, *, log_suffix=None, async_write=True, **kwargs):
+        pass
+
+    ###########################################################################
+
+    @property
+    def path(self):
+        return self._path
 
     def __init__(self, path, model, *, log_suffix=None, async_write=True, **kwargs):  # pylint: disable=unused-argument
         if not issubclass(model, Model):
             raise ModelError(f'type {model.__name__!r} is not a valid model')
+        self.__pre_init__(path, model, log_suffix=log_suffix, async_write=async_write, **kwargs)
 
         if log_suffix is None:
             log_suffix = os.getenv('BROAPT_LOG_SUFFIX', '.log')
@@ -543,8 +568,11 @@ class Logger(metaclass=abc.ABCMeta):
 
         if async_write:
             self._lock = multiprocessing.Lock()
+            self.closed = multiprocessing.Value('B', False)
         else:
             self._lock = contextlib.nullcontext()
+            self.closed = dataclasses.make_dataclass('closed', [('value', bool, False)])()
+
         self.open()
 
     def __enter__(self):
@@ -554,14 +582,18 @@ class Logger(metaclass=abc.ABCMeta):
         self.close()
 
     def _get_name(self, field_typing):
+        if isinstance(field_typing, type) and issubclass(field_typing, _Field):
+            return field_typing.type
+        if isinstance(field_typing, _Field):
+            return field_typing.type
         if hasattr(field_typing, '__supertype__'):
-            return field_typing.__supertype__.type()
+            return field_typing.__supertype__.type
         if hasattr(field_typing, '__origin__'):
             if field_typing.__origin__ is bro_set:
                 return f'set[{self._get_name(field_typing.__args__[0])}]'
             if field_typing.__origin__ is bro_list:
                 return f'vector[{self._get_name(field_typing.__args__[0])}]'
-        raise ModelError(f'unknown field type: {field_typing.__name__}')
+        return self.fallback(field_typing)
 
     def _init_fields(self, model):
         fields = dict()
@@ -577,11 +609,14 @@ class Logger(metaclass=abc.ABCMeta):
         return dataclass
 
     def open(self):
-        with open(self._file, 'w'):
-            pass
+        with open(self._file, 'w') as file:
+            self.init(file)
 
     def close(self):
-        pass
+        if not self.closed.value:
+            with self._lock:
+                self.exit()
+            self.closed.value = True
 
     def write(self, *args, **kwargs):
         try:
@@ -595,10 +630,6 @@ class Logger(metaclass=abc.ABCMeta):
         with self._lock:
             with open(self._file, 'a') as file:
                 print(context, file=file)
-
-    @abc.abstractmethod
-    def log(self, model):
-        pass
 
 
 class JSONLogger(Logger):
@@ -637,33 +668,30 @@ class TEXTLogger(Logger):
     def unset_field(self):
         return self._unset_field
 
-    def __init__(self, path, model, *, log_suffix=None, async_write=True,
-                 seperator='\x09', set_seperator=',', empty_field='(empty)', unset_field='-'):
+    def __pre_init__(self, path, model, *, log_suffix=None, async_write=True,  # pylint: disable=unused-argument, arguments-differ
+                     seperator='\x09', set_seperator=',', empty_field='(empty)', unset_field='-'):
         self._seperator = seperator
         self._set_seperator = set_seperator
         self._empty_field = empty_field
         self._unset_field = unset_field
-
-        super().__init__(path, model, log_suffix=log_suffix, async_write=async_write)
 
     @staticmethod
     def _hexlify(string):
         hex_string = binascii.hexlify(string.encode()).decode()
         return ''.join(map(lambda s: f'\\x{s}', textwrap.wrap(hex_string, 2)))
 
-    def open(self):
-        with open(self._file, 'w') as file:
-            print(f'#seperator {self._hexlify(self.seperator)}', file=file)
-            print(f'#set_separator{self.seperator}{self.set_seperator}', file=file)
-            print(f'#empty_field{self.seperator}{self.empty_field}', file=file)
-            print(f'#unset_field{self.seperator}{self.unset_field}', file=file)
-            print(f'#path{self.seperator}{self.path}', file=file)
-            print(f'#open{self.seperator}{time.strftime("%Y-%m-%d-%H-%M-%S")}', file=file)
-            print(f'#fields{self.seperator}{self.seperator.join(self._fields.keys())}', file=file)
-            print(f'#types{self.seperator}'  # pylint: disable=dict-values-not-iterating
-                  f'{self.seperator.join(map(lambda field: field, self._fields.values()))}', file=file)
+    def init(self, file):
+        print(f'#seperator {self._hexlify(self.seperator)}', file=file)
+        print(f'#set_separator{self.seperator}{self.set_seperator}', file=file)
+        print(f'#empty_field{self.seperator}{self.empty_field}', file=file)
+        print(f'#unset_field{self.seperator}{self.unset_field}', file=file)
+        print(f'#path{self.seperator}{self.path}', file=file)
+        print(f'#open{self.seperator}{time.strftime("%Y-%m-%d-%H-%M-%S")}', file=file)
+        print(f'#fields{self.seperator}{self.seperator.join(self._fields.keys())}', file=file)
+        print(f'#types{self.seperator}'  # pylint: disable=dict-values-not-iterating
+              f'{self.seperator.join(map(lambda field: field, self._fields.values()))}', file=file)
 
-    def close(self):
+    def exit(self):
         with open(self._file, 'a') as file:
             print(f'#close{self.seperator}{time.strftime("%Y-%m-%d-%H-%M-%S")}', file=file)
 
