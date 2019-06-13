@@ -58,7 +58,7 @@ class BoolWarning(LogWarning):
     pass
 
 
-class FrezenError(AttributeError):
+class FrozenError(AttributeError):
     pass
 
 
@@ -119,7 +119,7 @@ class _Field(metaclass=abc.ABCMeta):
         cls.__use_json__ = use_json
         return cls
 
-    def __new__(self, value=None):
+    def __new__(cls, value=None):
         if cls.type is NotImplemented:
             raise NotImplementedError
 
@@ -132,10 +132,10 @@ class _Field(metaclass=abc.ABCMeta):
         return super().__new__(cls)
 
     def __setattr__(self, name, value):
-        raise FrezenError('cannot assign attributes')
+        raise FrozenError('cannot assign attributes')
 
     def __delattr__(self, name):
-        raise FrezenError('cannot delete attributes')
+        raise FrozenError('cannot delete attributes')
 
     def __str__(self):
         return self.value
@@ -355,7 +355,7 @@ class RecordField(_Field):
     @property
     def type(self):
         if self.value is None:
-            return __type__
+            return self.__type__
         return {key: type(val) for key, val in self.value.items()}
 
     @classmethod
@@ -463,11 +463,11 @@ class _Model(metaclass=abc.ABCMeta):
 
     def __new__(cls, *args, **kwargs):  # pylint: disable=unused-argument
         if dataclasses.is_dataclass(cls):
-            if self.__Field_params__.frozen:
+            if cls.__dataclass_params__.frozen:  # pylint: disable=no-member
                 raise ModelError('frozen model')
-            cls = dataclasses.make_Field(cls.__name__,  # pylint: disable=self-cls-assignment
+            cls = dataclasses.make_dataclass(cls.__name__,  # pylint: disable=self-cls-assignment
                                              [(field.name, field.type, field) for field in dataclasses.fields(cls)],
-                                             bases=cls.mro(),
+                                             bases=cls.__bases__,
                                              namespace=cls.__dict__,
                                              init=True,
                                              repr=cls.__Field_repr__,
@@ -492,8 +492,8 @@ class _Model(metaclass=abc.ABCMeta):
         try:
             setattr(self, '__foo', 'foo')
         except dataclasses.FrozenInstanceError as error:
-            raise Model(f'frozen model: {error}').with_traceback(error.__traceback__) from None
-        except Exception:
+            raise ModelError(f'frozen model: {error}').with_traceback(error.__traceback__) from None
+        except Exception:  # pylint: disable=try-except-raise
             raise
         if orig_flag:
             setattr(self, '__foo', orig)
@@ -536,7 +536,7 @@ class Model(_Model):
                 __dict__[key] = val
                 cls.__dict__.pop(key)
             if isinstance(val, _Field):
-                fields[key] = type(val)
+                __dict__[key] = type(val)
                 cls.__dict__.pop(key)
 
         f_name = list()
@@ -556,9 +556,9 @@ class Model(_Model):
                                              compare=cls.__Field_order__,
                                              metadata=cls.__dict__)))
 
-        cls = dataclasses.make_Field(cls.__name__,
+        cls = dataclasses.make_dataclass(cls.__name__,  # pylint: disable=self-cls-assignment
                                          fields,
-                                         bases=cls.mro(),
+                                         bases=cls.__bases__,
                                          namespace=cls.__dict__,
                                          init=True,
                                          repr=cls.__Field_repr__,
@@ -606,18 +606,18 @@ class Model(_Model):
             factory = field_typing.set_json(use_json=self.json)
             if issubclass(factory, RecordField):
                 factory = factory.set_separator(self.__seperator__)
-            return lambda value: factory(value)
+            return factory
         if isinstance(field_typing, _Field):
             factory = type(field_typing).set_json(use_json=self.json)
             if issubclass(factory, RecordField):
                 factory = factory.set_separator(self.__seperator__)
-            return lambda value: factory(value)
+            return factory
         if hasattr(field_typing, '__supertype__'):
             supertype = field_typing.__supertype__
             factory = supertype.set_json(use_json=self.json)
             if issubclass(factory, RecordField):
                 factory = factory.set_separator(self.__seperator__)
-            return lambda value: factory(value)
+            return factory
         if hasattr(field_typing, '__origin__'):
             if field_typing.__origin__ is bro_set:
                 factory = self._get_factory(field_typing.__args__[0]).set_json(use_json=self.json)
@@ -692,7 +692,7 @@ class Logger(metaclass=abc.ABCMeta):
             self.closed = multiprocessing.Value('B', False)
         else:
             self._lock = contextlib.nullcontext()
-            self.closed = dataclasses.make_Field('closed', [('value', bool, False)])()
+            self.closed = dataclasses.make_dataclass('closed', [('value', bool, False)])()
 
         self.open()
 
@@ -704,9 +704,9 @@ class Logger(metaclass=abc.ABCMeta):
 
     def _get_name(self, field_typing):
         if isinstance(field_typing, type) and issubclass(field_typing, _Field):
-            return (field_type.__type__, None)
+            return (field_typing.__type__, None)
         if isinstance(field_typing, _Field):
-            return (field_type.__type__, None)
+            return (field_typing.__type__, None)
         if hasattr(field_typing, '__supertype__'):
             return (field_typing.__supertype__.__type__, None)
         if hasattr(field_typing, '__origin__'):
@@ -723,7 +723,7 @@ class Logger(metaclass=abc.ABCMeta):
         return fields
 
     def _init_model(self, *args, **kwargs):
-        if args and isinstance(args[0], self.Model):
+        if args and isinstance(args[0], self._model):
             dataclass = args[0]
         else:
             dataclass = self._model(*args, **kwargs)
@@ -805,9 +805,9 @@ class TEXTLogger(Logger):
 
     def _expand_field_names(self):
         fields = list()
-        for key, val in self._field.keys():
-            record = ((val[0] is bro_record) or \
-                      (isinstance(val[0], type) and issubclass(val[0], RecordField)) or \
+        for key, val in self._field.items():
+            record = ((val[0] is bro_record) or
+                      (isinstance(val[0], type) and issubclass(val[0], RecordField)) or
                       isinstance(val[0], RecordField))
             if record:
                 fields.extend(f'{key}.{field}' for field in val[1].keys())
@@ -817,9 +817,9 @@ class TEXTLogger(Logger):
 
     def _expand_field_types(self):
         fields = list()
-        for key, val in self._field.keys():
-            record = ((val[0] is bro_record) or \
-                      (isinstance(val[0], type) and issubclass(val[0], RecordField)) or \
+        for key, val in self._field.items():
+            record = ((val[0] is bro_record) or
+                      (isinstance(val[0], type) and issubclass(val[0], RecordField)) or
                       isinstance(val[0], RecordField))
             if record:
                 fields.extend(field for field in val[1].values())
