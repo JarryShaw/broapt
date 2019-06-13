@@ -2,7 +2,7 @@
 
 ## Archives
 
-Bro/Zeek 2.6.1 binary installation archives can be found under `archive` directory.
+Bro/Zeek 2.6.1 binary installation archives can be found under `archive` branch.
 
 ## Dependencies
 

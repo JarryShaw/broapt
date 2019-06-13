@@ -145,10 +145,6 @@ gitlab-copy: gitlab-clean
 	    ! -iname 'Pipfile.lock' -type f -depth 1 -exec cp -rf {} ${REPO_PATH} \;
 	# remove git-lfs usage
 	sed -i "" /lfs/d ${REPO_PATH}/.gitattributes
-	# copy archive
-	mkdir -p ${REPO_PATH}/archive
-	find archive \
-	    -depth 1 -exec cp -rf {} ${REPO_PATH}/archive \;
     # copy cluster
 	mkdir -p ${REPO_PATH}/cluster
 	cp -f \
@@ -180,9 +176,6 @@ gitlab-copy: gitlab-clean
 	# copy vendor
 	mkdir -p ${REPO_PATH}/vendor
 	find vendor -depth 1 -type f -exec cp -rf {} ${REPO_PATH}/vendor \;
-	mkdir -p ${REPO_PATH}/vendor/archive
-	find vendor/archive \
-	    ! -iname 'build' -depth 1 -exec cp -rf {} ${REPO_PATH}/vendor/archive \;
 	mkdir -p ${REPO_PATH}/vendor/python
 	find vendor/python -depth 1 -type f -exec cp -rf {} ${REPO_PATH}/vendor/python \;
 	mkdir -p ${REPO_PATH}/vendor/python/app

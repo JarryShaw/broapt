@@ -14,8 +14,6 @@ For more information, please refer to `docs/thesis.pdf`.
 /broapt/
 ├── LICENSE             # CC license
 ├── LICENSE.bsd         # BSD license
-├── archive             # deprecated/obsoleted stuff
-│   └── ...
 ├── cluster             # standalone implementation
 │   └── ...
 ├── docs
