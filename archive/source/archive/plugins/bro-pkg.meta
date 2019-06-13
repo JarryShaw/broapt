@@ -1,4 +1,0 @@
-[package]
-script_dir = scripts/Reass/TCP
-build_command = ./configure && make
-test_command = cd tests && btest
