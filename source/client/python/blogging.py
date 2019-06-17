@@ -18,12 +18,12 @@ import time
 import typing
 import warnings
 
-from const import LOGS_PATH
+from .const import LOGS_PATH
 
 __all__ = [
     # Bro types
     'bro_addr', 'bro_bool', 'bro_count', 'bro_double', 'bro_enum', 'bro_int',
-    'bro_interval', 'bro_list', 'bro_port', 'bro_set', 'bro_string',
+    'bro_interval', 'bro_vector', 'bro_port', 'bro_set', 'bro_string',
     'bro_subnet', 'bro_time',
 
     # logging fields
@@ -58,15 +58,19 @@ class BoolWarning(LogWarning):
     pass
 
 
-class FrozenError(AttributeError):
+class LogError(Exception):
     pass
 
 
-class FieldError(TypeError):
+class FieldError(LogError, TypeError):
     pass
 
 
-class ModelError(ValueError):
+class TypingError(LogError, TypeError):
+    pass
+
+
+class ModelError(LogError, ValueError):
     pass
 
 
@@ -105,43 +109,66 @@ class _Field(metaclass=abc.ABCMeta):
     ###########################################################################
 
     __use_json__ = False
+    __seperator__ = '\x09'
+    __set_seperator__ = ','
+    __empty_field__ = '(empty)'
+    __unset_field__ = '-'
+
+    @property
+    def type(self):
+        return self.__type__
 
     @property
     def json(self):
         return self.__use_json__
 
     @property
-    def type(self):
-        return self.__type__
+    def seperator(self):
+        return self.__seperator__
+
+    @property
+    def set_seperator(self):
+        return self.__set_seperator__
+
+    @property
+    def empty_field(self):
+        return self.__empty_field__
+
+    @property
+    def unset_field(self):
+        return self.__unset_field__
 
     @classmethod
-    def set_json(cls, use_json):
+    def setattr(cls, *,
+                use_json=False,
+                seperator='\x09',
+                set_seperator=',',
+                empty_field='(empty)',
+                unset_field='-'):
         cls.__use_json__ = use_json
+        cls.__seperator__ = seperator
+        cls.__set_seperator__ = set_seperator
+        cls.__empty_field__ = empty_field
+        cls.__unset_field__ = unset_field
         return cls
 
-    def __new__(cls, value=None):
-        if cls.type is NotImplemented:
+    def __new__(cls, *args, **kwargs):  # pylint: disable=unused-argument
+        if cls.__type__ is NotImplemented:
             raise NotImplementedError
-
-        if value is None:
-            cls.value = value
-        elif cls.__use_json__:
-            cls.value = cls._to_json(cls, value)
-        else:
-            cls.value = cls._to_text(cls, value)
         return super().__new__(cls)
 
-    def __setattr__(self, name, value):
-        raise FrozenError('cannot assign attributes')
+    def __call__(self, value):
+        if self.json:
+            return self._to_json(value)
+        if value is None:
+            return self.unset_field
+        return self._to_text(value)
 
-    def __delattr__(self, name):
-        raise FrozenError('cannot delete attributes')
-
-    def __str__(self):
-        return self.value
-
-    def __repr__(self):
-        return f'<{self.type} {self.value}>'
+    @classmethod
+    def __repr__(cls):
+        if hasattr(cls, 'type'):
+            return cls.type
+        return cls.__type__
 
     @_type_check
     def _to_json(self, value):
@@ -149,10 +176,14 @@ class _Field(metaclass=abc.ABCMeta):
 
     @_type_check
     def _to_text(self, value):
-        return self.textify(value)
+        return self.textify(value) or self.empty_field
 
 
-class StringField(_Field):
+class _SimpleField(_Field):
+    pass
+
+
+class StringField(_SimpleField):
 
     __type__ = 'string'
 
@@ -160,7 +191,7 @@ class StringField(_Field):
         return str(value).encode('unicode-escape').decode()
 
 
-class PortField(_Field):
+class PortField(_SimpleField):
 
     __type__ = 'port'
 
@@ -179,7 +210,7 @@ class PortField(_Field):
         return value.value
 
 
-class EnumField(_Field):
+class EnumField(_SimpleField):
 
     __type__ = 'enum'
 
@@ -192,7 +223,7 @@ class EnumField(_Field):
         return value
 
 
-class IntervalField(_Field):
+class IntervalField(_SimpleField):
 
     __type__ = 'interval'
 
@@ -217,7 +248,7 @@ class IntervalField(_Field):
         return '%s%s' % (value[-5], value[-5:].strip('0'))
 
 
-class AddrField(_Field):
+class AddrField(_SimpleField):
 
     __type__ = 'addr'
 
@@ -232,7 +263,7 @@ class AddrField(_Field):
         return str(ipaddress.ip_address(value))
 
 
-class SubnetField(_Field):
+class SubnetField(_SimpleField):
 
     __type__ = 'subnet'
 
@@ -247,7 +278,7 @@ class SubnetField(_Field):
         return str(ipaddress.ip_network(value))
 
 
-class IntField(_Field):
+class IntField(_SimpleField):
 
     __type__ = 'int'
 
@@ -266,7 +297,7 @@ class IntField(_Field):
         return value.value
 
 
-class CountField(_Field):
+class CountField(_SimpleField):
 
     __type__ = 'count'
 
@@ -287,7 +318,7 @@ class CountField(_Field):
         return value.value
 
 
-class TimeField(_Field):
+class TimeField(_SimpleField):
 
     __type__ = 'time'
 
@@ -310,7 +341,7 @@ class TimeField(_Field):
         return float(value)
 
 
-class DoubleField(_Field):
+class DoubleField(_SimpleField):
 
     __type__ = 'double'
 
@@ -331,7 +362,7 @@ class DoubleField(_Field):
         return '%s%s' % (value[-5], value[-5:].strip('0'))
 
 
-class BoolField(_Field):
+class BoolField(_SimpleField):
 
     __type__ = 'bool'
 
@@ -347,86 +378,216 @@ class BoolField(_Field):
         return 'T' if bool(value) else 'F'
 
 
-class RecordField(_Field):
+class _GenericField(_Field):
+    pass
+
+
+class RecordField(_GenericField):
 
     __type__ = 'record'
-    __seperator__ = '\x09'
 
     @property
     def type(self):
-        if self.value is None:
-            return self.__type__
-        return {key: type(val) for key, val in self.value.items()}
+        return self.seperator.join(self.__field_type__)
 
-    @classmethod
-    def set_type(cls, fields):
-        if dataclasses.is_dataclass(fields):
-            cls.__type__ = {field.name: field.type for field in dataclasses.fields(fields)}
-        else:
-            try:
-                cls.__type__ = {key: type(val) for key, val in dict(fields).values()}
-            except (TypeError, ValueError) as error:
-                raise FieldError(f'invalid fields: {error}').with_traceback(error.__traceback__) from None
-        return cls
+    def __init__(self, value=None, **kwargs):
+        _kw = dict()
+        if value is not None:
+            if dataclasses.is_dataclass(value):
+                for field in dataclasses.fields(value):
+                    if field.default_factory is not dataclasses.MISSING:
+                        _kw[field.name] = field.default_factory()
+                    elif field.default is not dataclasses.MISSING:
+                        _kw[field.name] = field.default
+                    else:
+                        _kw[field.name] = field.type
+            else:
+                _err = True
+                with contextlib.suppress(TypeError, ValueError):
+                    _kw = dict(value)
+                    _err = False
+        _kw.update(kwargs)
 
-    @classmethod
-    def set_separator(cls, seperator):
-        cls.__seperator__ = seperator
-        return cls
+        self.__field_type__ = list()
+        self.__field_factory__ = dict()
+        for key, val in _kw.items():
+            if isinstance(val, typing.TypeVar):
+                val = val.__bound__
+            if _err and isinstance(val, _GenericField) and hasattr(val.__args__):
+                try:
+                    val_len = len(value)
+                except TypeError:
+                    pass
+                else:
+                    if len(val.__args__) == val_len:
+                        _kw = {k: v for k, v in zip(value, val.__args__)}
+                        _kw.update(kwargs)
+
+            if isinstance(val, _Field):
+                field_val = val
+            elif isinstance(val, type) and issubclass(val, _SimpleField):
+                field_val = val()
+            else:
+                raise FieldError(f'invalid Bro record field: {val}')
+            self.__field_type__.append(field_val.type)
+            self.__field_factory__[key] = field_val
 
     def predicate(self, value):  # pylint: disable=no-self-use
         if dataclasses.is_dataclass(value):
-            return all(map(lambda field: isinstance(field, _Field),
-                           dataclasses.asdict(value).values()))
+            return True
         try:
-            return all(map(lambda field: isinstance(field, _Field), dict(value).values()))
+            dict(value)
         except (TypeError, ValueError):
             return False
+        return False
 
     def cast(self, value):  # pylint: disable=no-self-use
         if dataclasses.is_dataclass(value):
-            return dataclasses.asdict(value)
-        return dict(value)
+            value_dict = dataclasses.asdict(value)
+        else:
+            value_dict = dict(value)
+
+        _value = dict()
+        for key, val in self.__field_factory__:
+            if key not in value_dict:
+                raise FieldError(f'missing field {key!r} in Bro record')
+            _value[key] = val(value_dict[key])
+        return _value
+
+    def jsonify(self, value):
+        return '{%s}' % ', '.join(f'{json.dumps(key)}: {val}' for key, val in value)
 
     def textify(self, value):  # pylint: disable=no-self-use
-        return self.__seperator__.join(value.values())
+        if value:
+            return self.seperator.join(value.values())
+        return self.empty_field
+
+
+class _SequenceField(_GenericField):
+
+    @property
+    def type(self):
+        return '%s[%s]' % (self.__type__, self.__field_type__)
+
+    def __init__(self, value):
+        if isinstance(value, typing.TypeVar):
+            value = value.__bound__
+
+        if isinstance(value, _Field):
+            if not self.json and isinstance(value, _GenericField):
+                if isinstance(value, RecordField):
+                    value_type = '~record'
+                else:
+                    value_type = value.type
+                raise FieldError(f'invalid recursive field: {self.__type__}[{value_type}]')
+            field_value = value
+        elif isinstance(value, type) and issubclass(value, _SimpleField):
+            field_value = value()
+        else:
+            raise FieldError('invalid Bro set field')
+        self.__field_type__ = field_value.type
+        self.__field_factory__ = field_value
+
+    def jsonify(self, value):
+        return '[%s]' % ', '.join(value)
+
+    def textify(self, value):
+        if value:
+            return self.set_seperator.join(value)
+        return self.empty_field
+
+
+class SetField(_SequenceField):
+
+    __type__ = 'set'
+
+    def cast(self, value):
+        return set(self.__field_factory__(element) for element in value)
+
+
+class VectorField(_SequenceField):
+
+    __type__ = 'vector'
+
+    def cast(self, value):
+        return list(self.__field_factory__(element) for element in value)
 
 
 ###############################################################################
 # Bro logging types
 
-# basic Bro types
-bro_string = typing.NewType('bro_string', StringField)
-bro_port = typing.NewType('bro_port', PortField)
-bro_enum = typing.NewType('bro_enum', EnumField)
-bro_interval = typing.NewType('bro_interval', IntervalField)
-bro_addr = typing.NewType('bro_addr', AddrField)
-bro_subnet = typing.NewType('bro_subnet', SubnetField)
-bro_int = typing.NewType('bro_int', IntField)
-bro_count = typing.NewType('bro_count', CountField)
-bro_time = typing.NewType('bro_time', TimeField)
-bro_double = typing.NewType('bro_double', DoubleField)
-bro_bool = typing.NewType('bro_bool', BoolField)
-bro_record = typing.NewType('bro_record', RecordField)
+# internal typings
+_bro_string = typing.TypeVar('bro_string', bound=StringField)  # _bro_string.__bound__ == StringField
+_bro_port = typing.TypeVar('bro_port', bound=PortField)
+_bro_enum = typing.TypeVar('bro_enum', bound=EnumField)
+_bro_interval = typing.TypeVar('bro_interval', bound=IntervalField)
+_bro_addr = typing.TypeVar('bro_addr', bound=AddrField)
+_bro_subnet = typing.TypeVar('bro_subnet', bound=SubnetField)
+_bro_int = typing.TypeVar('bro_int', bound=IntField)
+_bro_count = typing.TypeVar('bro_count', bound=CountField)
+_bro_time = typing.TypeVar('bro_time', bound=TimeField)
+_bro_double = typing.TypeVar('bro_double', bound=DoubleField)
+_bro_bool = typing.TypeVar('bro_bool', bound=BoolField)
+_bro_record = typing.TypeVar('bro_record', bound=RecordField)
+_bro_set = typing.TypeVar('bro_set', bound=SetField)
+_bro_vector = typing.TypeVar('bro_vector', bound=VectorField)
+_bro_type = typing.TypeVar('bro_type',  # _bro_type.__constraints__ == (...)
+                           _bro_string,
+                           _bro_port,
+                           _bro_enum,
+                           _bro_interval,
+                           _bro_addr,
+                           _bro_subnet,
+                           _bro_int,
+                           _bro_count,
+                           _bro_time,
+                           _bro_double,
+                           _bro_bool,
+                           _bro_set,
+                           _bro_vector,
+                           _bro_record)
 
-# generic Bro types
-_bro_type = typing.TypeVar('bro_type',
-                           bro_string, bro_port, bro_enum, bro_interval,
-                           bro_addr, bro_subnet, bro_int, bro_count, bro_time,
-                           bro_double, bro_bool, bro_record)
 
+class _bro_record(typing._Final, typing._Immutable, _root=True):
 
-class _bro_list(typing.Generic[_bro_type]):
-    pass
+    def __repr__(self):
+        return 'bro_record'
+
+    @typing._tp_cache
+    def __getitem__(self, parameters):
+        if parameters == ():
+            raise TypingError("Cannot take a Bro record of no types.")
+        if not isinstance(parameters, tuple):
+            parameters = (parameters,)
+        parameters = typing._remove_dups_flatten(parameters)
+        if len(parameters) == 1:
+            return parameters[0]
+        return typing._GenericAlias(self, parameters)
 
 
 class _bro_set(typing.Generic[_bro_type]):
     pass
 
 
-# container Bro types
-bro_list = _bro_list
+class _bro_vector(typing.Generic[_bro_type]):
+    pass
+
+
+# basic Bro types
+bro_string = _bro_string
+bro_port = _bro_port
+bro_enum = _bro_enum
+bro_interval = _bro_interval
+bro_addr = _bro_addr
+bro_subnet = _bro_subnet
+bro_int = _bro_int
+bro_count = _bro_count
+bro_time = _bro_time
+bro_double = _bro_double
+bro_bool = _bro_bool
 bro_set = _bro_set
+bro_vector = _bro_vector
+bro_record = _bro_record()
 
 ###############################################################################
 # Bro logging data model
@@ -584,14 +745,14 @@ class Model(_Model):
             raise FieldError(f'unknown Bro type: {field_typing.__name__}')
         if isinstance(field_typing, _Field):
             return
-        if field_typing in (bro_list, bro_set):
+        if field_typing in (bro_vector, bro_set):
             raise FieldError('container Bro type not initialised')
         if hasattr(field_typing, '__supertype__'):
             if field_typing in _bro_type.__constraints__:  # pylint: disable=no-member
                 return
             raise FieldError(f'unknown Bro type: {field_typing.__name__}')
         if hasattr(field_typing, '__origin__'):
-            if field_typing.__origin__ not in (bro_list, bro_set):
+            if field_typing.__origin__ not in (bro_vector, bro_set):
                 raise FieldError(f'unknown Bro type: {field_typing.__name__}')
             __args__ = field_typing.__args__
             if len(__args__) < 1:  # pylint: disable=len-as-condition
@@ -622,7 +783,7 @@ class Model(_Model):
             if field_typing.__origin__ is bro_set:
                 factory = self._get_factory(field_typing.__args__[0]).set_json(use_json=self.json)
                 return lambda iterable: set(factory(element) for element in iterable)
-            if field_typing.__origin__ is bro_list:
+            if field_typing.__origin__ is bro_vector:
                 factory = self._get_factory(field_typing.__args__[0]).set_json(use_json=self.json)
                 return lambda iterable: list(factory(element) for element in iterable)
         return self.fallback(field_typing)
@@ -712,7 +873,7 @@ class Logger(metaclass=abc.ABCMeta):
         if hasattr(field_typing, '__origin__'):
             if field_typing.__origin__ is bro_set:
                 return ('set', self._get_name(field_typing.__args__[0])[0])
-            if field_typing.__origin__ is bro_list:
+            if field_typing.__origin__ is bro_vector:
                 return ('vector', self._get_name(field_typing.__args__[0])[0])
         return self.fallback(field_typing)
 
