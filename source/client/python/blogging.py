@@ -548,21 +548,21 @@ _bro_type = typing.TypeVar('bro_type',  # _bro_type.__constraints__ == (...)
                            _bro_record)
 
 
-class _bro_record(typing._Final, typing._Immutable, _root=True):
+class _bro_record(typing._Final, typing._Immutable, _root=True):  # pylint: disable=protected-access
 
     def __repr__(self):
         return 'bro_record'
 
-    @typing._tp_cache
+    @typing._tp_cache  # pylint: disable=protected-access
     def __getitem__(self, parameters):
         if parameters == ():
             raise TypingError("Cannot take a Bro record of no types.")
         if not isinstance(parameters, tuple):
             parameters = (parameters,)
-        parameters = typing._remove_dups_flatten(parameters)
+        parameters = typing._remove_dups_flatten(parameters)  # pylint: disable=protected-access
         if len(parameters) == 1:
             return parameters[0]
-        return typing._GenericAlias(self, parameters)
+        return typing._GenericAlias(self, parameters)  # pylint: disable=protected-access
 
 
 class _bro_set(typing.Generic[_bro_type]):
