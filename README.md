@@ -31,4 +31,6 @@ For more information, please refer to `docs/thesis.pdf`.
 
 ## Licensing
 
-This work is in general licensed under the [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Part of this work is derived and copied from [Zeek](zeek/zeek), [Broker](zeek/broker), and [file-extraction](hosom/file-extraction) all with __BSD 3-Clause License__. Original developed of this software and associated documentation files (the "Software") are hereby licensed under the __Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License__. No permits are foreordained unless granted by the author and maintainer of the Software, i.e. [Jarry Shaw](@jarryshaw).
+This work is in general licensed under the [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Part of this work is derived and copied from [Zeek](zeek/zeek), [Broker](zeek/broker), and [file-extraction](hosom/file-extraction) all with __BSD 3-Clause License__, which shall be dual-licensed under the two licenses. 
+
+Original developed part of this software and associated documentation files (the "Software") are hereby licensed under the __Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License__. No permits are foreordained unless granted by the author and maintainer of the Software, i.e. [Jarry Shaw](@jarryshaw).
