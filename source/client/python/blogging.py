@@ -83,7 +83,7 @@ def _type_check(func):
     def check(self, value):
         if self.predicate(value):
             return func(self, self.cast(value))
-        raise FieldError(f'{self.type} is required (got type {type(value).__name__!r})')
+        raise FieldError(f'Bro {self.type} is required (got type {type(value).__name__!r})')
     return check
 
 
@@ -139,12 +139,12 @@ class _Field(metaclass=abc.ABCMeta):
         return self.__unset_field__
 
     @classmethod
-    def setattr(cls, *,
-                use_json=False,
-                seperator='\x09',
-                set_seperator=',',
-                empty_field='(empty)',
-                unset_field='-'):
+    def set_attributes(cls, *,
+                       use_json=False,
+                       seperator='\x09',
+                       set_seperator=',',
+                       empty_field='(empty)',
+                       unset_field='-'):
         cls.__use_json__ = use_json
         cls.__seperator__ = seperator
         cls.__set_seperator__ = set_seperator
@@ -384,28 +384,26 @@ class _GenericField(_Field):
 
 class RecordField(_GenericField):
 
-    __type__ = 'record'
+    __type__ = '~record'
 
     @property
     def type(self):
         return self.seperator.join(self.__field_type__)
 
     def __init__(self, value=None, **kwargs):
-        _kw = dict()
-        if value is not None:
-            if dataclasses.is_dataclass(value):
-                for field in dataclasses.fields(value):
-                    if field.default_factory is not dataclasses.MISSING:
-                        _kw[field.name] = field.default_factory()
-                    elif field.default is not dataclasses.MISSING:
-                        _kw[field.name] = field.default
-                    else:
-                        _kw[field.name] = field.type
-            else:
-                _err = True
-                with contextlib.suppress(TypeError, ValueError):
-                    _kw = dict(value)
-                    _err = False
+        if value is None:
+            _kw = dict()
+        elif dataclasses.is_dataclass(value):
+            _kw = dict()
+            for field in dataclasses.fields(value):
+                if field.default is not dataclasses.MISSING:
+                    _kw[field.name] = field.default
+                elif field.default_factory is not dataclasses.MISSING:
+                    _kw[field.name] = field.default_factory()
+                else:
+                    _kw[field.name] = field.type
+        else:
+            _kw = dict(value)
         _kw.update(kwargs)
 
         self.__field_type__ = list()
@@ -413,16 +411,6 @@ class RecordField(_GenericField):
         for key, val in _kw.items():
             if isinstance(val, typing.TypeVar):
                 val = val.__bound__
-            if _err and isinstance(val, _GenericField) and hasattr(val.__args__):
-                try:
-                    val_len = len(value)
-                except TypeError:
-                    pass
-                else:
-                    if len(val.__args__) == val_len:
-                        _kw = {k: v for k, v in zip(value, val.__args__)}
-                        _kw.update(kwargs)
-
             if isinstance(val, _Field):
                 field_val = val
             elif isinstance(val, type) and issubclass(val, _SimpleField):
@@ -455,7 +443,7 @@ class RecordField(_GenericField):
         return _value
 
     def jsonify(self, value):
-        return '{%s}' % ', '.join(f'{json.dumps(key)}: {val}' for key, val in value)
+        return '{%s}' % ', '.join(f'{json.dumps(key)}: {val}' for key, val in value.items())
 
     def textify(self, value):  # pylint: disable=no-self-use
         if value:
@@ -475,16 +463,12 @@ class _SequenceField(_GenericField):
 
         if isinstance(value, _Field):
             if not self.json and isinstance(value, _GenericField):
-                if isinstance(value, RecordField):
-                    value_type = '~record'
-                else:
-                    value_type = value.type
-                raise FieldError(f'invalid recursive field: {self.__type__}[{value_type}]')
+                raise FieldError(f'invalid recursive field in ASCII mode: {self.__type__}[{value.__type__}]')
             field_value = value
         elif isinstance(value, type) and issubclass(value, _SimpleField):
             field_value = value()
         else:
-            raise FieldError('invalid Bro set field')
+            raise FieldError(f'invalid Bro {self.__type__} field')
         self.__field_type__ = field_value.type
         self.__field_factory__ = field_value
 
@@ -548,15 +532,18 @@ _bro_type = typing.TypeVar('bro_type',  # _bro_type.__constraints__ == (...)
                            _bro_record)
 
 
-class _bro_record(typing._Final, typing._Immutable, _root=True):  # pylint: disable=protected-access
+class _bro_record(typing._SpecialForm, _root=True):  # pylint: disable=protected-access
 
     def __repr__(self):
         return 'bro_record'
 
+    def __init__(self, name, doc):  # pylint: disable=unused-argument
+        super().__init__('bro_record', '')
+
     @typing._tp_cache  # pylint: disable=protected-access
     def __getitem__(self, parameters):
         if parameters == ():
-            raise TypingError("Cannot take a Bro record of no types.")
+            raise TypingError('cannot take a Bro record of no types.')
         if not isinstance(parameters, tuple):
             parameters = (parameters,)
         parameters = typing._remove_dups_flatten(parameters)  # pylint: disable=protected-access
@@ -593,34 +580,48 @@ bro_record = _bro_record()
 # Bro logging data model
 
 
-class _Model(metaclass=abc.ABCMeta):
+class Model(RecordField):
 
     ###########################################################################
     # APIs for overload
 
-    def __post_init_prefix__(self):
-        pass
+    # def __post_init_prefix__(self):
+    #     pass
 
     def __post_init_suffix__(self):
         pass
 
     ###########################################################################
 
-    __use_json__ = False
+    ###########################################################################
+    # APIs for overload
 
-    @property
-    def json(self):
-        return self.__use_json__
+    def default(self, field_typing):  # pylint: disable=unused-argument, no-self-use
+        return False
+
+    def fallback(self, field_typing):  # pylint: disable=no-self-use
+        raise ModelError(f'unknown field type: {field_typing.__name__}')
+
+    ###########################################################################
+
+    # __dataclass_init__ = True
+    __dataclass_repr__ = True
+    __dataclass_eq__ = True
+    __dataclass_order__ = False
+    __dataclass_unsafe_hash__ = False
+    # __dataclass_frozen__ = True
 
     @classmethod
-    def set_json(cls, use_json):
-        cls.__use_json__ = use_json
+    def set_dataclass(cls, *,
+                      repr=True,  # pylint: disable=redefined-builtin
+                      eq=True,
+                      order=False,
+                      unsafe_hash=False):
+        cls.__dataclass_repr__ = repr
+        cls.__dataclass_eq__ = eq
+        cls.__dataclass_order__ = order
+        cls.__dataclass_unsafe_hash__ = unsafe_hash
         return cls
-
-    __Field_repr__ = True
-    __Field_eq__ = True
-    __Field_order__ = False
-    __Field_unsafe_hash__ = False
 
     def __new__(cls, *args, **kwargs):  # pylint: disable=unused-argument
         if dataclasses.is_dataclass(cls):
@@ -631,18 +632,18 @@ class _Model(metaclass=abc.ABCMeta):
                                              bases=cls.__bases__,
                                              namespace=cls.__dict__,
                                              init=True,
-                                             repr=cls.__Field_repr__,
-                                             eq=cls.__Field_eq__,
-                                             order=cls.__Field_order__,
-                                             unsafe_hash=cls.__Field_unsafe_hash__,
+                                             repr=cls.__dataclass_repr__,
+                                             eq=cls.__dataclass_eq__,
+                                             order=cls.__dataclass_order__,
+                                             unsafe_hash=cls.__dataclass_unsafe_hash__,
                                              frozen=False)
         else:
             cls = dataclasses._process_class(cls,  # pylint: disable=protected-access, self-cls-assignment
                                              init=True,
-                                             repr=cls.__Field_repr__,
-                                             eq=cls.__Field_eq__,
-                                             order=cls.__Field_order__,
-                                             unsafe_hash=cls.__Field_unsafe_hash__,
+                                             repr=cls.__dataclass_repr__,
+                                             eq=cls.__dataclass_eq__,
+                                             order=cls.__dataclass_order__,
+                                             unsafe_hash=cls.__dataclass_unsafe_hash__,
                                              frozen=False)
         return super().__new__(cls)
 
@@ -667,67 +668,15 @@ class _Model(metaclass=abc.ABCMeta):
                 raise ModelError(f'cannot overwrite attribute {fn.__name__} in class {type(self).__name__}')
         self.__post_init_suffix__()
 
-
-class Model(_Model):
-
-    ###########################################################################
-    # APIs for overload
-
-    def default(self, field_typing):  # pylint: disable=unused-argument, no-self-use
-        return False
-
-    def fallback(self, field_typing):  # pylint: disable=no-self-use
-        raise ModelError(f'unknown field type: {field_typing.__name__}')
-
-    ###########################################################################
-
-    __seperator__ = '\x09'
-
-    @classmethod
-    def set_separator(cls, seperator):
-        cls.__seperator__ = seperator
-        return cls
-
-    def __new__(cls, *args, **kwargs):  # pylint: disable=unused-argument
-        self = super().__new__(cls, *args, **kwargs)
-
-        __dict__ = dict()
-        for key, val in cls.__dict__.items():
-            if isinstance(val, type) and issubclass(val, _Field):
-                __dict__[key] = val
-                cls.__dict__.pop(key)
-            if isinstance(val, _Field):
-                __dict__[key] = type(val)
-                cls.__dict__.pop(key)
-
-        f_name = list()
-        fields = list()
-        for field in dataclasses.fields(self):
-            f_name.append(field.name)
-            fields.append((field.name, field.type, field))
-
-        for key, val in __dict__.items():
-            if key in f_name:
-                continue
-            fields.append((key,
-                           val,
-                           dataclasses.field(repr=cls.__Field_repr__,
-                                             hash=cls.__Field_unsafe_hash__,
-                                             init=True,
-                                             compare=cls.__Field_order__,
-                                             metadata=cls.__dict__)))
-
-        cls = dataclasses.make_dataclass(cls.__name__,  # pylint: disable=self-cls-assignment
-                                         fields,
-                                         bases=cls.__bases__,
-                                         namespace=cls.__dict__,
-                                         init=True,
-                                         repr=cls.__Field_repr__,
-                                         eq=cls.__Field_eq__,
-                                         order=cls.__Field_order__,
-                                         unsafe_hash=cls.__Field_unsafe_hash__,
-                                         frozen=False)
-        return super(_Model, self).__new__(cls)
+    def __call__(self, value=None, **kwargs):  # pylint: disable=arguments-differ
+        if value is None:
+            value_new = dict()
+        elif dataclasses.is_dataclass(value):
+            value_new = dataclasses.asdict(value)
+        else:
+            value_new = dict(value)
+        value_new.update(kwargs)
+        return super().__call__(value_new)
 
     def __post_init_prefix__(self):
         for field in dataclasses.fields(self):
