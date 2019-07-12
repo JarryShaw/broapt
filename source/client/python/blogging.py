@@ -3,6 +3,7 @@
 
 import abc
 import binascii
+import builtins
 import contextlib
 import ctypes
 import dataclasses
@@ -527,9 +528,9 @@ _bro_type = typing.TypeVar('bro_type',  # _bro_type.__constraints__ == (...)
                            _bro_time,
                            _bro_double,
                            _bro_bool,
+                           _bro_record,
                            _bro_set,
-                           _bro_vector,
-                           _bro_record)
+                           _bro_vector)
 
 
 class _bro_record(typing._SpecialForm, _root=True):  # pylint: disable=protected-access
@@ -604,47 +605,49 @@ class Model(RecordField):
 
     ###########################################################################
 
-    # __dataclass_init__ = True
+    __dataclass_init__ = True
     __dataclass_repr__ = True
     __dataclass_eq__ = True
-    __dataclass_order__ = False
-    __dataclass_unsafe_hash__ = False
-    # __dataclass_frozen__ = True
+    __dataclass_order__ = True
+    __dataclass_unsafe_hash__ = True
+    __dataclass_frozen__ = True
 
     @classmethod
     def set_dataclass(cls, *,
+                      init=True,
                       repr=True,  # pylint: disable=redefined-builtin
                       eq=True,
-                      order=False,
-                      unsafe_hash=False):
+                      order=True,
+                      unsafe_hash=True,
+                      frozen=True):
+        cls.__dataclass_init__ = init
         cls.__dataclass_repr__ = repr
         cls.__dataclass_eq__ = eq
         cls.__dataclass_order__ = order
         cls.__dataclass_unsafe_hash__ = unsafe_hash
+        cls.__dataclass_frozen__ = frozen
         return cls
 
     def __new__(cls, *args, **kwargs):  # pylint: disable=unused-argument
         if dataclasses.is_dataclass(cls):
-            if cls.__dataclass_params__.frozen:  # pylint: disable=no-member
-                raise ModelError('frozen model')
             cls = dataclasses.make_dataclass(cls.__name__,  # pylint: disable=self-cls-assignment
                                              [(field.name, field.type, field) for field in dataclasses.fields(cls)],
                                              bases=cls.__bases__,
                                              namespace=cls.__dict__,
-                                             init=True,
+                                             init=cls.__dataclass_init__,
                                              repr=cls.__dataclass_repr__,
                                              eq=cls.__dataclass_eq__,
                                              order=cls.__dataclass_order__,
                                              unsafe_hash=cls.__dataclass_unsafe_hash__,
-                                             frozen=False)
+                                             frozen=cls.__dataclass_frozen__)
         else:
             cls = dataclasses._process_class(cls,  # pylint: disable=protected-access, self-cls-assignment
-                                             init=True,
+                                             init=cls.__dataclass_init__,
                                              repr=cls.__dataclass_repr__,
                                              eq=cls.__dataclass_eq__,
                                              order=cls.__dataclass_order__,
                                              unsafe_hash=cls.__dataclass_unsafe_hash__,
-                                             frozen=False)
+                                             frozen=cls.__dataclass_frozen__)
         return super().__new__(cls)
 
     def __post_init__(self):

@@ -10,19 +10,12 @@ pyinstaller = "*"
 pylint = "*"
 
 [packages]
-aenum = "*"
-bro-pkg = "*"
 dataclasses = "*"
 file-magic = "*"
 Flask = {extras = ["dotenv"],version = "*"}
 mmbot = "*"
 pandas = "*"
-peewee = "*"
-pefile = "*"
-PyMySQL = "*"
-pypcapkit = {extras = ["dpkt"],version = ">=0.13.3.post2"}
 PyYAML = "*"
-requests-futures = "*"
 
 [requires]
 python_version = "3.7"

@@ -114,7 +114,7 @@
         "xpsdocument",
         "zeek"
     ],
-    "python.pythonPath": ".venv/bin/python",
+    "python.pythonPath": ".venv\\Scripts\\python.exe",
     "python.linting.pylintEnabled": true,
     "restructuredtext.confPath": "${workspaceFolder}/docs/conf.py"
 }
