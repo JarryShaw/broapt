@@ -1,10 +1,14 @@
+### August 25th, 2019
+
+[ ] work on blogging system
+
 ### June 8th, 2019
 
-[ ] update README
+[x] update README
 
 ### May 22nd, 2019
 
-[ ] try https://github.com/dchad/malware-detection
+[x] try https://github.com/dchad/malware-detection
 [x] try https://github.com/rfxn/linux-malware-detect
 [x] try https://github.com/jacob-baines/elfparser
 
@@ -36,5 +40,5 @@
 [x] revise `workdir` in API config
 [x] try `PyInstaller` to bundle BroAPT-App functions
 [x] try `MaliciousMacroBot`: https://github.com/egaus/MaliciousMacroBot
-[ ] try `JaSt`: https://github.com/Aurore54F/JaSt
+[x] try `JaSt`: https://github.com/Aurore54F/JaSt
 [x] try `AndroPyTool`: https://github.com/alexMyG/AndroPyTool
