@@ -1,6 +1,6 @@
-[submodule "gitlab"]
-	path = gitlab
-	url = https://gitlab.sjtu.edu.cn:443/bysj/2019bysj.git
+# [submodule "gitlab"]
+# 	path = gitlab
+# 	url = https://gitlab.sjtu.edu.cn:443/bysj/2019bysj.git
 [submodule "vendor/zeek"]
 	path = vendor/zeek
 	url = https://github.com/zeek/zeek.git
