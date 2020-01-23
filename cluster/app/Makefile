@@ -1,7 +1,5 @@
 .PHONY: init clean docker vendor
 
-include .env
-
 init: mkdir-dump mkdir-logs
 clean: clean-api clean-build clean-dump clean-logs
 
