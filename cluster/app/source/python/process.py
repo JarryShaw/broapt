@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=import-error, no-name-in-module
 
+import fnmatch
 import os
 import shlex
 import subprocess
@@ -112,9 +113,15 @@ def make_env(api):
 def process(entry):  # pylint: disable=inconsistent-return-statements
     print(f'+ Processing {entry.path!r}')
 
-    if entry.mime.name in API_DICT:
+    mime_type = None
+    for name in API_DICT.keys():
+        if fnmatch.fnmatch(entry.mime.name, name):
+            mime_type = name
+            break
+
+    if mime_type is not None:
         mime = entry.mime.name
-        api = API_DICT[entry.mime.name]
+        api = API_DICT[mime_type]
         cwd = make_cwd(api, entry=entry)
     else:
         mime = 'example'

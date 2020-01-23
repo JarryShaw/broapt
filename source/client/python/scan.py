@@ -2,6 +2,7 @@
 # pylint: disable=import-error, no-name-in-module
 
 import dataclasses
+import fnmatch
 import functools
 import os
 import shlex
@@ -169,9 +170,15 @@ def make_env(api):
 def process(entry):  # pylint: disable=inconsistent-return-statements
     print(f'+ Processing {entry.path!r}')
 
-    if entry.mime.name in API_DICT:
+    mime_type = None
+    for name in API_DICT.keys():
+        if fnmatch.fnmatch(entry.mime.name, name):
+            mime_type = name
+            break
+
+    if mime_type is not None:
         mime = entry.mime.name
-        api = API_DICT[entry.mime.name]
+        api = API_DICT[mime_type]
         cwd = make_cwd(api, entry=entry)
     else:
         mime = 'example'
@@ -243,6 +250,6 @@ def lookup(path):
                 match = FILE_REGEX.match(entry.name)
                 if match is None or entry.path in processed_file:
                     continue
-                file_list.append(os.path.relpath(entry.path, DUMP_PATH))
+                file_list.append(os.path.relpath(entry.path, path))
         return sorted(file_list)
-    return listdir(DUMP_PATH)
+    return listdir(path)

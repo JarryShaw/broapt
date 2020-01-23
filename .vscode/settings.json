@@ -52,6 +52,7 @@
         "epel",
         "excinfo",
         "fext",
+        "fnmatch",
         "fuid",
         "gpdash",
         "hosom",
@@ -114,7 +115,7 @@
         "xpsdocument",
         "zeek"
     ],
-    "python.pythonPath": ".venv\\Scripts\\python.exe",
+    "python.pythonPath": ".venv/bin/python",
     "python.linting.pylintEnabled": true,
     "restructuredtext.confPath": "${workspaceFolder}/docs/conf.py"
 }

@@ -2,6 +2,7 @@
 
 import ast
 import ctypes
+import fnmatch
 import os
 import pathlib
 import re
@@ -68,7 +69,7 @@ FILE_TEMP = ('@load ../__load__.bro',
              'module FileExtraction;',
              '',
              'hook FileExtraction::extract(f: fa_file, meta: fa_metadata) &priority=5 {',
-             '    if ( meta?$mime_type && meta$mime_type == "%s" )',
+             '    if ( meta?$mime_type && /%s/ == meta$mime_type )',
              '        break;',
              '}',
              '')
@@ -94,6 +95,11 @@ LOAD_MIME = os.getenv('BROAPT_LOAD_MIME')
 LOAD_PROTOCOL = os.getenv('BROAPT_LOAD_PROTOCOL')
 
 
+def escape(mime_type):
+    regex = fnmatch.translate(mime_type)
+    return regex[4:-3].replace('/', r'\/')
+
+
 def compose():
     ## extract files path
     DUMP_PATH_ENV = os.getenv('BROAPT_DUMP_PATH')  # pylint: disable=redefined-outer-name
@@ -109,7 +115,7 @@ def compose():
             file_name = os.path.join('.', 'plugins', f'extract-{safe_mime}.bro')
             load_file.append(file_name)
             with open(os.path.join(ROOT, 'scripts', file_name), 'w') as zeek_file:
-                zeek_file.write(os.linesep.join(FILE_TEMP) % mime_type)
+                zeek_file.write(os.linesep.join(FILE_TEMP) % escape(mime_type))
     else:
         load_file = [os.path.join('.', 'plugins', 'extract-all-files.bro')]
 
