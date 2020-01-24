@@ -1,13 +1,13 @@
 # Python packages
-pip==19.1.1
-setuptools==41.0.1
-wheel==0.33.4
+pip==20.0.2
+setuptools==45.1.0
+wheel==0.33.6
 
 # Python dependencies
-certifi==2019.3.9
+certifi==2019.11.28
 chardet==3.0.4
-dataclasses==0.6
+dataclasses==0.7
 idna==2.8
-PyYAML==5.1.1
+PyYAML==5.3
 requests==2.22.0
-urllib3==1.25.3
+urllib3==1.25.8

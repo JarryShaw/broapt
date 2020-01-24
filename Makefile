@@ -105,7 +105,7 @@ submodule-build:
 
 submodule-clone:
 	cd vendor && $(MAKE) all
-	git clone https://gitlab.sjtu.edu.cn:443/bysj/2019bysj.git gitlab
+	git clone https://gitlab.sjtu.edu.cn/xiaojiawei/broapt.git gitlab
 
 submodule-link:
 	cd vendor && $(MAKE) link
