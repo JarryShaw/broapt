@@ -18,6 +18,10 @@ autopep8 = "*"
 ipython = "*"
 pyinstaller = "*"
 pylint = "*"
+sphinx = "*"
+sphinxcontrib-napoleon = "*"
+doc8 = "*"
+rstcheck = "*"
 
 [packages]
 dataclasses = "*"
@@ -26,6 +30,7 @@ Flask = {extras = ["dotenv"],version = "*"}
 mmbot = "*"
 pandas = "*"
 PyYAML = "*"
+yara = "*"
 
 [requires]
 python_version = "3.7"

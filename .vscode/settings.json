@@ -93,6 +93,7 @@
         "repos",
         "resp",
         "rsplit",
+        "rstcheck",
         "sched",
         "scipy",
         "signum",
