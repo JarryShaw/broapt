@@ -1,6 +1,6 @@
 .PHONY: init bundle clean docker vendor build
 
-include .env
+-include .env
 
 OS = $(shell uname | tr "[[:upper:]]" "[[:lower:]]")
 DAEMONPID = $(shell pgrep server/bin/broaptd.${OS} | xargs)

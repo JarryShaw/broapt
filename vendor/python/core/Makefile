@@ -1,6 +1,6 @@
 .PHONY: new init install update download clean remove
 
-include .env
+-include .env
 
 export PIPENV_VENV_IN_PROJECT
 export PIPENV_NO_INHERIT

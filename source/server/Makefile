@@ -1,6 +1,6 @@
 .PHONY: build
 
-include .env
+-include .env
 
 build: build-darwin build-linux
 

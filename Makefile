@@ -1,6 +1,6 @@
 .PHONY: build commit docker docker-compose gitlab link pipenv download submodule update run
 
-include .env
+-include .env
 
 export PIPENV_VENV_IN_PROJECT
 export PIPENV_MAX_DEPTH

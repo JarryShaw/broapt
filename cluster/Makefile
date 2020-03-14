@@ -1,6 +1,6 @@
 .PHONY: archive clean docker docker-compose parse
 
-include .env
+-include .env
 
 # OS
 os = $(shell uname | tr "[[:upper:]]" "[[:lower:]]")
