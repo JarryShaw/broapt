@@ -26,7 +26,7 @@ os.makedirs(LOGS, exist_ok=True)
 
 class Info(Model):
     timestamp: bro_time
-    log_uuid:
+    log_uuid: str
 
 
 class IPAddressJSONEncoder(json.JSONEncoder):

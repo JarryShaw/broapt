@@ -113,6 +113,7 @@
         "wordprocessingml",
         "workdir",
         "xpsdocument",
+        "yara",
         "zeek"
     ],
     "python.pythonPath": ".venv/bin/python",
