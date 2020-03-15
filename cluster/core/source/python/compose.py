@@ -97,6 +97,9 @@ LOAD_PROTOCOL = os.getenv('BROAPT_LOAD_PROTOCOL')
 
 def escape(mime_type):
     regex = fnmatch.translate(mime_type)
+    # incompatible behaviour over re.escape
+    if sys.version_info[:2] <= (3, 6):
+        return regex[4:-3]
     return regex[4:-3].replace('/', r'\/')
 
 
@@ -110,8 +113,8 @@ def compose():
 
     if LOAD_MIME is not None:
         load_file = list()
-        for mime_type in filter(len, re.split(r'\s*[,;|]\s*', LOAD_MIME.casefold())):
-            safe_mime = re.sub(r'\W', r'-', mime_type, re.ASCII)
+        for mime_type in filter(None, map(lambda s: s.strip(), re.split(r'\s*[,;|]\s*', LOAD_MIME.casefold()))):
+            safe_mime = re.sub(r'\W', r'-', mime_type.replace('*', 'all'), re.ASCII)
             file_name = os.path.join('.', 'plugins', f'extract-{safe_mime}.bro')
             load_file.append(file_name)
             with open(os.path.join(ROOT, 'scripts', file_name), 'w') as zeek_file:
