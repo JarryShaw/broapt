@@ -111,7 +111,7 @@ def compose():
     if LOAD_MIME is not None:
         load_file = list()
         for mime_type in filter(len, re.split(r'\s*[,;|]\s*', LOAD_MIME.casefold())):
-            safe_mime = re.sub(r'\W', r'-', mime_type, re.ASCII)
+            safe_mime = re.sub(r'\W', r'_', mime_type.replace('/', '-'), re.ASCII)
             file_name = os.path.join('.', 'plugins', f'extract-{safe_mime}.bro')
             load_file.append(file_name)
             with open(os.path.join(ROOT, 'scripts', file_name), 'w') as zeek_file:
