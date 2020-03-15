@@ -7,8 +7,9 @@ Welcome to BroAPT's documentation!
 ==================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 3
+
+   framework
 
 Cybersecurity has long been a significant subject under discussion. With rapid
 evolution of new cyber attack methods, the threat of Internet is becoming more
@@ -171,6 +172,9 @@ Although our research on APT detection is quite preceding, the BroAPT system
 utilised Bro IDS and works as an APT detection system which is compatible with
 high-speed network traffic. The system has been proved in practical scenarios, and
 is the basis of follow-up researches on APT detection.
+
+For more information, please refer to the
+:download:`Graduation Thesis <../../thesis.pdf>` of BroAPT (in Chinese).
 
 Indices and tables
 ==================

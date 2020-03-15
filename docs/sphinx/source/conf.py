@@ -53,6 +53,8 @@ napoleon_use_rtype = True
 napoleon_use_keyword = True
 napoleon_custom_sections = None
 
+manpages_url = 'https://linux.die.net/man/{section}/{page}'
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
