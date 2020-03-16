@@ -250,8 +250,64 @@ At the moment, the BroAPT system had integrated six detection solusions.
 Default Detection powered by VirusTotal
 ---------------------------------------
 
+`VirusTotal`_ aggregates many antivirus products and online scan engines to check
+for viruses that the user's own antivirus may have missed, or to verify against
+any false positives.
+
+.. _VirusTotal: https://www.virustotal.com
+
+As mentioned above, the ``example`` MIME type is the default fallback detection
+mechanism in case of missing configuration. The configuration is as below:
+
+.. code:: yaml
+
+   example:
+     environ:
+       ## sleep interval
+       VT_INTERVAL: 30
+       ## max retry for report
+       VT_RETRY: 10
+       ## percentage of positive threshold
+       VT_PERCENT: 50
+       ## VT API key
+       VT_API: ...
+       ## path to VT file scan reports
+       VT_LOG: /var/log/bro/tmp/
+     report: ${PYTHON36} virustotal.py
+
 Android APK Detection powered by AndroPyTool
 --------------------------------------------
+
+`AndroPyTool`_ is a tool for extracting static and dynamic features from Android
+APKs. It combines different well-known Android apps analysis tools such as DroidBox,
+FlowDroid, Strace, AndroGuard or VirusTotal analysis. Provided a source directory
+containing APK files, AndroPyTool applies all these tools to perform pre-static,
+static and dynamic analysis and generates files of features in JSON and CSV formats
+and also allows to save all the data in a MongoDB database.
+
+.. _AndroPyTool: https://github.com/alexMyG/AndroPyTool
+
+AndroPyTool is configured for detection APK files, whose MIME type is
+``application/vnd.android.package-archive`` in IANA registry.  The configuration
+is as below:
+
+.. code:: yaml
+
+   application:
+     vnd.android.package-archive:
+       remote: true
+       workdir: AndroPyTool
+       environ:
+         APK_LOG: /home/traffic/log/bro/tmp/
+       install:
+         - docker pull alexmyg/andropytool
+       report: ${SHELL} detect.sh
+
+Since the environment configuration of AndroPyTool is much too complex,
+we directly used its official Docker image for detection. Therefore, the AndroPyTool
+is called through *remote* detection mechanism, i.e. BroApt-Daemon server performs
+detection using AndroPyTool Docker image on APK files then send the report back to
+BroAPT-App framework for records.
 
 Office Document Detection powered by MaliciousMacroBot
 ------------------------------------------------------
