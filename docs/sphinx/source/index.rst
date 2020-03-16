@@ -7,9 +7,10 @@ Welcome to BroAPT's documentation!
 ==================================
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 4
 
    framework
+   configuration
 
 Cybersecurity has long been a significant subject under discussion. With rapid
 evolution of new cyber attack methods, the threat of Internet is becoming more
