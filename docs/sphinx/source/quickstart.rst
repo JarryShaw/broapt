@@ -130,3 +130,25 @@ Cluster Implementation
 For cluster implementation, there are two Docker container services: ``core``
 for the BroAPT-Core framework and ``app`` for the BroAPT-App framework. You
 can refer to the Docker Compose file at ``cluster/docker/docker-compose.${system}.yml``.
+
+Repository Structure
+====================
+
+.. code:: text
+
+   /broapt/
+   ├── LICENSE             # CC license
+   ├── LICENSE.bsd         # BSD license
+   ├── cluster             # cluster (standalone) implementation
+   │   └── ...
+   ├── docs
+   │   ├── broaptd.8       # manual for BroAPT-Daemon
+   │   ├── thesis.pdf      # Bachelor's Thesis
+   │   └── ...
+   ├── gitlab              # GitLab submodule
+   │   └── ...
+   ├── source              # bundled (all-in-one) implementation
+   │   └── ...
+   ├── vendor              # vendors, archives & dependencies
+   │   └── ...
+   └── ...

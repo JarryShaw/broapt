@@ -179,6 +179,19 @@ is the basis of follow-up researches on APT detection.
 For more information, please refer to the
 :download:`Graduation Thesis <../../thesis.pdf>` of BroAPT (in Chinese).
 
+Liscensing
+==========
+
+This work is in general licensed under the `Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License <http://creativecommons.org/licenses/by-nc-nd/4.0/>`__.
+Part of this work is derived and copied from `Zeek <https://github.com/zeek/zeek>`__,
+`Broker <https://github.com/zeek/broker>`__, and `file-extraction <https://github.com/hosom/file-extraction>`__
+all with **BSD 3-Clause License**, which shall be dual-licensed under the two licenses.
+
+Original developed part of this software and associated documentation files (the "*Software*")
+are hereby licensed under the **Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License**.
+No permits are foreordained unless granted by the author and maintainer of the *Software*, i.e.
+`Jarry Shaw <https://github.com/JarryShaw>`.
+
 Indices and tables
 ==================
 
