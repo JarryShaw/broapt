@@ -190,7 +190,7 @@ all with **BSD 3-Clause License**, which shall be dual-licensed under the two li
 Original developed part of this software and associated documentation files (the "*Software*")
 are hereby licensed under the **Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License**.
 No permits are foreordained unless granted by the author and maintainer of the *Software*, i.e.
-`Jarry Shaw <https://github.com/JarryShaw>`.
+`Jarry Shaw <https://github.com/JarryShaw>`__.
 
 Indices and tables
 ==================
