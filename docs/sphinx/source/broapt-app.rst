@@ -287,8 +287,8 @@ and also allows to save all the data in a MongoDB database.
 
 .. _AndroPyTool: https://github.com/alexMyG/AndroPyTool
 
-AndroPyTool is configured for detection APK files, whose MIME type is
-``application/vnd.android.package-archive`` in IANA registry.  The configuration
+AndroPyTool is configured for detection of APK files, whose MIME type is
+``application/vnd.android.package-archive`` in IANA registry. The configuration
 is as below:
 
 .. code:: yaml
@@ -312,11 +312,153 @@ BroAPT-App framework for records.
 Office Document Detection powered by MaliciousMacroBot
 ------------------------------------------------------
 
+`MaliciousMacroBot`_ is to provide a powerful malicious file triage tool for cyber
+responders; help fill existing detection gaps for malicious office documents, which
+are still a very prevalent attack vector today; deliver a new avenue for threat
+intelligence, a way to group similar malicious office documents together to identify
+phishing campaigns and track use of specific malicious document templates.
+
+..  _MaliciousMacroBot: https://github.com/egaus/MaliciousMacroBot
+
+MaliciousMacroBot is configured for detecting Office files, which is a document type
+based on XML, such as  Microsoft Office and OpenOffice. The MIME types of such documents
+include ``application/msword``, ``application/ms-excel``, ``application/vnd.ms-powerpoint``
+and ``application/vnd.openxmlformats-officedocument.*``, etc. The configuration is as
+below:
+
+.. code:: yaml
+
+   application:
+     vnd.openxmlformats-officedocument.*: &officedocument
+       workdir: ${API_ROOT}/application/vnd.openxmlformats-officedocument/
+       environ:
+         MMB_LOG: /var/log/bro/tmp/
+       install:
+         - yum install -y git
+         - git clone https://github.com/egaus/MaliciousMacroBot.git
+         - ${PYTHON36} -m pip install ./MaliciousMacroBot/
+         - yum clean -y all
+       report: ${PYTHON36} MaliciousMacroBot-detect.py
+       shared: officedocument
+     msword: *officedocument
+     vnd.ms-excel: *officedocument
+     vnd.ms-powerpoint: *officedocument
+     ...
+
+.. note::
+
+   As you may have noticed here, the configured MIME types detected by MaliciousMacroBot
+   has a ``*`` globing syntax, such shall be matched using *shell*-like globing mechanism.
+
+As the MaliciousMacroBot detection method is shared by multiple MIME types, we
+set the ``shared`` key in the API to an identifier for the detection method, so
+that at runtime, such detection method will be *process-safe*.
+
 Linux ELF Detection powered by ELF Parser
 -----------------------------------------
+
+`ELF Parser`_ is designed for static ELF analysis. It can quickly determine the
+capabilities of an ELF binary through static analysis, then discover if the binary
+is known malware or a possible threat without ever executing the file.
+
+.. _ELF Parser: http://elfparser.com
+
+ELF Parser is configured for the ELF file (MIME type: ``application/x-executable``
+only. The configuration is as below:
+
+.. code:: yaml
+
+   application:
+     x-executable:
+       ## ELF Parser
+       remote: true
+       environ:
+         ELF_LOG: /home/traffic/log/bro/tmp/
+         ELF_SCORE: 100
+       workdir: ELF-Parser
+       install:
+         - docker build --tag elfparser:1.4.0 --rm .
+       report: ${SHELL} detect.sh
 
 Common Linux Malware Detection powered by LMD
 ---------------------------------------------
 
+`Linux Malware Detect`_ (LMD) is a malware scanner for Linux, that is designed around
+the threats faced in shared hosted environments. It uses threat data from network edge
+intrusion detection systems to extract malware that is actively being used in attacks
+and generates signatures for detection. In addition, threat data is also derived from
+user submissions with the LMD checkout feature and from malware community resources.
+The signatures that LMD uses are MD5 file hashes and HEX pattern matches, they are also
+easily exported to any number of detection tools such as ClamAV.
+
+.. _Linux Malware Detect: https://www.rfxn.com/projects/linux-malware-detect
+
+LMD is configured for various common file types. The configuration is as below:
+
+.. code:: yaml
+
+   application:
+     octet-stream: &lmd
+       ## LMD
+       workdir: ${API_ROOT}/application/octet-stream/LMD
+       environ:
+         LMD_LOG: /var/log/bro/tmp/
+       install:
+         - yum install -y git which
+         - test -d ./linux-malware-detect/ ||
+           git clone https://github.com/rfxn/linux-malware-detect.git
+         - ${SHELL} install.sh
+       report: ${SHELL} detect.sh
+       shared: linux-maldet
+   text:
+     html: *lmd
+     x-c: *lmd
+     x-perl: *lmd
+     x-php: *lmd
+
 Malicious JavaScript Detection powered by JaSt
 ----------------------------------------------
+
+`JaSt`_ is a low-overhead solution that combines the extraction of features from
+the abstract syntax tree with a random forest classifier to detect malicious JavaScript
+instances. It is based on a frequency analysis of specific patterns, which are either
+predictive of benign or of malicious samples. Even though the analysis is entirely static,
+it yields a high detection accuracy of almost 99.5% and has a low false-negative rate
+of 0.54%.
+
+.. _JaSt: https://github.com/Aurore54F/JaSt
+
+JaSt as is dedicated for javaScript files. The configuration is as below:
+
+.. code:: yaml
+
+   application:
+     javascript: &javascript
+       workdir: ${API_ROOT}/application/javascript/JaSt
+       environ:
+         JS_LOG: /var/log/bro/tmp/
+       install:
+         - yum install -y epel-release
+         - yum install -y git nodejs
+         - test -d ./JaSt/ ||
+           git clone https://github.com/Aurore54F/JaSt.git
+         - ${PYTHON3} -m pip install
+             matplotlib
+             plotly
+             numpy
+             scipy
+             scikit-learn
+             pandas
+         - ${PYTHON3} ./JaSt/clustering/learner.py
+             --d ./sample/
+             --l ./lables/
+             --md ./models/
+             --mn broapt-jast
+       scripts:
+       - ${PYTHON3} ./JaSt/clustering/classifier.py
+           --f ${BROAPT_PATH}
+           --m ./models/broapt-jast
+       report: ${PYTHON3} detect.py
+       shared: javascript
+   text:
+     javascript: *javascript

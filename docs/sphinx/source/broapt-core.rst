@@ -94,7 +94,7 @@ where ``extract-application-vnd-android-package-archive.bro``,
 generated automatically by the BroAPT-Core framework based on the
 :envvar:`BROAPT_LOAD_MIME` environment vairable.
 
-.. note::
+.. important::
 
    The :envvar:`BROAPT_LOAD_MIME` supports UNIX *shell*-like pattern matching,
    c.f. |fnmatch|_ module from Python.

@@ -3,14 +3,16 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to BroAPT's documentation!
-==================================
+BroAPT: A system for detecting APT attacks in real-time
+=======================================================
 
 .. toctree::
    :maxdepth: 4
 
+   quickstart
    framework
    configuration
+   api
 
 Cybersecurity has long been a significant subject under discussion. With rapid
 evolution of new cyber attack methods, the threat of Internet is becoming more
@@ -142,7 +144,7 @@ JavaScript files based on machine learning and clustering algorithms.
 .. _AndroPyTool: https://github.com/alexMyG/AndroPyTool
 .. _MaliciousMacroBot: https://github.com/egaus/MaliciousMacroBot
 .. _ELF Parser: http://elfparser.com
-.. _LMD: https://en.wikipedia.org/wiki/Linux_Malware_Detect
+.. _LMD: https://www.rfxn.com/projects/linux-malware-detect
 .. _JaSt: https://github.com/Aurore54F/JaSt
 
 As described above, BroAPT is an APT detection system based on Bro IDS with high

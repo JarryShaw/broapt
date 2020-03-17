@@ -18,8 +18,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'BroAPT'
-copyright = '2020, Jarry SHAW'
-author = 'Jarry SHAW'
+copyright = '2020, Jarry Shaw'
+author = 'Jarry Shaw'
 
 # The full version, including alpha/beta/rc tags
 release = '2020.03.14'
