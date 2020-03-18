@@ -7,7 +7,7 @@ BroAPT: A system for detecting APT attacks in real-time
 =======================================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
    quickstart
    framework
