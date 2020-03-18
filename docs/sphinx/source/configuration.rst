@@ -96,7 +96,7 @@ Acceptable environment variables are as following:
 
 .. envvar:: BROAPT_DUMP_PATH
 
-   :type: ```str`` (path)
+   :type: ``str`` (path)
    :default: ``None``
    :CLI Option: ``-d`` / ``--dump-path``
 
