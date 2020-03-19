@@ -33,7 +33,7 @@ to convert the pattern into a regular expression.
 .. |re.escape| replace:: :func:`re.escape`
 .. _re.escape: https://docs.python.org/3/library/re.html#re.escape
 
-A generated `Bro script <api.core.bro.html#extract-by-mime-type>`__ for ``hook`` function
+A generated :doc:`Bro script <api.core.bro.file-extensions>` for ``hook`` function
 extracting files with MIME type ``example/test-*`` would be as following:
 
 .. code:: zeek
@@ -48,11 +48,8 @@ extracting files with MIME type ``example/test-*`` would be as following:
    }
 
 Besides this, the Bro script composer will also generate/rewrite the
-|config.bro|_ to customise several metrics and to load the scripts as
-specified in the environment variables.
-
-.. |config.bro| replace:: ``config.bro``
-.. _config.bro: api.core.bro.html#configurations
+:doc:`Bro configurations <api.core.bro.config>` to customise several
+metrics and to load the scripts as specified in the environment variables.
 
 .. note::
 
