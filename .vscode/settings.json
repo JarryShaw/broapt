@@ -99,6 +99,7 @@
         "resp",
         "rsplit",
         "rstcheck",
+        "rtype",
         "sched",
         "scipy",
         "signum",

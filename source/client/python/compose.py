@@ -20,9 +20,9 @@ BOOLEAN_STATES = {'1': True, '0': False,
 
 # Bro config
 ## log file path
-LOGS_PATH = os.getenv('LOGS_PATH', '/var/log/bro/')
+LOGS_PATH = os.getenv('BROAPT_LOGS_PATH', '/var/log/bro/')
 ## source PCAP path
-PCAP_PATH = os.getenv('PCAP_PATH', '/pcap/')
+PCAP_PATH = os.getenv('BROAPT_PCAP_PATH', '/pcap/')
 ## group by MIME flag
 MIME_MODE = BOOLEAN_STATES.get(os.getenv('BROAPT_MIME_MODE', 'true').casefold(), True)
 ## include hash flag
