@@ -67,6 +67,7 @@
         "ivar",
         "jast",
         "jsonify",
+        "kwargs",
         "libyaml",
         "linesep",
         "maldet",

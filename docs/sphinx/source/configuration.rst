@@ -232,12 +232,12 @@ The BroAPT-Core framework only supports configuration through environment variab
 
    Calculate MD5 hash of extracted files.
 
-.. envvar:: BROAPT_HASH_SH1
+.. envvar:: BROAPT_HASH_SHA1
 
    :type: ``bool``
    :default: ``False``
 
-   Calculate SH1 hash of extracted files.
+   Calculate SHA1 hash of extracted files.
 
 .. envvar:: BROAPT_HASH_SHA256
 

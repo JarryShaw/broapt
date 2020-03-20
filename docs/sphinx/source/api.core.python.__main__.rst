@@ -5,10 +5,7 @@ System Entrypoint
 :File location:
 
    * Bundled implementation: ``source/client/python/__main__.py``
-   * Cluster implementation:
-
-     * BroAPT-Core framework: ``cluster/core/source/python/__main__.py``
-     * BroAPT-App framework: ``cluster/app/source/python/__main__.py``
+   * Cluster implementation: ``cluster/core/source/python/__main__.py``
 
 This file wraps the whole system and make the ``python`` folder callable
 as a module where the ``__main__.py`` will be considered as the entrypoint.
@@ -20,8 +17,6 @@ as a module where the ``__main__.py`` will be considered as the entrypoint.
             b'\xd4\xc3\xb2\xa1',
             b'\x0a\x0d\x0d\x0a')
 
-   :availability: Bundled & Cluster Implementation
-
    A tuple of magic numbers for PCAP files::
 
       a1 b2 3c 4d  # PCAP files in big endian with nanosecond timestamp
@@ -30,9 +25,7 @@ as a module where the ``__main__.py`` will be considered as the entrypoint.
       d4 c3 b2 a1  # PCAP files in little endian
       0a 0d 0d 0a  # PCAPng files
 
-.. function:: __main__.is_pcap(file)
-
-   :availability: Bundled & Cluster Implementation
+.. function:: __main__.is_pcap(file: str)
 
    Check if ``file`` is a valid PCAP file with help of |libmagic|_.
 
@@ -43,19 +36,14 @@ as a module where the ``__main__.py`` will be considered as the entrypoint.
 .. |libmagic| replace:: ``libmagic``
 .. _libmagic: https://pypi.org/project/python-libmagic
 
-.. function:: __main__.listdir(path)
-
-   :availability: Bundled & Cluster Implementation
+.. function:: __main__.listdir(path: str)
 
    Fetch all files under ``path``.
 
    :param str path: Path to be fetched.
-   :return: All files under ``path``.
    :rtype: List[str]
 
-.. function:: __main__.parse_args(argv)
-
-   :availability: Bundled & Cluster Implementation
+.. function:: __main__.parse_args(argv: List[str])
 
    Parse command line arguments (path to PCAP files) and fetch valid
    PCAP files.
@@ -72,8 +60,6 @@ as a module where the ``__main__.py`` will be considered as the entrypoint.
 
 .. function:: __main__.check_history()
 
-   :availability: Bundled & Cluster Implementation
-
    Check processed PCAP files.
 
    .. note::
@@ -84,8 +70,6 @@ as a module where the ``__main__.py`` will be considered as the entrypoint.
    :rtype: List[str]
 
 .. function:: __main__.main_with_args()
-
-   :availability: Bundled & Cluster Implementation
 
    Run the BroAPT system **with** command line arguments.
 
@@ -99,8 +83,6 @@ as a module where the ``__main__.py`` will be considered as the entrypoint.
 
 .. function:: __main__.main_with_no_args()
 
-   :availability: Bundled & Cluster Implementation
-
    Run the BroAPT system **without** command line arguments.
 
    .. note::
@@ -108,12 +90,12 @@ as a module where the ``__main__.py`` will be considered as the entrypoint.
       The process will run and check for new PCAP files from :data:`const.PCAP_PATH`
       indefinitely.
 
-
 .. function:: __main__.main()
 
-   :availability: Bundled & Cluster Implementation
-
    Run the BroAPT system under the context of :func:`remote.remote_proc`.
+
+   :return: Exit code.
+   :rtype: int
 
    .. seealso::
 

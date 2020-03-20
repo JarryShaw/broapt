@@ -29,7 +29,12 @@ Python Modules
    api.core.python.__init__
    api.core.python.__main__
    api.core.python.compose
-
+   api.core.python.const
+   api.core.python.logparser
+   api.core.python.process
+   api.core.python.remote
+   api.core.python.utils
+   api.core.python.sites
 
 Wrapper Scripts
 ===============
