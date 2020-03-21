@@ -1,12 +1,19 @@
+.. module:: broapt.core.utils
+
 -----------------------
 Auxiliaries & Utilities
 -----------------------
 
-.. decorator:: suppress
+:File location:
+
+   * Bundled implementation: ``source/client/python/utils.py``
+   * Cluster implementation: ``cluster/core/source/python/utils.py``
+
+.. decorator:: utils.suppress
 
    A decorator that suppresses all exceptions.
 
-.. function:: file_lock(file: str)
+.. function:: utils.file_lock(file: str)
 
    A `context`_ lock for file modification with a file system lock.
 
@@ -14,14 +21,14 @@ Auxiliaries & Utilities
 
    .. _context: https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager
 
-.. function:: print_file(s: Any, file: str)
+.. function:: utils.print_file(s: Any, file: str)
 
    Wrapper function to *process*-safely print ``s`` into ``file``.
 
    :param str s: Content to be printed.
    :param str file: Filename of output stream.
 
-.. function:: redirect(src: str, dst: str, label='unknown')
+.. function:: utils.redirect(src: str, dst: str, label='unknown')
 
    Redirect the content of ``src`` to ``dst`` with ``label`` as prefix::
 
@@ -31,7 +38,7 @@ Auxiliaries & Utilities
    :param str dst: Filename of destination file.
    :param str label: Optional prefix to the redirected content.
 
-.. function:: is_nan(value: Any)
+.. function:: utils.is_nan(value: Any)
 
    Check if ``value`` is ``None`` or a |NaN|_.
 

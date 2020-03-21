@@ -1,3 +1,5 @@
+.. module:: broapt.core.sites
+
 -------------------
 Site Customisations
 -------------------

@@ -1,3 +1,5 @@
+.. module:: broapt.core.__main__
+
 -----------------
 System Entrypoint
 -----------------
@@ -92,7 +94,7 @@ as a module where the ``__main__.py`` will be considered as the entrypoint.
 
 .. function:: __main__.main()
 
-   Run the BroAPT system under the context of :func:`remote.remote_proc`.
+   Run the BroAPT-App framework under the context of :func:`remote.remote_proc`.
 
    :return: Exit code.
    :rtype: int

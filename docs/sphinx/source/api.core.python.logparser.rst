@@ -1,3 +1,5 @@
+.. module:: broapt.core.logparser
+
 --------------
 Bro Log Parser
 --------------
@@ -14,8 +16,8 @@ Bro Log Parser
 
    .. _ZLogging: https://zlogging.jarryshaw.me
 
-Data Classes
-------------
+Dataclasses
+-----------
 
 .. class:: logparser.TEXTInfo
 

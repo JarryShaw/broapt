@@ -1,3 +1,5 @@
+.. module:: broapt.core.compose
+
 -------------------
 Bro Script Composer
 -------------------
@@ -77,7 +79,7 @@ Functions
 
    Escape *shell*-like ``mime_type`` pattern to regular expression.
 
-   .. warning::
+   .. caution::
 
       The underlying implementation of |fnmatch.translate|_ calls |re.escape|_
       to escape special characters. However, in Python 3.6, the function will

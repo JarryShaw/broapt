@@ -1,16 +1,15 @@
-----------------------
-Main (PCAP) Processing
-----------------------
+.. module:: broapt.core.process
+
+---------------------
+Extraction Processing
+---------------------
 
 :File location:
 
    * Bundled implementation: ``source/client/python/process.py``
    * Cluster implementation: ``cluster/core/source/python/process.py``
 
-Functions
----------
-
-.. function:: process(file: str)
+.. function:: process.process(file: str)
 
    Process PCAP file with Bro IDS and put the root folder to Bro
    logs into :data:`const.QUEUE_LOGS`.
@@ -28,27 +27,23 @@ Functions
    :param str log_root: Root folder to Bro logs.
    :raises ExtractWarning: When supposedly extracted file not found.
 
-Constants
----------
-
-.. data:: SALT_LOCK
+.. data:: process.SALT_LOCK
    :type: multiprocessing.Lock
 
    Lock for updating ``config.bro`` with :func:`compsoe.file_salt`.
 
-.. data:: STDOUT_LOCK
+.. data:: process.STDOUT_LOCK
    :type: multiprocessing.Lock
 
    Lock for writing to the ``stdout`` *replica* :data:`const.STDOUT`.
 
-.. data:: STDERR_LOCK
+.. data:: process.STDERR_LOCK
    :type: multiprocessing.Lock
 
    Lock for writing to the ``stderr`` *replica* :data:`const.STDERR`.
 
-Warnings
---------
+.. exception:: process.ExtractWarning
 
-.. exception:: ExtractWarning
+   :bases: :exc:`Warning`
 
    Extraction warning.

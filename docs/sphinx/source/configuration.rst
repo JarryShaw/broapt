@@ -165,14 +165,32 @@ The BroAPT-Core framework only supports configuration through environment variab
 
    :type: ``int``
    :default: ``None``
+   :availability: bundled implementation
 
    Number of BroAPT concurrent processes for PCAP analysis. If not provided, then the
    number of system CPUs will be used.
+
+.. envvar:: BROAPT_CORE_CPU
+
+   :type: ``int``
+   :default: ``None``
+   :availability: cluster implementation
+
+   .. seealso:: :envvar:`BROAPT_CPU`
 
 .. envvar:: BROAPT_INTERVAL
 
    :type: ``float``
    :default: ``10``
+   :availability: bundled implementation
+
+   Wait interval after processing current pool.
+
+.. envvar:: BROAPT_CORE_INTERVAL
+
+   :type: ``float``
+   :default: ``10``
+   :availability: cluster implementation
 
    Wait interval after processing current pool of PCAP files.
 
@@ -304,9 +322,35 @@ The BroAPT-App framework only supports configuration through environment variabl
 .. envvar:: BROAPT_SCAN_CPU
 
    :type: ``int``
-   :default: ``10``
+   :default: ``None``
+   :availability: bundled implementation
 
-   Number of BroAPT concurrent processes for extracted file detection.
+   Number of BroAPT concurrent processes for extracted file analysis. If not provided, then the
+   number of system CPUs will be used.
+
+.. envvar:: BROAPT_APP_CPU
+
+   :type: ``int``
+   :default: ``None``
+   :availability: cluster implementation
+
+   .. seealso:: :envvar:`BROAPT_SCAN_CPU`
+
+.. envvar:: BROAPT_INTERVAL
+
+   :type: ``float``
+   :default: ``10``
+   :availability: bundled implementation
+
+   Wait interval after processing current pool.
+
+.. envvar:: BROAPT_APP_INTERVAL
+
+   :type: ``float``
+   :default: ``10``
+   :availability: cluster implementation
+
+   Wait interval after processing current pool of extracted files.
 
 .. envvar:: BROAPT_MAX_RETRY
 

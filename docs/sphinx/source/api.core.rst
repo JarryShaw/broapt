@@ -46,7 +46,7 @@ make the life a little bit better.
 Bundled Implementation
 ----------------------
 
-:File location: ``/source/client/init.sh``
+:File location: ``source/client/init.sh``
 
 .. literalinclude:: ../../../source/client/init.sh
    :language: shell
@@ -55,7 +55,7 @@ Bundled Implementation
 Cluster Implementation
 ----------------------
 
-:File location: ``/cluster/core/source/init.sh``
+:File location: ``cluster/core/source/init.sh``
 
 .. literalinclude:: ../../../cluster/core/source/init.sh
    :language: shell

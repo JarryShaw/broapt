@@ -1,3 +1,5 @@
+.. module:: broapt.core.const
+
 ----------------
 Common Constants
 ----------------
@@ -35,7 +37,9 @@ Common Constants
 .. data:: const.INTERVAL
 
    :type: ``float``
-   :environ: :envvar:`BROAPT_INTERVAL`
+   :environ:
+      * Bundled implementation: :envvar:`BROAPT_INTERVAL`
+      * Cluster implementation: :envvar:`BROAPT_CORE_INTERVAL`
 
    Wait interval after processing current pool of PCAP files.
 
@@ -92,11 +96,19 @@ Common Constants
 
    :type: ``str``
 
+   .. code:: python
+
+      os.path.join(LOGS_PATH, 'file.log')
+
    Path to file system database of processed PCAP files.
 
 .. data:: const.TIME
 
    :type: ``str``
+
+   .. code:: python
+
+      os.path.join(LOGS_PATH, 'time.log')
 
    Path to log file of processing time records.
 
@@ -104,24 +116,32 @@ Common Constants
 
    :type: ``str``
 
+   .. code:: python
+
+      os.path.join(LOGS_PATH, 'stdout.log')
+
    Path to ``stdout`` *replica*.
 
 .. data:: const.STDERR
 
    :type: ``str``
 
+   .. code:: python
+
+      os.path.join(LOGS_PATH, 'stderr.log')
+
    Path to ``stderr`` *replica*.
-
-.. data:: const.QUEUE
-
-   :type: ``multiprocessing.Queue``
-
-   In **cluster implementation**, teleprocess communication queue
-   for log processing.
 
 .. data:: const.QUEUE_LOGS
 
    :type: ``multiprocessing.Queue``
+   :availability: bundled implementation
 
-   In **bundled implementation**, teleprocess communication queue
-   for log processing.
+   Teleprocess communication queue for log processing.
+
+.. data:: const.QUEUE
+
+   :type: ``multiprocessing.Queue``
+   :availability: cluster implementation
+
+   .. seealso:: :data:`const.QUEUE_LOGS`
