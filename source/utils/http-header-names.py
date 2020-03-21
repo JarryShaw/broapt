@@ -15,7 +15,7 @@ ROOT = os.path.realpath(os.path.dirname(__file__))
 # HTTP header names
 HEADER_NAMES = list()
 
-# see https://www.iana.org/assignments/message-headers/message-headers.xml
+# see https://www.iana.org/assignments/message-headers/message-headers.xhtml
 URLS = ['https://www.iana.org/assignments/message-headers/perm-headers.csv',
         'https://www.iana.org/assignments/message-headers/prov-headers.csv']
 for url in URLS:
@@ -37,7 +37,7 @@ module HTTP;
 
 export {
     ## Message Headers from IANA
-    ## https://www.iana.org/assignments/message-headers/message-headers.xml
+    ## https://www.iana.org/assignments/message-headers/message-headers.xhtml
     option header_names: set[string] = {
         %s
     };

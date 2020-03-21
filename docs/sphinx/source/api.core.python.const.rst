@@ -1,5 +1,3 @@
-.. module:: broapt.core.const
-
 ----------------
 Common Constants
 ----------------

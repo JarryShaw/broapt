@@ -1,5 +1,3 @@
-.. module:: broapt.app.__init__
-
 ------------
 Module Entry
 ------------

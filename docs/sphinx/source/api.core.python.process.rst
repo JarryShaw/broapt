@@ -1,8 +1,6 @@
-.. module:: broapt.core.process
-
----------------------
-Extraction Processing
----------------------
+------------------
+Extraction Process
+------------------
 
 :File location:
 

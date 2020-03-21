@@ -1,5 +1,3 @@
-.. module:: broapt.core.logparser
-
 --------------
 Bro Log Parser
 --------------

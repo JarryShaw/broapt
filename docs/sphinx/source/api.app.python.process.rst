@@ -1,8 +1,6 @@
-.. module:: broapt.app.process
-
---------------------
-Detection Processing
---------------------
+-----------------
+Detection Process
+-----------------
 
 :File location:
 

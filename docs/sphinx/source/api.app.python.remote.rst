@@ -1,5 +1,3 @@
-.. module:: broapt.app.remote
-
 ----------------
 Remote Detection
 ----------------

@@ -1,5 +1,3 @@
-.. module:: broapt.core.__main__
-
 -----------------
 System Entrypoint
 -----------------

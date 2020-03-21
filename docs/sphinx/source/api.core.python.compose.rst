@@ -1,5 +1,3 @@
-.. module:: broapt.core.compose
-
 -------------------
 Bro Script Composer
 -------------------

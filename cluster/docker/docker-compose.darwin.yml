@@ -12,9 +12,9 @@ services:
       ## [PYTHON] force the stdout and stderr streams to be unbuffered
       PYTHONUNBUFFERED: 1
       ## concurrent process limit
-      BROAPT_CPU: 1
+      BROAPT_CORE_CPU: 1
       ## sleep interval
-      BROAPT_INTERVAL: 10
+      BROAPT_CORE_INTERVAL: 10
       ## path to extract files
       BROAPT_DUMP_PATH: /dump/
       ## path to source PCAP files

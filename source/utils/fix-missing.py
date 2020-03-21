@@ -68,5 +68,5 @@ export {
 ''' % TEXT
 
 # update Bro script
-with open(os.path.join(ROOT, '..', 'core', 'source', 'scripts', 'file-extensions.bro'), 'w') as file:
+with open(os.path.join(ROOT, '..', 'client', 'source', 'scripts', 'file-extensions.bro'), 'w') as file:
     file.write(FILE)

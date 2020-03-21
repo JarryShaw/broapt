@@ -1,5 +1,3 @@
-.. module:: broapt.core.utils
-
 -----------------------
 Auxiliaries & Utilities
 -----------------------

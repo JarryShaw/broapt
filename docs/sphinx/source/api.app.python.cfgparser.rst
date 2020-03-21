@@ -1,5 +1,3 @@
-.. module:: broapt.app.cfgparser
-
 -----------------
 API Config Parser
 -----------------
@@ -27,7 +25,7 @@ Dataclasses
       API runtime environment variables.
 
    .. attribute:: install
-      :type: List[str]
+      :type: List[Union[str, List[str]]]
 
       List of installation commands.
 

@@ -154,7 +154,7 @@ def delete_none():
     return 'ID Required: /api/v1.0/delete/<id>'
 
 
-@app.route('/api/v1.0/delete/<id_>', methods=['GET'])
+@app.route('/api/v1.0/delete/<id_>', methods=['DELETE'])
 def delete(id_):
     uid = uuid.UUID(id_)
     if uid in RUNNING:

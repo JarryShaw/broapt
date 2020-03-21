@@ -1,5 +1,3 @@
-.. module:: broapt.app.__main__
-
 -----------------
 System Entrypoint
 -----------------
@@ -13,8 +11,8 @@ System Entrypoint
 
    * Cluster implementation: ``cluster/app/source/python/__main__.py``
 
-In **bundled implementation**, the :mod:`remote <broapt.core.remote>` module starts a
-background process for the BroAPT-App framework; whilst the :mod:`scan <broapt.app.process>`
+In **bundled implementation**, the :doc:`remote <api.core.python.remote>` module starts a
+background process for the BroAPT-App framework; whilst the :doc:`scan <api.app.python.process>`
 module contains :doc:`main processing logic <api.app.python.process>` as well as the
 original system entrypoint.
 
@@ -125,8 +123,8 @@ Dataclasses
 Bundled Implementation
 ----------------------
 
-:mod:`scan <broapt.app.process>` Module
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+:doc:`scan <api.app.python.process>` Module
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. function:: scan.scan(local_name: str)
 
@@ -146,8 +144,8 @@ Bundled Implementation
    :return: List of extracted files.
    :rtype: List[str]
 
-:mod:`remote <broapt.core.remote>` Module
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+:doc:`remote <api.core.python.remote>` Module
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Framework Mainloop
 ++++++++++++++++++

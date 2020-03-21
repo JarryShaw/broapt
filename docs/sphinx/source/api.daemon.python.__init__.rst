@@ -4,8 +4,8 @@ Module Entry
 
 :File location:
 
-   * Bundled implementation: ``source/client/python/__init__.py``
-   * Cluster implementation: ``cluster/core/source/python/__init__.py``
+   * Bundled implementation: ``source/server/python/__init__.py``
+   * Cluster implementation: ``cluster/daemon/python/__init__.py``
 
 This file merely modifies the |sys.path|_ so that we can import the Python modules
 as if from the top level.

@@ -1,5 +1,3 @@
-.. module:: broapt.core.remote
-
 -------------------
 Bro Logs Processing
 -------------------
