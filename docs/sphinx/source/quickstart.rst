@@ -111,6 +111,20 @@ main entrypoint of the BroAPT system, a.k.a the CLI of BroAPT-Daemon server.
 
       sudo systemctl status broaptd.service
 
+------------
+Docker Image
+------------
+
+The BroAPT Docker images can be found on `Docker Hub`_ now.
+
+* Bundled implementation: ``jsnbzh/broapt:latest``
+* Cluster implementation:
+
+  * BroAPT-Core framework: ``jsnbzh/broapt:core``
+  * BroAPT-App framework: ``jsnbzh/broapt:app``
+
+.. _Docker Hub: https://hub.docker.com/r/jsnbzh/broapt
+
 --------------
 Docker Compose
 --------------
