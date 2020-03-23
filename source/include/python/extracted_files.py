@@ -11,7 +11,6 @@ import time
 
 import magic
 
-from blogging import Model, bro_time
 from const import DUMP_PATH, LOGS_PATH
 from logparser import parse
 from utils import is_nan, print_file
@@ -22,11 +21,6 @@ DATE = time.strftime('%Y-%m-%d')
 # log path
 LOGS = os.path.join(LOGS_PATH, 'info')
 os.makedirs(LOGS, exist_ok=True)
-
-
-class Info(Model):
-    timestamp: bro_time
-    log_uuid: str
 
 
 class IPAddressJSONEncoder(json.JSONEncoder):

@@ -19,7 +19,7 @@ import time
 import typing
 import warnings
 
-from .const import LOGS_PATH
+from const import LOGS_PATH
 
 __all__ = [
     # Bro types
