@@ -127,7 +127,8 @@
         "workdir",
         "xpsdocument",
         "yara",
-        "zeek"
+        "zeek",
+        "zlogging"
     ],
     "python.pythonPath": ".venv/bin/python",
     "python.linting.pylintEnabled": true,
