@@ -10,8 +10,8 @@ BroAPT: A system for detecting APT attacks in real-time
    :maxdepth: 2
 
    quickstart
-   framework
    configuration
+   framework
    api
 
 Cybersecurity has long been a significant subject under discussion. With rapid
