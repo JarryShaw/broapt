@@ -6,6 +6,7 @@ import ipaddress
 import json
 import os
 import re
+import sys
 import tarfile
 import time
 
@@ -63,6 +64,7 @@ def archive(date):
     with tarfile.open(tar_path, 'w:gz') as tar_file:
         for args in extracted_files:
             if not os.path.exists(args[0]):
+                print(f'FileNotFound: {args[0]}', file=sys.stderr)
                 continue
             tar_file.add(*args)
             os.remove(args[0])
