@@ -62,6 +62,8 @@ def archive(date):
     tar_path = os.path.join(DUMP_PATH, f'{date}.tar.gz')
     with tarfile.open(tar_path, 'w:gz') as tar_file:
         for args in extracted_files:
+            if not os.path.exists(args[0]):
+                continue
             tar_file.add(*args)
             os.remove(args[0])
 
