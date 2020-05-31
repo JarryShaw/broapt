@@ -6,7 +6,7 @@ wheel==0.34.2
 # Python dependencies
 certifi==2020.4.5.1
 chardet==3.0.4
-dataclasses==0.6
+dataclasses==0.7
 file-magic==0.4.0
 idna==2.9
 numpy==1.18.4
