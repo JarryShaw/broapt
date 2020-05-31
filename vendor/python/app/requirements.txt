@@ -1,7 +1,7 @@
 # Python packages
 pip==20.1.1
 setuptools==47.1.1
-wheel==0.33.6
+wheel==0.34.2
 
 # Python dependencies
 certifi==2020.4.5.1
