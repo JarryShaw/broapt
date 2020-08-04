@@ -1,6 +1,6 @@
 # Python packages
-pip==20.1.1
-setuptools==49.2.0
+pip==20.2
+setuptools==49.2.1
 wheel==0.34.2
 
 # Python dependencies
@@ -10,4 +10,4 @@ dataclasses==0.7
 idna==2.10
 PyYAML==5.3.1
 requests==2.24.0
-urllib3==1.25.9
+urllib3==1.25.10
