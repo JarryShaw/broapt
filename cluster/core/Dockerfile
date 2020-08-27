@@ -9,7 +9,8 @@ ENV PATH="/opt/bro/bin:${PATH}"
 # install, Bro, Python 3 & all requirements
 COPY vendor/archive/network-bro.repo /etc/yum.repos.d/
 RUN yum install -y \
-        https://centos7.iuscommunity.org/ius-release.rpm \
+        https://repo.ius.io/ius-release-el7.rpm \
+        https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
  && yum install -y \
         bro \
         ## python36u is actually dependency of the latter
