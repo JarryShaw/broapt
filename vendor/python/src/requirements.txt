@@ -1,5 +1,5 @@
 # Python packages
-pip==20.2.2
+pip==20.2.3
 setuptools==50.3.0
 wheel==0.35.1
 
@@ -9,8 +9,8 @@ chardet==3.0.4
 dataclasses==0.7
 file-magic==0.4.0
 idna==2.10
-numpy==1.19.1
-pandas==1.1.1
+numpy==1.19.2
+pandas==1.1.2
 python-dateutil==2.8.1
 pytz==2020.1
 PyYAML==5.3.1
