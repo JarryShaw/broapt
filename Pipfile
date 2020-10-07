@@ -19,7 +19,6 @@ ipython = "*"
 pyinstaller = "*"
 pylint = "*"
 sphinx = "*"
-sphinxcontrib-napoleon = "*"
 doc8 = "*"
 rstcheck = "*"
 
