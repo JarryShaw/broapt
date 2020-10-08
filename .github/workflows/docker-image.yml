@@ -92,7 +92,7 @@ jobs:
           pull: true
       -
         name: Build and push - BroAPT-Core image
-        id: docker_build_debug
+        id: docker_build_core
         uses: docker/build-push-action@v2
         with:
           context: ./cluster/core
@@ -112,7 +112,7 @@ jobs:
           pull: true
       -
         name: Build and push - BroAPT-App image
-        id: docker_build_debug
+        id: docker_build_app
         uses: docker/build-push-action@v2
         with:
           context: ./cluster/app
