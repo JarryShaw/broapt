@@ -1,6 +1,11 @@
 # basic info
 FROM library/ubuntu:16.04
-LABEL version=2019.06.08
+LABEL LABEL org.opencontainers.image.title="broapt" \
+      org.opencontainers.image.description="A system for detecting APT attacks in real-time" \
+      org.opencontainers.image.url="https://broapt.jarryshaw.me/" \
+      org.opencontainers.image.source="https://github.com/JarryShaw/BroAPT" \
+      org.opencontainers.image.version="2020.10.11" \
+      org.opencontainers.image.licenses='Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Public License'
 
 # set up environment variables
 ENV LANG "C.UTF-8"

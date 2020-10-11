@@ -4,7 +4,7 @@ init: mkdir-dump mkdir-logs
 clean: clean-api clean-build clean-dump clean-logs
 
 docker:
-	sed -i "" "s/LABEL version.*/LABEL version=$(shell date +%Y.%m.%d)/" Dockerfile
+	sed -i "" "s/version.*/version=$(shell date +%Y.%m.%d)/" Dockerfile
 	docker build --rm --tag broapt-app .
 	docker system prune --volumes -f
 

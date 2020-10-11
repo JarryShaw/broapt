@@ -30,7 +30,7 @@ build-linux: clean-build
 	$(MAKE) -C server build-linux
 
 docker:
-	sed -i "" "s/LABEL version.*/LABEL version=$(shell date +%Y.%m.%d)/" Dockerfile
+	sed -i "" "s/version.*/version=$(shell date +%Y.%m.%d)/" Dockerfile
 	docker build --rm --tag broapt .
 	docker system prune --volumes -f
 
