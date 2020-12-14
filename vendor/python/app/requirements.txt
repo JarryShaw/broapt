@@ -5,7 +5,7 @@ wheel==0.36.1
 
 # Python dependencies
 certifi==2020.12.5
-chardet==3.0.4
+chardet==4.0.0
 dataclasses==0.8
 idna==2.10
 PyYAML==5.3.1
