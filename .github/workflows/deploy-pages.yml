@@ -24,7 +24,7 @@ jobs:
           pipenv --python $(brew --prefix python@3.9)/bin/python3.9
           pipenv run pip install -U pip setuptools wheel
           pipenv run pip install -r docs/sphinx/requirements.txt
-          pipenv run make -C docs html
+          pipenv run make -C docs/sphinx html
 
           # disable Jekyll
           touch docs/build/html/.nojekyll
