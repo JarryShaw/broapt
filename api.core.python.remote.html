@@ -1,0 +1,304 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bro Logs Processing &#8212; BroAPT 2020.03.14 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Auxiliaries &amp; Utilities" href="api.core.python.utils.html" />
+    <link rel="prev" title="Extraction Process" href="api.core.python.process.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="bro-logs-processing">
+<h1>Bro Logs Processing<a class="headerlink" href="#bro-logs-processing" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">File location</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p>Bundled implementation: <code class="docutils literal notranslate"><span class="pre">source/client/python/remote.py</span></code></p></li>
+<li><p>Cluster implementation: <code class="docutils literal notranslate"><span class="pre">cluster/core/source/python/remote.py</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<div class="section" id="hook-mainloop">
+<h2>Hook Mainloop<a class="headerlink" href="#hook-mainloop" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="remote.remote_proc">
+<code class="sig-prename descclassname">remote.</code><code class="sig-name descname">remote_proc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#remote.remote_proc" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference external" href="https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager">context</a> for running processes at the background.</p>
+<p>In <strong>bundled implementation</strong>, this function also starts both
+<a class="reference internal" href="api.app.python.__main__.html#remote.remote_dump" title="remote.remote_dump"><code class="xref py py-func docutils literal notranslate"><span class="pre">remote_dump()</span></code></a> and <a class="reference internal" href="#remote.remote_logs" title="remote.remote_logs"><code class="xref py py-func docutils literal notranslate"><span class="pre">remote_logs()</span></code></a> as new
+processes.</p>
+<p>In <strong>cluster implementation</strong>, this function starts
+<a class="reference internal" href="#remote.remote" title="remote.remote"><code class="xref py py-func docutils literal notranslate"><span class="pre">remote()</span></code></a> as a new process.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Before exit, in <strong>bundled implementation</strong>, it will send <code class="docutils literal notranslate"><span class="pre">SIGUSR1</span></code>
+signal to the <a class="reference internal" href="api.app.python.__main__.html#remote.remote_dump" title="remote.remote_dump"><code class="xref py py-func docutils literal notranslate"><span class="pre">remote_dump()</span></code></a> background process and
+<code class="docutils literal notranslate"><span class="pre">SIGUSR2</span></code> signal to the <a class="reference internal" href="#remote.remote_logs" title="remote.remote_logs"><code class="xref py py-func docutils literal notranslate"><span class="pre">remote_logs()</span></code></a> background
+process; then wait for the process to gracefully exit.</p>
+<p>In <strong>cluster implementation</strong>, it will send <code class="docutils literal notranslate"><span class="pre">SIGUSR1</span></code> signal to
+the <a class="reference internal" href="#remote.remote_logs" title="remote.remote_logs"><code class="xref py py-func docutils literal notranslate"><span class="pre">remote_logs()</span></code></a> background process and wait for the
+process to gracefully exit.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="remote.remote_logs">
+<code class="sig-prename descclassname">remote.</code><code class="sig-name descname">remote_logs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#remote.remote_logs" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>bundled implementation</p>
+</dd>
+</dl>
+<p>Runtime mainloop for Python hooks.</p>
+<p>The function will start as an <em>indefinite</em> loop to fetch path to Bro
+logs from <a class="reference internal" href="api.core.python.const.html#const.QUEUE_LOGS" title="const.QUEUE_LOGS"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.QUEUE_LOGS</span></code></a>, and execute registered Python hooks
+on them.</p>
+<p>When <a class="reference internal" href="#remote.JOIN_LOGS" title="remote.JOIN_LOGS"><code class="xref py py-data docutils literal notranslate"><span class="pre">JOIN_LOGS</span></code></a> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the function will
+break from the loop and execute registered Python hooks for <em>closing</em>
+(<a class="reference internal" href="api.core.python.sites.html#sites.EXIT" title="sites.EXIT"><code class="xref py py-data docutils literal notranslate"><span class="pre">sites.EXIT</span></code></a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#remote.HookWarning" title="remote.HookWarning"><strong>HookWarning</strong></a> – If hook execution failed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="remote.remote">
+<code class="sig-prename descclassname">remote.</code><code class="sig-name descname">remote</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#remote.remote" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>cluster implementation</p>
+</dd>
+</dl>
+<p>The function will start as an <em>indefinite</em> loop to fetch path to Bro
+logs from <a class="reference internal" href="api.core.python.const.html#const.QUEUE" title="const.QUEUE"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.QUEUE</span></code></a>, and execute registered Python hooks
+on them.</p>
+<p>When <a class="reference internal" href="#remote.JOIN" title="remote.JOIN"><code class="xref py py-data docutils literal notranslate"><span class="pre">JOIN</span></code></a> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the function will
+break from the loop and execute registered Python hooks for <em>closing</em>
+(<a class="reference internal" href="api.core.python.sites.html#sites.EXIT" title="sites.EXIT"><code class="xref py py-data docutils literal notranslate"><span class="pre">sites.EXIT</span></code></a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#remote.HookWarning" title="remote.HookWarning"><strong>HookWarning</strong></a> – If hook execution failed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="hook">
+<code class="sig-name descname">hook</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">log_name</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper function for running registered Python hooks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>log_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Root folder of Bro logs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wrapper_logs">
+<code class="sig-name descname">wrapper_logs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">args</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>Callable<span class="p">[</span><span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span><span class="p">, </span>Any<span class="p">]</span><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_logs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper function for running registered Python hooks for <em>processing</em>
+(<a class="reference internal" href="api.core.python.sites.html#sites.HOOK" title="sites.HOOK"><code class="xref py py-data docutils literal notranslate"><span class="pre">sites.HOOK</span></code></a>).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wrapper_func">
+<code class="sig-name descname">wrapper_func</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">]</span><span class="p">, </span>Any<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper function for running registered Python hooks for <em>closing</em>
+(<a class="reference internal" href="api.core.python.sites.html#sites.EXIT" title="sites.EXIT"><code class="xref py py-data docutils literal notranslate"><span class="pre">sites.EXIT</span></code></a>).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="warnings">
+<h2>Warnings<a class="headerlink" href="#warnings" title="Permalink to this headline">¶</a></h2>
+<dl class="py exception">
+<dt id="remote.HookWarning">
+<em class="property">exception </em><code class="sig-prename descclassname">remote.</code><code class="sig-name descname">HookWarning</code><a class="headerlink" href="#remote.HookWarning" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Bases</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Warning" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Warning</span></code></a></p>
+</dd>
+</dl>
+<p>Warns when Python hooks execution failed.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="signal-handling">
+<h2>Signal Handling<a class="headerlink" href="#signal-handling" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="bundled-implementation">
+<h3>Bundled Implementation<a class="headerlink" href="#bundled-implementation" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt id="remote.join_logs">
+<code class="sig-prename descclassname">remote.</code><code class="sig-name descname">join_logs</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#remote.join_logs" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>bundled implementation</p>
+</dd>
+</dl>
+<p>Toggle <a class="reference internal" href="#remote.JOIN_LOGS" title="remote.JOIN_LOGS"><code class="xref py py-data docutils literal notranslate"><span class="pre">JOIN_LOGS</span></code></a> to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is registered as handler for <code class="docutils literal notranslate"><span class="pre">SIGUSR2`</span></code>.</p>
+</div>
+</dd></dl>
+
+<dl class="py data">
+<dt id="remote.JOIN_LOGS">
+<code class="sig-prename descclassname">remote.</code><code class="sig-name descname">JOIN_LOGS</code><em class="property"> = multiprocessing.Value('B', False)</em><a class="headerlink" href="#remote.JOIN_LOGS" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>bundled implementation</p>
+</dd>
+</dl>
+<p>Flag to stop the <a class="reference internal" href="#remote.remote_logs" title="remote.remote_logs"><code class="xref py py-func docutils literal notranslate"><span class="pre">remote_logs()</span></code></a> background process.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="cluster-implementation">
+<h3>Cluster Implementation<a class="headerlink" href="#cluster-implementation" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt id="remote.join">
+<code class="sig-prename descclassname">remote.</code><code class="sig-name descname">join</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#remote.join" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>cluster implementation</p>
+</dd>
+</dl>
+<p>Toggle <a class="reference internal" href="#remote.JOIN" title="remote.JOIN"><code class="xref py py-data docutils literal notranslate"><span class="pre">JOIN</span></code></a> to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is registered as handler for <code class="docutils literal notranslate"><span class="pre">SIGUSR1`</span></code>.</p>
+</div>
+</dd></dl>
+
+<dl class="py data">
+<dt id="remote.JOIN">
+<code class="sig-prename descclassname">remote.</code><code class="sig-name descname">JOIN</code><em class="property"> = multiprocessing.Value('B', False)</em><a class="headerlink" href="#remote.JOIN" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>cluster implementation</p>
+</dd>
+</dl>
+<p>Flag to stop the <a class="reference internal" href="#remote.remote" title="remote.remote"><code class="xref py py-func docutils literal notranslate"><span class="pre">remote()</span></code></a> background process.</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">BroAPT</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=JarryShaw&repo=broapt&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configurations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="framework.html">Internal Frameworks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="api.core.html">BroAPT-Core Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.html">BroAPT-App Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.html">BroAPT-Daemon Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.misc.html">Miscellaneous &amp; Auxiliary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#system-runtime">System Runtime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#developer-notes">Developer Notes</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="api.html">API Reference</a><ul>
+  <li><a href="api.core.html">BroAPT-Core Framework</a><ul>
+      <li>Previous: <a href="api.core.python.process.html" title="previous chapter">Extraction Process</a></li>
+      <li>Next: <a href="api.core.python.utils.html" title="next chapter">Auxiliaries &amp; Utilities</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Jarry Shaw.
+      
+      |
+      <a href="_sources/api.core.python.remote.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/JarryShaw/broapt" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

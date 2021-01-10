@@ -1,0 +1,250 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BroAPT-Core Framework &#8212; BroAPT 2020.03.14 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Module Entry" href="api.core.bro.__load__.html" />
+    <link rel="prev" title="API Reference" href="api.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="broapt-core-framework">
+<h1>BroAPT-Core Framework<a class="headerlink" href="#broapt-core-framework" title="Permalink to this headline">¶</a></h1>
+<p>The BroAPT-Core framework is the extraction framework for the BroAPT
+system. For more information about the framework, please refer to previous
+documentation at <a class="reference internal" href="broapt-core.html"><span class="doc">BroAPT-Core Extration Framework</span></a>.</p>
+<div class="section" id="bro-scripts">
+<h2>Bro Scripts<a class="headerlink" href="#bro-scripts" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.core.bro.__load__.html">Module Entry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.core.bro.config.html">Configurations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.core.bro.file-extensions.html">MIME-Extension Mappings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.core.bro.main.html"><code class="docutils literal notranslate"><span class="pre">FileExtraction</span></code> Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.core.bro.hooks.html">Extract by Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.core.bro.plugins.html">Extract by MIME Type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.core.bro.sites.html">Site Customisations</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="python-modules">
+<h2>Python Modules<a class="headerlink" href="#python-modules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.core.python.__init__.html">Module Entry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.core.python.__main__.html">System Entrypoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.core.python.compose.html">Bro Script Composer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.compose.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.compose.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.compose.html#constants">Constants</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.compose.html#auxiliaries">Auxiliaries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.compose.html#bro-configs">Bro Configs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.compose.html#subsitute-patterns">Subsitute Patterns</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.core.python.const.html">Common Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.core.python.logparser.html">Bro Log Parser</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.logparser.html#dataclasses">Dataclasses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.logparser.html#field-parsers">Field Parsers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.logparser.html#log-parsers">Log Parsers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.logparser.html#module-entry">Module Entry</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.core.python.process.html">Extraction Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.core.python.remote.html">Bro Logs Processing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.remote.html#hook-mainloop">Hook Mainloop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.remote.html#warnings">Warnings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.remote.html#signal-handling">Signal Handling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.remote.html#bundled-implementation">Bundled Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.remote.html#cluster-implementation">Cluster Implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.core.python.utils.html">Auxiliaries &amp; Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.core.python.sites.html">Site Customisations</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="wrapper-scripts">
+<h2>Wrapper Scripts<a class="headerlink" href="#wrapper-scripts" title="Permalink to this headline">¶</a></h2>
+<p>For the Docker container, we have created some Shell/Bash wrapper scripts to
+make the life a little bit better.</p>
+<div class="section" id="bundled-implementation">
+<h3>Bundled Implementation<a class="headerlink" href="#bundled-implementation" title="Permalink to this headline">¶</a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">File location</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">source/client/init.sh</span></code></p>
+</dd>
+</dl>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
+
+<span class="nb">set</span> -aex
+
+<span class="c1"># change curdir</span>
+<span class="nb">cd</span> /broapt
+
+<span class="c1"># load environs</span>
+<span class="k">if</span> <span class="o">[</span> -f .env <span class="o">]</span> <span class="p">;</span> <span class="k">then</span>
+    <span class="nb">source</span> .env
+<span class="k">fi</span>
+
+<span class="c1"># compose Bro scripts</span>
+/usr/bin/python3.6 python/compose.py
+
+<span class="c1"># run scripts</span>
+/usr/bin/python3.6 python <span class="nv">$@</span>
+
+<span class="c1"># sleep</span>
+sleep infinity
+</pre></div>
+</div>
+</div>
+<div class="section" id="cluster-implementation">
+<h3>Cluster Implementation<a class="headerlink" href="#cluster-implementation" title="Permalink to this headline">¶</a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">File location</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">cluster/core/source/init.sh</span></code></p>
+</dd>
+</dl>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
+
+<span class="nb">set</span> -aex
+
+<span class="c1"># change cwd</span>
+<span class="nb">cd</span> /source
+
+<span class="c1"># load environs</span>
+<span class="k">if</span> <span class="o">[</span> -f .env <span class="o">]</span> <span class="p">;</span> <span class="k">then</span>
+    <span class="nb">source</span> .env
+<span class="k">fi</span>
+
+<span class="c1"># compose Bro scripts</span>
+/usr/bin/python3.6 python/compose.py
+
+<span class="c1"># run scripts</span>
+/usr/bin/python3.6 python <span class="nv">$@</span>
+
+<span class="c1"># sleep</span>
+sleep infinity
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">BroAPT</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=JarryShaw&repo=broapt&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configurations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="framework.html">Internal Frameworks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">BroAPT-Core Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.html">BroAPT-App Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.html">BroAPT-Daemon Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.misc.html">Miscellaneous &amp; Auxiliary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#system-runtime">System Runtime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#developer-notes">Developer Notes</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="api.html">API Reference</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">API Reference</a></li>
+      <li>Next: <a href="api.core.bro.__load__.html" title="next chapter">Module Entry</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Jarry Shaw.
+      
+      |
+      <a href="_sources/api.core.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/JarryShaw/broapt" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Remote Detection &#8212; BroAPT 2020.03.14 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Auxiliaries &amp; Utilities" href="api.app.python.utils.html" />
+    <link rel="prev" title="Detection Process" href="api.app.python.process.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="remote-detection">
+<h1>Remote Detection<a class="headerlink" href="#remote-detection" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">File location</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p>Bundled implementation: <code class="docutils literal notranslate"><span class="pre">source/client/python/scan.py</span></code></p></li>
+<li><p>Cluster implementation: <code class="docutils literal notranslate"><span class="pre">cluster/app/source/python/remote.py</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<div class="section" id="bundled-implementation">
+<h2>Bundled Implementation<a class="headerlink" href="#bundled-implementation" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="scan.remote">
+<code class="sig-prename descclassname">scan.</code><code class="sig-name descname">remote</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entry</span><span class="p">:</span> <span class="n">Entry</span></em>, <em class="sig-param"><span class="n">mime</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">api</span><span class="p">:</span> <span class="n">API</span></em><span class="sig-paren">)</span><a class="headerlink" href="#scan.remote" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>bundled implementation</p>
+</dd>
+</dl>
+<p>Request the BroAPT-Daemon server to perform <em>remote</em> detection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entry</strong> (<a class="reference internal" href="api.app.python.__main__.html#scan.Entry" title="scan.Entry"><em>Entry</em></a>) – Extracted file to be processed.</p></li>
+<li><p><strong>mime</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – MIME type.</p></li>
+<li><p><strong>api</strong> (<a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.API" title="cfgparser.API"><em>API</em></a>) – API entry from <code class="docutils literal notranslate"><span class="pre">api.yml</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Exit code (<a class="reference internal" href="api.daemon.python.const.html#const.EXIT_SUCCESS" title="const.EXIT_SUCCESS"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.EXIT_SUCCESS</span></code></a> or <a class="reference internal" href="api.daemon.python.const.html#const.EXIT_FAILURE" title="const.EXIT_FAILURE"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.EXIT_FAILURE</span></code></a>).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="cluster-implementation">
+<h2>Cluster Implementation<a class="headerlink" href="#cluster-implementation" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="remote.remote">
+<code class="sig-prename descclassname">remote.</code><code class="sig-name descname">remote</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entry</span><span class="p">:</span> <span class="n">Entry</span></em>, <em class="sig-param"><span class="n">mime</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">api</span><span class="p">:</span> <span class="n">API</span></em><span class="sig-paren">)</span><a class="headerlink" href="#remote.remote" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>cluster implementation</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#scan.remote" title="scan.remote"><code class="xref py py-func docutils literal notranslate"><span class="pre">scan.remote()</span></code></a></p>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">BroAPT</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=JarryShaw&repo=broapt&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configurations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="framework.html">Internal Frameworks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.core.html">BroAPT-Core Framework</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="api.app.html">BroAPT-App Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.html">BroAPT-Daemon Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.misc.html">Miscellaneous &amp; Auxiliary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#system-runtime">System Runtime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#developer-notes">Developer Notes</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="api.html">API Reference</a><ul>
+  <li><a href="api.app.html">BroAPT-App Framework</a><ul>
+      <li>Previous: <a href="api.app.python.process.html" title="previous chapter">Detection Process</a></li>
+      <li>Next: <a href="api.app.python.utils.html" title="next chapter">Auxiliaries &amp; Utilities</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Jarry Shaw.
+      
+      |
+      <a href="_sources/api.app.python.remote.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/JarryShaw/broapt" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Internal Frameworks &#8212; BroAPT 2020.03.14 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="BroAPT-Core Extration Framework" href="broapt-core.html" />
+    <link rel="prev" title="Configurations" href="configuration.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="internal-frameworks">
+<h1>Internal Frameworks<a class="headerlink" href="#internal-frameworks" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="broapt-core.html">BroAPT-Core Extration Framework</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="broapt-core.html#custom-bro-scripts">Custom Bro Scripts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="broapt-core.html#common-constants">Common Constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="broapt-core.html#http-cookies">HTTP Cookies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="broapt-core.html#unknown-http-headers">Unknown HTTP Headers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="broapt-core.html#http-post-data">HTTP <code class="docutils literal notranslate"><span class="pre">POST</span></code> Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="broapt-core.html#calculate-hash-values">Calculate Hash Values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="broapt-core.html#smtp-phishing-detect">SMTP Phishing Detect</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="broapt-core.html#custom-python-hooks">Custom Python Hooks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="broapt-core.html#extracted-file-information">Extracted File Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="broapt-core.html#http-connection-information">HTTP Connection Information</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="broapt-app.html">BroAPT-App Detection Framework</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="broapt-app.html#mime-specific-api-configuration">MIME Specific API Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="broapt-app.html#integrated-detection-services">Integrated Detection Services</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="broapt-app.html#default-detection-powered-by-virustotal">Default Detection powered by VirusTotal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="broapt-app.html#android-apk-detection-powered-by-andropytool">Android APK Detection powered by AndroPyTool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="broapt-app.html#office-document-detection-powered-by-maliciousmacrobot">Office Document Detection powered by MaliciousMacroBot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="broapt-app.html#linux-elf-detection-powered-by-elf-parser">Linux ELF Detection powered by ELF Parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="broapt-app.html#common-linux-malware-detection-powered-by-lmd">Common Linux Malware Detection powered by LMD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="broapt-app.html#malicious-javascript-detection-powered-by-jast">Malicious JavaScript Detection powered by JaSt</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<p>The BroAPT system is generally designed in two main parts, as we described in the
+<a class="reference internal" href="index.html"><span class="doc">introduction</span></a>, the core functions and the daemon server with its
+command line interface (CLI).</p>
+<img alt="BroAPT Framework" src="_images/BroAPT.003.png" />
+<p>On the host machine, the BroAPT-Daemon server runs as a manager of the BtoAPT
+system, which watches the running status of underlying BroAPT core functions,
+i.e. BroAPT-Core and BroAPT-App frameworks, as well as perform <em>remote</em> detection
+upon API requests from detection framework.</p>
+<p>In the docker containers, the BroAPT-Core and BroAPT-App frameworks perform
+the core functions of BroAPT system. They analyse source PCAP files and extract
+files transferred through the traffic with <a class="reference external" href="https://www.zeek.org">Bro IDS</a>, then detect the extracted
+files based on MIME type specifically configured APT detection methods.</p>
+<p>The general process of processing is as following:</p>
+<img alt="BroAPT Multiprocessing Framework" src="_images/BroAPT.005.png" />
+<ol class="arabic simple" start="0">
+<li><p>When the BroAPT-Core framework first reads a new PCAP file, it will utilise
+Bro IDS to process it, extract files transferred and perform other actions
+as configured through the Bro site functions.</p></li>
+<li><p>As files had been extracted, the BroAPT-App framework will perform malware
+detection on each file. If <em>remote</em> detection configured, it will send an
+API request to the BroAPT-Daemon server, and wait for its detection report.</p></li>
+<li><p>At the same time, once the Bro processing had finished, the BroAPT-Core
+framework will start processing the generated logs, and perform extra analysis
+over the Bro log files as specified by the Python hooks.</p></li>
+<li><p>When the BroAPT-Daemon receives an API request, it will perform malware
+detection as described in the request, and send the detection report
+back to the BroAPT-App framework.</p></li>
+</ol>
+<div class="section" id="implementation-details">
+<h2>Implementation Details<a class="headerlink" href="#implementation-details" title="Permalink to this headline">¶</a></h2>
+<p>In first draft design, the BroAPT system was implemented in a cluster manner,
+comparing to current bundled distribution, i.e. the BroAPT-Core framework and
+BroAPT-App framework are two separate Docker containers. However, two
+implementation manners are both maintained at the moment.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the documentation, we normally refer to bundled implementation when
+talking about the BroAPT system internal implementation details.</p>
+</div>
+<p>Through internal module name may vary between two implementations, the main
+implementation source codes is, nevertheless, identical in both implementations.</p>
+<div class="section" id="cluster-implementation">
+<h3>Cluster Implementation<a class="headerlink" href="#cluster-implementation" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For source codes, please go to <a class="reference external" href="https://github.com/JarryShaw/BroAPT/tree/master/source/"><code class="docutils literal notranslate"><span class="pre">/source/</span></code></a> folder.</p>
+</div>
+<p>In the cluster implementation, the BroAPT-Core framework is running in a
+CentOS 7 container, as the then-latest version of Bro IDS (version 2.6.1) was
+only available through RPM binary; whilst the BroAPT-App framework is running
+is in an Ubuntu 16.04 container, with better compatibility for detection tools.</p>
+<p>The communication between two frameworks is archived through file system
+temporary listing files.</p>
+</div>
+<div class="section" id="bundled-implementation">
+<h3>Bundled Implementation<a class="headerlink" href="#bundled-implementation" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For source codes, please go to <a class="reference external" href="https://github.com/JarryShaw/BroAPT/tree/master/cluster/"><code class="docutils literal notranslate"><span class="pre">/cluster/</span></code></a> folder.</p>
+</div>
+<p>In the bundled implementation, both the BroAPT-Core framework and the
+BroAPT-App framework are running in a CentOS 7 container.</p>
+<p>The communication between two frameworks is archived through <a class="reference external" href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Queue"><code class="docutils literal notranslate"><span class="pre">multiprocessing.Queue</span></code></a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">BroAPT</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=JarryShaw&repo=broapt&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configurations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Internal Frameworks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="broapt-core.html">BroAPT-Core Extration Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="broapt-app.html">BroAPT-App Detection Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation-details">Implementation Details</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="configuration.html" title="previous chapter">Configurations</a></li>
+      <li>Next: <a href="broapt-core.html" title="next chapter">BroAPT-Core Extration Framework</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Jarry Shaw.
+      
+      |
+      <a href="_sources/framework.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/JarryShaw/broapt" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

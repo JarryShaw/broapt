@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BroAPT-Daemon Server &#8212; BroAPT 2020.03.14 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Module Entry" href="api.daemon.python.__init__.html" />
+    <link rel="prev" title="Auxiliaries &amp; Utilities" href="api.app.python.utils.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="broapt-daemon-server">
+<h1>BroAPT-Daemon Server<a class="headerlink" href="#broapt-daemon-server" title="Permalink to this headline">¶</a></h1>
+<p>The BroAPT-Daemon server is the main entry and watchdog for the BroAPT
+system. For more information about the server, please refer to previous
+documentation at <a class="reference internal" href="broapt-app.html"><span class="doc">BroAPT-App Detection Framework</span></a>.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.__init__.html">Module Entry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.__main__.html">System Entrypoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.compose.html">Docker Watchdog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.const.html">Common Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.daemon.html">Flask Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.daemon.html#url-routing">URL Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.daemon.html#error-handlers">Error Handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.daemon.html#dataclasses">Dataclasses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.daemon.html#constants">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.process.html">Detection Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.util.html">Auxiliaries &amp; Utilities</a></li>
+</ul>
+</div>
+<p>For deployment issues, please refer to <a class="reference internal" href="quickstart.html"><span class="doc">quickstart</span></a>.</p>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">BroAPT</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=JarryShaw&repo=broapt&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configurations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="framework.html">Internal Frameworks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.core.html">BroAPT-Core Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.html">BroAPT-App Framework</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">BroAPT-Daemon Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.misc.html">Miscellaneous &amp; Auxiliary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#system-runtime">System Runtime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#developer-notes">Developer Notes</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="api.html">API Reference</a><ul>
+      <li>Previous: <a href="api.app.python.utils.html" title="previous chapter">Auxiliaries &amp; Utilities</a></li>
+      <li>Next: <a href="api.daemon.python.__init__.html" title="next chapter">Module Entry</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Jarry Shaw.
+      
+      |
+      <a href="_sources/api.daemon.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/JarryShaw/broapt" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

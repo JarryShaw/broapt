@@ -1,0 +1,839 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Configurations &#8212; BroAPT 2020.03.14 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Internal Frameworks" href="framework.html" />
+    <link rel="prev" title="Quickstart" href="quickstart.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="configurations">
+<h1>Configurations<a class="headerlink" href="#configurations" title="Permalink to this headline">¶</a></h1>
+<p>As discussed in previous sections, the BroAPT system is configurable
+in various ways. You can configure the outer system from the entry CLI
+of BroAPT-Daemon server, and the main framework through Docker Compose
+environment variables.</p>
+<div class="section" id="broapt-daemon-server">
+<h2>BroAPT-Daemon Server<a class="headerlink" href="#broapt-daemon-server" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="command-line-interface">
+<h3>Command Line Interface<a class="headerlink" href="#command-line-interface" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>usage: broaptd [-h] [-v] [-e ENV] [-s SIGNAL] [-t HOST] [-p PORT]
+               [-f DOCKER_COMPOSE] [-d DUMP_PATH] [-l LOGS_PATH] [-r API_ROOT]
+               [-a API_LOGS] [-i INTERVAL] [-m MAX_RETRY]
+
+BroAPT Daemon
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --version         show program&#39;s version number and exit
+
+environment arguments:
+  -e ENV, --env ENV     path to dotenv file
+  -s SIGNAL, --signal SIGNAL
+                        daemon kill signal
+
+server arguments:
+  -t HOST, --host HOST  the hostname to listen on
+  -p PORT, --port PORT  the port of the webserver
+
+compose arguments:
+  -f DOCKER_COMPOSE, --docker-compose DOCKER_COMPOSE
+                        path to BroAPT&#39;s compose file
+  -d DUMP_PATH, --dump-path DUMP_PATH
+                        path to extracted files
+  -l LOGS_PATH, --logs-path LOGS_PATH
+                        path to log files
+
+API arguments:
+  -r API_ROOT, --api-root API_ROOT
+                        path to detection APIs
+  -a API_LOGS, --api-logs API_LOGS
+                        path to API runtime logs
+
+runtime arguments:
+  -i INTERVAL, --interval INTERVAL
+                        sleep interval
+  -m MAX_RETRY, --max-retry MAX_RETRY
+                        command retry
+</pre></div>
+</div>
+</div>
+<div class="section" id="environment-variables">
+<h3>Environment Variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h3>
+<p>As suggests in the <code class="docutils literal notranslate"><span class="pre">--env</span></code> option, you may provice a <em>dotenv</em> (<code class="docutils literal notranslate"><span class="pre">.env</span></code>) file
+for the BroAPT-Daemon server to configure itself.</p>
+<p>Acceptable environment variables are as following:</p>
+<dl class="std envvar">
+<dt id="envvar-BROAPT_KILL_SIGNAL">
+<code class="sig-name descname">BROAPT_KILL_SIGNAL</code><a class="headerlink" href="#envvar-BROAPT_KILL_SIGNAL" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">15</span></code> (<code class="docutils literal notranslate"><span class="pre">SIGTERM</span></code>)</p>
+</dd>
+<dt class="field-odd">CLI Option</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-s</span></code> / <code class="docutils literal notranslate"><span class="pre">--signal</span></code></p>
+</dd>
+</dl>
+<p>Daemon kill signal.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_SERVER_HOST">
+<code class="sig-name descname">BROAPT_SERVER_HOST</code><a class="headerlink" href="#envvar-BROAPT_SERVER_HOST" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (hostname)</p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0.0.0</span></code></p>
+</dd>
+<dt class="field-odd">CLI Option</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-t</span></code> / <code class="docutils literal notranslate"><span class="pre">--host</span></code></p>
+</dd>
+</dl>
+<p>The hostname to listen on.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_SERVER_PORT">
+<code class="sig-name descname">BROAPT_SERVER_PORT</code><a class="headerlink" href="#envvar-BROAPT_SERVER_PORT" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code> (port number)</p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5000</span></code></p>
+</dd>
+<dt class="field-odd">CLI Option</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-p</span></code> / <code class="docutils literal notranslate"><span class="pre">--port</span></code></p>
+</dd>
+</dl>
+<p>The port of the webserver.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_DOCKER_COMPOSE">
+<code class="sig-name descname">BROAPT_DOCKER_COMPOSE</code><a class="headerlink" href="#envvar-BROAPT_DOCKER_COMPOSE" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code></p>
+</dd>
+<dt class="field-odd">CLI Option</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-f</span></code> / <code class="docutils literal notranslate"><span class="pre">--docker-compose</span></code></p>
+</dd>
+</dl>
+<p>Path to BroAPT’s compose file.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_DUMP_PATH">
+<code class="sig-name descname">BROAPT_DUMP_PATH</code><a class="headerlink" href="#envvar-BROAPT_DUMP_PATH" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-odd">CLI Option</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-d</span></code> / <code class="docutils literal notranslate"><span class="pre">--dump-path</span></code></p>
+</dd>
+</dl>
+<p>Path to extracted files.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_LOGS_PATH">
+<code class="sig-name descname">BROAPT_LOGS_PATH</code><a class="headerlink" href="#envvar-BROAPT_LOGS_PATH" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-odd">CLI Option</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-l</span></code> / <code class="docutils literal notranslate"><span class="pre">--logs-path</span></code></p>
+</dd>
+</dl>
+<p>Path to log files.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_API_ROOT">
+<code class="sig-name descname">BROAPT_API_ROOT</code><a class="headerlink" href="#envvar-BROAPT_API_ROOT" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-odd">CLI Option</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-r</span></code> / <code class="docutils literal notranslate"><span class="pre">--api-root</span></code></p>
+</dd>
+</dl>
+<p>Path to detection APIs.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_API_LOGS">
+<code class="sig-name descname">BROAPT_API_LOGS</code><a class="headerlink" href="#envvar-BROAPT_API_LOGS" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-odd">CLI Option</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-a</span></code> / <code class="docutils literal notranslate"><span class="pre">--api-logs</span></code></p>
+</dd>
+</dl>
+<p>Path to API runtime logs.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_INTERVAL">
+<code class="sig-name descname">BROAPT_INTERVAL</code><a class="headerlink" href="#envvar-BROAPT_INTERVAL" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p>
+</dd>
+<dt class="field-odd">CLI Option</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-i</span></code> / <code class="docutils literal notranslate"><span class="pre">--interval</span></code></p>
+</dd>
+</dl>
+<p>Sleep interval.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_MAX_RETRY">
+<code class="sig-name descname">BROAPT_MAX_RETRY</code><a class="headerlink" href="#envvar-BROAPT_MAX_RETRY" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">3</span></code></p>
+</dd>
+<dt class="field-odd">CLI Option</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-m</span></code> / <code class="docutils literal notranslate"><span class="pre">--max-retry</span></code></p>
+</dd>
+</dl>
+<p>Command retry.</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Environment variables of <code class="docutils literal notranslate"><span class="pre">bool</span></code> type will be translated through
+the following mapping table (<strong>case-insensitive</strong>):</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 53%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">yes</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">no</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">on</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">off</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="section" id="broapt-core-framework">
+<h2>BroAPT-Core Framework<a class="headerlink" href="#broapt-core-framework" title="Permalink to this headline">¶</a></h2>
+<p>The BroAPT-Core framework only supports configuration through environment variables.</p>
+<dl class="std envvar">
+<dt id="envvar-BROAPT_CPU">
+<code class="sig-name descname">BROAPT_CPU</code><a class="headerlink" href="#envvar-BROAPT_CPU" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>bundled implementation</p>
+</dd>
+</dl>
+<p>Number of BroAPT concurrent processes for PCAP analysis. If not provided, then the
+number of system CPUs will be used.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_CORE_CPU">
+<code class="sig-name descname">BROAPT_CORE_CPU</code><a class="headerlink" href="#envvar-BROAPT_CORE_CPU" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>cluster implementation</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><span class="target" id="index-0"></span><a class="reference internal" href="#envvar-BROAPT_CPU"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_CPU</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-0">
+<code class="sig-name descname">BROAPT_INTERVAL</code><a class="headerlink" href="#envvar-0" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p>
+</dd>
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>bundled implementation</p>
+</dd>
+</dl>
+<p>Wait interval after processing current pool.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_CORE_INTERVAL">
+<code class="sig-name descname">BROAPT_CORE_INTERVAL</code><a class="headerlink" href="#envvar-BROAPT_CORE_INTERVAL" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p>
+</dd>
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>cluster implementation</p>
+</dd>
+</dl>
+<p>Wait interval after processing current pool of PCAP files.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-1">
+<code class="sig-name descname">BROAPT_DUMP_PATH</code><a class="headerlink" href="#envvar-1" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">FileExtract::prefix</span></code> (Bro script)</p>
+</dd>
+</dl>
+<p>Path to extracted files.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_PCAP_PATH">
+<code class="sig-name descname">BROAPT_PCAP_PATH</code><a class="headerlink" href="#envvar-BROAPT_PCAP_PATH" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">/pcap/</span></code></p>
+</dd>
+</dl>
+<p>Path to source PCAP files.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-2">
+<code class="sig-name descname">BROAPT_LOGS_PATH</code><a class="headerlink" href="#envvar-2" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">/var/log/bro/</span></code></p>
+</dd>
+</dl>
+<p>Path to system logs.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_MIME_MODE">
+<code class="sig-name descname">BROAPT_MIME_MODE</code><a class="headerlink" href="#envvar-BROAPT_MIME_MODE" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+</dd>
+</dl>
+<p>If group extracted files by MIME type.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_JSON_MODE">
+<code class="sig-name descname">BROAPT_JSON_MODE</code><a class="headerlink" href="#envvar-BROAPT_JSON_MODE" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">LogAscii::use_json</span></code> (Bro script)</p>
+</dd>
+</dl>
+<p>Toggle Bro logs in JSON or ASCII format.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_BARE_MODE">
+<code class="sig-name descname">BROAPT_BARE_MODE</code><a class="headerlink" href="#envvar-BROAPT_BARE_MODE" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+</dl>
+<p>Run Bro in bare mode (don’t load scripts from the <code class="docutils literal notranslate"><span class="pre">base/</span></code> directory).</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_NO_CHKSUM">
+<code class="sig-name descname">BROAPT_NO_CHKSUM</code><a class="headerlink" href="#envvar-BROAPT_NO_CHKSUM" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+</dd>
+</dl>
+<p>Ignore checksums of packets in PCAP files when running Bro.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_HASH_MD5">
+<code class="sig-name descname">BROAPT_HASH_MD5</code><a class="headerlink" href="#envvar-BROAPT_HASH_MD5" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+</dl>
+<p>Calculate MD5 hash of extracted files.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_HASH_SHA1">
+<code class="sig-name descname">BROAPT_HASH_SHA1</code><a class="headerlink" href="#envvar-BROAPT_HASH_SHA1" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+</dl>
+<p>Calculate SHA1 hash of extracted files.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_HASH_SHA256">
+<code class="sig-name descname">BROAPT_HASH_SHA256</code><a class="headerlink" href="#envvar-BROAPT_HASH_SHA256" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+</dl>
+<p>Calculate SHA256 hash of extracted files.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_X509_MODE">
+<code class="sig-name descname">BROAPT_X509_MODE</code><a class="headerlink" href="#envvar-BROAPT_X509_MODE" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+</dl>
+<p>Include X509 information when running Bro.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_ENTROPY_MODE">
+<code class="sig-name descname">BROAPT_ENTROPY_MODE</code><a class="headerlink" href="#envvar-BROAPT_ENTROPY_MODE" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+</dl>
+<p>Include file entropy information when running Bro.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_LOAD_MIME">
+<code class="sig-name descname">BROAPT_LOAD_MIME</code><a class="headerlink" href="#envvar-BROAPT_LOAD_MIME" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">List[str]</span></code> (<em>case-insensitive</em>)</p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+<p>A <code class="docutils literal notranslate"><span class="pre">,</span></code> or <code class="docutils literal notranslate"><span class="pre">;</span></code> separated string of MIME types to be extracted.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_LOAD_PROTOCOL">
+<code class="sig-name descname">BROAPT_LOAD_PROTOCOL</code><a class="headerlink" href="#envvar-BROAPT_LOAD_PROTOCOL" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">List[str]</span></code> (<em>case-insensitive</em>)</p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+<p>A <code class="docutils literal notranslate"><span class="pre">,</span></code> or <code class="docutils literal notranslate"><span class="pre">;</span></code> separated string of application layer protocols to be extracted,
+can be any of <code class="docutils literal notranslate"><span class="pre">dtls</span></code>, <code class="docutils literal notranslate"><span class="pre">ftp</span></code>, <code class="docutils literal notranslate"><span class="pre">http</span></code>, <code class="docutils literal notranslate"><span class="pre">irc</span></code> and <code class="docutils literal notranslate"><span class="pre">smtp</span></code>.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_FILE_BUFFER">
+<code class="sig-name descname">BROAPT_FILE_BUFFER</code><a class="headerlink" href="#envvar-BROAPT_FILE_BUFFER" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code> (<code class="docutils literal notranslate"><span class="pre">uint64</span></code>)</p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">Files::reassembly_buffer_size</span></code> (Bro script)</p>
+</dd>
+</dl>
+<p>Reassembly buffer size for file extraction.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_SIZE_LIMIT">
+<code class="sig-name descname">BROAPT_SIZE_LIMIT</code><a class="headerlink" href="#envvar-BROAPT_SIZE_LIMIT" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code> (<code class="docutils literal notranslate"><span class="pre">uint64</span></code>)</p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">FileExtract::default_limit</span></code> (Bro script)</p>
+</dd>
+</dl>
+<p>Size limit of extracted files.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_HOOK_CPU">
+<code class="sig-name descname">BROAPT_HOOK_CPU</code><a class="headerlink" href="#envvar-BROAPT_HOOK_CPU" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p>
+</dd>
+</dl>
+<p>Number of BroAPT concurrent processes for Python hooks.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="broapt-app-framework">
+<h2>BroAPT-App Framework<a class="headerlink" href="#broapt-app-framework" title="Permalink to this headline">¶</a></h2>
+<p>The BroAPT-App framework only supports configuration through environment variables.</p>
+<dl class="std envvar">
+<dt id="envvar-BROAPT_SCAN_CPU">
+<code class="sig-name descname">BROAPT_SCAN_CPU</code><a class="headerlink" href="#envvar-BROAPT_SCAN_CPU" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>bundled implementation</p>
+</dd>
+</dl>
+<p>Number of BroAPT concurrent processes for extracted file analysis. If not provided, then the
+number of system CPUs will be used.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_APP_CPU">
+<code class="sig-name descname">BROAPT_APP_CPU</code><a class="headerlink" href="#envvar-BROAPT_APP_CPU" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>cluster implementation</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><span class="target" id="index-1"></span><a class="reference internal" href="#envvar-BROAPT_SCAN_CPU"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_SCAN_CPU</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-3">
+<code class="sig-name descname">BROAPT_INTERVAL</code><a class="headerlink" href="#envvar-3" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p>
+</dd>
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>bundled implementation</p>
+</dd>
+</dl>
+<p>Wait interval after processing current pool.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_APP_INTERVAL">
+<code class="sig-name descname">BROAPT_APP_INTERVAL</code><a class="headerlink" href="#envvar-BROAPT_APP_INTERVAL" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p>
+</dd>
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>cluster implementation</p>
+</dd>
+</dl>
+<p>Wait interval after processing current pool of extracted files.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-4">
+<code class="sig-name descname">BROAPT_MAX_RETRY</code><a class="headerlink" href="#envvar-4" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">3</span></code></p>
+</dd>
+</dl>
+<p>Retry times for failed commands.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-5">
+<code class="sig-name descname">BROAPT_API_ROOT</code><a class="headerlink" href="#envvar-5" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">/api/</span></code></p>
+</dd>
+</dl>
+<p>Path to the API root folder.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-6">
+<code class="sig-name descname">BROAPT_API_LOGS</code><a class="headerlink" href="#envvar-6" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">/var/log/bro/api/</span></code></p>
+</dd>
+</dl>
+<p>Path to API detection logs.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_NAME_HOST">
+<code class="sig-name descname">BROAPT_NAME_HOST</code><a class="headerlink" href="#envvar-BROAPT_NAME_HOST" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (hostname)</p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">localhost</span></code></p>
+</dd>
+</dl>
+<p>Hostname of BroAPT-Daemon server.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt id="envvar-BROAPT_NAME_PORT">
+<code class="sig-name descname">BROAPT_NAME_PORT</code><a class="headerlink" href="#envvar-BROAPT_NAME_PORT" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code> (port number)</p>
+</dd>
+<dt class="field-even">Default</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5000</span></code></p>
+</dd>
+</dl>
+<p>Port number of BroAPT-Daemon server.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">BroAPT</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=JarryShaw&repo=broapt&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configurations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#broapt-daemon-server">BroAPT-Daemon Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#broapt-core-framework">BroAPT-Core Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#broapt-app-framework">BroAPT-App Framework</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="framework.html">Internal Frameworks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="quickstart.html" title="previous chapter">Quickstart</a></li>
+      <li>Next: <a href="framework.html" title="next chapter">Internal Frameworks</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Jarry Shaw.
+      
+      |
+      <a href="_sources/configuration.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/JarryShaw/broapt" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

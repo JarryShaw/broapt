@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Site Customisations &#8212; BroAPT 2020.03.14 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="BroAPT-App Framework" href="api.app.html" />
+    <link rel="prev" title="Auxiliaries &amp; Utilities" href="api.core.python.utils.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="site-customisations">
+<h1>Site Customisations<a class="headerlink" href="#site-customisations" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">File location</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p>Bundled implementation: <code class="docutils literal notranslate"><span class="pre">source/include/python/</span></code></p></li>
+<li><p>Cluster implementation: <code class="docutils literal notranslate"><span class="pre">cluster/core/include/python/</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<p>This folder will be mapped into the Docker container as <code class="docutils literal notranslate"><span class="pre">/broapt/python/sites/</span></code>.
+You may register your customised Python hooks in the <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file.</p>
+<dl class="py data">
+<dt id="sites.HOOK">
+<code class="sig-prename descclassname">sites.</code><code class="sig-name descname">HOOK</code><em class="property">: List<span class="p">[</span>Callable<span class="p">[</span><span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span><span class="p">, </span>Any<span class="p">]</span><span class="p">]</span></em><a class="headerlink" href="#sites.HOOK" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registry for <em>processing</em> hooks.</p>
+<p>Registered function should take the path to the folder of Bro logs as
+a single parameter, return values will be ignored. Such functions will
+be called on each Bro log folder generated from PCAP files.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="sites.EXIT">
+<code class="sig-prename descclassname">sites.</code><code class="sig-name descname">EXIT</code><em class="property">: List<span class="p">[</span>Callable<span class="p">[</span><span class="p">]</span><span class="p">, </span>Any<span class="p">]</span><span class="p">]</span></em><a class="headerlink" href="#sites.EXIT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registry for <em>closing</em> hooks.</p>
+<p>Registered function should take <strong>NO</strong> parameters, return values will
+be ignored. Such functions will be called before the system exits.</p>
+</dd></dl>
+
+<p>Currently, we have integrated two sets of customised Python hooks, please see
+<a class="reference internal" href="broapt-core.html"><span class="doc">BroAPT-Core Extration Framework</span></a> for more information.</p>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">BroAPT</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=JarryShaw&repo=broapt&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configurations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="framework.html">Internal Frameworks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="api.core.html">BroAPT-Core Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.html">BroAPT-App Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.html">BroAPT-Daemon Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.misc.html">Miscellaneous &amp; Auxiliary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#system-runtime">System Runtime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#developer-notes">Developer Notes</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="api.html">API Reference</a><ul>
+  <li><a href="api.core.html">BroAPT-Core Framework</a><ul>
+      <li>Previous: <a href="api.core.python.utils.html" title="previous chapter">Auxiliaries &amp; Utilities</a></li>
+      <li>Next: <a href="api.app.html" title="next chapter">BroAPT-App Framework</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Jarry Shaw.
+      
+      |
+      <a href="_sources/api.core.python.sites.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/JarryShaw/broapt" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

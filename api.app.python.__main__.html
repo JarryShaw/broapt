@@ -1,0 +1,446 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>System Entrypoint &#8212; BroAPT 2020.03.14 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Config Parser" href="api.app.python.cfgparser.html" />
+    <link rel="prev" title="Module Entry" href="api.app.python.__init__.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="system-entrypoint">
+<h1>System Entrypoint<a class="headerlink" href="#system-entrypoint" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">File location</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p>Bundled implementation:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">source/client/python/remote.py</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">source/client/python/scan.py</span></code></p></li>
+</ul>
+</li>
+<li><p>Cluster implementation: <code class="docutils literal notranslate"><span class="pre">cluster/app/source/python/__main__.py</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<p>In <strong>bundled implementation</strong>, the <a class="reference internal" href="api.core.python.remote.html"><span class="doc">Bro Logs Processing</span></a> module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">remote</span></code>) starts a
+background process for the BroAPT-App framework; whilst the <a class="reference internal" href="api.app.python.process.html"><span class="doc">Detection Process</span></a> module
+(<code class="xref py py-mod docutils literal notranslate"><span class="pre">process</span></code>) contains <a class="reference internal" href="api.app.python.process.html"><span class="doc">main processing logic</span></a> as well as the
+original system entrypoint.</p>
+<p>In <strong>cluster implementation</strong>, this file wraps the whole system and make the
+<code class="docutils literal notranslate"><span class="pre">python</span></code> folder callable as a module where the <code class="docutils literal notranslate"><span class="pre">__main__.py</span></code> will be
+considered as the entrypoint.</p>
+<div class="section" id="constants">
+<h2>Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h2>
+<dl class="py data">
+<dt id="main__.FILE_REGEX">
+<span id="__main__.FILE_REGEX"></span><code class="sig-prename descclassname">__main__.</code><code class="sig-name descname">FILE_REGEX</code><em class="property">: re.Pattern</em><a class="headerlink" href="#main__.FILE_REGEX" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>cluster implementation</p>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    # protocol prefix</span>
+<span class="s1">    (?P&lt;protocol&gt;DTLS|FTP_DATA|HTTP|IRC_DATA|SMTP|\S+)</span>
+<span class="s1">    -</span>
+<span class="s1">    # file UID</span>
+<span class="s1">    (?P&lt;fuid&gt;F\w+)</span>
+<span class="s1">    \.</span>
+<span class="s1">    # PCAP source</span>
+<span class="s1">    (?P&lt;pcap&gt;.+?)</span>
+<span class="s1">    \.</span>
+<span class="s1">    # media-type</span>
+<span class="s1">    (?P&lt;media_type&gt;application|audio|example|font|image|message|model|multipart|text|video|\S+)</span>
+<span class="s1">    \.</span>
+<span class="s1">    # subtype</span>
+<span class="s1">    (?P&lt;subtype&gt;\S+)</span>
+<span class="s1">    \.</span>
+<span class="s1">    # file extension</span>
+<span class="s1">    (?P&lt;extension&gt;\S+)</span>
+<span class="s1">&#39;&#39;&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Regular expression to match and fetch information from extracted files.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="api.app.python.const.html#const.FILE_REGEX" title="const.FILE_REGEX"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.FILE_REGEX</span></code></a></p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="dataclasses">
+<h2>Dataclasses<a class="headerlink" href="#dataclasses" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="scan.MIME">
+<em class="property">class </em><code class="sig-prename descclassname">scan.</code><code class="sig-name descname">MIME</code><a class="headerlink" href="#scan.MIME" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>bundled implementation</p>
+</dd>
+</dl>
+<p>A <a class="reference external" href="https://www.python.org/dev/peps/pep-0557">dataclass</a> for parsed MIME type.</p>
+<dl class="py attribute">
+<dt id="scan.MIME.media_type">
+<code class="sig-name descname">media_type</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><a class="headerlink" href="#scan.MIME.media_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Media type.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="scan.MIME.subtype">
+<code class="sig-name descname">subtype</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><a class="headerlink" href="#scan.MIME.subtype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subtype.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="scan.MIME.name">
+<code class="sig-name descname">name</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><a class="headerlink" href="#scan.MIME.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>MIME type.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="main__.MIME">
+<span id="__main__.MIME"></span><em class="property">class </em><code class="sig-prename descclassname">__main__.</code><code class="sig-name descname">MIME</code><a class="headerlink" href="#main__.MIME" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>cluster implementation</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#scan.MIME" title="scan.MIME"><code class="xref py py-class docutils literal notranslate"><span class="pre">scan.MIME</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt id="scan.Entry">
+<em class="property">class </em><code class="sig-prename descclassname">scan.</code><code class="sig-name descname">Entry</code><a class="headerlink" href="#scan.Entry" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>bundled implementation</p>
+</dd>
+</dl>
+<p>A <a class="reference external" href="https://www.python.org/dev/peps/pep-0557">dataclass</a> for extracted file entry.</p>
+<dl class="py attribute">
+<dt id="scan.Entry.path">
+<code class="sig-name descname">path</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><a class="headerlink" href="#scan.Entry.path" title="Permalink to this definition">¶</a></dt>
+<dd><p>File path.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="scan.Entry.uuid">
+<code class="sig-name descname">uuid</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><a class="headerlink" href="#scan.Entry.uuid" title="Permalink to this definition">¶</a></dt>
+<dd><p>UUID parsed from file.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="scan.Entry.mime">
+<code class="sig-name descname">mime</code><em class="property">: MIME</em><a class="headerlink" href="#scan.Entry.mime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parsed MIME type <a class="reference internal" href="#scan.MIME" title="scan.MIME"><code class="xref py py-class docutils literal notranslate"><span class="pre">dataclass</span></code></a>.</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This <a class="reference external" href="https://www.python.org/dev/peps/pep-0557">dataclass</a> supports ordering with power of <a class="reference external" href="https://docs.python.org/3/library/functools.html#functools.total_ordering"><a class="reference external" href="https://docs.python.org/3/library/functools.html#functools.total_ordering" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">functools.total_ordering()</span></code></a></a>.</p>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt id="main__.Entry">
+<span id="__main__.Entry"></span><em class="property">class </em><code class="sig-prename descclassname">__main__.</code><code class="sig-name descname">Entry</code><a class="headerlink" href="#main__.Entry" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>cluster implementation</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#scan.Entry" title="scan.Entry"><code class="xref py py-class docutils literal notranslate"><span class="pre">scan.Entry</span></code></a></p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="bundled-implementation">
+<h2>Bundled Implementation<a class="headerlink" href="#bundled-implementation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="scan-module">
+<h3><code class="xref py py-mod docutils literal notranslate"><span class="pre">scan</span></code> Module<a class="headerlink" href="#scan-module" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt id="scan.scan">
+<code class="sig-prename descclassname">scan.</code><code class="sig-name descname">scan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">local_name</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scan.scan" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>bundled implementation</p>
+</dd>
+</dl>
+<p>Parse then start processing of the given file.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="api.app.python.process.html#scan.process" title="scan.process"><code class="xref py py-func docutils literal notranslate"><span class="pre">scan.process()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="scan.lookup">
+<code class="sig-prename descclassname">scan.</code><code class="sig-name descname">lookup</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scan.lookup" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>bundled implementation</p>
+</dd>
+</dl>
+<p>Fetch all extracted files to be processed from the given path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Path to extracted files.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of extracted files.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="remote-module">
+<h3><code class="xref py py-mod docutils literal notranslate"><span class="pre">remote</span></code> Module<a class="headerlink" href="#remote-module" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="framework-mainloop">
+<h4>Framework Mainloop<a class="headerlink" href="#framework-mainloop" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt id="remote.remote_dump">
+<code class="sig-prename descclassname">remote.</code><code class="sig-name descname">remote_dump</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#remote.remote_dump" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>bundled implementation</p>
+</dd>
+</dl>
+<p>Runtime mainloop for BroAPT-App framework.</p>
+<p>The function will start as an <em>indefinite</em> loop to fetch path to extracted
+files from <a class="reference internal" href="api.app.python.const.html#const.QUEUE_DUMP" title="const.QUEUE_DUMP"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.QUEUE_DUMP</span></code></a>, and perform <a class="reference internal" href="#scan.scan" title="scan.scan"><code class="xref py py-func docutils literal notranslate"><span class="pre">scan()</span></code></a>
+on them.</p>
+<p>When <a class="reference internal" href="#remote.JOIN_DUMP" title="remote.JOIN_DUMP"><code class="xref py py-data docutils literal notranslate"><span class="pre">JOIN_DUMP</span></code></a> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the function will
+break from the loop.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="signal-handling">
+<h4>Signal Handling<a class="headerlink" href="#signal-handling" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt id="remote.join_dump">
+<code class="sig-prename descclassname">remote.</code><code class="sig-name descname">join_dump</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#remote.join_dump" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>bundled implementation</p>
+</dd>
+</dl>
+<p>Toggle <a class="reference internal" href="#remote.JOIN_DUMP" title="remote.JOIN_DUMP"><code class="xref py py-data docutils literal notranslate"><span class="pre">JOIN_DUMP</span></code></a> to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is registered as handler for <code class="docutils literal notranslate"><span class="pre">SIGUSR1`</span></code>.</p>
+</div>
+</dd></dl>
+
+<dl class="py data">
+<dt id="remote.JOIN_DUMP">
+<code class="sig-prename descclassname">remote.</code><code class="sig-name descname">JOIN_DUMP</code><em class="property"> = multiprocessing.Value('B', False)</em><a class="headerlink" href="#remote.JOIN_DUMP" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>bundled implementation</p>
+</dd>
+</dl>
+<p>Flag to stop the <a class="reference internal" href="#remote.remote_dump" title="remote.remote_dump"><code class="xref py py-func docutils literal notranslate"><span class="pre">remote_dump()</span></code></a> background process.</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+<div class="section" id="cluster-implementation">
+<h2>Cluster Implementation<a class="headerlink" href="#cluster-implementation" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="main__.listdir">
+<span id="__main__.listdir"></span><code class="sig-prename descclassname">__main__.</code><code class="sig-name descname">listdir</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main__.listdir" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>cluster implementation</p>
+</dd>
+</dl>
+<p>Fetch and parse all extracted files in the given path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Path to extracted files.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of parsed <a class="reference internal" href="#scan.Entry" title="scan.Entry"><code class="xref py py-class docutils literal notranslate"><span class="pre">entry</span></code></a> for extracted files.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="#scan.Entry" title="scan.Entry">Entry</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="main__.check_history">
+<span id="__main__.check_history"></span><code class="sig-prename descclassname">__main__.</code><code class="sig-name descname">check_history</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main__.check_history" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>cluster implementation</p>
+</dd>
+</dl>
+<p>Check processed extracted files.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Processed extracted files will be recorded at <a class="reference internal" href="api.app.python.const.html#const.DUMP" title="const.DUMP"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.DUMP</span></code></a>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of processed extracted files.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="main__.main">
+<span id="__main__.main"></span><code class="sig-prename descclassname">__main__.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main__.main" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Availability</dt>
+<dd class="field-odd"><p>cluster implementation</p>
+</dd>
+</dl>
+<p>Run the BroAPT-Core framework.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Exit code.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">__main__.process()</span></code></p>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">BroAPT</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=JarryShaw&repo=broapt&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configurations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="framework.html">Internal Frameworks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.core.html">BroAPT-Core Framework</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="api.app.html">BroAPT-App Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.html">BroAPT-Daemon Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.misc.html">Miscellaneous &amp; Auxiliary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#system-runtime">System Runtime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#developer-notes">Developer Notes</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="api.html">API Reference</a><ul>
+  <li><a href="api.app.html">BroAPT-App Framework</a><ul>
+      <li>Previous: <a href="api.app.python.__init__.html" title="previous chapter">Module Entry</a></li>
+      <li>Next: <a href="api.app.python.cfgparser.html" title="next chapter">API Config Parser</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Jarry Shaw.
+      
+      |
+      <a href="_sources/api.app.python.__main__.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/JarryShaw/broapt" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

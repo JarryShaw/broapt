@@ -1,0 +1,374 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Common Constants &#8212; BroAPT 2020.03.14 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bro Log Parser" href="api.core.python.logparser.html" />
+    <link rel="prev" title="Bro Script Composer" href="api.core.python.compose.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="common-constants">
+<h1>Common Constants<a class="headerlink" href="#common-constants" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">File location</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p>Bundled implementation: <code class="docutils literal notranslate"><span class="pre">source/client/python/const.py</span></code></p></li>
+<li><p>Cluster implementation: <code class="docutils literal notranslate"><span class="pre">cluster/core/source/python/const.py</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py data">
+<dt id="const.ROOT">
+<code class="sig-prename descclassname">const.</code><code class="sig-name descname">ROOT</code><a class="headerlink" href="#const.ROOT" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+<p>Path to the BroAPT-Core framework source codes (absolute path at runtime).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="const.BOOLEAN_STATES">
+<code class="sig-prename descclassname">const.</code><code class="sig-name descname">BOOLEAN_STATES</code><em class="property"> = {'1': True,    '0': False,
+'yes': True,  'no': False,
+'true': True, 'false': False,
+'on': True,   'off': False}</em><a class="headerlink" href="#const.BOOLEAN_STATES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mapping of boolean states, c.f. <a class="reference external" href="https://docs.python.org/3/library/configparser.html"><code class="docutils literal notranslate"><span class="pre">configparser</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="const.CPU_CNT">
+<code class="sig-prename descclassname">const.</code><code class="sig-name descname">CPU_CNT</code><a class="headerlink" href="#const.CPU_CNT" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-0"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_CPU"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_CPU</span></code></a></p>
+</dd>
+</dl>
+<p>Number of BroAPT concurrent processes for PCAP analysis. If not provided, then the
+number of system CPUs will be used.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="const.INTERVAL">
+<code class="sig-prename descclassname">const.</code><code class="sig-name descname">INTERVAL</code><a class="headerlink" href="#const.INTERVAL" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><ul class="simple">
+<li><p>Bundled implementation: <span class="target" id="index-1"></span><a class="reference internal" href="configuration.html#envvar-3"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_INTERVAL</span></code></a></p></li>
+<li><p>Cluster implementation: <span class="target" id="index-2"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_CORE_INTERVAL"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_CORE_INTERVAL</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<p>Wait interval after processing current pool of PCAP files.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="const.DUMP_PATH">
+<code class="sig-prename descclassname">const.</code><code class="sig-name descname">DUMP_PATH</code><a class="headerlink" href="#const.DUMP_PATH" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-3"></span><a class="reference internal" href="configuration.html#envvar-1"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_DUMP_PATH</span></code></a></p>
+</dd>
+</dl>
+<p>Path to extracted files.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="const.PCAP_PATH">
+<code class="sig-prename descclassname">const.</code><code class="sig-name descname">PCAP_PATH</code><a class="headerlink" href="#const.PCAP_PATH" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-4"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_PCAP_PATH"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_PCAP_PATH</span></code></a></p>
+</dd>
+</dl>
+<p>Path to source PCAP files.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="const.LOGS_PATH">
+<code class="sig-prename descclassname">const.</code><code class="sig-name descname">LOGS_PATH</code><a class="headerlink" href="#const.LOGS_PATH" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-5"></span><a class="reference internal" href="configuration.html#envvar-2"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_LOGS_PATH</span></code></a></p>
+</dd>
+</dl>
+<p>Path to system logs.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="const.MIME_MODE">
+<code class="sig-prename descclassname">const.</code><code class="sig-name descname">MIME_MODE</code><a class="headerlink" href="#const.MIME_MODE" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-6"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_MIME_MODE"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_MIME_MODE</span></code></a></p>
+</dd>
+</dl>
+<p>If group extracted files by MIME type.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="const.BARE_MODE">
+<code class="sig-prename descclassname">const.</code><code class="sig-name descname">BARE_MODE</code><a class="headerlink" href="#const.BARE_MODE" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-7"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_BARE_MODE"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_BARE_MODE</span></code></a></p>
+</dd>
+</dl>
+<p>Run Bro in bare mode (don’t load scripts from the <code class="docutils literal notranslate"><span class="pre">base/</span></code> directory).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="const.NO_CHKSUM">
+<code class="sig-prename descclassname">const.</code><code class="sig-name descname">NO_CHKSUM</code><a class="headerlink" href="#const.NO_CHKSUM" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-8"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_NO_CHKSUM"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_NO_CHKSUM</span></code></a></p>
+</dd>
+</dl>
+<p>Ignore checksums of packets in PCAP files when running Bro.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="const.HOOK_CPU">
+<code class="sig-prename descclassname">const.</code><code class="sig-name descname">HOOK_CPU</code><a class="headerlink" href="#const.HOOK_CPU" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-9"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_HOOK_CPU"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_HOOK_CPU</span></code></a></p>
+</dd>
+</dl>
+<p>Number of BroAPT concurrent processes for Python hooks.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="const.FILE">
+<code class="sig-prename descclassname">const.</code><code class="sig-name descname">FILE</code><a class="headerlink" href="#const.FILE" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">LOGS_PATH</span><span class="p">,</span> <span class="s1">&#39;file.log&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Path to file system database of processed PCAP files.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="const.TIME">
+<code class="sig-prename descclassname">const.</code><code class="sig-name descname">TIME</code><a class="headerlink" href="#const.TIME" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">LOGS_PATH</span><span class="p">,</span> <span class="s1">&#39;time.log&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Path to log file of processing time records.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="const.STDOUT">
+<code class="sig-prename descclassname">const.</code><code class="sig-name descname">STDOUT</code><a class="headerlink" href="#const.STDOUT" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">LOGS_PATH</span><span class="p">,</span> <span class="s1">&#39;stdout.log&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Path to <code class="docutils literal notranslate"><span class="pre">stdout</span></code> <em>replica</em>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="const.STDERR">
+<code class="sig-prename descclassname">const.</code><code class="sig-name descname">STDERR</code><a class="headerlink" href="#const.STDERR" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">LOGS_PATH</span><span class="p">,</span> <span class="s1">&#39;stderr.log&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Path to <code class="docutils literal notranslate"><span class="pre">stderr</span></code> <em>replica</em>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="const.QUEUE_LOGS">
+<code class="sig-prename descclassname">const.</code><code class="sig-name descname">QUEUE_LOGS</code><a class="headerlink" href="#const.QUEUE_LOGS" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">multiprocessing.Queue</span></code></p>
+</dd>
+<dt class="field-even">Availability</dt>
+<dd class="field-even"><p>bundled implementation</p>
+</dd>
+</dl>
+<p>Teleprocess communication queue for log processing.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="const.QUEUE">
+<code class="sig-prename descclassname">const.</code><code class="sig-name descname">QUEUE</code><a class="headerlink" href="#const.QUEUE" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">multiprocessing.Queue</span></code></p>
+</dd>
+<dt class="field-even">Availability</dt>
+<dd class="field-even"><p>cluster implementation</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#const.QUEUE_LOGS" title="const.QUEUE_LOGS"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.QUEUE_LOGS</span></code></a></p>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">BroAPT</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=JarryShaw&repo=broapt&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configurations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="framework.html">Internal Frameworks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="api.core.html">BroAPT-Core Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.html">BroAPT-App Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.html">BroAPT-Daemon Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.misc.html">Miscellaneous &amp; Auxiliary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#system-runtime">System Runtime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#developer-notes">Developer Notes</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="api.html">API Reference</a><ul>
+  <li><a href="api.core.html">BroAPT-Core Framework</a><ul>
+      <li>Previous: <a href="api.core.python.compose.html" title="previous chapter">Bro Script Composer</a></li>
+      <li>Next: <a href="api.core.python.logparser.html" title="next chapter">Bro Log Parser</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Jarry Shaw.
+      
+      |
+      <a href="_sources/api.core.python.const.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/JarryShaw/broapt" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

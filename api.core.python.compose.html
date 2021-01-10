@@ -1,0 +1,600 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bro Script Composer &#8212; BroAPT 2020.03.14 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Common Constants" href="api.core.python.const.html" />
+    <link rel="prev" title="System Entrypoint" href="api.core.python.__main__.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="bro-script-composer">
+<h1>Bro Script Composer<a class="headerlink" href="#bro-script-composer" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">File location</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p>Bundled implementation: <code class="docutils literal notranslate"><span class="pre">source/client/python/compose.py</span></code></p></li>
+<li><p>Cluster implementation: <code class="docutils literal notranslate"><span class="pre">cluster/core/source/python/compose.py</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This file works as a standalone script for generating Bro scripts.
+It is <strong>NOT</strong> meant to be an <em>importable</em> module of the BroAPT system.</p>
+</div>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>As we can config what MIME types to extract through the <span class="target" id="index-0"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_LOAD_MIME"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_LOAD_MIME</span></code></a>
+environment variable, the BroAPT-Core framework will automatically generate the
+Bro scripts based on this environment variable and many others.</p>
+<p>For MIME types with a <em>shell</em>-like pattern, we will use <a class="reference external" href="https://docs.python.org/3/library/fnmatch.html#fnmatch.translate"><a class="reference external" href="https://docs.python.org/3/library/fnmatch.html#fnmatch.translate" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">fnmatch.translate()</span></code></a></a>
+to convert the pattern into a regular expression.</p>
+<p>A generated <a class="reference internal" href="api.core.bro.file-extensions.html"><span class="doc">Bro script</span></a> for <code class="docutils literal notranslate"><span class="pre">hook</span></code> function
+extracting files with MIME type <code class="docutils literal notranslate"><span class="pre">example/test-*</span></code> would be as following:</p>
+<div class="highlight-zeek notranslate"><div class="highlight"><pre><span></span><span class="cp">@load ../__load__.bro</span>
+
+<span class="kn">module</span> <span class="nn">FileExtraction</span><span class="p">;</span>
+
+<span class="kt">hook</span> <span class="nf">FileExtraction::extract</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">fa_file</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">fa_metadata</span><span class="p">)</span> <span class="kp">&amp;priority</span><span class="o">=</span><span class="mf">5</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">meta</span><span class="o">?$</span><span class="n">mime_type</span> <span class="o">&amp;&amp;</span> <span class="sr">/example</span><span class="se">\/</span><span class="sr">test</span><span class="se">\-</span><span class="sr">.*/</span> <span class="o">==</span> <span class="n">meta</span><span class="o">$</span><span class="n">mime_type</span> <span class="p">)</span>
+        <span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Besides this, the Bro script composer will also generate/rewrite the
+<a class="reference internal" href="api.core.bro.config.html"><span class="doc">Bro configurations</span></a> to customise several
+metrics and to load the scripts as specified in the environment variables.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The full list of supported environment variables is as following:</p>
+<ul class="simple">
+<li><p><span class="target" id="index-1"></span><a class="reference internal" href="configuration.html#envvar-2"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_LOGS_PATH</span></code></a></p></li>
+<li><p><span class="target" id="index-2"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_PCAP_PATH"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_PCAP_PATH</span></code></a></p></li>
+<li><p><span class="target" id="index-3"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_MIME_MODE"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_MIME_MODE</span></code></a></p></li>
+<li><p><span class="target" id="index-4"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_HASH_MD5"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_HASH_MD5</span></code></a></p></li>
+<li><p><span class="target" id="index-5"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_HASH_SHA1"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_HASH_SHA1</span></code></a></p></li>
+<li><p><span class="target" id="index-6"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_HASH_SHA256"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_HASH_SHA256</span></code></a></p></li>
+<li><p><span class="target" id="index-7"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_X509_MODE"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_X509_MODE</span></code></a></p></li>
+<li><p><span class="target" id="index-8"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_ENTROPY_MODE"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_ENTROPY_MODE</span></code></a></p></li>
+<li><p><span class="target" id="index-9"></span><a class="reference internal" href="configuration.html#envvar-1"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_DUMP_PATH</span></code></a></p></li>
+<li><p><span class="target" id="index-10"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_FILE_BUFFER"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_FILE_BUFFER</span></code></a></p></li>
+<li><p><span class="target" id="index-11"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_SIZE_LIMIT"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_SIZE_LIMIT</span></code></a></p></li>
+<li><p><span class="target" id="index-12"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_JSON_MODE"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_JSON_MODE</span></code></a></p></li>
+<li><p><span class="target" id="index-13"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_LOAD_MIME"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_LOAD_MIME</span></code></a></p></li>
+<li><p><span class="target" id="index-14"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_LOAD_PROTOCOL"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_LOAD_PROTOCOL</span></code></a></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="compose.file_salt">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">file_salt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">uid</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#compose.file_salt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the <code class="docutils literal notranslate"><span class="pre">config.bro</span></code> (<a class="reference internal" href="api.core.bro.config.html"><span class="doc">Configurations</span></a>) with provided <code class="docutils literal notranslate"><span class="pre">uid</span></code>
+as <code class="docutils literal notranslate"><span class="pre">file_salt</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="compose.compose">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">compose</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compose.compose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compose Bro scripts with environment variables defined.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is the module entry.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="compose.escape">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">escape</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mime_type</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#compose.escape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Escape <em>shell</em>-like <code class="docutils literal notranslate"><span class="pre">mime_type</span></code> pattern to regular expression.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>The underlying implementation of <a class="reference external" href="https://docs.python.org/3/library/fnmatch.html#fnmatch.translate"><a class="reference external" href="https://docs.python.org/3/library/fnmatch.html#fnmatch.translate" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">fnmatch.translate()</span></code></a></a> calls <a class="reference external" href="https://docs.python.org/3/library/re.html#re.escape"><a class="reference external" href="https://docs.python.org/3/library/re.html#re.escape" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">re.escape()</span></code></a></a>
+to escape special characters. However, in Python 3.6, the function will
+escape all characters other than ASCIIs, numbers and underlines (<code class="docutils literal notranslate"><span class="pre">_</span></code>);
+whilst in Python 3.7, it will only escape characters defined in
+<code class="xref py py-data docutils literal notranslate"><span class="pre">re._special_chars_map</span></code>.</p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="constants">
+<h2>Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="auxiliaries">
+<h3>Auxiliaries<a class="headerlink" href="#auxiliaries" title="Permalink to this headline">¶</a></h3>
+<dl class="py data">
+<dt id="compose.ROOT">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">ROOT</code><a class="headerlink" href="#compose.ROOT" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+<p>Path to the BroAPT-Core framework source codes (absolute path at runtime).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.BOOLEAN_STATES">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">BOOLEAN_STATES</code><em class="property"> = {'1': True,    '0': False,
+'yes': True,  'no': False,
+'true': True, 'false': False,
+'on': True,   'off': False}</em><a class="headerlink" href="#compose.BOOLEAN_STATES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mapping of boolean states, c.f. <a class="reference external" href="https://docs.python.org/3/library/configparser.html"><code class="docutils literal notranslate"><span class="pre">configparser</span></code></a>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="bro-configs">
+<h3>Bro Configs<a class="headerlink" href="#bro-configs" title="Permalink to this headline">¶</a></h3>
+<dl class="py data">
+<dt id="compose.LOGS_PATH">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">LOGS_PATH</code><a class="headerlink" href="#compose.LOGS_PATH" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-15"></span><a class="reference internal" href="configuration.html#envvar-2"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_LOGS_PATH</span></code></a></p>
+</dd>
+</dl>
+<p>Path to system logs.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.PCAP_PATH">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">PCAP_PATH</code><a class="headerlink" href="#compose.PCAP_PATH" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-16"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_PCAP_PATH"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_PCAP_PATH</span></code></a></p>
+</dd>
+</dl>
+<p>Path to source PCAP files.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.MIME_MODE">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">MIME_MODE</code><a class="headerlink" href="#compose.MIME_MODE" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-17"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_MIME_MODE"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_MIME_MODE</span></code></a></p>
+</dd>
+</dl>
+<p>If group extracted files by MIME type.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.HASH_MODE_MD5">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">HASH_MODE_MD5</code><a class="headerlink" href="#compose.HASH_MODE_MD5" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-18"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_HASH_MD5"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_HASH_MD5</span></code></a></p>
+</dd>
+</dl>
+<p>Calculate MD5 hash of extracted files.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.HASH_MODE_SHA1">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">HASH_MODE_SHA1</code><a class="headerlink" href="#compose.HASH_MODE_SHA1" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-19"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_HASH_SHA1"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_HASH_SHA1</span></code></a></p>
+</dd>
+</dl>
+<p>Calculate SHA1 hash of extracted files.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.HASH_MODE_SHA256">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">HASH_MODE_SHA256</code><a class="headerlink" href="#compose.HASH_MODE_SHA256" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-20"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_HASH_SHA256"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_HASH_SHA256</span></code></a></p>
+</dd>
+</dl>
+<p>Calculate SHA256 hash of extracted files.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.X509_MODE">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">X509_MODE</code><a class="headerlink" href="#compose.X509_MODE" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-21"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_X509_MODE"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_X509_MODE</span></code></a></p>
+</dd>
+</dl>
+<p>Include X509 information when running Bro.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.ENTROPY_MODE">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">ENTROPY_MODE</code><a class="headerlink" href="#compose.ENTROPY_MODE" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-22"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_ENTROPY_MODE"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_ENTROPY_MODE</span></code></a></p>
+</dd>
+</dl>
+<p>Include file entropy information when running Bro.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.DUMP_PATH">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">DUMP_PATH</code><a class="headerlink" href="#compose.DUMP_PATH" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-23"></span><a class="reference internal" href="configuration.html#envvar-1"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_DUMP_PATH</span></code></a></p>
+</dd>
+</dl>
+<p>Path to extracted files.</p>
+</dd></dl>
+
+<p>. data:: compose.FILE_BUFFER</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code> (<code class="docutils literal notranslate"><span class="pre">uint64</span></code>)</p>
+</dd>
+<dt class="field-even">environ</dt>
+<dd class="field-even"><p><span class="target" id="index-24"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_FILE_BUFFER"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_FILE_BUFFER</span></code></a></p>
+</dd>
+</dl>
+<p>Reassembly buffer size for file extraction.</p>
+</div></blockquote>
+<dl class="py data">
+<dt id="compose.SIZE_LIMIT">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">SIZE_LIMIT</code><a class="headerlink" href="#compose.SIZE_LIMIT" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code> (<code class="docutils literal notranslate"><span class="pre">uint64</span></code>)</p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-25"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_SIZE_LIMIT"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_SIZE_LIMIT</span></code></a></p>
+</dd>
+</dl>
+<p>Size limit of extracted files.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.JSON_MODE">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">JSON_MODE</code><a class="headerlink" href="#compose.JSON_MODE" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-26"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_JSON_MODE"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_JSON_MODE</span></code></a></p>
+</dd>
+</dl>
+<p>Toggle Bro logs in JSON or ASCII format.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.LOAD_MIME">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">LOAD_MIME</code><a class="headerlink" href="#compose.LOAD_MIME" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">List[str]</span></code> (<em>case-insensitive</em>)</p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-27"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_LOAD_MIME"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_LOAD_MIME</span></code></a></p>
+</dd>
+</dl>
+<p>A <code class="docutils literal notranslate"><span class="pre">,</span></code> or <code class="docutils literal notranslate"><span class="pre">;</span></code> separated string of MIME types to be extracted.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.LOAD_PROTOCOL">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">LOAD_PROTOCOL</code><a class="headerlink" href="#compose.LOAD_PROTOCOL" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">List[str]</span></code> (<em>case-insensitive</em>)</p>
+</dd>
+<dt class="field-even">Environ</dt>
+<dd class="field-even"><p><span class="target" id="index-28"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_LOAD_PROTOCOL"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_LOAD_PROTOCOL</span></code></a></p>
+</dd>
+</dl>
+<p>A <code class="docutils literal notranslate"><span class="pre">,</span></code> or <code class="docutils literal notranslate"><span class="pre">;</span></code> separated string of application layer protocols to be extracted,
+can be any of <code class="docutils literal notranslate"><span class="pre">dtls</span></code>, <code class="docutils literal notranslate"><span class="pre">ftp</span></code>, <code class="docutils literal notranslate"><span class="pre">http</span></code>, <code class="docutils literal notranslate"><span class="pre">irc</span></code> and <code class="docutils literal notranslate"><span class="pre">smtp</span></code>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="subsitute-patterns">
+<h3>Subsitute Patterns<a class="headerlink" href="#subsitute-patterns" title="Permalink to this headline">¶</a></h3>
+<dl class="py data">
+<dt id="compose.FILE_TEMP">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">FILE_TEMP</code><a class="headerlink" href="#compose.FILE_TEMP" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">Tuple[str]</span></code></p>
+</dd>
+</dl>
+<p>Template for MIME type extraction Bro scripts.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.MIME_REGEX">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">MIME_REGEX</code><a class="headerlink" href="#compose.MIME_REGEX" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
+</dd>
+</dl>
+<p>Pattern for <code class="docutils literal notranslate"><span class="pre">mime</span></code> (<a class="reference internal" href="#compose.MIME_MODE" title="compose.MIME_MODE"><code class="xref py py-data docutils literal notranslate"><span class="pre">MIME_MODE</span></code></a>).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.LOGS_REGEX">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">LOGS_REGEX</code><a class="headerlink" href="#compose.LOGS_REGEX" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
+</dd>
+</dl>
+<p>Pattern for <code class="docutils literal notranslate"><span class="pre">logs</span></code> (<a class="reference internal" href="#compose.LOGS_PATH" title="compose.LOGS_PATH"><code class="xref py py-data docutils literal notranslate"><span class="pre">LOGS_PATH</span></code></a>).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.HASH_REGEX_MD5">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">HASH_REGEX_MD5</code><a class="headerlink" href="#compose.HASH_REGEX_MD5" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
+</dd>
+</dl>
+<p>Pattern for <code class="docutils literal notranslate"><span class="pre">md5</span></code> (<a class="reference internal" href="#compose.HASH_MODE_MD5" title="compose.HASH_MODE_MD5"><code class="xref py py-data docutils literal notranslate"><span class="pre">HASH_MODE_MD5</span></code></a>).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.HASH_REGEX_SHA1">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">HASH_REGEX_SHA1</code><a class="headerlink" href="#compose.HASH_REGEX_SHA1" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
+</dd>
+</dl>
+<p>Pattern for <code class="docutils literal notranslate"><span class="pre">sha1</span></code> (<a class="reference internal" href="#compose.HASH_MODE_SHA1" title="compose.HASH_MODE_SHA1"><code class="xref py py-data docutils literal notranslate"><span class="pre">HASH_MODE_SHA1</span></code></a>).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.HASH_REGEX_SHA256">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">HASH_REGEX_SHA256</code><a class="headerlink" href="#compose.HASH_REGEX_SHA256" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
+</dd>
+</dl>
+<p>Pattern for <code class="docutils literal notranslate"><span class="pre">sha256</span></code> (<a class="reference internal" href="#compose.HASH_MODE_SHA256" title="compose.HASH_MODE_SHA256"><code class="xref py py-data docutils literal notranslate"><span class="pre">HASH_MODE_SHA256</span></code></a>).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.X509_REGEX">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">X509_REGEX</code><a class="headerlink" href="#compose.X509_REGEX" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
+</dd>
+</dl>
+<p>Pattern for <code class="docutils literal notranslate"><span class="pre">x509</span></code> (<a class="reference internal" href="#compose.X509_MODE" title="compose.X509_MODE"><code class="xref py py-data docutils literal notranslate"><span class="pre">X509_MODE</span></code></a>).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.ENTR_REGEX">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">ENTR_REGEX</code><a class="headerlink" href="#compose.ENTR_REGEX" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
+</dd>
+</dl>
+<p>Pattern for <code class="docutils literal notranslate"><span class="pre">entropy</span></code> (<a class="reference internal" href="#compose.ENTROPY_MODE" title="compose.ENTROPY_MODE"><code class="xref py py-data docutils literal notranslate"><span class="pre">ENTROPY_MODE</span></code></a>).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.JSON_REGEX">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">JSON_REGEX</code><a class="headerlink" href="#compose.JSON_REGEX" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
+</dd>
+</dl>
+<p>Pattern for <code class="docutils literal notranslate"><span class="pre">use_json</span></code> (<a class="reference internal" href="#compose.JSON_MODE" title="compose.JSON_MODE"><code class="xref py py-data docutils literal notranslate"><span class="pre">JSON_MODE</span></code></a>).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.SALT_REGEX">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">SALT_REGEX</code><a class="headerlink" href="#compose.SALT_REGEX" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
+</dd>
+</dl>
+<p>Pattern for <code class="docutils literal notranslate"><span class="pre">file_salt</span></code> (<code class="xref py py-func docutils literal notranslate"><span class="pre">file_salt()</span></code>).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.FILE_REGEX">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">FILE_REGEX</code><a class="headerlink" href="#compose.FILE_REGEX" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
+</dd>
+</dl>
+<p>Pattern for <code class="docutils literal notranslate"><span class="pre">file_buffer</span></code> (<code class="xref py py-data docutils literal notranslate"><span class="pre">FILE_BUFFER</span></code>).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.PATH_REGEX">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">PATH_REGEX</code><a class="headerlink" href="#compose.PATH_REGEX" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
+</dd>
+</dl>
+<p>Pattern for <code class="docutils literal notranslate"><span class="pre">path_prefix</span></code> (<a class="reference internal" href="#compose.DUMP_PATH" title="compose.DUMP_PATH"><code class="xref py py-data docutils literal notranslate"><span class="pre">DUMP_PATH</span></code></a>).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.SIZE_REGEX">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">SIZE_REGEX</code><a class="headerlink" href="#compose.SIZE_REGEX" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
+</dd>
+</dl>
+<p>Pattern for <code class="docutils literal notranslate"><span class="pre">size_limit</span></code> (<a class="reference internal" href="#compose.SIZE_LIMIT" title="compose.SIZE_LIMIT"><code class="xref py py-data docutils literal notranslate"><span class="pre">SIZE_LIMIT</span></code></a>).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.LOAD_REGEX">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">LOAD_REGEX</code><a class="headerlink" href="#compose.LOAD_REGEX" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
+</dd>
+</dl>
+<p>Pattern for <code class="docutils literal notranslate"><span class="pre">&#64;load</span></code> loading scripts.</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">BroAPT</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=JarryShaw&repo=broapt&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configurations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="framework.html">Internal Frameworks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="api.core.html">BroAPT-Core Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.html">BroAPT-App Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.html">BroAPT-Daemon Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.misc.html">Miscellaneous &amp; Auxiliary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#system-runtime">System Runtime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#developer-notes">Developer Notes</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="api.html">API Reference</a><ul>
+  <li><a href="api.core.html">BroAPT-Core Framework</a><ul>
+      <li>Previous: <a href="api.core.python.__main__.html" title="previous chapter">System Entrypoint</a></li>
+      <li>Next: <a href="api.core.python.const.html" title="next chapter">Common Constants</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Jarry Shaw.
+      
+      |
+      <a href="_sources/api.core.python.compose.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/JarryShaw/broapt" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

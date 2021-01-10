@@ -1,0 +1,649 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flask Application &#8212; BroAPT 2020.03.14 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Detection Process" href="api.daemon.python.process.html" />
+    <link rel="prev" title="Common Constants" href="api.daemon.python.const.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="flask-application">
+<h1><a class="reference external" href="https://flask.palletsprojects.coms">Flask</a> Application<a class="headerlink" href="#flask-application" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">File location</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p>Bundled implementation: <code class="docutils literal notranslate"><span class="pre">source/server/python/daemon.py</span></code></p></li>
+<li><p>Cluster implementation: <code class="docutils literal notranslate"><span class="pre">cluster/daemon/python/daemon.py</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<div class="section" id="url-routing">
+<h2>URL Routing<a class="headerlink" href="#url-routing" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="daemon.root">
+<code class="sig-prename descclassname">daemon.</code><code class="sig-name descname">root</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#daemon.root" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Route</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">/api</span></code></p>
+</dd>
+<dt class="field-even">Methods</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">GET</span></code></p>
+</dd>
+</dl>
+<p>Display help message <a class="reference internal" href="#daemon.__help__" title="daemon.__help__"><code class="xref py py-data docutils literal notranslate"><span class="pre">__help__</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="daemon.help_">
+<code class="sig-prename descclassname">daemon.</code><code class="sig-name descname">help_</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#daemon.help_" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Route</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">/api/v1.0</span></code></p>
+</dd>
+<dt class="field-even">Methods</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">GET</span></code></p>
+</dd>
+</dl>
+<p>Display help message <a class="reference internal" href="#daemon.HELP_v1_0" title="daemon.HELP_v1_0"><code class="xref py py-data docutils literal notranslate"><span class="pre">HELP_v1_0</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="daemon.list_">
+<code class="sig-prename descclassname">daemon.</code><code class="sig-name descname">list_</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#daemon.list_" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Route</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">/api/v1.0/list</span></code></p>
+</dd>
+<dt class="field-even">Methods</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">GET</span></code></p>
+</dd>
+</dl>
+<p>List of detection process information.</p>
+<ol class="arabic simple" start="0">
+<li><p>Information of running processes from <a class="reference internal" href="#daemon.RUNNING" title="daemon.RUNNING"><code class="xref py py-data docutils literal notranslate"><span class="pre">RUNNING</span></code></a>:</p></li>
+</ol>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+  &quot;id&quot;: &quot;...&quot;,
+  &quot;initied&quot;: null,
+  &quot;scanned&quot;: true,
+  &quot;reported: null,
+  &quot;deleted&quot;: false
+}
+</pre></div>
+</div>
+<ol class="arabic">
+<li><p>Information of finished processes from <a class="reference internal" href="#daemon.SCANNED" title="daemon.SCANNED"><code class="xref py py-data docutils literal notranslate"><span class="pre">SCANNED</span></code></a>:</p>
+<ul>
+<li><p>If the process exited on success:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+  &quot;id&quot;: &quot;...&quot;,
+  &quot;initied&quot;: null,
+  &quot;scanned&quot;: true,
+  &quot;reported: true,
+  &quot;deleted&quot;: false
+}
+</pre></div>
+</div>
+</li>
+<li><p>If the process exited on failure:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+  &quot;id&quot;: &quot;...&quot;,
+  &quot;initied&quot;: null,
+  &quot;scanned&quot;: true,
+  &quot;reported: false,
+  &quot;deleted&quot;: false
+}
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ol>
+</dd></dl>
+
+<dl class="py function">
+<dt id="get_none">
+<code class="sig-name descname">get_none</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#get_none" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Route</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">/api/v1.0/report</span></code></p>
+</dd>
+<dt class="field-even">Methods</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">GET</span></code></p>
+</dd>
+</dl>
+<p>Display help message:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ID Required: /api/v1.0/report/&lt;id&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id_</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#get" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Route</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">/api/v1.0/report/&lt;id&gt;</span></code></p>
+</dd>
+<dt class="field-even">Methods</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">GET</span></code></p>
+</dd>
+</dl>
+<p>Fetch detection status of <code class="docutils literal notranslate"><span class="pre">id_</span></code>.</p>
+<ol class="arabic" start="0">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">id_</span></code> in <a class="reference internal" href="#daemon.RUNNING" title="daemon.RUNNING"><code class="xref py py-data docutils literal notranslate"><span class="pre">RUNNING</span></code></a>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+  &quot;id&quot;: &quot;...&quot;,
+  &quot;initied&quot;: null,
+  &quot;scanned&quot;: false,
+  &quot;reported: null,
+  &quot;deleted&quot;: false
+}
+</pre></div>
+</div>
+</li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">id_</span></code> in <a class="reference internal" href="#daemon.SCANNED" title="daemon.SCANNED"><code class="xref py py-data docutils literal notranslate"><span class="pre">SCANNED</span></code></a>:</p>
+<ul>
+<li><p>If the process exited on success:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+  &quot;id&quot;: &quot;...&quot;,
+  &quot;initied&quot;: null,
+  &quot;scanned&quot;: true,
+  &quot;reported: true,
+  &quot;deleted&quot;: false
+}
+</pre></div>
+</div>
+</li>
+<li><p>If the process exited on failure:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+  &quot;id&quot;: &quot;...&quot;,
+  &quot;initied&quot;: null,
+  &quot;scanned&quot;: true,
+  &quot;reported: false,
+  &quot;deleted&quot;: false
+}
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">id_</span></code> not found, raises <code class="docutils literal notranslate"><span class="pre">404</span> <span class="pre">Not</span> <span class="pre">Found</span></code> with <a class="reference internal" href="#daemon.id_not_found" title="daemon.id_not_found"><code class="xref py py-func docutils literal notranslate"><span class="pre">id_not_found()</span></code></a>.</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py function">
+<dt id="daemon.scan">
+<code class="sig-prename descclassname">daemon.</code><code class="sig-name descname">scan</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#daemon.scan" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Route</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">/api/v1.0/scan</span></code></p>
+</dd>
+<dt class="field-even">Methods</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">POST</span></code></p>
+</dd>
+</dl>
+<p>Perform <em>remote</em> detection on target file.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">POST</span></code> data should be a JSON object with following fields:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>string</em>) – path to the extracted file</p></li>
+<li><p><strong>mime</strong> (<em>string</em>) – MIME type</p></li>
+<li><p><strong>uuid</strong> (<em>string</em>) – unique identifier</p></li>
+<li><p><strong>report</strong> (<em>string | string</em><em>[</em><em>]</em>) – report generation commands</p></li>
+<li><p><strong>shared</strong> (<em>string</em>) – shared detection API identifier</p></li>
+<li><p><strong>inited</strong> (<em>boolean</em>) – API initialised</p></li>
+<li><p><strong>workdir</strong> (<em>string</em>) – working directory</p></li>
+<li><p><strong>environ</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – environment variables</p></li>
+<li><p><strong>install</strong> (<em>string | string</em><em>[</em><em>]</em>) – initialisation commands</p></li>
+<li><p><strong>scripts</strong> (<em>string | string</em><em>[</em><em>]</em>) – detection commands</p></li>
+</ul>
+</dd>
+</dl>
+<p>If <strong>NO</strong> JSON data provided, raises <code class="docutils literal notranslate"><span class="pre">400</span> <span class="pre">Bad</span> <span class="pre">Request</span></code> with <a class="reference internal" href="#daemon.invalid_info" title="daemon.invalid_info"><code class="xref py py-func docutils literal notranslate"><span class="pre">invalid_info()</span></code></a>.</p>
+<p>After performing detection <a class="reference internal" href="api.daemon.python.process.html#process.process" title="process.process"><code class="xref py py-func docutils literal notranslate"><span class="pre">process.process()</span></code></a> on the target file,
+returns a JSON object containing detection report:</p>
+<ol class="arabic" start="0">
+<li><p>If detection exits on success:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+  &quot;id&quot;: &quot;...&quot;,
+  &quot;initied&quot;: true,
+  &quot;scanned&quot;: true,
+  &quot;reported: true,
+  &quot;deleted&quot;: false
+}
+</pre></div>
+</div>
+</li>
+<li><p>If detection exists on failure:</p>
+<ul>
+<li><p>If detection fails when initialising:</p>
+<blockquote>
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+  &quot;id&quot;: &quot;...&quot;,
+  &quot;initied&quot;: false,
+  &quot;scanned&quot;: true,
+  &quot;reported: false,
+  &quot;deleted&quot;: false
+}
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>If detection fails when processing:</p>
+<blockquote>
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+  &quot;id&quot;: &quot;...&quot;,
+  &quot;initied&quot;: true,
+  &quot;scanned&quot;: true,
+  &quot;reported: false,
+  &quot;deleted&quot;: false
+}
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</li>
+</ol>
+</dd></dl>
+
+<dl class="py function">
+<dt id="delete_none">
+<code class="sig-name descname">delete_none</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#delete_none" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Route</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">/api/v1.0/delete</span></code></p>
+</dd>
+<dt class="field-even">Methods</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DELETE</span></code></p>
+</dd>
+</dl>
+<p>Display help message:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ID Required: /api/v1.0/delete/&lt;id&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="delete">
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id_</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#delete" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Route</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">/api/v1.0/delete/&lt;id&gt;</span></code></p>
+</dd>
+<dt class="field-even">Methods</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DELETE</span></code></p>
+</dd>
+</dl>
+<p>Delete detection status of <code class="docutils literal notranslate"><span class="pre">id_</span></code>.</p>
+<ol class="arabic" start="0">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">id_</span></code> in <a class="reference internal" href="#daemon.RUNNING" title="daemon.RUNNING"><code class="xref py py-data docutils literal notranslate"><span class="pre">RUNNING</span></code></a>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+  &quot;id&quot;: &quot;...&quot;,
+  &quot;initied&quot;: null,
+  &quot;scanned&quot;: false,
+  &quot;reported: null,
+  &quot;deleted&quot;: true
+}
+</pre></div>
+</div>
+</li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">id_</span></code> in <a class="reference internal" href="#daemon.SCANNED" title="daemon.SCANNED"><code class="xref py py-data docutils literal notranslate"><span class="pre">SCANNED</span></code></a>:</p>
+<ul>
+<li><p>If the process exited on success:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+  &quot;id&quot;: &quot;...&quot;,
+  &quot;initied&quot;: null,
+  &quot;scanned&quot;: true,
+  &quot;reported: true,
+  &quot;deleted&quot;: true
+}
+</pre></div>
+</div>
+</li>
+<li><p>If the process exited on failure:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+  &quot;id&quot;: &quot;...&quot;,
+  &quot;initied&quot;: null,
+  &quot;scanned&quot;: true,
+  &quot;reported: false,
+  &quot;deleted&quot;: true
+}
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">id_</span></code> not found:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+  &quot;id&quot;: &quot;...&quot;,
+  &quot;initied&quot;: null,
+  &quot;scanned&quot;: null,
+  &quot;reported: null,
+  &quot;deleted&quot;: true
+}
+</pre></div>
+</div>
+</li>
+</ol>
+</dd></dl>
+
+</div>
+<div class="section" id="error-handlers">
+<h2>Error Handlers<a class="headerlink" href="#error-handlers" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="daemon.invalid_id">
+<code class="sig-prename descclassname">daemon.</code><code class="sig-name descname">invalid_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">error</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.9)">Exception</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#daemon.invalid_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler of <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+  <span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;invalid ID format&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="daemon.invalid_info">
+<code class="sig-prename descclassname">daemon.</code><code class="sig-name descname">invalid_info</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">error</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.9)">Exception</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#daemon.invalid_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler of <code class="docutils literal notranslate"><span class="pre">400</span> <span class="pre">Bad</span> <span class="pre">Request</span></code> and <code class="docutils literal notranslate"><span class="pre">KeyError</span></code>.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+  <span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;invalid info format&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="daemon.id_not_found">
+<code class="sig-prename descclassname">daemon.</code><code class="sig-name descname">id_not_found</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">error</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.9)">Exception</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#daemon.id_not_found" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler of <code class="docutils literal notranslate"><span class="pre">404</span> <span class="pre">Not</span> <span class="pre">Found</span></code>.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+  <span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;ID not found&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="dataclasses">
+<h2>Dataclasses<a class="headerlink" href="#dataclasses" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="daemon.INFO">
+<em class="property">class </em><code class="sig-prename descclassname">daemon.</code><code class="sig-name descname">INFO</code><a class="headerlink" href="#daemon.INFO" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference external" href="https://www.python.org/dev/peps/pep-0557">dataclass</a> for requested detection API information.</p>
+<dl class="py attribute">
+<dt id="daemon.INFO.name">
+<code class="sig-name descname">name</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><a class="headerlink" href="#daemon.INFO.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to the extracted file.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="daemon.INFO.uuid">
+<code class="sig-name descname">uuid</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><a class="headerlink" href="#daemon.INFO.uuid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unique identifier of current process.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="daemon.INFO.mime">
+<code class="sig-name descname">mime</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><a class="headerlink" href="#daemon.INFO.mime" title="Permalink to this definition">¶</a></dt>
+<dd><p>MIME type.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="daemon.INFO.report">
+<code class="sig-name descname">report</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><a class="headerlink" href="#daemon.INFO.report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Report generation command.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="daemon.INFO.inited">
+<code class="sig-name descname">inited</code><em class="property">: manager.Value</em><a class="headerlink" href="#daemon.INFO.inited" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initied flag.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="daemon.INFO.locked">
+<code class="sig-name descname">locked</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Lock" title="(in Python v3.9)">multiprocessing.Lock</a></em><a class="headerlink" href="#daemon.INFO.locked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiprocessing runtime lock.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="daemon.INFO.workdir">
+<code class="sig-name descname">workdir</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><a class="headerlink" href="#daemon.INFO.workdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>API working directory.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="daemon.INFO.environ">
+<code class="sig-name descname">environ</code><em class="property">: Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span>Any<span class="p">]</span></em><a class="headerlink" href="#daemon.INFO.environ" title="Permalink to this definition">¶</a></dt>
+<dd><p>API runtime environment variables.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="daemon.INFO.install">
+<code class="sig-name descname">install</code><em class="property">: List<span class="p">[</span>Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span>List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span><span class="p">]</span><span class="p">]</span></em><a class="headerlink" href="#daemon.INFO.install" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of installation commands.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="daemon.INFO.scripts">
+<code class="sig-name descname">scripts</code><em class="property">: List<span class="p">[</span>Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span>List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span><span class="p">]</span><span class="p">]</span></em><a class="headerlink" href="#daemon.INFO.scripts" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of detection commands.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="constants">
+<h2>Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h2>
+<dl class="py data">
+<dt id="daemon.app">
+<code class="sig-prename descclassname">daemon.</code><code class="sig-name descname">app</code><em class="property"> = flask.Flask(__name__)</em><a class="headerlink" href="#daemon.app" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://flask.palletsprojects.coms">Flask</a> application.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="daemon.HELP_v1_0">
+<code class="sig-prename descclassname">daemon.</code><code class="sig-name descname">HELP_v1_0</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><a class="headerlink" href="#daemon.HELP_v1_0" title="Permalink to this definition">¶</a></dt>
+<dd><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>BroAPT Daemon APIv1.0 Usage:
+
+- GET    /api/v1.0/list
+- GET    /api/v1.0/report/&lt;id&gt;
+- POST   /api/v1.0/scan data={&quot;key&quot;: &quot;value&quot;}
+- DELETE /api/v1.0/delete/&lt;id&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py data">
+<dt id="daemon.__help__">
+<code class="sig-prename descclassname">daemon.</code><code class="sig-name descname">__help__</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><a class="headerlink" href="#daemon.__help__" title="Permalink to this definition">¶</a></dt>
+<dd><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>BroAPT Daemon API Usage:
+
+# v1.0
+
+- GET    /api/v1.0/list
+- GET    /api/v1.0/report/&lt;id&gt;
+- POST   /api/v1.0/scan data={&quot;key&quot;: &quot;value&quot;}
+- DELETE /api/v1.0/delete/&lt;id&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py data">
+<dt id="daemon.manager">
+<code class="sig-prename descclassname">daemon.</code><code class="sig-name descname">manager</code><em class="property"> = multiprocessing.Manager()</em><a class="headerlink" href="#daemon.manager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiprocessing manager instanace.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="daemon.RUNNING">
+<code class="sig-prename descclassname">daemon.</code><code class="sig-name descname">RUNNING</code><em class="property"> = manager.list()</em><a class="headerlink" href="#daemon.RUNNING" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">List[uuid.UUID]</span></code></p>
+</dd>
+</dl>
+<p>List of running detection processes.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="daemon.SCANNED">
+<code class="sig-prename descclassname">daemon.</code><code class="sig-name descname">SCANNED</code><em class="property"> = manager.dict()</em><a class="headerlink" href="#daemon.SCANNED" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">Dict[uuid.UUID,</span> <span class="pre">bool]</span></code></p>
+</dd>
+</dl>
+<p>Record of finished detection processes and exit on success.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="daemon.APILOCK">
+<code class="sig-prename descclassname">daemon.</code><code class="sig-name descname">APILOCK</code><em class="property"> = manager.dict()</em><a class="headerlink" href="#daemon.APILOCK" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">Dict[str,</span> <span class="pre">multiprocessing.Lock]</span></code></p>
+</dd>
+</dl>
+<p>Record of API multiprocessing locks.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="daemon.APIINIT">
+<code class="sig-prename descclassname">daemon.</code><code class="sig-name descname">APIINIT</code><em class="property"> = manager.dict()</em><a class="headerlink" href="#daemon.APIINIT" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">Dict[str,</span> <span class="pre">multiprocessing.Value]</span></code></p>
+</dd>
+</dl>
+<p>Record of API initialised flags.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">BroAPT</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=JarryShaw&repo=broapt&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configurations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="framework.html">Internal Frameworks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.core.html">BroAPT-Core Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.html">BroAPT-App Framework</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="api.daemon.html">BroAPT-Daemon Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.misc.html">Miscellaneous &amp; Auxiliary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#system-runtime">System Runtime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#developer-notes">Developer Notes</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="api.html">API Reference</a><ul>
+  <li><a href="api.daemon.html">BroAPT-Daemon Server</a><ul>
+      <li>Previous: <a href="api.daemon.python.const.html" title="previous chapter">Common Constants</a></li>
+      <li>Next: <a href="api.daemon.python.process.html" title="next chapter">Detection Process</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Jarry Shaw.
+      
+      |
+      <a href="_sources/api.daemon.python.daemon.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/JarryShaw/broapt" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

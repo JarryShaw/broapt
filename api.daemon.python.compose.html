@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Docker Watchdog &#8212; BroAPT 2020.03.14 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Common Constants" href="api.daemon.python.const.html" />
+    <link rel="prev" title="Command Line Interface" href="api.daemon.python.cli.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="docker-watchdog">
+<h1>Docker Watchdog<a class="headerlink" href="#docker-watchdog" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">File location</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p>Bundled implementation: <code class="docutils literal notranslate"><span class="pre">source/server/python/compose.py</span></code></p></li>
+<li><p>Cluster implementation: <code class="docutils literal notranslate"><span class="pre">cluster/daemon/python/compose.py</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<p>This module provides a handy way to always keep the underlying
+BroAPT system in Docker containers running.</p>
+<dl class="py function">
+<dt id="compose.docker_compose">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">docker_compose</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compose.docker_compose" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference external" href="https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager">context</a> to manager Docker containers. This function will start
+<a class="reference internal" href="#compose.watch_container" title="compose.watch_container"><code class="xref py py-func docutils literal notranslate"><span class="pre">watch_container()</span></code></a> as a background process.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When start, the function will start the Docker containers through
+<a class="reference internal" href="#compose.start_container" title="compose.start_container"><code class="xref py py-func docutils literal notranslate"><span class="pre">start_container()</span></code></a>.</p>
+<p>Before exit, the function will toggle the value of
+<a class="reference internal" href="#compose.UP_FLAG" title="compose.UP_FLAG"><code class="xref py py-data docutils literal notranslate"><span class="pre">UP_FLAG</span></code></a> to <code class="docutils literal notranslate"><span class="pre">False</span></code> and wait for the process
+to exit. And gracefully stop the Docker containers through
+<a class="reference internal" href="#compose.stop_container" title="compose.stop_container"><code class="xref py py-func docutils literal notranslate"><span class="pre">stop_container()</span></code></a>.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="compose.watch_container">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">watch_container</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compose.watch_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Supervise the status of Docker containers while the system is running,
+i.e. <a class="reference internal" href="#compose.UP_FLAG" title="compose.UP_FLAG"><code class="xref py py-data docutils literal notranslate"><span class="pre">UP_FLAG</span></code></a> is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#compose.ComposeWarning" title="compose.ComposeWarning"><strong>ComposeWarning</strong></a> – If fail to poll status of Docker containers.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="compose.start_container">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">start_container</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compose.start_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start Docker container using Docker Compose in <em>detached</em> mode.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="compose.stop_container">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">stop_container</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compose.stop_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop Docker container gracefully using Docker Compose, and clean up
+Docker caches.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="compose.flask_exit">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">flask_exit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">signum</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>signal.Signals<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">frame</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>types.FrameType<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#compose.flask_exit" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://flask.palletsprojects.com">Flask</a> exit signal handler. This function is registered as handler
+for <a class="reference internal" href="api.daemon.python.const.html#const.KILL_SIGNAL" title="const.KILL_SIGNAL"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.KILL_SIGNAL</span></code></a> through <a class="reference internal" href="#compose.register" title="compose.register"><code class="xref py py-func docutils literal notranslate"><span class="pre">register()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="compose.register">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">register</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compose.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register <a class="reference internal" href="#compose.flask_exit" title="compose.flask_exit"><code class="xref py py-func docutils literal notranslate"><span class="pre">flask_exit()</span></code></a> as signal handler of
+<a class="reference internal" href="api.daemon.python.const.html#const.KILL_SIGNAL" title="const.KILL_SIGNAL"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.KILL_SIGNAL</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="compose.UP_FLAG">
+<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">UP_FLAG</code><em class="property"> = multiprocessing.Value('B', True)</em><a class="headerlink" href="#compose.UP_FLAG" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the BroAPT system is actively running.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="compose.ComposeWarning">
+<em class="property">exception </em><code class="sig-prename descclassname">compose.</code><code class="sig-name descname">ComposeWarning</code><a class="headerlink" href="#compose.ComposeWarning" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Bases</dt>
+<dd class="field-odd"><p>Warning</p>
+</dd>
+</dl>
+<p>Warn if fail to poll status of Docker containers.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">BroAPT</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=JarryShaw&repo=broapt&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configurations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="framework.html">Internal Frameworks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.core.html">BroAPT-Core Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.html">BroAPT-App Framework</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="api.daemon.html">BroAPT-Daemon Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.misc.html">Miscellaneous &amp; Auxiliary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#system-runtime">System Runtime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#developer-notes">Developer Notes</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="api.html">API Reference</a><ul>
+  <li><a href="api.daemon.html">BroAPT-Daemon Server</a><ul>
+      <li>Previous: <a href="api.daemon.python.cli.html" title="previous chapter">Command Line Interface</a></li>
+      <li>Next: <a href="api.daemon.python.const.html" title="next chapter">Common Constants</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Jarry Shaw.
+      
+      |
+      <a href="_sources/api.daemon.python.compose.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/JarryShaw/broapt" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,372 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Reference &#8212; BroAPT 2020.03.14 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="BroAPT-Core Framework" href="api.core.html" />
+    <link rel="prev" title="BroAPT-App Detection Framework" href="broapt-app.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<p>As discussed previously, the BroAPT system has two different implementation
+architectures. They are similar in overall concepts and processing, but may
+various in underlying internal source codes. We’ll try to break down into
+details of each implementation for you to develop new extensions, hooks,
+scripts for the BroAPT system in <em>humans</em> way.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.core.html">BroAPT-Core Framework</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.core.html#bro-scripts">Bro Scripts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.core.bro.__load__.html">Module Entry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.bro.config.html">Configurations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.bro.file-extensions.html">MIME-Extension Mappings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.bro.main.html"><code class="docutils literal notranslate"><span class="pre">FileExtraction</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.bro.hooks.html">Extract by Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.bro.plugins.html">Extract by MIME Type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.bro.sites.html">Site Customisations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.html#python-modules">Python Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.__init__.html">Module Entry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.__main__.html">System Entrypoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.compose.html">Bro Script Composer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.const.html">Common Constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html">Bro Log Parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.process.html">Extraction Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.remote.html">Bro Logs Processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.utils.html">Auxiliaries &amp; Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.sites.html">Site Customisations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.html#wrapper-scripts">Wrapper Scripts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.core.html#bundled-implementation">Bundled Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.html#cluster-implementation">Cluster Implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.app.html">BroAPT-App Framework</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.app.html#python-modules">Python Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.__init__.html">Module Entry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.__main__.html">System Entrypoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.cfgparser.html">API Config Parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.const.html">Common Constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.process.html">Detection Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.remote.html">Remote Detection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.utils.html">Auxiliaries &amp; Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.html#api-configurations">API Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.html#wrapper-scripts">Wrapper Scripts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.app.html#bundled-implementation">Bundled Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.html#cluster-implementation">Cluster Implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.daemon.html">BroAPT-Daemon Server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.__init__.html">Module Entry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.__main__.html">System Entrypoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.cli.html">Command Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.compose.html">Docker Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.const.html">Common Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.daemon.html">Flask Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#url-routing">URL Routing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#error-handlers">Error Handlers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#dataclasses">Dataclasses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#constants">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.process.html">Detection Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.util.html">Auxiliaries &amp; Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.misc.html">Miscellaneous &amp; Auxiliary</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.misc.html#mime-extension-mappings">MIME-Extension Mappings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.misc.html#generate-mappings">Generate Mappings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.misc.html#fix-missing-mappings">Fix Missing Mappings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.misc.html#bro-script-composers">Bro Script Composers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.misc.html#http-method-registry">HTTP Method Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.misc.html#http-message-headers">HTTP Message Headers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.misc.html#ftp-commands-extensions">FTP Commands &amp; Extensions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="system-runtime">
+<h2>System Runtime<a class="headerlink" href="#system-runtime" title="Permalink to this headline">¶</a></h2>
+<p>The whole BroAPT folder in the Docker container (<strong>of bundled implementation</strong>)
+at runtime would be like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># project root
+/broapt/
+│   # entrypoint wrapper script
+├── init.sh
+│   # Python source codes
+├── python
+│   │   # setup PYTHONPATH
+│   ├── __init__.py
+│   │   # entry point
+│   ├── __main__.py
+│   │   # config parser
+│   ├── cfgparser.py
+│   │   # Bro script composer
+│   ├── compose.py
+│   │   # global constants
+│   ├── const.py
+│   │   # Bro log parser
+│   ├── logparser.py
+│   │   # BroAPT-Core logic
+│   ├── process.py
+│   │   # multiprocessing support
+│   ├── remote.py
+│   │   # BroAPT-App logic
+│   ├── scan.py
+│   │   # Python hooks
+│   ├── sites
+│   │   │   # register hooks
+│   │   ├── __init__.py
+│   │   └── ...
+│   │   # utility functions
+│   └── utils.py
+│   # Bro source scripts
+└── scripts
+    │   # load FileExtraction module
+    ├── __load__.bro
+    │   # configurations
+    ├── config.bro
+    │   # MIME-extension mappings
+    ├── file-extensions.bro
+    │   # protocol hooks
+    ├── hooks/
+    │   │   # extract DTLS
+    │   ├── extract-dtls.bro
+    │   │   # extract FTP_DATA
+    │   ├── extract-ftp.bro
+    │   │   # extract HTTP
+    │   ├── extract-http.bro
+    │   │   # extract IRC_DATA
+    │   ├── extract-irc.bro
+    │   │   # extract SMTP
+    │   └── extract-smtp.bro
+    │   # core logic
+    ├── main.bro
+    │   # MIME hooks
+    │── plugins/
+    │   │   # extract all files
+    │   ├── extract-all-files.bro
+    │   │   # extract by BRO_MIME
+    │   ├── extract-white-list.bro
+    │   │   # generated scripts by BRO_MIME
+    │   └── ...
+    │   # site functions by user
+    └── sites/
+        │   # load site functions
+        ├── __load__.bro
+        └── ...
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">/broapt/python/sites</span></code> is the path for custom Python hooks and
+<code class="docutils literal notranslate"><span class="pre">/broapt/scripts/sites/</span></code> is the path for custom Bro scripts.</p>
+<p>And most importantly, the very entrypoint for the whole BroAPT system
+is as following:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
+
+<span class="nb">set</span> -aex
+
+<span class="c1"># change curdir</span>
+<span class="nb">cd</span> /broapt
+
+<span class="c1"># load environs</span>
+<span class="k">if</span> <span class="o">[</span> -f .env <span class="o">]</span> <span class="p">;</span> <span class="k">then</span>
+    <span class="nb">source</span> .env
+<span class="k">fi</span>
+
+<span class="c1"># compose Bro scripts</span>
+/usr/bin/python3.6 python/compose.py
+
+<span class="c1"># run scripts</span>
+/usr/bin/python3.6 python <span class="nv">$@</span>
+
+<span class="c1"># sleep</span>
+sleep infinity
+</pre></div>
+</div>
+<ol class="arabic simple" start="0">
+<li><p>The script will first change the current working directory to the root
+path <code class="docutils literal notranslate"><span class="pre">/broapt/</span></code>.</p></li>
+<li><p>If there is a <code class="docutils literal notranslate"><span class="pre">.env</span></code> <em>dotenv</em> file for environment variables configuration,
+it will be loaded and saved into current runtime scope (<code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">-a</span></code>).</p></li>
+<li><p>Generate Bro scripts based on environment variables.</p></li>
+<li><p>Start the main application, i.e. BroAPT-Core and BroAPT-App frameworks.</p></li>
+</ol>
+</div>
+<div class="section" id="developer-notes">
+<h2>Developer Notes<a class="headerlink" href="#developer-notes" title="Permalink to this headline">¶</a></h2>
+<p>Since the BroAPT system was not intended for packaging and distribution,
+we didn’t provide a <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> to wrap everything as a <code class="docutils literal notranslate"><span class="pre">broapt</span></code> module.
+However, in a quite <em>hacky</em> way, we injected the <code class="docutils literal notranslate"><span class="pre">sys.path</span></code> import path,
+so that we can directly import the files as if they’re at top levels.</p>
+<p>As you can see in the <code class="docutils literal notranslate"><span class="pre">/broapt/python/sites/__init__.py</span></code>, i.e. the
+<em>module</em> entry of Python hooks is as following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># pylint: disable=all</span>
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># site customisation</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="hll"><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)))</span>
+</span><span class="hll"><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))))</span>
+</span><span class="c1">###############################################################################</span>
+
+<span class="kn">from</span> <span class="nn">extracted_files</span> <span class="kn">import</span> <span class="n">generate_log</span> <span class="k">as</span> <span class="n">info_log</span>
+<span class="kn">from</span> <span class="nn">http_parser</span> <span class="kn">import</span> <span class="n">generate</span> <span class="k">as</span> <span class="n">http_log</span><span class="p">,</span> <span class="n">close</span> <span class="k">as</span> <span class="n">http_log_exit</span>
+
+<span class="c1"># log analysis hook list</span>
+<span class="n">HOOK</span> <span class="o">=</span> <span class="p">[</span>
+   <span class="n">http_log</span><span class="p">,</span>
+   <span class="n">info_log</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># exit hooks</span>
+<span class="n">EXIT</span> <span class="o">=</span> <span class="p">[</span>
+   <span class="n">http_log_exit</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">extracted_files</span></code> refers to <code class="docutils literal notranslate"><span class="pre">/broapt/python/sites/extracted_files.py</span></code>
+and <code class="docutils literal notranslate"><span class="pre">http_parser</span></code> refers to <code class="docutils literal notranslate"><span class="pre">/broapt/python/sites/http_parser.py</span></code>.</p>
+<p>You may have noticed the lines in <em>site customisation</em> modified the <code class="docutils literal notranslate"><span class="pre">sys.path</span></code>
+import path so that we don’t need to worry about importing stuff from the BroAPT
+Python source codes.</p>
+<p>If you wish to use auxiliary functions and module constants from the main
+application, then you can still import them as if from the top level:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># path to logs from module constants</span>
+<span class="kn">from</span> <span class="nn">const</span> <span class="kn">import</span> <span class="n">LOGS_PATH</span>
+<span class="c1"># Bro log parsing utilities</span>
+<span class="kn">from</span> <span class="nn">logparser</span> <span class="kn">import</span> <span class="n">parse</span>
+<span class="c1"># auxiliary functions for BroAPT</span>
+<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">is_nan</span><span class="p">,</span> <span class="n">print_file</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">BroAPT</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=JarryShaw&repo=broapt&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configurations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="framework.html">Internal Frameworks</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.core.html">BroAPT-Core Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.html">BroAPT-App Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.html">BroAPT-Daemon Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.misc.html">Miscellaneous &amp; Auxiliary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#system-runtime">System Runtime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#developer-notes">Developer Notes</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="broapt-app.html" title="previous chapter">BroAPT-App Detection Framework</a></li>
+      <li>Next: <a href="api.core.html" title="next chapter">BroAPT-Core Framework</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Jarry Shaw.
+      
+      |
+      <a href="_sources/api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/JarryShaw/broapt" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
