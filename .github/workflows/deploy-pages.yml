@@ -27,7 +27,7 @@ jobs:
           pipenv run make -C docs/sphinx html
 
           # disable Jekyll
-          touch docs/build/html/.nojekyll
+          touch docs/sphinx/build/html/.nojekyll
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@3.7.1
