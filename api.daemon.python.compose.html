@@ -46,7 +46,7 @@
 BroAPT system in Docker containers running.</p>
 <dl class="py function">
 <dt id="compose.docker_compose">
-<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">docker_compose</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compose.docker_compose" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">compose.</span></code><code class="sig-name descname"><span class="pre">docker_compose</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compose.docker_compose" title="Permalink to this definition">¶</a></dt>
 <dd><p>A <a class="reference external" href="https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager">context</a> to manager Docker containers. This function will start
 <a class="reference internal" href="#compose.watch_container" title="compose.watch_container"><code class="xref py py-func docutils literal notranslate"><span class="pre">watch_container()</span></code></a> as a background process.</p>
 <div class="admonition note">
@@ -62,7 +62,7 @@ to exit. And gracefully stop the Docker containers through
 
 <dl class="py function">
 <dt id="compose.watch_container">
-<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">watch_container</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compose.watch_container" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">compose.</span></code><code class="sig-name descname"><span class="pre">watch_container</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compose.watch_container" title="Permalink to this definition">¶</a></dt>
 <dd><p>Supervise the status of Docker containers while the system is running,
 i.e. <a class="reference internal" href="#compose.UP_FLAG" title="compose.UP_FLAG"><code class="xref py py-data docutils literal notranslate"><span class="pre">UP_FLAG</span></code></a> is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 <dl class="field-list simple">
@@ -74,40 +74,40 @@ i.e. <a class="reference internal" href="#compose.UP_FLAG" title="compose.UP_FLA
 
 <dl class="py function">
 <dt id="compose.start_container">
-<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">start_container</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compose.start_container" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">compose.</span></code><code class="sig-name descname"><span class="pre">start_container</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compose.start_container" title="Permalink to this definition">¶</a></dt>
 <dd><p>Start Docker container using Docker Compose in <em>detached</em> mode.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="compose.stop_container">
-<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">stop_container</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compose.stop_container" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">compose.</span></code><code class="sig-name descname"><span class="pre">stop_container</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compose.stop_container" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stop Docker container gracefully using Docker Compose, and clean up
 Docker caches.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="compose.flask_exit">
-<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">flask_exit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">signum</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>signal.Signals<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">frame</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>types.FrameType<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#compose.flask_exit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">compose.</span></code><code class="sig-name descname"><span class="pre">flask_exit</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signum</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">signal.Signals</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">types.FrameType</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#compose.flask_exit" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://flask.palletsprojects.com">Flask</a> exit signal handler. This function is registered as handler
 for <a class="reference internal" href="api.daemon.python.const.html#const.KILL_SIGNAL" title="const.KILL_SIGNAL"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.KILL_SIGNAL</span></code></a> through <a class="reference internal" href="#compose.register" title="compose.register"><code class="xref py py-func docutils literal notranslate"><span class="pre">register()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="compose.register">
-<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">register</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compose.register" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">compose.</span></code><code class="sig-name descname"><span class="pre">register</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compose.register" title="Permalink to this definition">¶</a></dt>
 <dd><p>Register <a class="reference internal" href="#compose.flask_exit" title="compose.flask_exit"><code class="xref py py-func docutils literal notranslate"><span class="pre">flask_exit()</span></code></a> as signal handler of
 <a class="reference internal" href="api.daemon.python.const.html#const.KILL_SIGNAL" title="const.KILL_SIGNAL"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.KILL_SIGNAL</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt id="compose.UP_FLAG">
-<code class="sig-prename descclassname">compose.</code><code class="sig-name descname">UP_FLAG</code><em class="property"> = multiprocessing.Value('B', True)</em><a class="headerlink" href="#compose.UP_FLAG" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">compose.</span></code><code class="sig-name descname"><span class="pre">UP_FLAG</span></code><em class="property"> <span class="pre">=</span> <span class="pre">multiprocessing.Value('B',</span> <span class="pre">True)</span></em><a class="headerlink" href="#compose.UP_FLAG" title="Permalink to this definition">¶</a></dt>
 <dd><p>If the BroAPT system is actively running.</p>
 </dd></dl>
 
 <dl class="py exception">
 <dt id="compose.ComposeWarning">
-<em class="property">exception </em><code class="sig-prename descclassname">compose.</code><code class="sig-name descname">ComposeWarning</code><a class="headerlink" href="#compose.ComposeWarning" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">compose.</span></code><code class="sig-name descname"><span class="pre">ComposeWarning</span></code><a class="headerlink" href="#compose.ComposeWarning" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Bases</dt>
 <dd class="field-odd"><p>Warning</p>

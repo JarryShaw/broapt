@@ -46,7 +46,7 @@
 <h2>Hook Mainloop<a class="headerlink" href="#hook-mainloop" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="remote.remote_proc">
-<code class="sig-prename descclassname">remote.</code><code class="sig-name descname">remote_proc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#remote.remote_proc" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">remote.</span></code><code class="sig-name descname"><span class="pre">remote_proc</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#remote.remote_proc" title="Permalink to this definition">¶</a></dt>
 <dd><p>A <a class="reference external" href="https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager">context</a> for running processes at the background.</p>
 <p>In <strong>bundled implementation</strong>, this function also starts both
 <a class="reference internal" href="api.app.python.__main__.html#remote.remote_dump" title="remote.remote_dump"><code class="xref py py-func docutils literal notranslate"><span class="pre">remote_dump()</span></code></a> and <a class="reference internal" href="#remote.remote_logs" title="remote.remote_logs"><code class="xref py py-func docutils literal notranslate"><span class="pre">remote_logs()</span></code></a> as new
@@ -67,7 +67,7 @@ process to gracefully exit.</p>
 
 <dl class="py function">
 <dt id="remote.remote_logs">
-<code class="sig-prename descclassname">remote.</code><code class="sig-name descname">remote_logs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#remote.remote_logs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">remote.</span></code><code class="sig-name descname"><span class="pre">remote_logs</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#remote.remote_logs" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Availability</dt>
 <dd class="field-odd"><p>bundled implementation</p>
@@ -89,7 +89,7 @@ break from the loop and execute registered Python hooks for <em>closing</em>
 
 <dl class="py function">
 <dt id="remote.remote">
-<code class="sig-prename descclassname">remote.</code><code class="sig-name descname">remote</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#remote.remote" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">remote.</span></code><code class="sig-name descname"><span class="pre">remote</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#remote.remote" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Availability</dt>
 <dd class="field-odd"><p>cluster implementation</p>
@@ -110,7 +110,7 @@ break from the loop and execute registered Python hooks for <em>closing</em>
 
 <dl class="py function">
 <dt id="hook">
-<code class="sig-name descname">hook</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">log_name</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hook" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">hook</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrapper function for running registered Python hooks.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -121,14 +121,14 @@ break from the loop and execute registered Python hooks for <em>closing</em>
 
 <dl class="py function">
 <dt id="wrapper_logs">
-<code class="sig-name descname">wrapper_logs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">args</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>Callable<span class="p">[</span><span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span><span class="p">, </span>Any<span class="p">]</span><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_logs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">wrapper_logs</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_logs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrapper function for running registered Python hooks for <em>processing</em>
 (<a class="reference internal" href="api.core.python.sites.html#sites.HOOK" title="sites.HOOK"><code class="xref py py-data docutils literal notranslate"><span class="pre">sites.HOOK</span></code></a>).</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="wrapper_func">
-<code class="sig-name descname">wrapper_func</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">]</span><span class="p">, </span>Any<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_func" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">wrapper_func</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wrapper_func" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrapper function for running registered Python hooks for <em>closing</em>
 (<a class="reference internal" href="api.core.python.sites.html#sites.EXIT" title="sites.EXIT"><code class="xref py py-data docutils literal notranslate"><span class="pre">sites.EXIT</span></code></a>).</p>
 </dd></dl>
@@ -138,7 +138,7 @@ break from the loop and execute registered Python hooks for <em>closing</em>
 <h2>Warnings<a class="headerlink" href="#warnings" title="Permalink to this headline">¶</a></h2>
 <dl class="py exception">
 <dt id="remote.HookWarning">
-<em class="property">exception </em><code class="sig-prename descclassname">remote.</code><code class="sig-name descname">HookWarning</code><a class="headerlink" href="#remote.HookWarning" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">remote.</span></code><code class="sig-name descname"><span class="pre">HookWarning</span></code><a class="headerlink" href="#remote.HookWarning" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Bases</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Warning" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Warning</span></code></a></p>
@@ -154,7 +154,7 @@ break from the loop and execute registered Python hooks for <em>closing</em>
 <h3>Bundled Implementation<a class="headerlink" href="#bundled-implementation" title="Permalink to this headline">¶</a></h3>
 <dl class="py function">
 <dt id="remote.join_logs">
-<code class="sig-prename descclassname">remote.</code><code class="sig-name descname">join_logs</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#remote.join_logs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">remote.</span></code><code class="sig-name descname"><span class="pre">join_logs</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#remote.join_logs" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Availability</dt>
 <dd class="field-odd"><p>bundled implementation</p>
@@ -169,7 +169,7 @@ break from the loop and execute registered Python hooks for <em>closing</em>
 
 <dl class="py data">
 <dt id="remote.JOIN_LOGS">
-<code class="sig-prename descclassname">remote.</code><code class="sig-name descname">JOIN_LOGS</code><em class="property"> = multiprocessing.Value('B', False)</em><a class="headerlink" href="#remote.JOIN_LOGS" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">remote.</span></code><code class="sig-name descname"><span class="pre">JOIN_LOGS</span></code><em class="property"> <span class="pre">=</span> <span class="pre">multiprocessing.Value('B',</span> <span class="pre">False)</span></em><a class="headerlink" href="#remote.JOIN_LOGS" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Availability</dt>
 <dd class="field-odd"><p>bundled implementation</p>
@@ -183,7 +183,7 @@ break from the loop and execute registered Python hooks for <em>closing</em>
 <h3>Cluster Implementation<a class="headerlink" href="#cluster-implementation" title="Permalink to this headline">¶</a></h3>
 <dl class="py function">
 <dt id="remote.join">
-<code class="sig-prename descclassname">remote.</code><code class="sig-name descname">join</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#remote.join" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">remote.</span></code><code class="sig-name descname"><span class="pre">join</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#remote.join" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Availability</dt>
 <dd class="field-odd"><p>cluster implementation</p>
@@ -198,7 +198,7 @@ break from the loop and execute registered Python hooks for <em>closing</em>
 
 <dl class="py data">
 <dt id="remote.JOIN">
-<code class="sig-prename descclassname">remote.</code><code class="sig-name descname">JOIN</code><em class="property"> = multiprocessing.Value('B', False)</em><a class="headerlink" href="#remote.JOIN" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">remote.</span></code><code class="sig-name descname"><span class="pre">JOIN</span></code><em class="property"> <span class="pre">=</span> <span class="pre">multiprocessing.Value('B',</span> <span class="pre">False)</span></em><a class="headerlink" href="#remote.JOIN" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Availability</dt>
 <dd class="field-odd"><p>cluster implementation</p>

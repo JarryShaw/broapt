@@ -51,41 +51,41 @@ Please use the <a class="reference external" href="https://zlogging.jarryshaw.me
 <h2>Dataclasses<a class="headerlink" href="#dataclasses" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="logparser.TEXTInfo">
-<em class="property">class </em><code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">TEXTInfo</code><a class="headerlink" href="#logparser.TEXTInfo" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">TEXTInfo</span></code><a class="headerlink" href="#logparser.TEXTInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>A <a class="reference external" href="https://www.python.org/dev/peps/pep-0557">dataclass</a> for parsed ASCII log file.</p>
 <dl class="py attribute">
 <dt id="logparser.TEXTInfo.format">
-<code class="sig-name descname">format</code><em class="property"> = 'text'</em><a class="headerlink" href="#logparser.TEXTInfo.format" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">format</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'text'</span></em><a class="headerlink" href="#logparser.TEXTInfo.format" title="Permalink to this definition">¶</a></dt>
 <dd><p>Log file format.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="logparser.TEXTInfo.path">
-<code class="sig-name descname">path</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><a class="headerlink" href="#logparser.TEXTInfo.path" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">path</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></em><a class="headerlink" href="#logparser.TEXTInfo.path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Path to log file.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="logparser.TEXTInfo.open">
-<code class="sig-name descname">open</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></em><a class="headerlink" href="#logparser.TEXTInfo.open" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">open</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><span class="pre">datetime.datetime</span></a></em><a class="headerlink" href="#logparser.TEXTInfo.open" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open time of log file.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="logparser.TEXTInfo.close">
-<code class="sig-name descname">close</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)">datetime.datetime</a></em><a class="headerlink" href="#logparser.TEXTInfo.close" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">close</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><span class="pre">datetime.datetime</span></a></em><a class="headerlink" href="#logparser.TEXTInfo.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close time of log file.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="logparser.TEXTInfo.context">
-<code class="sig-name descname">context</code><em class="property">: pandas.DataFrame</em><a class="headerlink" href="#logparser.TEXTInfo.context" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">context</span></code><em class="property"><span class="pre">:</span> <span class="pre">pandas.DataFrame</span></em><a class="headerlink" href="#logparser.TEXTInfo.context" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parsed log context.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="logparser.TEXTInfo.exit_with_error">
-<code class="sig-name descname">exit_with_error</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></em><a class="headerlink" href="#logparser.TEXTInfo.exit_with_error" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">exit_with_error</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></em><a class="headerlink" href="#logparser.TEXTInfo.exit_with_error" title="Permalink to this definition">¶</a></dt>
 <dd><p>If log file exited with error, i.e. close time <a class="reference internal" href="#logparser.TEXTInfo.close" title="logparser.TEXTInfo.close"><code class="xref py py-attr docutils literal notranslate"><span class="pre">close</span></code></a>
 doesn’t present in the log file.</p>
 </dd></dl>
@@ -94,17 +94,17 @@ doesn’t present in the log file.</p>
 
 <dl class="py class">
 <dt id="logparser.JSONInfo">
-<em class="property">class </em><code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">JSONInfo</code><a class="headerlink" href="#logparser.JSONInfo" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">JSONInfo</span></code><a class="headerlink" href="#logparser.JSONInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>A <a class="reference external" href="https://www.python.org/dev/peps/pep-0557">dataclass</a> for parsed JSON log file.</p>
 <dl class="py attribute">
 <dt id="logparser.JSONInfo.format">
-<code class="sig-name descname">format</code><em class="property"> = 'json'</em><a class="headerlink" href="#logparser.JSONInfo.format" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">format</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'json'</span></em><a class="headerlink" href="#logparser.JSONInfo.format" title="Permalink to this definition">¶</a></dt>
 <dd><p>Log file format.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="logparser.JSONInfo.context">
-<code class="sig-name descname">context</code><em class="property">: pandas.DataFrame</em><a class="headerlink" href="#logparser.JSONInfo.context" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">context</span></code><em class="property"><span class="pre">:</span> <span class="pre">pandas.DataFrame</span></em><a class="headerlink" href="#logparser.JSONInfo.context" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parsed log context.</p>
 </dd></dl>
 
@@ -115,19 +115,19 @@ doesn’t present in the log file.</p>
 <h2>Field Parsers<a class="headerlink" href="#field-parsers" title="Permalink to this headline">¶</a></h2>
 <dl class="py data">
 <dt id="logparser.set_separator">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">set_separator</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><a class="headerlink" href="#logparser.set_separator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">set_separator</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></em><a class="headerlink" href="#logparser.set_separator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Separator of <code class="docutils literal notranslate"><span class="pre">set</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">vector</span></code> values in ASCII logs.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt id="logparser.empty_field">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">empty_field</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><a class="headerlink" href="#logparser.empty_field" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">empty_field</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></em><a class="headerlink" href="#logparser.empty_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Separator of <em>empty</em> fields in ASCII logs.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt id="logparser.unset_field">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">unset_field</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></em><a class="headerlink" href="#logparser.unset_field" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">unset_field</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></em><a class="headerlink" href="#logparser.unset_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Separator of <em>unset</em> fields in ASCII logs.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -138,7 +138,7 @@ return <code class="docutils literal notranslate"><span class="pre">None</span><
 
 <dl class="py function">
 <dt id="logparser.set_parser">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">set_parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">t</span><span class="p">:</span> <span class="n">Type<span class="p">[</span>T<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.set_parser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">set_parser</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.set_parser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse <code class="docutils literal notranslate"><span class="pre">set</span></code> field.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -155,7 +155,7 @@ return <code class="docutils literal notranslate"><span class="pre">None</span><
 
 <dl class="py function">
 <dt id="logparser.vector_parser">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">vector_parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">t</span><span class="p">:</span> <span class="n">Type<span class="p">[</span>T<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.vector_parser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">vector_parser</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.vector_parser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse <code class="docutils literal notranslate"><span class="pre">vector</span></code> field.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -172,7 +172,7 @@ return <code class="docutils literal notranslate"><span class="pre">None</span><
 
 <dl class="py function">
 <dt id="logparser.str_parser">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">str_parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.str_parser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">str_parser</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.str_parser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse <code class="docutils literal notranslate"><span class="pre">string</span></code> field.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -191,7 +191,7 @@ encoding to decode the parsed string.</p>
 
 <dl class="py function">
 <dt id="logparser.port_parser">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">port_parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.port_parser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">port_parser</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.port_parser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse <code class="docutils literal notranslate"><span class="pre">port</span></code> field.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -205,7 +205,7 @@ encoding to decode the parsed string.</p>
 
 <dl class="py function">
 <dt id="logparser.int_parser">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">int_parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.int_parser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">int_parser</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.int_parser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse <code class="docutils literal notranslate"><span class="pre">int</span></code> field.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -219,7 +219,7 @@ encoding to decode the parsed string.</p>
 
 <dl class="py function">
 <dt id="logparser.count_parser">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">count_parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.count_parser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">count_parser</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.count_parser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse <code class="docutils literal notranslate"><span class="pre">count</span></code> field.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -233,7 +233,7 @@ encoding to decode the parsed string.</p>
 
 <dl class="py function">
 <dt id="logparser.addr_parser">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">addr_parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.addr_parser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">addr_parser</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.addr_parser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse <code class="docutils literal notranslate"><span class="pre">addr</span></code> field.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -247,7 +247,7 @@ encoding to decode the parsed string.</p>
 
 <dl class="py function">
 <dt id="logparser.subnet_parser">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">subnet_parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.subnet_parser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">subnet_parser</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.subnet_parser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse <code class="docutils literal notranslate"><span class="pre">subnet</span></code> field.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -261,7 +261,7 @@ encoding to decode the parsed string.</p>
 
 <dl class="py function">
 <dt id="logparser.time_parser">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">time_parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.time_parser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">time_parser</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.time_parser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse <code class="docutils literal notranslate"><span class="pre">time</span></code> field.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -275,7 +275,7 @@ encoding to decode the parsed string.</p>
 
 <dl class="py function">
 <dt id="logparser.float_parser">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">float_parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.float_parser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">float_parser</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.float_parser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse <code class="docutils literal notranslate"><span class="pre">float</span></code> field.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -289,7 +289,7 @@ encoding to decode the parsed string.</p>
 
 <dl class="py function">
 <dt id="logparser.interval_parser">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">interval_parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.interval_parser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">interval_parser</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.interval_parser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse <code class="docutils literal notranslate"><span class="pre">interval</span></code> field.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -303,7 +303,7 @@ encoding to decode the parsed string.</p>
 
 <dl class="py function">
 <dt id="logparser.enum_parser">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">enum_parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.enum_parser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">enum_parser</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.enum_parser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse <code class="docutils literal notranslate"><span class="pre">enum</span></code> field.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -317,7 +317,7 @@ encoding to decode the parsed string.</p>
 
 <dl class="py function">
 <dt id="logparser.bool_parser">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">bool_parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.bool_parser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">bool_parser</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.bool_parser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse <code class="docutils literal notranslate"><span class="pre">bool</span></code> field.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -336,19 +336,19 @@ encoding to decode the parsed string.</p>
 
 <dl class="py data">
 <dt id="logparser.type_parser">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">type_parser</code><em class="property"> = collections.defaultdict(lambda: str_parser, dict(
-    string=str_parser,
-    port=port_parser,
-    enum=enum_parser,
-    interval=interval_parser,
-    addr=addr_parser,
-    subnet=subnet_parser,
-    int=int_parser,
-    count=count_parser,
-    time=time_parser,
-    double=float_parser,
-    bool=bool_parser,
-))</em><a class="headerlink" href="#logparser.type_parser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">type_parser</span></code><em class="property"> <span class="pre">=</span> <span class="pre">collections.defaultdict(lambda:</span> <span class="pre">str_parser,</span> <span class="pre">dict(</span>
+&#160;&#160;&#160; <span class="pre">string=str_parser,</span>
+&#160;&#160;&#160; <span class="pre">port=port_parser,</span>
+&#160;&#160;&#160; <span class="pre">enum=enum_parser,</span>
+&#160;&#160;&#160; <span class="pre">interval=interval_parser,</span>
+&#160;&#160;&#160; <span class="pre">addr=addr_parser,</span>
+&#160;&#160;&#160; <span class="pre">subnet=subnet_parser,</span>
+&#160;&#160;&#160; <span class="pre">int=int_parser,</span>
+&#160;&#160;&#160; <span class="pre">count=count_parser,</span>
+&#160;&#160;&#160; <span class="pre">time=time_parser,</span>
+&#160;&#160;&#160; <span class="pre">double=float_parser,</span>
+&#160;&#160;&#160; <span class="pre">bool=bool_parser,</span>
+<span class="pre">))</span></em><a class="headerlink" href="#logparser.type_parser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mapping for Bro types and corresponding parser function.</p>
 </dd></dl>
 
@@ -357,7 +357,7 @@ encoding to decode the parsed string.</p>
 <h2>Log Parsers<a class="headerlink" href="#log-parsers" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="logparser.parse_text">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">parse_text</code><span class="sig-paren">(</span><em class="sig-param">file: io.TextIOWrapper, line: str, hook: Optional[Dict[str, Callable[[str], Any]]</em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.parse_text" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">parse_text</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">file:</span> <span class="pre">io.TextIOWrapper,</span> <span class="pre">line:</span> <span class="pre">str,</span> <span class="pre">hook:</span> <span class="pre">Optional[Dict[str,</span> <span class="pre">Callable[[str],</span> <span class="pre">Any]]</span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.parse_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse ASCII logs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -375,7 +375,7 @@ encoding to decode the parsed string.</p>
 
 <dl class="py function">
 <dt id="id0">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">parse_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/io.html#io.TextIOWrapper" title="(in Python v3.9)">io.TextIOWrapper</a></span></em>, <em class="sig-param"><span class="n">line</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">parse_text</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/io.html#io.TextIOWrapper" title="(in Python v3.9)"><span class="pre">io.TextIOWrapper</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">line</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse JSON logs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -392,7 +392,7 @@ encoding to decode the parsed string.</p>
 
 <dl class="py function">
 <dt id="logparser.parse">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param">filename: str, hook: Optional[Dict[str, Callable[[str], Any]]</em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.parse" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">parse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">filename:</span> <span class="pre">str,</span> <span class="pre">hook:</span> <span class="pre">Optional[Dict[str,</span> <span class="pre">Callable[[str],</span> <span class="pre">Any]]</span></em><span class="sig-paren">)</span><a class="headerlink" href="#logparser.parse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse Bro logs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -418,7 +418,7 @@ ASCII or JSON format.</p>
 <h2>Module Entry<a class="headerlink" href="#module-entry" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="logparser.main">
-<code class="sig-prename descclassname">logparser.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#logparser.main" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">logparser.</span></code><code class="sig-name descname"><span class="pre">main</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#logparser.main" title="Permalink to this definition">¶</a></dt>
 <dd><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python logparser.py <span class="o">[</span>filename ...<span class="o">]</span>
 </pre></div>
 </div>
