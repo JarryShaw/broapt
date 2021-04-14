@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BroAPT-App Detection Framework &#8212; BroAPT 2020.03.14 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
@@ -33,7 +32,7 @@
 
           <div class="body" role="main">
             
-  <section id="broapt-app-detection-framework">
+  <div class="section" id="broapt-app-detection-framework">
 <h1>BroAPT-App Detection Framework<a class="headerlink" href="#broapt-app-detection-framework" title="Permalink to this headline">¶</a></h1>
 <p>The BroAPT-App framework processes extracted files, perform malware detection
 upon those files with detection API configured through the configuration file.</p>
@@ -107,7 +106,7 @@ microframework. At the moment it supports following APIs:</p>
 </table>
 </li>
 </ol>
-<section id="mime-specific-api-configuration">
+<div class="section" id="mime-specific-api-configuration">
 <h2>MIME Specific API Configuration<a class="headerlink" href="#mime-specific-api-configuration" title="Permalink to this headline">¶</a></h2>
 <p>In the BroAPT-App framework, we used an API configuration file to provide the BroAPT
 system with MIME specific detection mechanism. The configuration file is written in
@@ -273,11 +272,11 @@ apt-get clean
 </li>
 <li><p>Once finished, execute report generation script <code class="docutils literal notranslate"><span class="pre">/usr/bin/python</span> <span class="pre">report.py</span></code>.</p></li>
 </ol>
-</section>
-<section id="integrated-detection-services">
+</div>
+<div class="section" id="integrated-detection-services">
 <h2>Integrated Detection Services<a class="headerlink" href="#integrated-detection-services" title="Permalink to this headline">¶</a></h2>
 <p>At the moment, the BroAPT system had integrated six detection solusions.</p>
-<section id="default-detection-powered-by-virustotal">
+<div class="section" id="default-detection-powered-by-virustotal">
 <h3>Default Detection powered by VirusTotal<a class="headerlink" href="#default-detection-powered-by-virustotal" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://www.virustotal.com">VirusTotal</a> aggregates many antivirus products and online scan engines to check
 for viruses that the user’s own antivirus may have missed, or to verify against
@@ -299,8 +298,8 @@ mechanism in case of missing configuration. The configuration is as below:</p>
   <span class="nt">report</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${PYTHON36} virustotal.py</span>
 </pre></div>
 </div>
-</section>
-<section id="android-apk-detection-powered-by-andropytool">
+</div>
+<div class="section" id="android-apk-detection-powered-by-andropytool">
 <h3>Android APK Detection powered by AndroPyTool<a class="headerlink" href="#android-apk-detection-powered-by-andropytool" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://github.com/alexMyG/AndroPyTool">AndroPyTool</a> is a tool for extracting static and dynamic features from Android
 APKs. It combines different well-known Android apps analysis tools such as DroidBox,
@@ -327,8 +326,8 @@ we directly used its official Docker image for detection. Therefore, the AndroPy
 is called through <em>remote</em> detection mechanism, i.e. BroApt-Daemon server performs
 detection using AndroPyTool Docker image on APK files then send the report back to
 BroAPT-App framework for records.</p>
-</section>
-<section id="office-document-detection-powered-by-maliciousmacrobot">
+</div>
+<div class="section" id="office-document-detection-powered-by-maliciousmacrobot">
 <h3>Office Document Detection powered by MaliciousMacroBot<a class="headerlink" href="#office-document-detection-powered-by-maliciousmacrobot" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://github.com/egaus/MaliciousMacroBot">MaliciousMacroBot</a> is to provide a powerful malicious file triage tool for cyber
 responders; help fill existing detection gaps for malicious office documents, which
@@ -366,8 +365,8 @@ has a <code class="docutils literal notranslate"><span class="pre">*</span></cod
 <p>As the MaliciousMacroBot detection method is shared by multiple MIME types, we
 set the <code class="docutils literal notranslate"><span class="pre">shared</span></code> key in the API to an identifier for the detection method, so
 that at runtime, such detection method will be <em>process-safe</em>.</p>
-</section>
-<section id="linux-elf-detection-powered-by-elf-parser">
+</div>
+<div class="section" id="linux-elf-detection-powered-by-elf-parser">
 <h3>Linux ELF Detection powered by ELF Parser<a class="headerlink" href="#linux-elf-detection-powered-by-elf-parser" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="http://elfparser.com">ELF Parser</a> is designed for static ELF analysis. It can quickly determine the
 capabilities of an ELF binary through static analysis, then discover if the binary
@@ -387,8 +386,8 @@ only. The configuration is as below:</p>
     <span class="nt">report</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${SHELL} detect.sh</span>
 </pre></div>
 </div>
-</section>
-<section id="common-linux-malware-detection-powered-by-lmd">
+</div>
+<div class="section" id="common-linux-malware-detection-powered-by-lmd">
 <h3>Common Linux Malware Detection powered by LMD<a class="headerlink" href="#common-linux-malware-detection-powered-by-lmd" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://www.rfxn.com/projects/linux-malware-detect">Linux Malware Detect</a> (LMD) is a malware scanner for Linux, that is designed around
 the threats faced in shared hosted environments. It uses threat data from network edge
@@ -418,8 +417,8 @@ easily exported to any number of detection tools such as ClamAV.</p>
   <span class="nt">x-php</span><span class="p">:</span> <span class="nv">*lmd</span>
 </pre></div>
 </div>
-</section>
-<section id="malicious-javascript-detection-powered-by-jast">
+</div>
+<div class="section" id="malicious-javascript-detection-powered-by-jast">
 <h3>Malicious JavaScript Detection powered by JaSt<a class="headerlink" href="#malicious-javascript-detection-powered-by-jast" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://github.com/Aurore54F/JaSt">JaSt</a> is a low-overhead solution that combines the extraction of features from
 the abstract syntax tree with a random forest classifier to detect malicious JavaScript
@@ -460,9 +459,9 @@ of 0.54%.</p>
   <span class="nt">javascript</span><span class="p">:</span> <span class="nv">*javascript</span>
 </pre></div>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
           </div>

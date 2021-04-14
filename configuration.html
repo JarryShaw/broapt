@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Configurations &#8212; BroAPT 2020.03.14 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
@@ -33,15 +32,15 @@
 
           <div class="body" role="main">
             
-  <section id="configurations">
+  <div class="section" id="configurations">
 <h1>Configurations<a class="headerlink" href="#configurations" title="Permalink to this headline">¶</a></h1>
 <p>As discussed in previous sections, the BroAPT system is configurable
 in various ways. You can configure the outer system from the entry CLI
 of BroAPT-Daemon server, and the main framework through Docker Compose
 environment variables.</p>
-<section id="broapt-daemon-server">
+<div class="section" id="broapt-daemon-server">
 <h2>BroAPT-Daemon Server<a class="headerlink" href="#broapt-daemon-server" title="Permalink to this headline">¶</a></h2>
-<section id="command-line-interface">
+<div class="section" id="command-line-interface">
 <h3>Command Line Interface<a class="headerlink" href="#command-line-interface" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>usage: broaptd [-h] [-v] [-e ENV] [-s SIGNAL] [-t HOST] [-p PORT]
                [-f DOCKER_COMPOSE] [-d DUMP_PATH] [-l LOGS_PATH] [-r API_ROOT]
@@ -83,8 +82,8 @@ runtime arguments:
                         command retry
 </pre></div>
 </div>
-</section>
-<section id="environment-variables">
+</div>
+<div class="section" id="environment-variables">
 <h3>Environment Variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h3>
 <p>As suggests in the <code class="docutils literal notranslate"><span class="pre">--env</span></code> option, you may provice a <em>dotenv</em> (<code class="docutils literal notranslate"><span class="pre">.env</span></code>) file
 for the BroAPT-Daemon server to configure itself.</p>
@@ -289,9 +288,9 @@ the following mapping table (<strong>case-insensitive</strong>):</p>
 </tbody>
 </table>
 </div>
-</section>
-</section>
-<section id="broapt-core-framework">
+</div>
+</div>
+<div class="section" id="broapt-core-framework">
 <h2>BroAPT-Core Framework<a class="headerlink" href="#broapt-core-framework" title="Permalink to this headline">¶</a></h2>
 <p>The BroAPT-Core framework only supports configuration through environment variables.</p>
 <dl class="std envvar">
@@ -605,8 +604,8 @@ can be any of <code class="docutils literal notranslate"><span class="pre">dtls<
 <p>Number of BroAPT concurrent processes for Python hooks.</p>
 </dd></dl>
 
-</section>
-<section id="broapt-app-framework">
+</div>
+<div class="section" id="broapt-app-framework">
 <h2>BroAPT-App Framework<a class="headerlink" href="#broapt-app-framework" title="Permalink to this headline">¶</a></h2>
 <p>The BroAPT-App framework only supports configuration through environment variables.</p>
 <dl class="std envvar">
@@ -751,8 +750,8 @@ number of system CPUs will be used.</p>
 <p>Port number of BroAPT-Daemon server.</p>
 </dd></dl>
 
-</section>
-</section>
+</div>
+</div>
 
 
           </div>
