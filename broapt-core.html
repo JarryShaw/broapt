@@ -4,11 +4,12 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>BroAPT-Core Extration Framework &#8212; BroAPT 2020.03.14 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -32,7 +33,7 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="broapt-core-extration-framework">
+  <section id="broapt-core-extration-framework">
 <h1>BroAPT-Core Extration Framework<a class="headerlink" href="#broapt-core-extration-framework" title="Permalink to this headline">¶</a></h1>
 <p>The BroAPT-Core framework processes PCAP files, extracts files transferred
 through traffic contained in the PCAP files, and perform analysis to the log
@@ -60,7 +61,7 @@ will also be performed as defined in the Python hooks.</p>
 <p>The result of analysis will be elevated as BroAPT logs.</p>
 </li>
 </ol>
-<div class="section" id="custom-bro-scripts">
+<section id="custom-bro-scripts">
 <h2>Custom Bro Scripts<a class="headerlink" href="#custom-bro-scripts" title="Permalink to this headline">¶</a></h2>
 <p>In the BroAPT system, you can customise your own Bro script. The BroAPT-Core
 framework will load those scripts when running Bro IDS to process PCAP files.</p>
@@ -121,19 +122,19 @@ the Bro scripts defined by user. You may include your scripts into the
 BroAPT-Core framework by loading (<code class="docutils literal notranslate"><span class="pre">&#64;load</span></code>) them in the
 <code class="docutils literal notranslate"><span class="pre">/broapt/scripts/sites/__load__.bro</span></code> file.</p>
 <p>At the moment, we have six sets of Bro scripts included in the distribution.</p>
-<div class="section" id="common-constants">
+<section id="common-constants">
 <h3>Common Constants<a class="headerlink" href="#common-constants" title="Permalink to this headline">¶</a></h3>
 <p>In the BroAPT system, it predefines many constants of common protocols and
 systems, such as FTP commands, HTTP methods, etc. We used crawlers to fetch
 relevant data from the IANA registry, generate and/or update Bro constants,
 such as <code class="docutils literal notranslate"><span class="pre">HTTP::header_names</span></code> for HTTP headers fields.</p>
-</div>
-<div class="section" id="http-cookies">
+</section>
+<section id="http-cookies">
 <h3>HTTP Cookies<a class="headerlink" href="#http-cookies" title="Permalink to this headline">¶</a></h3>
 <p>The script utilised <a class="reference external" href="https://docs.zeek.org/en/current/scripts/base/bif/plugins/Zeek_HTTP.events.bif.zeek.html#id-http_header"><code class="docutils literal notranslate"><span class="pre">http_header</span></code></a> event, and extends the builtin <code class="docutils literal notranslate"><span class="pre">http.log</span></code>
 record object <a class="reference external" href="https://docs.zeek.org/en/current/scripts/base/protocols/http/main.zeek.html#type-HTTP::Info"><code class="docutils literal notranslate"><span class="pre">HTTP::Info</span></code></a> with data from the <code class="docutils literal notranslate"><span class="pre">COOKIE</span></code> header.</p>
-</div>
-<div class="section" id="unknown-http-headers">
+</section>
+<section id="unknown-http-headers">
 <h3>Unknown HTTP Headers<a class="headerlink" href="#unknown-http-headers" title="Permalink to this headline">¶</a></h3>
 <p>As defined in <span class="target" id="index-2"></span><a class="rfc reference external" href="https://tools.ietf.org/html/rfc2616.html"><strong>RFC 2616</strong></a> and <span class="target" id="index-3"></span><a class="rfc reference external" href="https://tools.ietf.org/html/rfc7230.html"><strong>RFC 7230</strong></a>, and registered in IANA, there’re a
 list of known HTTP headers. However, customised headers may be introduced when
@@ -141,41 +142,41 @@ implementation. Such unknown headers may contain significant information about
 the HTTP traffic. Therefore, the script utilised <a class="reference external" href="https://docs.zeek.org/en/current/scripts/base/bif/plugins/Zeek_HTTP.events.bif.zeek.html#id-http_header"><code class="docutils literal notranslate"><span class="pre">http_header</span></code></a> event and
 search for unknown headers, i.e. not included in <code class="docutils literal notranslate"><span class="pre">HTTP::header_names</span></code>, then
 record them in the <code class="docutils literal notranslate"><span class="pre">http.log</span></code> files.</p>
-</div>
-<div class="section" id="http-post-data">
+</section>
+<section id="http-post-data">
 <h3>HTTP <code class="docutils literal notranslate"><span class="pre">POST</span></code> Data<a class="headerlink" href="#http-post-data" title="Permalink to this headline">¶</a></h3>
 <p>As <span class="target" id="index-4"></span><a class="rfc reference external" href="https://tools.ietf.org/html/rfc2616.html"><strong>RFC 2616</strong></a> suggests, we can utilise the data sent from <code class="docutils literal notranslate"><span class="pre">POST</span></code> command
 to analyse information about outbound traffic. The script utilised
 <a class="reference external" href="https://docs.zeek.org/en/current/scripts/base/bif/plugins/Zeek_HTTP.events.bif.zeek.html#id-http_entity_data"><code class="docutils literal notranslate"><span class="pre">http_entity_data</span></code></a> event, and save the <code class="docutils literal notranslate"><span class="pre">POST</span></code> data to <code class="docutils literal notranslate"><span class="pre">http.log</span></code> files.</p>
-</div>
-<div class="section" id="calculate-hash-values">
+</section>
+<section id="calculate-hash-values">
 <h3>Calculate Hash Values<a class="headerlink" href="#calculate-hash-values" title="Permalink to this headline">¶</a></h3>
 <p>Hash value of files can be used to detect malware. The script utilised
 <a class="reference external" href="https://docs.zeek.org/en/current/scripts/base/bif/event.bif.zeek.html#id-file_new"><code class="docutils literal notranslate"><span class="pre">file_new</span></code></a> event, calculated and saved the hash values of files transferred
 in the <code class="docutils literal notranslate"><span class="pre">files.log</span></code> file.</p>
-</div>
-<div class="section" id="smtp-phishing-detect">
+</section>
+<section id="smtp-phishing-detect">
 <h3>SMTP Phishing Detect<a class="headerlink" href="#smtp-phishing-detect" title="Permalink to this headline">¶</a></h3>
 <p>Since files transferred through SMTP traffic are not easy to gather and detect
 phishing information. We introduced two Bro modules to perform such detection
 on the SMTP traffic.</p>
-<div class="section" id="a-phishing-module">
+<section id="a-phishing-module">
 <h4>A. <a class="reference external" href="https://github.com/hosom/bro-phishing"><code class="docutils literal notranslate"><span class="pre">Phishing</span></code></a> Module<a class="headerlink" href="#a-phishing-module" title="Permalink to this headline">¶</a></h4>
 <p>The <a class="reference external" href="https://github.com/hosom/bro-phishing"><code class="docutils literal notranslate"><span class="pre">Phishing</span></code></a> module mainly provides mass scam emails; phishing email detection
 based on Levenshtein distance of sender address. It will elevate a
 <code class="docutils literal notranslate"><span class="pre">phishing_link.log</span></code> log file, containing such malicious connections and URLs.</p>
-</div>
-<div class="section" id="b-phish-module">
+</section>
+<section id="b-phish-module">
 <h4>B. <a class="reference external" href="https://github.com/initconf/smtp-url-analysis"><code class="docutils literal notranslate"><span class="pre">Phish</span></code></a> Module<a class="headerlink" href="#b-phish-module" title="Permalink to this headline">¶</a></h4>
 <p>Primary scope of these bro policies is to give more insights into smtp-analysis
 esp to track phishing events.</p>
 <p>This is a subset of phish-analysis repo and doesn’t use any backed <code class="docutils literal notranslate"><span class="pre">postgres</span></code>
 database. So relieves the user from <code class="docutils literal notranslate"><span class="pre">postgres</span></code> dependency while getting
 basic phishing detection up and running very quickly.</p>
-</div>
-</div>
-</div>
-<div class="section" id="custom-python-hooks">
+</section>
+</section>
+</section>
+<section id="custom-python-hooks">
 <h2>Custom Python Hooks<a class="headerlink" href="#custom-python-hooks" title="Permalink to this headline">¶</a></h2>
 <p>In the BroAPT system, you can customise your own Python hooks for cross-analysis
 to the log files. The BroAPT-Core framework will call such registered hooks on
@@ -236,7 +237,7 @@ the main process of the BroAPT-Core framework exits.</p>
 <p>The hook function will be called with <strong>NO</strong> argument.</p>
 </div>
 <p>At the moment, we have bundled two sets of Python hooks in the system.</p>
-<div class="section" id="extracted-file-information">
+<section id="extracted-file-information">
 <h3>Extracted File Information<a class="headerlink" href="#extracted-file-information" title="Permalink to this headline">¶</a></h3>
 <p>Through <code class="docutils literal notranslate"><span class="pre">conn.log</span></code> and <code class="docutils literal notranslate"><span class="pre">files.log</span></code>, the BroAPT system generates a new
 log file for information of extracted files, which includes the timestamp,
@@ -333,8 +334,8 @@ values, see below:</p>
     <span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="http-connection-information">
+</section>
+<section id="http-connection-information">
 <h3>HTTP Connection Information<a class="headerlink" href="#http-connection-information" title="Permalink to this headline">¶</a></h3>
 <p>Through analysis upon <code class="docutils literal notranslate"><span class="pre">http.log</span></code>, the BroAPT system elevated a new log file with
 more concentrated information about HTTP connections. Such log file contains all
@@ -415,9 +416,9 @@ annotations):</p>
     <span class="n">body</span><span class="p">:</span> <span class="n">bro_string</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
           </div>

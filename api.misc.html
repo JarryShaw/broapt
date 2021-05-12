@@ -4,11 +4,12 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Miscellaneous &amp; Auxiliary &#8212; BroAPT 2020.03.14 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -31,11 +32,11 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="miscellaneous-auxiliary">
+  <section id="miscellaneous-auxiliary">
 <h1>Miscellaneous &amp; Auxiliary<a class="headerlink" href="#miscellaneous-auxiliary" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="mime-extension-mappings">
+<section id="mime-extension-mappings">
 <h2>MIME-Extension Mappings<a class="headerlink" href="#mime-extension-mappings" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="generate-mappings">
+<section id="generate-mappings">
 <h3>Generate Mappings<a class="headerlink" href="#generate-mappings" title="Permalink to this headline">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">File location</dt>
@@ -50,8 +51,8 @@
 <p>This script support all version since Python 2.7.</p>
 </div>
 <dl class="std envvar">
-<dt id="envvar-BROAPT_FORCE_UPDATE">
-<code class="sig-name descname"><span class="pre">BROAPT_FORCE_UPDATE</span></code><a class="headerlink" href="#envvar-BROAPT_FORCE_UPDATE" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="envvar-BROAPT_FORCE_UPDATE">
+<span class="sig-name descname"><span class="pre">BROAPT_FORCE_UPDATE</span></span><a class="headerlink" href="#envvar-BROAPT_FORCE_UPDATE" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
@@ -70,8 +71,8 @@ dump the mappings to corresponding <code class="docutils literal notranslate"><s
 <a class="reference internal" href="api.core.bro.file-extensions.html"><span class="doc">documentation</span></a>.</p>
 <p>Should there be an unknown MIME type, it will prompt for user to type in the
 corresponding file extensions.</p>
-</div>
-<div class="section" id="fix-missing-mappings">
+</section>
+<section id="fix-missing-mappings">
 <h3>Fix Missing Mappings<a class="headerlink" href="#fix-missing-mappings" title="Permalink to this headline">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">File location</dt>
@@ -86,8 +87,8 @@ corresponding file extensions.</p>
 <p>This script support all version since Python 2.7.</p>
 </div>
 <dl class="std envvar">
-<dt id="envvar-BROAPT_LOGS_PATH">
-<code class="sig-name descname"><span class="pre">BROAPT_LOGS_PATH</span></code><a class="headerlink" href="#envvar-BROAPT_LOGS_PATH" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="envvar-BROAPT_LOGS_PATH">
+<span class="sig-name descname"><span class="pre">BROAPT_LOGS_PATH</span></span><a class="headerlink" href="#envvar-BROAPT_LOGS_PATH" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
@@ -104,11 +105,11 @@ corresponding file extensions.</p>
 a log file under the log path <a class="reference internal" href="api.daemon.python.const.html#const.LOGS_PATH" title="const.LOGS_PATH"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.LOGS_PATH</span></code></a>, named <code class="docutils literal notranslate"><span class="pre">processed_mime.log</span></code>.</p>
 <p>The script will read the log file and try to update the <code class="docutils literal notranslate"><span class="pre">file-extensions.bro</span></code>
 database with these found-missing MIME types.</p>
-</div>
-</div>
-<div class="section" id="bro-script-composers">
+</section>
+</section>
+<section id="bro-script-composers">
 <h2>Bro Script Composers<a class="headerlink" href="#bro-script-composers" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="http-method-registry">
+<section id="http-method-registry">
 <h3>HTTP Method Registry<a class="headerlink" href="#http-method-registry" title="Permalink to this headline">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">File location</dt>
@@ -123,8 +124,8 @@ database with these found-missing MIME types.</p>
 registry to the BroAPT system in Bro script <code class="docutils literal notranslate"><span class="pre">sites/const/http-methods.bro</span></code>.</p>
 <p>The script will read the <a class="reference external" href="https://www.iana.org/assignments/http-methods/http-methods.xhtml">IANA registries</a>
 and update the builtin <code class="docutils literal notranslate"><span class="pre">HTTP::http_methods</span></code> with the fetched data.</p>
-</div>
-<div class="section" id="http-message-headers">
+</section>
+<section id="http-message-headers">
 <h3>HTTP Message Headers<a class="headerlink" href="#http-message-headers" title="Permalink to this headline">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">File location</dt>
@@ -139,8 +140,8 @@ and update the builtin <code class="docutils literal notranslate"><span class="p
 header registry to the BroAPT system in Bro script <code class="docutils literal notranslate"><span class="pre">sites/const/http-header-names.bro</span></code>.</p>
 <p>The script will read the <a class="reference external" href="https://www.iana.org/assignments/message-headers/message-headers.xhtml">IANA registries</a>
 and update the builtin <code class="docutils literal notranslate"><span class="pre">HTTP::header_names</span></code> with the fetched data.</p>
-</div>
-<div class="section" id="ftp-commands-extensions">
+</section>
+<section id="ftp-commands-extensions">
 <h3>FTP Commands &amp; Extensions<a class="headerlink" href="#ftp-commands-extensions" title="Permalink to this headline">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">File location</dt>
@@ -155,9 +156,9 @@ and update the builtin <code class="docutils literal notranslate"><span class="p
 extensions registry to the BroAPT system in Bro script <code class="docutils literal notranslate"><span class="pre">sites/const/ftp-commands.bro</span></code>.</p>
 <p>The script will read the <a class="reference external" href="https://www.iana.org/assignments/ftp-commands-extensions/ftp-commands-extensions.xhtml">IANA registries</a>
 and update the builtin <code class="docutils literal notranslate"><span class="pre">FTP::logged_commands</span></code> with the fetched data.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
           </div>

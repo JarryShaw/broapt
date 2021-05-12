@@ -4,11 +4,12 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>System Entrypoint &#8212; BroAPT 2020.03.14 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -32,7 +33,7 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="system-entrypoint">
+  <section id="system-entrypoint">
 <h1>System Entrypoint<a class="headerlink" href="#system-entrypoint" title="Permalink to this headline">¶</a></h1>
 <dl class="field-list simple">
 <dt class="field-odd">File location</dt>
@@ -45,8 +46,8 @@
 <p>This file wraps the whole system and make the <code class="docutils literal notranslate"><span class="pre">python</span></code> folder callable
 as a module where the <code class="docutils literal notranslate"><span class="pre">__main__.py</span></code> will be considered as the entrypoint.</p>
 <dl class="py data">
-<dt id="main__.PCAP_MGC">
-<span id="__main__.PCAP_MGC"></span><code class="sig-prename descclassname"><span class="pre">__main__.</span></code><code class="sig-name descname"><span class="pre">PCAP_MGC</span></code><em class="property"> <span class="pre">=</span> <span class="pre">(b'\xa1\xb2\x3c\x4d',</span>
+<dt class="sig sig-object py" id="main__.PCAP_MGC">
+<span id="__main__.PCAP_MGC"></span><span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">PCAP_MGC</span></span><em class="property"> <span class="pre">=</span> <span class="pre">(b'\xa1\xb2\x3c\x4d',</span>
 <span class="pre">b'\xa1\xb2\xc3\xd4',</span>
 <span class="pre">b'\x4d\x3c\xb2\xa1',</span>
 <span class="pre">b'\xd4\xc3\xb2\xa1',</span>
@@ -62,8 +63,8 @@ as a module where the <code class="docutils literal notranslate"><span class="pr
 </dd></dl>
 
 <dl class="py function">
-<dt id="main__.is_pcap">
-<span id="__main__.is_pcap"></span><code class="sig-prename descclassname"><span class="pre">__main__.</span></code><code class="sig-name descname"><span class="pre">is_pcap</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main__.is_pcap" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="main__.is_pcap">
+<span id="__main__.is_pcap"></span><span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">is_pcap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main__.is_pcap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if <code class="docutils literal notranslate"><span class="pre">file</span></code> is a valid PCAP file with help of <a class="reference external" href="https://pypi.org/project/python-libmagic"><code class="docutils literal notranslate"><span class="pre">libmagic</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -79,8 +80,8 @@ as a module where the <code class="docutils literal notranslate"><span class="pr
 </dd></dl>
 
 <dl class="py function">
-<dt id="main__.listdir">
-<span id="__main__.listdir"></span><code class="sig-prename descclassname"><span class="pre">__main__.</span></code><code class="sig-name descname"><span class="pre">listdir</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main__.listdir" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="main__.listdir">
+<span id="__main__.listdir"></span><span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">listdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main__.listdir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch all files under <code class="docutils literal notranslate"><span class="pre">path</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -93,8 +94,8 @@ as a module where the <code class="docutils literal notranslate"><span class="pr
 </dd></dl>
 
 <dl class="py function">
-<dt id="main__.parse_args">
-<span id="__main__.parse_args"></span><code class="sig-prename descclassname"><span class="pre">__main__.</span></code><code class="sig-name descname"><span class="pre">parse_args</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main__.parse_args" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="main__.parse_args">
+<span id="__main__.parse_args"></span><span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">parse_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main__.parse_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse command line arguments (path to PCAP files) and fetch valid
 PCAP files.</p>
 <div class="admonition note">
@@ -116,8 +117,8 @@ PCAP files.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="main__.check_history">
-<span id="__main__.check_history"></span><code class="sig-prename descclassname"><span class="pre">__main__.</span></code><code class="sig-name descname"><span class="pre">check_history</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main__.check_history" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="main__.check_history">
+<span id="__main__.check_history"></span><span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">check_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main__.check_history" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check processed PCAP files.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -134,8 +135,8 @@ PCAP files.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="main__.main_with_args">
-<span id="__main__.main_with_args"></span><code class="sig-prename descclassname"><span class="pre">__main__.</span></code><code class="sig-name descname"><span class="pre">main_with_args</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main__.main_with_args" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="main__.main_with_args">
+<span id="__main__.main_with_args"></span><span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">main_with_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main__.main_with_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the BroAPT system <strong>with</strong> command line arguments.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -153,8 +154,8 @@ given by the command line arguments are processed.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="main__.main_with_no_args">
-<span id="__main__.main_with_no_args"></span><code class="sig-prename descclassname"><span class="pre">__main__.</span></code><code class="sig-name descname"><span class="pre">main_with_no_args</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main__.main_with_no_args" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="main__.main_with_no_args">
+<span id="__main__.main_with_no_args"></span><span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">main_with_no_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main__.main_with_no_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the BroAPT system <strong>without</strong> command line arguments.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -164,8 +165,8 @@ indefinitely.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="main__.main">
-<span id="__main__.main"></span><code class="sig-prename descclassname"><span class="pre">__main__.</span></code><code class="sig-name descname"><span class="pre">main</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main__.main" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="main__.main">
+<span id="__main__.main"></span><span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main__.main" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the BroAPT-App framework under the context of <a class="reference internal" href="api.core.python.remote.html#remote.remote_proc" title="remote.remote_proc"><code class="xref py py-func docutils literal notranslate"><span class="pre">remote.remote_proc()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -184,7 +185,7 @@ indefinitely.</p>
 </div>
 </dd></dl>
 
-</div>
+</section>
 
 
           </div>

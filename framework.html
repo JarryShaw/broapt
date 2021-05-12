@@ -4,11 +4,12 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Internal Frameworks &#8212; BroAPT 2020.03.14 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -32,7 +33,7 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="internal-frameworks">
+  <section id="internal-frameworks">
 <h1>Internal Frameworks<a class="headerlink" href="#internal-frameworks" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
@@ -96,7 +97,7 @@ over the Bro log files as specified by the Python hooks.</p></li>
 detection as described in the request, and send the detection report
 back to the BroAPT-App framework.</p></li>
 </ol>
-<div class="section" id="implementation-details">
+<section id="implementation-details">
 <h2>Implementation Details<a class="headerlink" href="#implementation-details" title="Permalink to this headline">¶</a></h2>
 <p>In first draft design, the BroAPT system was implemented in a cluster manner,
 comparing to current bundled distribution, i.e. the BroAPT-Core framework and
@@ -109,7 +110,7 @@ talking about the BroAPT system internal implementation details.</p>
 </div>
 <p>Through internal module name may vary between two implementations, the main
 implementation source codes is, nevertheless, identical in both implementations.</p>
-<div class="section" id="cluster-implementation">
+<section id="cluster-implementation">
 <h3>Cluster Implementation<a class="headerlink" href="#cluster-implementation" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -121,8 +122,8 @@ only available through RPM binary; whilst the BroAPT-App framework is running
 is in an Ubuntu 16.04 container, with better compatibility for detection tools.</p>
 <p>The communication between two frameworks is archived through file system
 temporary listing files.</p>
-</div>
-<div class="section" id="bundled-implementation">
+</section>
+<section id="bundled-implementation">
 <h3>Bundled Implementation<a class="headerlink" href="#bundled-implementation" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -131,9 +132,9 @@ temporary listing files.</p>
 <p>In the bundled implementation, both the BroAPT-Core framework and the
 BroAPT-App framework are running in a CentOS 7 container.</p>
 <p>The communication between two frameworks is archived through <a class="reference external" href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Queue"><code class="docutils literal notranslate"><span class="pre">multiprocessing.Queue</span></code></a>.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
           </div>

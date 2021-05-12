@@ -4,11 +4,12 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>API Config Parser &#8212; BroAPT 2020.03.14 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -32,7 +33,7 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="api-config-parser">
+  <section id="api-config-parser">
 <h1>API Config Parser<a class="headerlink" href="#api-config-parser" title="Permalink to this headline">¶</a></h1>
 <dl class="field-list simple">
 <dt class="field-odd">File location</dt>
@@ -42,74 +43,74 @@
 </ul>
 </dd>
 </dl>
-<div class="section" id="dataclasses">
+<section id="dataclasses">
 <h2>Dataclasses<a class="headerlink" href="#dataclasses" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
-<dt id="cfgparser.API">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">cfgparser.</span></code><code class="sig-name descname"><span class="pre">API</span></code><a class="headerlink" href="#cfgparser.API" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cfgparser.API">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cfgparser.</span></span><span class="sig-name descname"><span class="pre">API</span></span><a class="headerlink" href="#cfgparser.API" title="Permalink to this definition">¶</a></dt>
 <dd><p>A <a class="reference external" href="https://www.python.org/dev/peps/pep-0557">dataclass</a> for parsed API entry.</p>
 <dl class="py attribute">
-<dt id="cfgparser.API.workdir">
-<code class="sig-name descname"><span class="pre">workdir</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></em><a class="headerlink" href="#cfgparser.API.workdir" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cfgparser.API.workdir">
+<span class="sig-name descname"><span class="pre">workdir</span></span><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></em><a class="headerlink" href="#cfgparser.API.workdir" title="Permalink to this definition">¶</a></dt>
 <dd><p>API working directory.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="cfgparser.API.environ">
-<code class="sig-name descname"><span class="pre">environ</span></code><em class="property"><span class="pre">:</span> <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#cfgparser.API.environ" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cfgparser.API.environ">
+<span class="sig-name descname"><span class="pre">environ</span></span><em class="property"><span class="pre">:</span> <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#cfgparser.API.environ" title="Permalink to this definition">¶</a></dt>
 <dd><p>API runtime environment variables.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="cfgparser.API.install">
-<code class="sig-name descname"><span class="pre">install</span></code><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#cfgparser.API.install" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cfgparser.API.install">
+<span class="sig-name descname"><span class="pre">install</span></span><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#cfgparser.API.install" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of installation commands.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="cfgparser.API.scripts">
-<code class="sig-name descname"><span class="pre">scripts</span></code><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#cfgparser.API.scripts" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cfgparser.API.scripts">
+<span class="sig-name descname"><span class="pre">scripts</span></span><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#cfgparser.API.scripts" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of detection commands.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="cfgparser.API.report">
-<code class="sig-name descname"><span class="pre">report</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></em><a class="headerlink" href="#cfgparser.API.report" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cfgparser.API.report">
+<span class="sig-name descname"><span class="pre">report</span></span><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></em><a class="headerlink" href="#cfgparser.API.report" title="Permalink to this definition">¶</a></dt>
 <dd><p>Report generation command.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="cfgparser.API.remote">
-<code class="sig-name descname"><span class="pre">remote</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></em><a class="headerlink" href="#cfgparser.API.remote" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cfgparser.API.remote">
+<span class="sig-name descname"><span class="pre">remote</span></span><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></em><a class="headerlink" href="#cfgparser.API.remote" title="Permalink to this definition">¶</a></dt>
 <dd><p>If the API required <em>remote</em> execution, i.e. through the BroAPT-Daemon server.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="cfgparser.API.shared">
-<code class="sig-name descname"><span class="pre">shared</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></em><a class="headerlink" href="#cfgparser.API.shared" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cfgparser.API.shared">
+<span class="sig-name descname"><span class="pre">shared</span></span><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></em><a class="headerlink" href="#cfgparser.API.shared" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sharing identifier, i.e. which MIME type the API entry is shared with.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="cfgparser.API.inited">
-<code class="sig-name descname"><span class="pre">inited</span></code><em class="property"> <span class="pre">=</span> <span class="pre">multiprocessing.Value('B',</span> <span class="pre">False)</span></em><a class="headerlink" href="#cfgparser.API.inited" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cfgparser.API.inited">
+<span class="sig-name descname"><span class="pre">inited</span></span><em class="property"> <span class="pre">=</span> <span class="pre">multiprocessing.Value('B',</span> <span class="pre">False)</span></em><a class="headerlink" href="#cfgparser.API.inited" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initied flag.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="cfgparser.API.locked">
-<code class="sig-name descname"><span class="pre">locked</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Lock" title="(in Python v3.9)"><span class="pre">multiprocessing.Lock</span></a></em><a class="headerlink" href="#cfgparser.API.locked" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cfgparser.API.locked">
+<span class="sig-name descname"><span class="pre">locked</span></span><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Lock" title="(in Python v3.9)"><span class="pre">multiprocessing.Lock</span></a></em><a class="headerlink" href="#cfgparser.API.locked" title="Permalink to this definition">¶</a></dt>
 <dd><p>Multiprocessing runtime lock.</p>
 </dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="functions">
+</section>
+<section id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
-<dt id="cfgparser.parse_cmd">
-<code class="sig-prename descclassname"><span class="pre">cfgparser.</span></code><code class="sig-name descname"><span class="pre">parse_cmd</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mimetype</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">environ</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cfgparser.parse_cmd" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cfgparser.parse_cmd">
+<span class="sig-prename descclassname"><span class="pre">cfgparser.</span></span><span class="sig-name descname"><span class="pre">parse_cmd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mimetype</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">environ</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cfgparser.parse_cmd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse API of <code class="docutils literal notranslate"><span class="pre">mimetype</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -126,8 +127,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="cfgparser.parse">
-<code class="sig-prename descclassname"><span class="pre">cfgparser.</span></code><code class="sig-name descname"><span class="pre">parse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cfgparser.parse" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cfgparser.parse">
+<span class="sig-prename descclassname"><span class="pre">cfgparser.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cfgparser.parse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse API configuration file <code class="docutils literal notranslate"><span class="pre">api.yml</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -142,12 +143,12 @@
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="constants">
+</section>
+<section id="constants">
 <h2>Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h2>
 <dl class="py data">
-<dt id="cfgparser.MEDIA_TYPE">
-<code class="sig-prename descclassname"><span class="pre">cfgparser.</span></code><code class="sig-name descname"><span class="pre">MEDIA_TYPE</span></code><em class="property"><span class="pre">:</span> <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#cfgparser.MEDIA_TYPE" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cfgparser.MEDIA_TYPE">
+<span class="sig-prename descclassname"><span class="pre">cfgparser.</span></span><span class="sig-name descname"><span class="pre">MEDIA_TYPE</span></span><em class="property"><span class="pre">:</span> <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#cfgparser.MEDIA_TYPE" title="Permalink to this definition">¶</a></dt>
 <dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;application&#39;</span><span class="p">,</span>
  <span class="s1">&#39;audio&#39;</span><span class="p">,</span>
  <span class="c1"># &#39;example&#39;,  ## preserved for default API</span>
@@ -164,29 +165,29 @@
 </dd></dl>
 
 <dl class="py data">
-<dt id="cfgparser.API_DICT">
-<code class="sig-prename descclassname"><span class="pre">cfgparser.</span></code><code class="sig-name descname"><span class="pre">API_DICT</span></code><em class="property"><span class="pre">:</span> <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">API</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#cfgparser.API_DICT" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cfgparser.API_DICT">
+<span class="sig-prename descclassname"><span class="pre">cfgparser.</span></span><span class="sig-name descname"><span class="pre">API_DICT</span></span><em class="property"><span class="pre">:</span> <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">API</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#cfgparser.API_DICT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Database for API entries.</p>
 </dd></dl>
 
 <dl class="py data">
-<dt id="cfgparser.API_LOCK">
-<code class="sig-prename descclassname"><span class="pre">cfgparser.</span></code><code class="sig-name descname"><span class="pre">API_LOCK</span></code><em class="property"><span class="pre">:</span> <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Lock" title="(in Python v3.9)"><span class="pre">multiprocessing.Lock</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#cfgparser.API_LOCK" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cfgparser.API_LOCK">
+<span class="sig-prename descclassname"><span class="pre">cfgparser.</span></span><span class="sig-name descname"><span class="pre">API_LOCK</span></span><em class="property"><span class="pre">:</span> <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Lock" title="(in Python v3.9)"><span class="pre">multiprocessing.Lock</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#cfgparser.API_LOCK" title="Permalink to this definition">¶</a></dt>
 <dd><p>Database for multiprocessing lock.</p>
 </dd></dl>
 
 <dl class="py data">
-<dt id="cfgparser.API_INIT">
-<code class="sig-prename descclassname"><span class="pre">cfgparser.</span></code><code class="sig-name descname"><span class="pre">API_INIT</span></code><em class="property"><span class="pre">:</span> <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">multiprocessing.Value</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#cfgparser.API_INIT" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cfgparser.API_INIT">
+<span class="sig-prename descclassname"><span class="pre">cfgparser.</span></span><span class="sig-name descname"><span class="pre">API_INIT</span></span><em class="property"><span class="pre">:</span> <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">multiprocessing.Value</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#cfgparser.API_INIT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Database for inited flags.</p>
 </dd></dl>
 
-</div>
-<div class="section" id="exceptions">
+</section>
+<section id="exceptions">
 <h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
 <dl class="py exception">
-<dt id="cfgparser.ConfigError">
-<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">cfgparser.</span></code><code class="sig-name descname"><span class="pre">ConfigError</span></code><a class="headerlink" href="#cfgparser.ConfigError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cfgparser.ConfigError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">cfgparser.</span></span><span class="sig-name descname"><span class="pre">ConfigError</span></span><a class="headerlink" href="#cfgparser.ConfigError" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Bases</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
@@ -196,8 +197,8 @@
 </dd></dl>
 
 <dl class="py exception">
-<dt id="cfgparser.DefaultNotFoundError">
-<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">cfgparser.</span></code><code class="sig-name descname"><span class="pre">DefaultNotFoundError</span></code><a class="headerlink" href="#cfgparser.DefaultNotFoundError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cfgparser.DefaultNotFoundError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">cfgparser.</span></span><span class="sig-name descname"><span class="pre">DefaultNotFoundError</span></span><a class="headerlink" href="#cfgparser.DefaultNotFoundError" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Bases</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#cfgparser.ConfigError" title="cfgparser.ConfigError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ConfigError</span></code></a></p>
@@ -207,8 +208,8 @@
 </dd></dl>
 
 <dl class="py exception">
-<dt id="cfgparser.ReportNotFoundError">
-<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">cfgparser.</span></code><code class="sig-name descname"><span class="pre">ReportNotFoundError</span></code><a class="headerlink" href="#cfgparser.ReportNotFoundError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cfgparser.ReportNotFoundError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">cfgparser.</span></span><span class="sig-name descname"><span class="pre">ReportNotFoundError</span></span><a class="headerlink" href="#cfgparser.ReportNotFoundError" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Bases</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#cfgparser.ConfigError" title="cfgparser.ConfigError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ConfigError</span></code></a></p>
@@ -217,8 +218,8 @@
 <p>The <code class="docutils literal notranslate"><span class="pre">report</span></code> section not found in API.</p>
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
