@@ -1,6 +1,6 @@
 # Python packages
 pip==21.2.4
-setuptools==58.0.4
+setuptools==58.1.0
 wheel==0.37.0
 
 # Python dependencies
@@ -16,4 +16,4 @@ pytz==2021.1
 PyYAML==5.4.1
 requests==2.26.0
 six==1.16.0
-urllib3==1.26.6
+urllib3==1.26.7
