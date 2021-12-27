@@ -205,7 +205,7 @@ above will be represented as:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">API</span><span class="p">(</span>
     <span class="n">workdir</span><span class="o">=</span><span class="s1">&#39;pdf_analysis&#39;</span><span class="p">,</span>
     <span class="n">environ</span><span class="o">=</span><span class="p">{</span>
-       <span class="s1">&#39;API_ROOT&#39;</span><span class="p">:</span> <span class="s1">&#39;${BROAPT_API_ROOT}&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;API_ROOT&#39;</span><span class="p">:</span> <span class="s1">&#39;$</span><span class="si">{BROAPT_API_ROOT}</span><span class="s1">&#39;</span><span class="p">,</span>
        <span class="s1">&#39;PYTHON36&#39;</span><span class="p">:</span> <span class="s1">&#39;/usr/bin/python3.6&#39;</span><span class="p">,</span>
        <span class="s1">&#39;PYTHON27&#39;</span><span class="p">:</span> <span class="s1">&#39;/usr/bin/python&#39;</span><span class="p">,</span>
        <span class="s1">&#39;SHELL&#39;</span><span class="p">:</span> <span class="s1">&#39;/bin/bash&#39;</span><span class="p">,</span>
@@ -215,17 +215,17 @@ above will be represented as:</p>
     <span class="n">install</span><span class="o">=</span><span class="p">[</span>
        <span class="s1">&#39;apt-get update&#39;</span><span class="p">,</span>
        <span class="s1">&#39;apt-get install -y python python-pip&#39;</span><span class="p">,</span>
-       <span class="s1">&#39;${PYTHON27} -m pip install -r requirements.txt&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;$</span><span class="si">{PYTHON27}</span><span class="s1"> -m pip install -r requirements.txt&#39;</span><span class="p">,</span>
        <span class="s1">&#39;rm -rf /var/lib/apt/lists/*&#39;</span><span class="p">,</span>
        <span class="s1">&#39;apt-get remove -y --auto-remove python-pip&#39;</span><span class="p">,</span>
        <span class="s1">&#39;apt-get clean&#39;</span>
     <span class="p">],</span>
     <span class="n">scripts</span><span class="o">=</span><span class="p">[</span>
-       <span class="s1">&#39;${PYTHON27} detect.py [...]&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;$</span><span class="si">{PYTHON27}</span><span class="s1"> detect.py [...]&#39;</span><span class="p">,</span>
        <span class="o">...</span>
     <span class="p">],</span>
-    <span class="n">report</span><span class="o">=</span><span class="s1">&#39;${PYTHON27} report.py&#39;</span><span class="p">,</span>
-    <span class="n">remote</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+    <span class="n">report</span><span class="o">=</span><span class="s1">&#39;$</span><span class="si">{PYTHON27}</span><span class="s1"> report.py&#39;</span><span class="p">,</span>
+    <span class="n">remote</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">shared</span><span class="o">=</span><span class="s1">&#39;application/pdf&#39;</span><span class="p">,</span>
     <span class="n">inited</span><span class="o">=&lt;</span><span class="n">Synchronized</span> <span class="n">wrapper</span> <span class="k">for</span> <span class="n">c_ubyte</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span>
     <span class="n">locked</span><span class="o">=&lt;</span><span class="n">Lock</span><span class="p">(</span><span class="n">owner</span><span class="o">=</span><span class="n">unknown</span><span class="p">)</span><span class="o">&gt;</span>

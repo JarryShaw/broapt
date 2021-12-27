@@ -56,15 +56,15 @@ on <span class="target" id="index-0"></span><a class="reference internal" href="
 </ul>
 <p>To extract all files transferred through HTTP, i.e. <code class="docutils literal notranslate"><span class="pre">extract-http.bro</span></code> in
 the folder, the Bro <code class="docutils literal notranslate"><span class="pre">hook</span></code> function should be as below:</p>
-<div class="highlight-zeek notranslate"><div class="highlight"><pre><span></span>@load ../__load__.bro
-@load base/protocols/http/entities.bro
+<div class="highlight-zeek notranslate"><div class="highlight"><pre><span></span><span class="cp">@load ../__load__.bro</span>
+<span class="cp">@load base/protocols/http/entities.bro</span>
 
-module FileExtraction;
+<span class="kn">module</span> <span class="nn">FileExtraction</span><span class="p">;</span>
 
-hook FileExtraction::extract(f: fa_file, meta: fa_metadata) &amp;priority=15 {
-   if ( f$source == &quot;HTTP&quot; )
-      break;
-}
+<span class="kt">hook</span> <span class="nf">FileExtraction::extract</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">fa_file</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">fa_metadata</span><span class="p">)</span> <span class="kp">&amp;priority</span><span class="o">=</span><span class="mf">15</span> <span class="p">{</span>
+   <span class="k">if</span> <span class="p">(</span> <span class="n">f</span><span class="o">$</span><span class="n">source</span> <span class="o">==</span> <span class="s">&quot;HTTP&quot;</span> <span class="p">)</span>
+      <span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <div class="admonition note">
