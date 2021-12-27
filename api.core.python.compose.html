@@ -57,14 +57,14 @@ Bro scripts based on this environment variable and many others.</p>
 to convert the pattern into a regular expression.</p>
 <p>A generated <a class="reference internal" href="api.core.bro.file-extensions.html"><span class="doc">Bro script</span></a> for <code class="docutils literal notranslate"><span class="pre">hook</span></code> function
 extracting files with MIME type <code class="docutils literal notranslate"><span class="pre">example/test-*</span></code> would be as following:</p>
-<div class="highlight-zeek notranslate"><div class="highlight"><pre><span></span><span class="cp">@load ../__load__.bro</span>
+<div class="highlight-zeek notranslate"><div class="highlight"><pre><span></span>@load ../__load__.bro
 
-<span class="kn">module</span> <span class="nn">FileExtraction</span><span class="p">;</span>
+module FileExtraction;
 
-<span class="kt">hook</span> <span class="nf">FileExtraction::extract</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">fa_file</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">fa_metadata</span><span class="p">)</span> <span class="kp">&amp;priority</span><span class="o">=</span><span class="mf">5</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span> <span class="n">meta</span><span class="o">?$</span><span class="n">mime_type</span> <span class="o">&amp;&amp;</span> <span class="sr">/example</span><span class="se">\/</span><span class="sr">test</span><span class="se">\-</span><span class="sr">.*/</span> <span class="o">==</span> <span class="n">meta</span><span class="o">$</span><span class="n">mime_type</span> <span class="p">)</span>
-        <span class="k">break</span><span class="p">;</span>
-<span class="p">}</span>
+hook FileExtraction::extract(f: fa_file, meta: fa_metadata) &amp;priority=5 {
+    if ( meta?$mime_type &amp;&amp; /example\/test\-.*/ == meta$mime_type )
+        break;
+}
 </pre></div>
 </div>
 <p>Besides this, the Bro script composer will also generate/rewrite the
