@@ -104,25 +104,25 @@ documentation at <a class="reference internal" href="broapt-app.html"><span clas
 - environment: <code class="docutils literal notranslate"><span class="pre">ENV_FOO=1</span></code>, <code class="docutils literal notranslate"><span class="pre">ENV_BAR=this</span> <span class="pre">is</span> <span class="pre">an</span> <span class="pre">environment</span> <span class="pre">variable</span></code></p></li>
 </ul>
 <p>The configuration section should then be:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">application</span><span class="p">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">...</span>  <span class="c1"># other APIs</span>
-  <span class="nt">pdf</span><span class="p">:</span>
-    <span class="nt">remote</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
-    <span class="nt">workdir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pdf_analysis</span>
-    <span class="nt">environ</span><span class="p">:</span>
-      <span class="nt">ENV_FOO</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-      <span class="nt">ENV_BAR</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">this is an environment variable</span>
-    <span class="nt">install</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apt-get update</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apt-get install -y python python-pip</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python -m pip install -r requirements.txt</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rm -rf /var/lib/apt/lists/*</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apt-get remove -y --auto-remove python-pip</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apt-get clean</span>
-    <span class="nt">scripts</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">${PYTHON27} detect.py [...]</span>                <span class="c1"># refer to /usr/bin/python</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">...</span>                                        <span class="c1"># and some random command</span>
-    <span class="nt">report</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${PYTHON27} report.py</span>                  <span class="c1"># generate final report</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">application</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w">  </span><span class="c1"># other APIs</span><span class="w"></span>
+<span class="w">  </span><span class="nt">pdf</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">remote</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">    </span><span class="nt">workdir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pdf_analysis</span><span class="w"></span>
+<span class="w">    </span><span class="nt">environ</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">ENV_FOO</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">      </span><span class="nt">ENV_BAR</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">this is an environment variable</span><span class="w"></span>
+<span class="w">    </span><span class="nt">install</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apt-get update</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apt-get install -y python python-pip</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python -m pip install -r requirements.txt</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rm -rf /var/lib/apt/lists/*</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apt-get remove -y --auto-remove python-pip</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apt-get clean</span><span class="w"></span>
+<span class="w">    </span><span class="nt">scripts</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${PYTHON27} detect.py [...]</span><span class="w">                </span><span class="c1"># refer to /usr/bin/python</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w">                                        </span><span class="c1"># and some random command</span><span class="w"></span>
+<span class="w">    </span><span class="nt">report</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${PYTHON27} report.py</span><span class="w">                  </span><span class="c1"># generate final report</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="admonition important">
@@ -177,447 +177,447 @@ corresponding API in the host machine through the BroAPT-Daemon server.</p>
 to the API configuration registered under the special <code class="docutils literal notranslate"><span class="pre">example</span></code> MIME type.</p>
 </div>
 <details>
-  <summary>Content of <code class="docutils literal notranslate"><span class="pre">api.yml</span></code> (bundled implementation)</summary><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1">## Configuration for API arguments of BroAPT-APP</span>
+  <summary>Content of <code class="docutils literal notranslate"><span class="pre">api.yml</span></code> (bundled implementation)</summary><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1">## Configuration for API arguments of BroAPT-APP</span><span class="w"></span>
 
-<span class="c1">###############################################################################</span>
-<span class="c1">## Environment (global setup)</span>
-<span class="c1">##</span>
-<span class="c1">## Environment variables `${...}` used in API arguments will be translated</span>
-<span class="c1">## according to the following values.</span>
-<span class="c1">##</span>
-<span class="nt">environment</span><span class="p">:</span>
-  <span class="c1"># API root path</span>
-  <span class="nt">API_ROOT</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${BROAPT_API_ROOT}</span>
-  <span class="c1"># Python 3.6</span>
-  <span class="nt">PYTHON</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/python3.6</span>
-  <span class="nt">PYTHON36</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/python3.6</span>
-  <span class="nt">PYTHON3</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/python3.6</span>
-  <span class="c1"># Python 2.7</span>
-  <span class="nt">PYTHON27</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/python</span>
-  <span class="nt">PYTHON2</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/python</span>
-  <span class="c1"># Shell/Bash</span>
-  <span class="nt">SHELL</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/bin/bash</span>
+<span class="c1">###############################################################################</span><span class="w"></span>
+<span class="c1">## Environment (global setup)</span><span class="w"></span>
+<span class="c1">##</span><span class="w"></span>
+<span class="c1">## Environment variables `${...}` used in API arguments will be translated</span><span class="w"></span>
+<span class="c1">## according to the following values.</span><span class="w"></span>
+<span class="c1">##</span><span class="w"></span>
+<span class="nt">environment</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># API root path</span><span class="w"></span>
+<span class="w">  </span><span class="nt">API_ROOT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${BROAPT_API_ROOT}</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># Python 3.6</span><span class="w"></span>
+<span class="w">  </span><span class="nt">PYTHON</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/bin/python3.6</span><span class="w"></span>
+<span class="w">  </span><span class="nt">PYTHON36</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/bin/python3.6</span><span class="w"></span>
+<span class="w">  </span><span class="nt">PYTHON3</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/bin/python3.6</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># Python 2.7</span><span class="w"></span>
+<span class="w">  </span><span class="nt">PYTHON27</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/bin/python</span><span class="w"></span>
+<span class="w">  </span><span class="nt">PYTHON2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/bin/python</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># Shell/Bash</span><span class="w"></span>
+<span class="w">  </span><span class="nt">SHELL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/bin/bash</span><span class="w"></span>
 
-<span class="c1">###############################################################################</span>
-<span class="c1">## Example:</span>
-<span class="c1">##</span>
-<span class="c1">## - Root: `/api/`</span>
-<span class="c1">## - Target:</span>
-<span class="c1">##   - MIME type: `application/pdf`</span>
-<span class="c1">##   - file name: `/dump/application/pdf/test.pdf`</span>
-<span class="c1">## - API:</span>
-<span class="c1">##   - working directory: `./pdf_analysis`</span>
-<span class="c1">##   - environment: `ENV_FOO=1`, `ENV_BAR=this is an environment variable`</span>
-<span class="c1">##</span>
-<span class="c1">## The configuration section should then be:</span>
-<span class="c1">##</span>
-<span class="c1">## application:</span>
-<span class="c1">##   ...  # other APIs</span>
-<span class="c1">##   pdf:</span>
-<span class="c1">##     remote: false</span>
-<span class="c1">##     workdir: pdf_analysis</span>
-<span class="c1">##     environ:</span>
-<span class="c1">##       ENV_FOO: 1</span>
-<span class="c1">##       ENV_BAR: this is an environment variable</span>
-<span class="c1">##     install:</span>
-<span class="c1">##       - apt-get update</span>
-<span class="c1">##       - apt-get install -y python python-pip</span>
-<span class="c1">##       - python -m pip install -r requirements.txt</span>
-<span class="c1">##       - rm -rf /var/lib/apt/lists/*</span>
-<span class="c1">##       - apt-get remove -y --auto-remove python-pip</span>
-<span class="c1">##       - apt-get clean</span>
-<span class="c1">##     scripts:</span>
-<span class="c1">##       - ${PYTHON27} detect.py [...]                # refer to /usr/bin/python</span>
-<span class="c1">##       - ...                                        # and some random command</span>
-<span class="c1">##     report: ${PYTHON27} report.py                  # generate final report</span>
-<span class="c1">##</span>
-<span class="c1">## BroAPT will work as following:</span>
-<span class="c1">##</span>
-<span class="c1">## 1. set the following environment variables</span>
-<span class="c1">##    # per target file</span>
-<span class="c1">##    - BROAPT_PATH=&quot;/dump/application/pdf/test.pdf&quot;</span>
-<span class="c1">##    - BROAPT_MIME=&quot;application/pdf&quot;</span>
-<span class="c1">##    # per API configuration</span>
-<span class="c1">##    - ENV_FOO=1</span>
-<span class="c1">##    - ENV_BAR=&quot;this is an environment variable&quot;</span>
-<span class="c1">## 2. change the current working directory to</span>
-<span class="c1">##    `/api/application/pdf/pdf_analysis`</span>
-<span class="c1">## 3. if run for the first time, run the following commands:</span>
-<span class="c1">##    - `apt-get update`</span>
-<span class="c1">##    - `apt-get install -y python python-pip`</span>
-<span class="c1">##    - `python -m pip install -r requirements.txt`</span>
-<span class="c1">##    - `rm -rf /var/lib/apt/lists/*`</span>
-<span class="c1">##    - `apt-get remove -y --auto-remove python-pip`</span>
-<span class="c1">##    - `apt-get clean`</span>
-<span class="c1">## 4. run the following mid-stage commands:</span>
-<span class="c1">##    - `/usr/bin/python detect.py [...]`</span>
-<span class="c1">##    - `...`</span>
-<span class="c1">## 5. generate final report:</span>
-<span class="c1">##    `/usr/bin/python report.py`</span>
-<span class="c1">##</span>
-<span class="c1">## NOTE: `report` section is MANDATORY.</span>
-<span class="c1">##       If `remote` is `true`, then BroAPT will run the</span>
-<span class="c1">##       corresponding API in the host machine.</span>
-<span class="c1">##</span>
+<span class="c1">###############################################################################</span><span class="w"></span>
+<span class="c1">## Example:</span><span class="w"></span>
+<span class="c1">##</span><span class="w"></span>
+<span class="c1">## - Root: `/api/`</span><span class="w"></span>
+<span class="c1">## - Target:</span><span class="w"></span>
+<span class="c1">##   - MIME type: `application/pdf`</span><span class="w"></span>
+<span class="c1">##   - file name: `/dump/application/pdf/test.pdf`</span><span class="w"></span>
+<span class="c1">## - API:</span><span class="w"></span>
+<span class="c1">##   - working directory: `./pdf_analysis`</span><span class="w"></span>
+<span class="c1">##   - environment: `ENV_FOO=1`, `ENV_BAR=this is an environment variable`</span><span class="w"></span>
+<span class="c1">##</span><span class="w"></span>
+<span class="c1">## The configuration section should then be:</span><span class="w"></span>
+<span class="c1">##</span><span class="w"></span>
+<span class="c1">## application:</span><span class="w"></span>
+<span class="c1">##   ...  # other APIs</span><span class="w"></span>
+<span class="c1">##   pdf:</span><span class="w"></span>
+<span class="c1">##     remote: false</span><span class="w"></span>
+<span class="c1">##     workdir: pdf_analysis</span><span class="w"></span>
+<span class="c1">##     environ:</span><span class="w"></span>
+<span class="c1">##       ENV_FOO: 1</span><span class="w"></span>
+<span class="c1">##       ENV_BAR: this is an environment variable</span><span class="w"></span>
+<span class="c1">##     install:</span><span class="w"></span>
+<span class="c1">##       - apt-get update</span><span class="w"></span>
+<span class="c1">##       - apt-get install -y python python-pip</span><span class="w"></span>
+<span class="c1">##       - python -m pip install -r requirements.txt</span><span class="w"></span>
+<span class="c1">##       - rm -rf /var/lib/apt/lists/*</span><span class="w"></span>
+<span class="c1">##       - apt-get remove -y --auto-remove python-pip</span><span class="w"></span>
+<span class="c1">##       - apt-get clean</span><span class="w"></span>
+<span class="c1">##     scripts:</span><span class="w"></span>
+<span class="c1">##       - ${PYTHON27} detect.py [...]                # refer to /usr/bin/python</span><span class="w"></span>
+<span class="c1">##       - ...                                        # and some random command</span><span class="w"></span>
+<span class="c1">##     report: ${PYTHON27} report.py                  # generate final report</span><span class="w"></span>
+<span class="c1">##</span><span class="w"></span>
+<span class="c1">## BroAPT will work as following:</span><span class="w"></span>
+<span class="c1">##</span><span class="w"></span>
+<span class="c1">## 1. set the following environment variables</span><span class="w"></span>
+<span class="c1">##    # per target file</span><span class="w"></span>
+<span class="c1">##    - BROAPT_PATH=&quot;/dump/application/pdf/test.pdf&quot;</span><span class="w"></span>
+<span class="c1">##    - BROAPT_MIME=&quot;application/pdf&quot;</span><span class="w"></span>
+<span class="c1">##    # per API configuration</span><span class="w"></span>
+<span class="c1">##    - ENV_FOO=1</span><span class="w"></span>
+<span class="c1">##    - ENV_BAR=&quot;this is an environment variable&quot;</span><span class="w"></span>
+<span class="c1">## 2. change the current working directory to</span><span class="w"></span>
+<span class="c1">##    `/api/application/pdf/pdf_analysis`</span><span class="w"></span>
+<span class="c1">## 3. if run for the first time, run the following commands:</span><span class="w"></span>
+<span class="c1">##    - `apt-get update`</span><span class="w"></span>
+<span class="c1">##    - `apt-get install -y python python-pip`</span><span class="w"></span>
+<span class="c1">##    - `python -m pip install -r requirements.txt`</span><span class="w"></span>
+<span class="c1">##    - `rm -rf /var/lib/apt/lists/*`</span><span class="w"></span>
+<span class="c1">##    - `apt-get remove -y --auto-remove python-pip`</span><span class="w"></span>
+<span class="c1">##    - `apt-get clean`</span><span class="w"></span>
+<span class="c1">## 4. run the following mid-stage commands:</span><span class="w"></span>
+<span class="c1">##    - `/usr/bin/python detect.py [...]`</span><span class="w"></span>
+<span class="c1">##    - `...`</span><span class="w"></span>
+<span class="c1">## 5. generate final report:</span><span class="w"></span>
+<span class="c1">##    `/usr/bin/python report.py`</span><span class="w"></span>
+<span class="c1">##</span><span class="w"></span>
+<span class="c1">## NOTE: `report` section is MANDATORY.</span><span class="w"></span>
+<span class="c1">##       If `remote` is `true`, then BroAPT will run the</span><span class="w"></span>
+<span class="c1">##       corresponding API in the host machine.</span><span class="w"></span>
+<span class="c1">##</span><span class="w"></span>
 
-<span class="c1"># APIs for `application` media type</span>
-<span class="nt">application</span><span class="p">:</span>
-  <span class="nt">javascript</span><span class="p">:</span> <span class="nl">&amp;javascript</span>
-    <span class="c1">## JaSt</span>
-    <span class="nt">workdir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${API_ROOT}/application/javascript/JaSt</span>
-    <span class="nt">environ</span><span class="p">:</span>
-      <span class="nt">JS_LOG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/var/log/bro/tmp/</span>
-    <span class="nt">install</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">yum install -y epel-release</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">yum install -y git nodejs</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">test -d ./JaSt/ ||</span>
-        <span class="l l-Scalar l-Scalar-Plain">git clone https://github.com/Aurore54F/JaSt.git</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">${PYTHON3} -m pip install</span>
-          <span class="l l-Scalar l-Scalar-Plain">matplotlib</span>
-          <span class="l l-Scalar l-Scalar-Plain">plotly</span>
-          <span class="l l-Scalar l-Scalar-Plain">numpy</span>
-          <span class="l l-Scalar l-Scalar-Plain">scipy</span>
-          <span class="l l-Scalar l-Scalar-Plain">scikit-learn</span>
-          <span class="l l-Scalar l-Scalar-Plain">pandas</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">${PYTHON3} ./JaSt/clustering/learner.py</span>
-          <span class="l l-Scalar l-Scalar-Plain">--d ./sample/</span>
-          <span class="l l-Scalar l-Scalar-Plain">--l ./lables/</span>
-          <span class="l l-Scalar l-Scalar-Plain">--md ./models/</span>
-          <span class="l l-Scalar l-Scalar-Plain">--mn broapt-jast</span>
-    <span class="nt">scripts</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">${PYTHON3} ./JaSt/clustering/classifier.py</span>
-          <span class="l l-Scalar l-Scalar-Plain">--f ${BROAPT_PATH}</span>
-          <span class="l l-Scalar l-Scalar-Plain">--m ./models/broapt-jast</span>
-    <span class="nt">report</span><span class="p">:</span> <span class="s">&quot;false&quot;</span>
-  <span class="nt">octet-stream</span><span class="p">:</span> <span class="nl">&amp;lmd</span>
-    <span class="c1">## LMD</span>
-    <span class="nt">workdir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${API_ROOT}/application/octet-stream/LMD</span>
-    <span class="nt">environ</span><span class="p">:</span>
-      <span class="nt">LMD_LOG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/var/log/bro/tmp/</span>
-    <span class="nt">install</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">yum install -y git which</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">test -d ./linux-malware-detect/ ||</span>
-        <span class="l l-Scalar l-Scalar-Plain">git clone https://github.com/rfxn/linux-malware-detect.git</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">${SHELL} install.sh</span>
-    <span class="nt">report</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${SHELL} detect.sh</span>
-  <span class="nt">vnd.android.package-archive</span><span class="p">:</span>
-    <span class="c1">## AndroPyTool</span>
-    <span class="nt">remote</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-    <span class="nt">workdir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">AndroPyTool</span>
-    <span class="nt">environ</span><span class="p">:</span>
-      <span class="c1"># ANDROID_HOME: $HOME/android-sdk-linux</span>
-      <span class="c1"># PATH: $PATH:$ANDROID_HOME/tools</span>
-      <span class="c1"># PATH: $PATH:$ANDROID_HOME/platform-tools</span>
-      <span class="c1"># APK_LOG: /var/log/bro/tmp/</span>
-      <span class="nt">APK_LOG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/home/traffic/log/bro/tmp/</span>
-    <span class="nt">install</span><span class="p">:</span>
-      <span class="c1"># - ${SHELL} install.sh</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">docker pull alexmyg/andropytool</span>
-    <span class="c1"># report: ${PYTHON36} detect.py</span>
-    <span class="nt">report</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${SHELL} detect.sh</span>
-  <span class="nt">vnd.openxmlformats-officedocument</span><span class="p">:</span> <span class="nl">&amp;officedocument</span>
-    <span class="c1">## MaliciousMacroBot</span>
-    <span class="nt">workdir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${API_ROOT}/application/vnd.openxmlformats-officedocument/</span>
-    <span class="nt">environ</span><span class="p">:</span>
-      <span class="nt">MMB_LOG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/var/log/bro/tmp/</span>
-    <span class="nt">install</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">yum install -y git</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">test -d ./MaliciousMacroBot/ ||</span>
-        <span class="l l-Scalar l-Scalar-Plain">git clone https://github.com/egaus/MaliciousMacroBot.git</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">${PYTHON36} -m pip install ./MaliciousMacroBot/</span>
-      <span class="c1"># - rm -rf ./MaliciousMacroBot/</span>
-      <span class="c1"># - yum erase -y git</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">yum clean -y all</span>
-    <span class="nt">report</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${PYTHON36} MaliciousMacroBot-detect.py</span>
-    <span class="nt">shared</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">officedocument</span>
-  <span class="nt">msword</span><span class="p">:</span> <span class="nv">*officedocument</span>
-  <span class="nt">vnd.ms-*</span><span class="p">:</span> <span class="nv">*officedocument</span>
-  <span class="nt">vnd.openxmlformats-officedocument</span><span class="p">:</span> <span class="nv">*officedocument</span>
-  <span class="nt">vnd.openxmlformats-officedocument.*</span><span class="p">:</span> <span class="nv">*officedocument</span>
-  <span class="nt">x-executable</span><span class="p">:</span>
-    <span class="c1">## ELF Parser</span>
-    <span class="nt">remote</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-    <span class="nt">environ</span><span class="p">:</span>
-      <span class="c1"># ELF_LOG: /var/log/bro/tmp/</span>
-      <span class="nt">ELF_LOG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/home/traffic/log/bro/tmp/</span>
-      <span class="nt">ELF_SCORE</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">100</span>
-    <span class="nt">workdir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ELF-Parser</span>
-    <span class="nt">install</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">docker build --tag elfparser:1.4.0 --rm .</span>
-      <span class="c1"># - yum install -y git cmake make boost-devel gcc gcc-g++</span>
-      <span class="c1"># - test -d ./elfparser/ ||</span>
-      <span class="c1">#   git clone https://github.com/jacob-baines/elfparser.git</span>
-      <span class="c1"># - ${SHELL} build.sh</span>
-      <span class="c1"># - rm -rf ./elfparser/</span>
-      <span class="c1"># # - yum erase -y git cmake make</span>
-      <span class="c1"># - yum clean -y all</span>
-    <span class="nt">report</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${SHELL} detect.sh</span>
+<span class="c1"># APIs for `application` media type</span><span class="w"></span>
+<span class="nt">application</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">javascript</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;javascript</span><span class="w"></span>
+<span class="w">    </span><span class="c1">## JaSt</span><span class="w"></span>
+<span class="w">    </span><span class="nt">workdir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${API_ROOT}/application/javascript/JaSt</span><span class="w"></span>
+<span class="w">    </span><span class="nt">environ</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">JS_LOG</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/log/bro/tmp/</span><span class="w"></span>
+<span class="w">    </span><span class="nt">install</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yum install -y epel-release</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yum install -y git nodejs</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test -d ./JaSt/ ||</span><span class="w"></span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">git clone https://github.com/Aurore54F/JaSt.git</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${PYTHON3} -m pip install</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">matplotlib</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">plotly</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">numpy</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">scipy</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">scikit-learn</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">pandas</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${PYTHON3} ./JaSt/clustering/learner.py</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">--d ./sample/</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">--l ./lables/</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">--md ./models/</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">--mn broapt-jast</span><span class="w"></span>
+<span class="w">    </span><span class="nt">scripts</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${PYTHON3} ./JaSt/clustering/classifier.py</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">--f ${BROAPT_PATH}</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">--m ./models/broapt-jast</span><span class="w"></span>
+<span class="w">    </span><span class="nt">report</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;false&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">octet-stream</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;lmd</span><span class="w"></span>
+<span class="w">    </span><span class="c1">## LMD</span><span class="w"></span>
+<span class="w">    </span><span class="nt">workdir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${API_ROOT}/application/octet-stream/LMD</span><span class="w"></span>
+<span class="w">    </span><span class="nt">environ</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">LMD_LOG</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/log/bro/tmp/</span><span class="w"></span>
+<span class="w">    </span><span class="nt">install</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yum install -y git which</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test -d ./linux-malware-detect/ ||</span><span class="w"></span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">git clone https://github.com/rfxn/linux-malware-detect.git</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${SHELL} install.sh</span><span class="w"></span>
+<span class="w">    </span><span class="nt">report</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${SHELL} detect.sh</span><span class="w"></span>
+<span class="w">  </span><span class="nt">vnd.android.package-archive</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="c1">## AndroPyTool</span><span class="w"></span>
+<span class="w">    </span><span class="nt">remote</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">    </span><span class="nt">workdir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AndroPyTool</span><span class="w"></span>
+<span class="w">    </span><span class="nt">environ</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># ANDROID_HOME: $HOME/android-sdk-linux</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># PATH: $PATH:$ANDROID_HOME/tools</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># PATH: $PATH:$ANDROID_HOME/platform-tools</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># APK_LOG: /var/log/bro/tmp/</span><span class="w"></span>
+<span class="w">      </span><span class="nt">APK_LOG</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/home/traffic/log/bro/tmp/</span><span class="w"></span>
+<span class="w">    </span><span class="nt">install</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># - ${SHELL} install.sh</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker pull alexmyg/andropytool</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># report: ${PYTHON36} detect.py</span><span class="w"></span>
+<span class="w">    </span><span class="nt">report</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${SHELL} detect.sh</span><span class="w"></span>
+<span class="w">  </span><span class="nt">vnd.openxmlformats-officedocument</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;officedocument</span><span class="w"></span>
+<span class="w">    </span><span class="c1">## MaliciousMacroBot</span><span class="w"></span>
+<span class="w">    </span><span class="nt">workdir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${API_ROOT}/application/vnd.openxmlformats-officedocument/</span><span class="w"></span>
+<span class="w">    </span><span class="nt">environ</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">MMB_LOG</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/log/bro/tmp/</span><span class="w"></span>
+<span class="w">    </span><span class="nt">install</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yum install -y git</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test -d ./MaliciousMacroBot/ ||</span><span class="w"></span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">git clone https://github.com/egaus/MaliciousMacroBot.git</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${PYTHON36} -m pip install ./MaliciousMacroBot/</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># - rm -rf ./MaliciousMacroBot/</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># - yum erase -y git</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yum clean -y all</span><span class="w"></span>
+<span class="w">    </span><span class="nt">report</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${PYTHON36} MaliciousMacroBot-detect.py</span><span class="w"></span>
+<span class="w">    </span><span class="nt">shared</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">officedocument</span><span class="w"></span>
+<span class="w">  </span><span class="nt">msword</span><span class="p">:</span><span class="w"> </span><span class="nv">*officedocument</span><span class="w"></span>
+<span class="w">  </span><span class="nt">vnd.ms-*</span><span class="p">:</span><span class="w"> </span><span class="nv">*officedocument</span><span class="w"></span>
+<span class="w">  </span><span class="nt">vnd.openxmlformats-officedocument</span><span class="p">:</span><span class="w"> </span><span class="nv">*officedocument</span><span class="w"></span>
+<span class="w">  </span><span class="nt">vnd.openxmlformats-officedocument.*</span><span class="p">:</span><span class="w"> </span><span class="nv">*officedocument</span><span class="w"></span>
+<span class="w">  </span><span class="nt">x-executable</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="c1">## ELF Parser</span><span class="w"></span>
+<span class="w">    </span><span class="nt">remote</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">    </span><span class="nt">environ</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># ELF_LOG: /var/log/bro/tmp/</span><span class="w"></span>
+<span class="w">      </span><span class="nt">ELF_LOG</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/home/traffic/log/bro/tmp/</span><span class="w"></span>
+<span class="w">      </span><span class="nt">ELF_SCORE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w"></span>
+<span class="w">    </span><span class="nt">workdir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ELF-Parser</span><span class="w"></span>
+<span class="w">    </span><span class="nt">install</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker build --tag elfparser:1.4.0 --rm .</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># - yum install -y git cmake make boost-devel gcc gcc-g++</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># - test -d ./elfparser/ ||</span><span class="w"></span>
+<span class="w">      </span><span class="c1">#   git clone https://github.com/jacob-baines/elfparser.git</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># - ${SHELL} build.sh</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># - rm -rf ./elfparser/</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># # - yum erase -y git cmake make</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># - yum clean -y all</span><span class="w"></span>
+<span class="w">    </span><span class="nt">report</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${SHELL} detect.sh</span><span class="w"></span>
 
-<span class="c1"># APIs for `audio` media type</span>
-<span class="nt">audio</span><span class="p">:</span>
+<span class="c1"># APIs for `audio` media type</span><span class="w"></span>
+<span class="nt">audio</span><span class="p">:</span><span class="w"></span>
 
-<span class="c1"># Default API for missing MIME types</span>
-<span class="nt">example</span><span class="p">:</span>
-  <span class="nt">environ</span><span class="p">:</span>
-    <span class="c1">## sleep interval</span>
-    <span class="nt">VT_INTERVAL</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
-    <span class="c1">## max retry for report</span>
-    <span class="nt">VT_RETRY</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
-    <span class="c1">## percentage of positive threshold</span>
-    <span class="nt">VT_PERCENT</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">50</span>
-    <span class="c1">## VT API key</span>
-    <span class="c1">#VT_API: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>
-    <span class="c1">## path to VT file scan reports</span>
-    <span class="nt">VT_LOG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/var/log/bro/tmp/</span>
-  <span class="nt">report</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${PYTHON36} virustotal.py || exit 0</span> <span class="c1"># always EXIT_SUCCESS</span>
+<span class="c1"># Default API for missing MIME types</span><span class="w"></span>
+<span class="nt">example</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">environ</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="c1">## sleep interval</span><span class="w"></span>
+<span class="w">    </span><span class="nt">VT_INTERVAL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w"></span>
+<span class="w">    </span><span class="c1">## max retry for report</span><span class="w"></span>
+<span class="w">    </span><span class="nt">VT_RETRY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
+<span class="w">    </span><span class="c1">## percentage of positive threshold</span><span class="w"></span>
+<span class="w">    </span><span class="nt">VT_PERCENT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span><span class="w"></span>
+<span class="w">    </span><span class="c1">## VT API key</span><span class="w"></span>
+<span class="w">    </span><span class="c1">#VT_API: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span><span class="w"></span>
+<span class="w">    </span><span class="c1">## path to VT file scan reports</span><span class="w"></span>
+<span class="w">    </span><span class="nt">VT_LOG</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/log/bro/tmp/</span><span class="w"></span>
+<span class="w">  </span><span class="nt">report</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${PYTHON36} virustotal.py || exit 0</span><span class="w"> </span><span class="c1"># always EXIT_SUCCESS</span><span class="w"></span>
 
-<span class="c1"># APIs for `font` media type</span>
-<span class="nt">font</span><span class="p">:</span>
+<span class="c1"># APIs for `font` media type</span><span class="w"></span>
+<span class="nt">font</span><span class="p">:</span><span class="w"></span>
 
-<span class="c1"># APIs for `image` media type</span>
-<span class="nt">image</span><span class="p">:</span>
+<span class="c1"># APIs for `image` media type</span><span class="w"></span>
+<span class="nt">image</span><span class="p">:</span><span class="w"></span>
 
-<span class="c1"># APIs for `message` media type</span>
-<span class="nt">message</span><span class="p">:</span>
+<span class="c1"># APIs for `message` media type</span><span class="w"></span>
+<span class="nt">message</span><span class="p">:</span><span class="w"></span>
 
-<span class="c1"># APIs for `model` media type</span>
-<span class="nt">model</span><span class="p">:</span>
+<span class="c1"># APIs for `model` media type</span><span class="w"></span>
+<span class="nt">model</span><span class="p">:</span><span class="w"></span>
 
-<span class="c1"># APIs for `multipart` media type</span>
-<span class="nt">multipart</span><span class="p">:</span>
+<span class="c1"># APIs for `multipart` media type</span><span class="w"></span>
+<span class="nt">multipart</span><span class="p">:</span><span class="w"></span>
 
-<span class="c1"># APIs for `text` media type</span>
-<span class="nt">text</span><span class="p">:</span>
-  <span class="nt">html</span><span class="p">:</span> <span class="nv">*lmd</span>
-  <span class="nt">javascript</span><span class="p">:</span> <span class="nv">*javascript</span>
-  <span class="nt">x-c</span><span class="p">:</span> <span class="nv">*lmd</span>
-  <span class="nt">x-perl</span><span class="p">:</span> <span class="nv">*lmd</span>
-  <span class="nt">x-php</span><span class="p">:</span> <span class="nv">*lmd</span>
+<span class="c1"># APIs for `text` media type</span><span class="w"></span>
+<span class="nt">text</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">html</span><span class="p">:</span><span class="w"> </span><span class="nv">*lmd</span><span class="w"></span>
+<span class="w">  </span><span class="nt">javascript</span><span class="p">:</span><span class="w"> </span><span class="nv">*javascript</span><span class="w"></span>
+<span class="w">  </span><span class="nt">x-c</span><span class="p">:</span><span class="w"> </span><span class="nv">*lmd</span><span class="w"></span>
+<span class="w">  </span><span class="nt">x-perl</span><span class="p">:</span><span class="w"> </span><span class="nv">*lmd</span><span class="w"></span>
+<span class="w">  </span><span class="nt">x-php</span><span class="p">:</span><span class="w"> </span><span class="nv">*lmd</span><span class="w"></span>
 
-<span class="c1"># APIs for `video` media type</span>
-<span class="nt">video</span><span class="p">:</span>
+<span class="c1"># APIs for `video` media type</span><span class="w"></span>
+<span class="nt">video</span><span class="p">:</span><span class="w"></span>
 </pre></div>
 </div>
 </details><details>
-  <summary>Content of <code class="docutils literal notranslate"><span class="pre">api.yml</span></code> (cluster implementation)</summary><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1">## Configuration for API arguments of BroAPT-APP</span>
+  <summary>Content of <code class="docutils literal notranslate"><span class="pre">api.yml</span></code> (cluster implementation)</summary><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1">## Configuration for API arguments of BroAPT-APP</span><span class="w"></span>
 
-<span class="c1">###############################################################################</span>
-<span class="c1">## Environment (global setup)</span>
-<span class="c1">##</span>
-<span class="c1">## Environment variables `${...}` used in API arguments will be translated</span>
-<span class="c1">## according to the following values.</span>
-<span class="c1">##</span>
-<span class="nt">environment</span><span class="p">:</span>
-  <span class="c1"># API root path</span>
-  <span class="nt">API_ROOT</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${BROAPT_API_ROOT}</span>
-  <span class="c1"># Python 3.6</span>
-  <span class="nt">PYTHON</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/python3.6</span>
-  <span class="nt">PYTHON36</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/python3.6</span>
-  <span class="nt">PYTHON3</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/python3.6</span>
-  <span class="c1"># Python 2.7</span>
-  <span class="nt">PYTHON27</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/python</span>
-  <span class="nt">PYTHON2</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/python</span>
-  <span class="c1"># Shell/Bash</span>
-  <span class="nt">SHELL</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/bin/bash</span>
+<span class="c1">###############################################################################</span><span class="w"></span>
+<span class="c1">## Environment (global setup)</span><span class="w"></span>
+<span class="c1">##</span><span class="w"></span>
+<span class="c1">## Environment variables `${...}` used in API arguments will be translated</span><span class="w"></span>
+<span class="c1">## according to the following values.</span><span class="w"></span>
+<span class="c1">##</span><span class="w"></span>
+<span class="nt">environment</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># API root path</span><span class="w"></span>
+<span class="w">  </span><span class="nt">API_ROOT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${BROAPT_API_ROOT}</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># Python 3.6</span><span class="w"></span>
+<span class="w">  </span><span class="nt">PYTHON</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/bin/python3.6</span><span class="w"></span>
+<span class="w">  </span><span class="nt">PYTHON36</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/bin/python3.6</span><span class="w"></span>
+<span class="w">  </span><span class="nt">PYTHON3</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/bin/python3.6</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># Python 2.7</span><span class="w"></span>
+<span class="w">  </span><span class="nt">PYTHON27</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/bin/python</span><span class="w"></span>
+<span class="w">  </span><span class="nt">PYTHON2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/bin/python</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># Shell/Bash</span><span class="w"></span>
+<span class="w">  </span><span class="nt">SHELL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/bin/bash</span><span class="w"></span>
 
-<span class="c1">###############################################################################</span>
-<span class="c1">## Example:</span>
-<span class="c1">##</span>
-<span class="c1">## - Root: `/api/`</span>
-<span class="c1">## - Target:</span>
-<span class="c1">##   - MIME type: `application/pdf`</span>
-<span class="c1">##   - file name: `/dump/application/pdf/test.pdf`</span>
-<span class="c1">## - API:</span>
-<span class="c1">##   - working directory: `./pdf_analysis`</span>
-<span class="c1">##   - environment: `ENV_FOO=1`, `ENV_BAR=this is an environment variable`</span>
-<span class="c1">##</span>
-<span class="c1">## The configuration section should then be:</span>
-<span class="c1">##</span>
-<span class="c1">## application:</span>
-<span class="c1">##   ...  # other APIs</span>
-<span class="c1">##   pdf:</span>
-<span class="c1">##     remote: false</span>
-<span class="c1">##     workdir: pdf_analysis</span>
-<span class="c1">##     environ:</span>
-<span class="c1">##       ENV_FOO: 1</span>
-<span class="c1">##       ENV_BAR: this is an environment variable</span>
-<span class="c1">##     install:</span>
-<span class="c1">##       - apt-get update</span>
-<span class="c1">##       - apt-get install -y python python-pip</span>
-<span class="c1">##       - python -m pip install -r requirements.txt</span>
-<span class="c1">##       - rm -rf /var/lib/apt/lists/*</span>
-<span class="c1">##       - apt-get remove -y --auto-remove python-pip</span>
-<span class="c1">##       - apt-get clean</span>
-<span class="c1">##     scripts:</span>
-<span class="c1">##       - ${PYTHON27} detect.py [...]                # refer to /usr/bin/python</span>
-<span class="c1">##       - ...                                        # and some random command</span>
-<span class="c1">##     report: ${PYTHON27} report.py                  # generate final report</span>
-<span class="c1">##</span>
-<span class="c1">## BroAPT will work as following:</span>
-<span class="c1">##</span>
-<span class="c1">## 1. set the following environment variables</span>
-<span class="c1">##    # per target file</span>
-<span class="c1">##    - BROAPT_PATH=&quot;/dump/application/pdf/test.pdf&quot;</span>
-<span class="c1">##    - BROAPT_MIME=&quot;application/pdf&quot;</span>
-<span class="c1">##    # per API configuration</span>
-<span class="c1">##    - ENV_FOO=1</span>
-<span class="c1">##    - ENV_BAR=&quot;this is an environment variable&quot;</span>
-<span class="c1">## 2. change the current working directory to</span>
-<span class="c1">##    `/api/application/pdf/pdf_analysis`</span>
-<span class="c1">## 3. if run for the first time, run the following commands:</span>
-<span class="c1">##    - `apt-get update`</span>
-<span class="c1">##    - `apt-get install -y python python-pip`</span>
-<span class="c1">##    - `python -m pip install -r requirements.txt`</span>
-<span class="c1">##    - `rm -rf /var/lib/apt/lists/*`</span>
-<span class="c1">##    - `apt-get remove -y --auto-remove python-pip`</span>
-<span class="c1">##    - `apt-get clean`</span>
-<span class="c1">## 4. run the following mid-stage commands:</span>
-<span class="c1">##    - `/usr/bin/python detect.py [...]`</span>
-<span class="c1">##    - `...`</span>
-<span class="c1">## 5. generate final report:</span>
-<span class="c1">##    `/usr/bin/python report.py`</span>
-<span class="c1">##</span>
-<span class="c1">## NOTE: `report` section is MANDATORY.</span>
-<span class="c1">##       If `remote` is `true`, then BroAPT will run the</span>
-<span class="c1">##       corresponding API in the host machine.</span>
-<span class="c1">##</span>
+<span class="c1">###############################################################################</span><span class="w"></span>
+<span class="c1">## Example:</span><span class="w"></span>
+<span class="c1">##</span><span class="w"></span>
+<span class="c1">## - Root: `/api/`</span><span class="w"></span>
+<span class="c1">## - Target:</span><span class="w"></span>
+<span class="c1">##   - MIME type: `application/pdf`</span><span class="w"></span>
+<span class="c1">##   - file name: `/dump/application/pdf/test.pdf`</span><span class="w"></span>
+<span class="c1">## - API:</span><span class="w"></span>
+<span class="c1">##   - working directory: `./pdf_analysis`</span><span class="w"></span>
+<span class="c1">##   - environment: `ENV_FOO=1`, `ENV_BAR=this is an environment variable`</span><span class="w"></span>
+<span class="c1">##</span><span class="w"></span>
+<span class="c1">## The configuration section should then be:</span><span class="w"></span>
+<span class="c1">##</span><span class="w"></span>
+<span class="c1">## application:</span><span class="w"></span>
+<span class="c1">##   ...  # other APIs</span><span class="w"></span>
+<span class="c1">##   pdf:</span><span class="w"></span>
+<span class="c1">##     remote: false</span><span class="w"></span>
+<span class="c1">##     workdir: pdf_analysis</span><span class="w"></span>
+<span class="c1">##     environ:</span><span class="w"></span>
+<span class="c1">##       ENV_FOO: 1</span><span class="w"></span>
+<span class="c1">##       ENV_BAR: this is an environment variable</span><span class="w"></span>
+<span class="c1">##     install:</span><span class="w"></span>
+<span class="c1">##       - apt-get update</span><span class="w"></span>
+<span class="c1">##       - apt-get install -y python python-pip</span><span class="w"></span>
+<span class="c1">##       - python -m pip install -r requirements.txt</span><span class="w"></span>
+<span class="c1">##       - rm -rf /var/lib/apt/lists/*</span><span class="w"></span>
+<span class="c1">##       - apt-get remove -y --auto-remove python-pip</span><span class="w"></span>
+<span class="c1">##       - apt-get clean</span><span class="w"></span>
+<span class="c1">##     scripts:</span><span class="w"></span>
+<span class="c1">##       - ${PYTHON27} detect.py [...]                # refer to /usr/bin/python</span><span class="w"></span>
+<span class="c1">##       - ...                                        # and some random command</span><span class="w"></span>
+<span class="c1">##     report: ${PYTHON27} report.py                  # generate final report</span><span class="w"></span>
+<span class="c1">##</span><span class="w"></span>
+<span class="c1">## BroAPT will work as following:</span><span class="w"></span>
+<span class="c1">##</span><span class="w"></span>
+<span class="c1">## 1. set the following environment variables</span><span class="w"></span>
+<span class="c1">##    # per target file</span><span class="w"></span>
+<span class="c1">##    - BROAPT_PATH=&quot;/dump/application/pdf/test.pdf&quot;</span><span class="w"></span>
+<span class="c1">##    - BROAPT_MIME=&quot;application/pdf&quot;</span><span class="w"></span>
+<span class="c1">##    # per API configuration</span><span class="w"></span>
+<span class="c1">##    - ENV_FOO=1</span><span class="w"></span>
+<span class="c1">##    - ENV_BAR=&quot;this is an environment variable&quot;</span><span class="w"></span>
+<span class="c1">## 2. change the current working directory to</span><span class="w"></span>
+<span class="c1">##    `/api/application/pdf/pdf_analysis`</span><span class="w"></span>
+<span class="c1">## 3. if run for the first time, run the following commands:</span><span class="w"></span>
+<span class="c1">##    - `apt-get update`</span><span class="w"></span>
+<span class="c1">##    - `apt-get install -y python python-pip`</span><span class="w"></span>
+<span class="c1">##    - `python -m pip install -r requirements.txt`</span><span class="w"></span>
+<span class="c1">##    - `rm -rf /var/lib/apt/lists/*`</span><span class="w"></span>
+<span class="c1">##    - `apt-get remove -y --auto-remove python-pip`</span><span class="w"></span>
+<span class="c1">##    - `apt-get clean`</span><span class="w"></span>
+<span class="c1">## 4. run the following mid-stage commands:</span><span class="w"></span>
+<span class="c1">##    - `/usr/bin/python detect.py [...]`</span><span class="w"></span>
+<span class="c1">##    - `...`</span><span class="w"></span>
+<span class="c1">## 5. generate final report:</span><span class="w"></span>
+<span class="c1">##    `/usr/bin/python report.py`</span><span class="w"></span>
+<span class="c1">##</span><span class="w"></span>
+<span class="c1">## NOTE: `report` section is MANDATORY.</span><span class="w"></span>
+<span class="c1">##       If `remote` is `true`, then BroAPT will run the</span><span class="w"></span>
+<span class="c1">##       corresponding API in the host machine.</span><span class="w"></span>
+<span class="c1">##</span><span class="w"></span>
 
-<span class="c1"># APIs for `application` media type</span>
-<span class="nt">application</span><span class="p">:</span>
-  <span class="nt">javascript</span><span class="p">:</span> <span class="nl">&amp;javascript</span>
-    <span class="c1">## JaSt</span>
-    <span class="nt">workdir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${API_ROOT}/application/javascript/JaSt</span>
-    <span class="nt">environ</span><span class="p">:</span>
-      <span class="nt">JS_LOG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/var/log/bro/tmp/</span>
-    <span class="nt">install</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apt-get update</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apt-get install -y --no-install-recommends git nodejs</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">test -d ./JaSt/ ||</span>
-        <span class="l l-Scalar l-Scalar-Plain">git clone https://github.com/Aurore54F/JaSt.git</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">${PYTHON3} -m pip install</span>
-          <span class="l l-Scalar l-Scalar-Plain">matplotlib</span>
-          <span class="l l-Scalar l-Scalar-Plain">plotly</span>
-          <span class="l l-Scalar l-Scalar-Plain">numpy</span>
-          <span class="l l-Scalar l-Scalar-Plain">scipy</span>
-          <span class="l l-Scalar l-Scalar-Plain">scikit-learn</span>
-          <span class="l l-Scalar l-Scalar-Plain">pandas</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">${PYTHON3} ./JaSt/clustering/learner.py</span>
-          <span class="l l-Scalar l-Scalar-Plain">--d ./sample/</span>
-          <span class="l l-Scalar l-Scalar-Plain">--l ./lables/</span>
-          <span class="l l-Scalar l-Scalar-Plain">--md ./models/</span>
-          <span class="l l-Scalar l-Scalar-Plain">--mn broapt-jast</span>
-    <span class="nt">scripts</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">${PYTHON3} ./JaSt/clustering/classifier.py</span>
-          <span class="l l-Scalar l-Scalar-Plain">--f ${BROAPT_PATH}</span>
-          <span class="l l-Scalar l-Scalar-Plain">--m ./models/broapt-jast</span>
-    <span class="nt">report</span><span class="p">:</span> <span class="s">&quot;false&quot;</span>
-  <span class="nt">octet-stream</span><span class="p">:</span> <span class="nl">&amp;lmd</span>
-    <span class="c1">## LMD</span>
-    <span class="nt">workdir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${API_ROOT}/application/octet-stream/LMD</span>
-    <span class="nt">environ</span><span class="p">:</span>
-      <span class="nt">LMD_LOG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/var/log/bro/tmp/</span>
-    <span class="nt">install</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apt-get install -y --no-install-recommends git</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">test -d ./linux-malware-detect/ ||</span>
-        <span class="l l-Scalar l-Scalar-Plain">git clone https://github.com/rfxn/linux-malware-detect.git</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">${SHELL} install.sh</span>
-    <span class="nt">report</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${SHELL} detect.sh</span>
-  <span class="nt">vnd.android.package-archive</span><span class="p">:</span>
-    <span class="c1">## AndroPyTool</span>
-    <span class="nt">remote</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-    <span class="nt">workdir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">AndroPyTool</span>
-    <span class="nt">environ</span><span class="p">:</span>
-      <span class="c1"># ANDROID_HOME: $HOME/android-sdk-linux</span>
-      <span class="c1"># PATH: $PATH:$ANDROID_HOME/tools</span>
-      <span class="c1"># PATH: $PATH:$ANDROID_HOME/platform-tools</span>
-      <span class="c1"># APK_LOG: /var/log/bro/tmp/</span>
-      <span class="nt">APK_LOG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/home/traffic/log/bro/tmp/</span>
-    <span class="nt">install</span><span class="p">:</span>
-      <span class="c1"># - ${SHELL} install.sh</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">docker pull alexmyg/andropytool</span>
-    <span class="c1"># report: ${PYTHON36} detect.py</span>
-    <span class="nt">report</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${SHELL} detect.sh</span>
-  <span class="nt">vnd.openxmlformats-officedocument</span><span class="p">:</span> <span class="nl">&amp;officedocument</span>
-    <span class="c1">## MaliciousMacroBot</span>
-    <span class="nt">workdir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${API_ROOT}/application/vnd.openxmlformats-officedocument/</span>
-    <span class="nt">environ</span><span class="p">:</span>
-      <span class="nt">MMB_LOG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/var/log/bro/tmp/</span>
-    <span class="nt">install</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apt-get install -y --no-install-recommends git</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">test -d ./MaliciousMacroBot/ ||</span>
-        <span class="l l-Scalar l-Scalar-Plain">git clone https://github.com/egaus/MaliciousMacroBot.git</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">${PYTHON36} -m pip install ./MaliciousMacroBot/</span>
-    <span class="nt">report</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${PYTHON36} MaliciousMacroBot-detect.py</span>
-    <span class="nt">shared</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">officedocument</span>
-  <span class="nt">msword</span><span class="p">:</span> <span class="nv">*officedocument</span>
-  <span class="nt">vnd.ms-*</span><span class="p">:</span> <span class="nv">*officedocument</span>
-  <span class="nt">vnd.openxmlformats-officedocument</span><span class="p">:</span> <span class="nv">*officedocument</span>
-  <span class="nt">vnd.openxmlformats-officedocument.*</span><span class="p">:</span> <span class="nv">*officedocument</span>
-  <span class="nt">x-executable</span><span class="p">:</span>
-    <span class="c1">## ELF Parser</span>
-    <span class="nt">remote</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
-    <span class="nt">environ</span><span class="p">:</span>
-      <span class="c1"># ELF_LOG: /var/log/bro/tmp/</span>
-      <span class="nt">ELF_LOG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/home/traffic/log/bro/tmp/</span>
-      <span class="nt">ELF_SCORE</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">100</span>
-    <span class="nt">workdir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ELF-Parser</span>
-    <span class="nt">install</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apt-get update</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apt-get install -y --no-install-recommends \</span>
-          <span class="l l-Scalar l-Scalar-Plain">cmake \</span>
-          <span class="l l-Scalar l-Scalar-Plain">g++ \</span>
-          <span class="l l-Scalar l-Scalar-Plain">gcc \</span>
-          <span class="l l-Scalar l-Scalar-Plain">git \</span>
-          <span class="l l-Scalar l-Scalar-Plain">libboost-all-dev \</span>
-          <span class="l l-Scalar l-Scalar-Plain">make</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">test -d ./elfparser/ ||</span>
-        <span class="l l-Scalar l-Scalar-Plain">git clone https://github.com/jacob-baines/elfparser.git</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">${SHELL} build.sh</span>
-    <span class="nt">report</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${SHELL} detect.sh</span>
+<span class="c1"># APIs for `application` media type</span><span class="w"></span>
+<span class="nt">application</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">javascript</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;javascript</span><span class="w"></span>
+<span class="w">    </span><span class="c1">## JaSt</span><span class="w"></span>
+<span class="w">    </span><span class="nt">workdir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${API_ROOT}/application/javascript/JaSt</span><span class="w"></span>
+<span class="w">    </span><span class="nt">environ</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">JS_LOG</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/log/bro/tmp/</span><span class="w"></span>
+<span class="w">    </span><span class="nt">install</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apt-get update</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apt-get install -y --no-install-recommends git nodejs</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test -d ./JaSt/ ||</span><span class="w"></span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">git clone https://github.com/Aurore54F/JaSt.git</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${PYTHON3} -m pip install</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">matplotlib</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">plotly</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">numpy</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">scipy</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">scikit-learn</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">pandas</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${PYTHON3} ./JaSt/clustering/learner.py</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">--d ./sample/</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">--l ./lables/</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">--md ./models/</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">--mn broapt-jast</span><span class="w"></span>
+<span class="w">    </span><span class="nt">scripts</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${PYTHON3} ./JaSt/clustering/classifier.py</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">--f ${BROAPT_PATH}</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">--m ./models/broapt-jast</span><span class="w"></span>
+<span class="w">    </span><span class="nt">report</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;false&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">octet-stream</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;lmd</span><span class="w"></span>
+<span class="w">    </span><span class="c1">## LMD</span><span class="w"></span>
+<span class="w">    </span><span class="nt">workdir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${API_ROOT}/application/octet-stream/LMD</span><span class="w"></span>
+<span class="w">    </span><span class="nt">environ</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">LMD_LOG</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/log/bro/tmp/</span><span class="w"></span>
+<span class="w">    </span><span class="nt">install</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apt-get install -y --no-install-recommends git</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test -d ./linux-malware-detect/ ||</span><span class="w"></span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">git clone https://github.com/rfxn/linux-malware-detect.git</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${SHELL} install.sh</span><span class="w"></span>
+<span class="w">    </span><span class="nt">report</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${SHELL} detect.sh</span><span class="w"></span>
+<span class="w">  </span><span class="nt">vnd.android.package-archive</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="c1">## AndroPyTool</span><span class="w"></span>
+<span class="w">    </span><span class="nt">remote</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">    </span><span class="nt">workdir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AndroPyTool</span><span class="w"></span>
+<span class="w">    </span><span class="nt">environ</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># ANDROID_HOME: $HOME/android-sdk-linux</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># PATH: $PATH:$ANDROID_HOME/tools</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># PATH: $PATH:$ANDROID_HOME/platform-tools</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># APK_LOG: /var/log/bro/tmp/</span><span class="w"></span>
+<span class="w">      </span><span class="nt">APK_LOG</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/home/traffic/log/bro/tmp/</span><span class="w"></span>
+<span class="w">    </span><span class="nt">install</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># - ${SHELL} install.sh</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker pull alexmyg/andropytool</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># report: ${PYTHON36} detect.py</span><span class="w"></span>
+<span class="w">    </span><span class="nt">report</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${SHELL} detect.sh</span><span class="w"></span>
+<span class="w">  </span><span class="nt">vnd.openxmlformats-officedocument</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;officedocument</span><span class="w"></span>
+<span class="w">    </span><span class="c1">## MaliciousMacroBot</span><span class="w"></span>
+<span class="w">    </span><span class="nt">workdir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${API_ROOT}/application/vnd.openxmlformats-officedocument/</span><span class="w"></span>
+<span class="w">    </span><span class="nt">environ</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">MMB_LOG</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/log/bro/tmp/</span><span class="w"></span>
+<span class="w">    </span><span class="nt">install</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apt-get install -y --no-install-recommends git</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test -d ./MaliciousMacroBot/ ||</span><span class="w"></span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">git clone https://github.com/egaus/MaliciousMacroBot.git</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${PYTHON36} -m pip install ./MaliciousMacroBot/</span><span class="w"></span>
+<span class="w">    </span><span class="nt">report</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${PYTHON36} MaliciousMacroBot-detect.py</span><span class="w"></span>
+<span class="w">    </span><span class="nt">shared</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">officedocument</span><span class="w"></span>
+<span class="w">  </span><span class="nt">msword</span><span class="p">:</span><span class="w"> </span><span class="nv">*officedocument</span><span class="w"></span>
+<span class="w">  </span><span class="nt">vnd.ms-*</span><span class="p">:</span><span class="w"> </span><span class="nv">*officedocument</span><span class="w"></span>
+<span class="w">  </span><span class="nt">vnd.openxmlformats-officedocument</span><span class="p">:</span><span class="w"> </span><span class="nv">*officedocument</span><span class="w"></span>
+<span class="w">  </span><span class="nt">vnd.openxmlformats-officedocument.*</span><span class="p">:</span><span class="w"> </span><span class="nv">*officedocument</span><span class="w"></span>
+<span class="w">  </span><span class="nt">x-executable</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="c1">## ELF Parser</span><span class="w"></span>
+<span class="w">    </span><span class="nt">remote</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">    </span><span class="nt">environ</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># ELF_LOG: /var/log/bro/tmp/</span><span class="w"></span>
+<span class="w">      </span><span class="nt">ELF_LOG</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/home/traffic/log/bro/tmp/</span><span class="w"></span>
+<span class="w">      </span><span class="nt">ELF_SCORE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w"></span>
+<span class="w">    </span><span class="nt">workdir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ELF-Parser</span><span class="w"></span>
+<span class="w">    </span><span class="nt">install</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apt-get update</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apt-get install -y --no-install-recommends \</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">cmake \</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">g++ \</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">gcc \</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">git \</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">libboost-all-dev \</span><span class="w"></span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">make</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test -d ./elfparser/ ||</span><span class="w"></span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">git clone https://github.com/jacob-baines/elfparser.git</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${SHELL} build.sh</span><span class="w"></span>
+<span class="w">    </span><span class="nt">report</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${SHELL} detect.sh</span><span class="w"></span>
 
-<span class="c1"># APIs for `audio` media type</span>
-<span class="nt">audio</span><span class="p">:</span>
+<span class="c1"># APIs for `audio` media type</span><span class="w"></span>
+<span class="nt">audio</span><span class="p">:</span><span class="w"></span>
 
-<span class="c1"># Default API for missing MIME types</span>
-<span class="nt">example</span><span class="p">:</span>
-  <span class="nt">environ</span><span class="p">:</span>
-    <span class="c1">## sleep interval</span>
-    <span class="nt">VT_INTERVAL</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
-    <span class="c1">## max retry for report</span>
-    <span class="nt">VT_RETRY</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
-    <span class="c1">## percentage of positive threshold</span>
-    <span class="nt">VT_PERCENT</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">50</span>
-    <span class="c1">## VT API key</span>
-    <span class="c1">#VT_API: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>
-    <span class="c1">## path to VT file scan reports</span>
-    <span class="nt">VT_LOG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/var/log/bro/tmp/</span>
-  <span class="nt">report</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${PYTHON36} virustotal.py || exit 0</span> <span class="c1"># always EXIT_SUCCESS</span>
+<span class="c1"># Default API for missing MIME types</span><span class="w"></span>
+<span class="nt">example</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">environ</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="c1">## sleep interval</span><span class="w"></span>
+<span class="w">    </span><span class="nt">VT_INTERVAL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w"></span>
+<span class="w">    </span><span class="c1">## max retry for report</span><span class="w"></span>
+<span class="w">    </span><span class="nt">VT_RETRY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
+<span class="w">    </span><span class="c1">## percentage of positive threshold</span><span class="w"></span>
+<span class="w">    </span><span class="nt">VT_PERCENT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span><span class="w"></span>
+<span class="w">    </span><span class="c1">## VT API key</span><span class="w"></span>
+<span class="w">    </span><span class="c1">#VT_API: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span><span class="w"></span>
+<span class="w">    </span><span class="c1">## path to VT file scan reports</span><span class="w"></span>
+<span class="w">    </span><span class="nt">VT_LOG</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/log/bro/tmp/</span><span class="w"></span>
+<span class="w">  </span><span class="nt">report</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${PYTHON36} virustotal.py || exit 0</span><span class="w"> </span><span class="c1"># always EXIT_SUCCESS</span><span class="w"></span>
 
-<span class="c1"># APIs for `font` media type</span>
-<span class="nt">font</span><span class="p">:</span>
+<span class="c1"># APIs for `font` media type</span><span class="w"></span>
+<span class="nt">font</span><span class="p">:</span><span class="w"></span>
 
-<span class="c1"># APIs for `image` media type</span>
-<span class="nt">image</span><span class="p">:</span>
+<span class="c1"># APIs for `image` media type</span><span class="w"></span>
+<span class="nt">image</span><span class="p">:</span><span class="w"></span>
 
-<span class="c1"># APIs for `message` media type</span>
-<span class="nt">message</span><span class="p">:</span>
+<span class="c1"># APIs for `message` media type</span><span class="w"></span>
+<span class="nt">message</span><span class="p">:</span><span class="w"></span>
 
-<span class="c1"># APIs for `model` media type</span>
-<span class="nt">model</span><span class="p">:</span>
+<span class="c1"># APIs for `model` media type</span><span class="w"></span>
+<span class="nt">model</span><span class="p">:</span><span class="w"></span>
 
-<span class="c1"># APIs for `multipart` media type</span>
-<span class="nt">multipart</span><span class="p">:</span>
+<span class="c1"># APIs for `multipart` media type</span><span class="w"></span>
+<span class="nt">multipart</span><span class="p">:</span><span class="w"></span>
 
-<span class="c1"># APIs for `text` media type</span>
-<span class="nt">text</span><span class="p">:</span>
-  <span class="nt">html</span><span class="p">:</span> <span class="nv">*lmd</span>
-  <span class="nt">javascript</span><span class="p">:</span> <span class="nv">*javascript</span>
-  <span class="nt">x-c</span><span class="p">:</span> <span class="nv">*lmd</span>
-  <span class="nt">x-perl</span><span class="p">:</span> <span class="nv">*lmd</span>
-  <span class="nt">x-php</span><span class="p">:</span> <span class="nv">*lmd</span>
+<span class="c1"># APIs for `text` media type</span><span class="w"></span>
+<span class="nt">text</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">html</span><span class="p">:</span><span class="w"> </span><span class="nv">*lmd</span><span class="w"></span>
+<span class="w">  </span><span class="nt">javascript</span><span class="p">:</span><span class="w"> </span><span class="nv">*javascript</span><span class="w"></span>
+<span class="w">  </span><span class="nt">x-c</span><span class="p">:</span><span class="w"> </span><span class="nv">*lmd</span><span class="w"></span>
+<span class="w">  </span><span class="nt">x-perl</span><span class="p">:</span><span class="w"> </span><span class="nv">*lmd</span><span class="w"></span>
+<span class="w">  </span><span class="nt">x-php</span><span class="p">:</span><span class="w"> </span><span class="nv">*lmd</span><span class="w"></span>
 
-<span class="c1"># APIs for `video` media type</span>
-<span class="nt">video</span><span class="p">:</span>
+<span class="c1"># APIs for `video` media type</span><span class="w"></span>
+<span class="nt">video</span><span class="p">:</span><span class="w"></span>
 </pre></div>
 </div>
 </details><div class="admonition caution">

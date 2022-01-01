@@ -107,17 +107,17 @@ binary for your target system, please refer to the <code class="docutils literal
 </li>
 <li><p>Create a System V service file at <code class="docutils literal notranslate"><span class="pre">/etc/systemd/system/broaptd.service</span></code>
 (works on Ubuntu 18.04):</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[Unit]</span>
-<span class="na">Description</span><span class="o">=</span><span class="s">BroAPT Daemon</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[Unit]</span><span class="w"></span>
+<span class="na">Description</span><span class="o">=</span><span class="s">BroAPT Daemon</span><span class="w"></span>
 
-<span class="k">[Service]</span>
-<span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/local/bin/broaptd --env /etc/sysconfig/broaptd</span>
-<span class="na">ExecReload</span><span class="o">=</span><span class="s">/usr/bin/kill -INT $MAINPID</span>
-<span class="na">Restart</span><span class="o">=</span><span class="s">always</span>
-<span class="na">RestartSec</span><span class="o">=</span><span class="s">60s</span>
+<span class="k">[Service]</span><span class="w"></span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/local/bin/broaptd --env /etc/sysconfig/broaptd</span><span class="w"></span>
+<span class="na">ExecReload</span><span class="o">=</span><span class="s">/usr/bin/kill -INT $MAINPID</span><span class="w"></span>
+<span class="na">Restart</span><span class="o">=</span><span class="s">always</span><span class="w"></span>
+<span class="na">RestartSec</span><span class="o">=</span><span class="s">60s</span><span class="w"></span>
 
-<span class="k">[Install]</span>
-<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+<span class="k">[Install]</span><span class="w"></span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span><span class="w"></span>
 </pre></div>
 </div>
 </li>

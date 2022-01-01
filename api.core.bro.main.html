@@ -45,20 +45,20 @@
 </dl>
 <p>This files is the main implementation of the <code class="docutils literal notranslate"><span class="pre">FileExtraction</span></code> module. The main
 logic can be simplified as following Bro script:</p>
-<div class="highlight-zeek notranslate"><div class="highlight"><pre><span></span><span class="kn">module</span> <span class="nn">FileExtraction</span><span class="p">;</span>
+<div class="highlight-zeek notranslate"><div class="highlight"><pre><span></span><span class="kn">module</span><span class="w"> </span><span class="nn">FileExtraction</span><span class="p">;</span><span class="w"></span>
 
-<span class="kt">event</span> <span class="nf">file_sniff</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">fa_file</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">fa_metadata</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="kt">hook</span> <span class="nf">FileExtraction::ignore</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span> <span class="p">)</span>
-        <span class="k">return</span><span class="p">;</span>
+<span class="kt">event</span><span class="w"> </span><span class="nf">file_sniff</span><span class="p">(</span><span class="n">f</span><span class="p">:</span><span class="w"> </span><span class="n">fa_file</span><span class="p">,</span><span class="w"> </span><span class="n">meta</span><span class="p">:</span><span class="w"> </span><span class="n">fa_metadata</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="o">!</span><span class="kt">hook</span><span class="w"> </span><span class="nf">FileExtraction::ignore</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">meta</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="kt">hook</span> <span class="nf">FileExtraction::extract</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
-        <span class="c"># scripts to generate an output file name</span>
-        <span class="kd">local</span> <span class="n">name</span><span class="p">:</span> <span class="kt">string</span> <span class="o">=</span> <span class="p">...;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="o">!</span><span class="kt">hook</span><span class="w"> </span><span class="nf">FileExtraction::extract</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">meta</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c"># scripts to generate an output file name</span><span class="w"></span>
+<span class="w">        </span><span class="kd">local</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span><span class="w"></span>
 
-        <span class="c"># extract the file to the ``name``</span>
-        <span class="nf">Files::add_analyzer</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">Files</span><span class="p">::</span><span class="n">ANALYZER_EXTRACT</span><span class="p">,</span> <span class="p">[</span><span class="o">$</span><span class="n">extract_filename</span><span class="o">=</span><span class="n">name</span><span class="p">]);</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<span class="w">        </span><span class="c"># extract the file to the ``name``</span><span class="w"></span>
+<span class="w">        </span><span class="nf">Files::add_analyzer</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">Files</span><span class="p">::</span><span class="n">ANALYZER_EXTRACT</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">$</span><span class="n">extract_filename</span><span class="o">=</span><span class="n">name</span><span class="p">]);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>where <code class="docutils literal notranslate"><span class="pre">FileExtraction::ignore</span></code> and <code class="docutils literal notranslate"><span class="pre">FileExtraction::extract</span></code> are the two Bro
