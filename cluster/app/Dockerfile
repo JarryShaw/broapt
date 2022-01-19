@@ -19,9 +19,9 @@ RUN apt-get update \
  && add-apt-repository --yes ppa:deadsnakes/ppa
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
-        ## python3.6 is actually dependency of the latter
+        ## python3.7 is actually dependency of the latter
         ## but we keep it here as a good remainder
-        python3.6 \
+        python3.7 \
         python3-pip \
         python3-setuptools \
         python3-wheel \
@@ -29,7 +29,7 @@ RUN apt-get update \
         ## install its dependency libyaml instead
         # python3-yaml \
         libyaml-0-2 \
- && ln -sf /usr/bin/python3.6 /usr/bin/python3
+ && ln -sf /usr/bin/python3.7 /usr/bin/python3
 
 # install Python packages & dependencies
 COPY vendor/python /tmp/python
@@ -66,7 +66,7 @@ RUN rm -rf \
  && apt-get clean
 
 # final setup
-RUN ln -sf /usr/bin/python3.6 /usr/bin/python3
+RUN ln -sf /usr/bin/python3.7 /usr/bin/python3
 
 # set working directory
 WORKDIR /source
