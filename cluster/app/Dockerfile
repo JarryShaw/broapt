@@ -1,5 +1,5 @@
 # basic info
-FROM library/ubuntu:16.04
+FROM library/ubuntu:20.04
 LABEL LABEL org.opencontainers.image.title="broapt" \
       org.opencontainers.image.description="A system for detecting APT attacks in real-time" \
       org.opencontainers.image.url="https://broapt.jarryshaw.me/" \
@@ -19,9 +19,9 @@ RUN apt-get update \
  && add-apt-repository --yes ppa:deadsnakes/ppa
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
-        ## python3.7 is actually dependency of the latter
+        ## python3.10 is actually dependency of the latter
         ## but we keep it here as a good remainder
-        python3.7 \
+        python3.10 \
         python3-pip \
         python3-setuptools \
         python3-wheel \
@@ -29,7 +29,7 @@ RUN apt-get update \
         ## install its dependency libyaml instead
         # python3-yaml \
         libyaml-0-2 \
- && ln -sf /usr/bin/python3.7 /usr/bin/python3
+ && ln -sf /usr/bin/python3.10 /usr/bin/python3
 
 # install Python packages & dependencies
 COPY vendor/python /tmp/python
@@ -66,7 +66,7 @@ RUN rm -rf \
  && apt-get clean
 
 # final setup
-RUN ln -sf /usr/bin/python3.7 /usr/bin/python3
+RUN ln -sf /usr/bin/python3.10 /usr/bin/python3
 
 # set working directory
 WORKDIR /source
