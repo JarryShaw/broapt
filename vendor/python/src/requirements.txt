@@ -1,6 +1,6 @@
 # Python packages
 pip==22.0.4
-setuptools==60.9.3
+setuptools==60.10.0
 wheel==0.37.1
 
 # Python dependencies
@@ -12,8 +12,8 @@ idna==3.3
 numpy==1.22.3
 pandas==1.4.1
 python-dateutil==2.8.2
-pytz==2021.3
+pytz==2022.1
 PyYAML==6.0
 requests==2.27.1
 six==1.16.0
-urllib3==1.26.8
+urllib3==1.26.9
