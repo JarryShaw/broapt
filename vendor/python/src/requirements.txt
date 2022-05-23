@@ -4,7 +4,7 @@ setuptools==62.3.2
 wheel==0.37.1
 
 # Python dependencies
-certifi==2021.10.8
+certifi==2022.5.18.1
 chardet==4.0.0
 dataclasses==0.8
 file-magic==0.4.0
