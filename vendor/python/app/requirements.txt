@@ -1,10 +1,10 @@
 # Python packages
-pip==22.1
-setuptools==62.2.0
+pip==22.1.1
+setuptools==62.3.2
 wheel==0.37.1
 
 # Python dependencies
-certifi==2021.10.8
+certifi==2022.5.18.1
 chardet==4.0.0
 dataclasses==0.8
 idna==3.3
