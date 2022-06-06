@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Configurations &#8212; BroAPT 2020.03.14 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,15 +35,15 @@
           <div class="body" role="main">
             
   <section id="configurations">
-<h1>Configurations<a class="headerlink" href="#configurations" title="Permalink to this headline">¶</a></h1>
+<h1>Configurations<a class="headerlink" href="#configurations" title="Permalink to this heading">¶</a></h1>
 <p>As discussed in previous sections, the BroAPT system is configurable
 in various ways. You can configure the outer system from the entry CLI
 of BroAPT-Daemon server, and the main framework through Docker Compose
 environment variables.</p>
 <section id="broapt-daemon-server">
-<h2>BroAPT-Daemon Server<a class="headerlink" href="#broapt-daemon-server" title="Permalink to this headline">¶</a></h2>
+<h2>BroAPT-Daemon Server<a class="headerlink" href="#broapt-daemon-server" title="Permalink to this heading">¶</a></h2>
 <section id="command-line-interface">
-<h3>Command Line Interface<a class="headerlink" href="#command-line-interface" title="Permalink to this headline">¶</a></h3>
+<h3>Command Line Interface<a class="headerlink" href="#command-line-interface" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>usage: broaptd [-h] [-v] [-e ENV] [-s SIGNAL] [-t HOST] [-p PORT]
                [-f DOCKER_COMPOSE] [-d DUMP_PATH] [-l LOGS_PATH] [-r API_ROOT]
                [-a API_LOGS] [-i INTERVAL] [-m MAX_RETRY]
@@ -85,7 +86,7 @@ runtime arguments:
 </div>
 </section>
 <section id="environment-variables">
-<h3>Environment Variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h3>
+<h3>Environment Variables<a class="headerlink" href="#environment-variables" title="Permalink to this heading">¶</a></h3>
 <p>As suggests in the <code class="docutils literal notranslate"><span class="pre">--env</span></code> option, you may provice a <em>dotenv</em> (<code class="docutils literal notranslate"><span class="pre">.env</span></code>) file
 for the BroAPT-Daemon server to configure itself.</p>
 <p>Acceptable environment variables are as following:</p>
@@ -93,13 +94,13 @@ for the BroAPT-Daemon server to configure itself.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_KILL_SIGNAL">
 <span class="sig-name descname"><span class="pre">BROAPT_KILL_SIGNAL</span></span><a class="headerlink" href="#envvar-BROAPT_KILL_SIGNAL" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">15</span></code> (<code class="docutils literal notranslate"><span class="pre">SIGTERM</span></code>)</p>
 </dd>
-<dt class="field-odd">CLI Option</dt>
+<dt class="field-odd">CLI Option<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-s</span></code> / <code class="docutils literal notranslate"><span class="pre">--signal</span></code></p>
 </dd>
 </dl>
@@ -110,13 +111,13 @@ for the BroAPT-Daemon server to configure itself.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_SERVER_HOST">
 <span class="sig-name descname"><span class="pre">BROAPT_SERVER_HOST</span></span><a class="headerlink" href="#envvar-BROAPT_SERVER_HOST" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (hostname)</p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0.0.0</span></code></p>
 </dd>
-<dt class="field-odd">CLI Option</dt>
+<dt class="field-odd">CLI Option<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-t</span></code> / <code class="docutils literal notranslate"><span class="pre">--host</span></code></p>
 </dd>
 </dl>
@@ -127,13 +128,13 @@ for the BroAPT-Daemon server to configure itself.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_SERVER_PORT">
 <span class="sig-name descname"><span class="pre">BROAPT_SERVER_PORT</span></span><a class="headerlink" href="#envvar-BROAPT_SERVER_PORT" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code> (port number)</p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5000</span></code></p>
 </dd>
-<dt class="field-odd">CLI Option</dt>
+<dt class="field-odd">CLI Option<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-p</span></code> / <code class="docutils literal notranslate"><span class="pre">--port</span></code></p>
 </dd>
 </dl>
@@ -144,13 +145,13 @@ for the BroAPT-Daemon server to configure itself.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_DOCKER_COMPOSE">
 <span class="sig-name descname"><span class="pre">BROAPT_DOCKER_COMPOSE</span></span><a class="headerlink" href="#envvar-BROAPT_DOCKER_COMPOSE" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code></p>
 </dd>
-<dt class="field-odd">CLI Option</dt>
+<dt class="field-odd">CLI Option<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-f</span></code> / <code class="docutils literal notranslate"><span class="pre">--docker-compose</span></code></p>
 </dd>
 </dl>
@@ -161,13 +162,13 @@ for the BroAPT-Daemon server to configure itself.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_DUMP_PATH">
 <span class="sig-name descname"><span class="pre">BROAPT_DUMP_PATH</span></span><a class="headerlink" href="#envvar-BROAPT_DUMP_PATH" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
-<dt class="field-odd">CLI Option</dt>
+<dt class="field-odd">CLI Option<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-d</span></code> / <code class="docutils literal notranslate"><span class="pre">--dump-path</span></code></p>
 </dd>
 </dl>
@@ -178,13 +179,13 @@ for the BroAPT-Daemon server to configure itself.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_LOGS_PATH">
 <span class="sig-name descname"><span class="pre">BROAPT_LOGS_PATH</span></span><a class="headerlink" href="#envvar-BROAPT_LOGS_PATH" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
-<dt class="field-odd">CLI Option</dt>
+<dt class="field-odd">CLI Option<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-l</span></code> / <code class="docutils literal notranslate"><span class="pre">--logs-path</span></code></p>
 </dd>
 </dl>
@@ -195,13 +196,13 @@ for the BroAPT-Daemon server to configure itself.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_API_ROOT">
 <span class="sig-name descname"><span class="pre">BROAPT_API_ROOT</span></span><a class="headerlink" href="#envvar-BROAPT_API_ROOT" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
-<dt class="field-odd">CLI Option</dt>
+<dt class="field-odd">CLI Option<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-r</span></code> / <code class="docutils literal notranslate"><span class="pre">--api-root</span></code></p>
 </dd>
 </dl>
@@ -212,13 +213,13 @@ for the BroAPT-Daemon server to configure itself.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_API_LOGS">
 <span class="sig-name descname"><span class="pre">BROAPT_API_LOGS</span></span><a class="headerlink" href="#envvar-BROAPT_API_LOGS" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
-<dt class="field-odd">CLI Option</dt>
+<dt class="field-odd">CLI Option<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-a</span></code> / <code class="docutils literal notranslate"><span class="pre">--api-logs</span></code></p>
 </dd>
 </dl>
@@ -229,13 +230,13 @@ for the BroAPT-Daemon server to configure itself.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_INTERVAL">
 <span class="sig-name descname"><span class="pre">BROAPT_INTERVAL</span></span><a class="headerlink" href="#envvar-BROAPT_INTERVAL" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p>
 </dd>
-<dt class="field-odd">CLI Option</dt>
+<dt class="field-odd">CLI Option<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-i</span></code> / <code class="docutils literal notranslate"><span class="pre">--interval</span></code></p>
 </dd>
 </dl>
@@ -246,13 +247,13 @@ for the BroAPT-Daemon server to configure itself.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_MAX_RETRY">
 <span class="sig-name descname"><span class="pre">BROAPT_MAX_RETRY</span></span><a class="headerlink" href="#envvar-BROAPT_MAX_RETRY" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">3</span></code></p>
 </dd>
-<dt class="field-odd">CLI Option</dt>
+<dt class="field-odd">CLI Option<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-m</span></code> / <code class="docutils literal notranslate"><span class="pre">--max-retry</span></code></p>
 </dd>
 </dl>
@@ -264,10 +265,6 @@ for the BroAPT-Daemon server to configure itself.</p>
 <p>Environment variables of <code class="docutils literal notranslate"><span class="pre">bool</span></code> type will be translated through
 the following mapping table (<strong>case-insensitive</strong>):</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 47%" />
-<col style="width: 53%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p></th>
 <th class="head"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></th>
@@ -292,19 +289,19 @@ the following mapping table (<strong>case-insensitive</strong>):</p>
 </section>
 </section>
 <section id="broapt-core-framework">
-<h2>BroAPT-Core Framework<a class="headerlink" href="#broapt-core-framework" title="Permalink to this headline">¶</a></h2>
+<h2>BroAPT-Core Framework<a class="headerlink" href="#broapt-core-framework" title="Permalink to this heading">¶</a></h2>
 <p>The BroAPT-Core framework only supports configuration through environment variables.</p>
 <dl class="std envvar">
 <dt class="sig sig-object std" id="envvar-BROAPT_CPU">
 <span class="sig-name descname"><span class="pre">BROAPT_CPU</span></span><a class="headerlink" href="#envvar-BROAPT_CPU" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
-<dt class="field-odd">Availability</dt>
+<dt class="field-odd">Availability<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bundled implementation</p>
 </dd>
 </dl>
@@ -316,13 +313,13 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_CORE_CPU">
 <span class="sig-name descname"><span class="pre">BROAPT_CORE_CPU</span></span><a class="headerlink" href="#envvar-BROAPT_CORE_CPU" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
-<dt class="field-odd">Availability</dt>
+<dt class="field-odd">Availability<span class="colon">:</span></dt>
 <dd class="field-odd"><p>cluster implementation</p>
 </dd>
 </dl>
@@ -336,13 +333,13 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-0">
 <span class="sig-name descname"><span class="pre">BROAPT_INTERVAL</span></span><a class="headerlink" href="#envvar-0" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p>
 </dd>
-<dt class="field-odd">Availability</dt>
+<dt class="field-odd">Availability<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bundled implementation</p>
 </dd>
 </dl>
@@ -353,13 +350,13 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_CORE_INTERVAL">
 <span class="sig-name descname"><span class="pre">BROAPT_CORE_INTERVAL</span></span><a class="headerlink" href="#envvar-BROAPT_CORE_INTERVAL" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p>
 </dd>
-<dt class="field-odd">Availability</dt>
+<dt class="field-odd">Availability<span class="colon">:</span></dt>
 <dd class="field-odd"><p>cluster implementation</p>
 </dd>
 </dl>
@@ -370,10 +367,10 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-1">
 <span class="sig-name descname"><span class="pre">BROAPT_DUMP_PATH</span></span><a class="headerlink" href="#envvar-1" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">FileExtract::prefix</span></code> (Bro script)</p>
 </dd>
 </dl>
@@ -384,10 +381,10 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_PCAP_PATH">
 <span class="sig-name descname"><span class="pre">BROAPT_PCAP_PATH</span></span><a class="headerlink" href="#envvar-BROAPT_PCAP_PATH" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">/pcap/</span></code></p>
 </dd>
 </dl>
@@ -398,10 +395,10 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-2">
 <span class="sig-name descname"><span class="pre">BROAPT_LOGS_PATH</span></span><a class="headerlink" href="#envvar-2" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">/var/log/bro/</span></code></p>
 </dd>
 </dl>
@@ -412,10 +409,10 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_MIME_MODE">
 <span class="sig-name descname"><span class="pre">BROAPT_MIME_MODE</span></span><a class="headerlink" href="#envvar-BROAPT_MIME_MODE" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p>
 </dd>
 </dl>
@@ -426,10 +423,10 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_JSON_MODE">
 <span class="sig-name descname"><span class="pre">BROAPT_JSON_MODE</span></span><a class="headerlink" href="#envvar-BROAPT_JSON_MODE" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">LogAscii::use_json</span></code> (Bro script)</p>
 </dd>
 </dl>
@@ -440,10 +437,10 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_BARE_MODE">
 <span class="sig-name descname"><span class="pre">BROAPT_BARE_MODE</span></span><a class="headerlink" href="#envvar-BROAPT_BARE_MODE" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd>
 </dl>
@@ -454,10 +451,10 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_NO_CHKSUM">
 <span class="sig-name descname"><span class="pre">BROAPT_NO_CHKSUM</span></span><a class="headerlink" href="#envvar-BROAPT_NO_CHKSUM" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p>
 </dd>
 </dl>
@@ -468,10 +465,10 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_HASH_MD5">
 <span class="sig-name descname"><span class="pre">BROAPT_HASH_MD5</span></span><a class="headerlink" href="#envvar-BROAPT_HASH_MD5" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd>
 </dl>
@@ -482,10 +479,10 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_HASH_SHA1">
 <span class="sig-name descname"><span class="pre">BROAPT_HASH_SHA1</span></span><a class="headerlink" href="#envvar-BROAPT_HASH_SHA1" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd>
 </dl>
@@ -496,10 +493,10 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_HASH_SHA256">
 <span class="sig-name descname"><span class="pre">BROAPT_HASH_SHA256</span></span><a class="headerlink" href="#envvar-BROAPT_HASH_SHA256" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd>
 </dl>
@@ -510,10 +507,10 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_X509_MODE">
 <span class="sig-name descname"><span class="pre">BROAPT_X509_MODE</span></span><a class="headerlink" href="#envvar-BROAPT_X509_MODE" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd>
 </dl>
@@ -524,10 +521,10 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_ENTROPY_MODE">
 <span class="sig-name descname"><span class="pre">BROAPT_ENTROPY_MODE</span></span><a class="headerlink" href="#envvar-BROAPT_ENTROPY_MODE" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd>
 </dl>
@@ -538,10 +535,10 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_LOAD_MIME">
 <span class="sig-name descname"><span class="pre">BROAPT_LOAD_MIME</span></span><a class="headerlink" href="#envvar-BROAPT_LOAD_MIME" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">List[str]</span></code> (<em>case-insensitive</em>)</p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
 </dl>
@@ -552,10 +549,10 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_LOAD_PROTOCOL">
 <span class="sig-name descname"><span class="pre">BROAPT_LOAD_PROTOCOL</span></span><a class="headerlink" href="#envvar-BROAPT_LOAD_PROTOCOL" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">List[str]</span></code> (<em>case-insensitive</em>)</p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
 </dl>
@@ -567,10 +564,10 @@ can be any of <code class="docutils literal notranslate"><span class="pre">dtls<
 <dt class="sig sig-object std" id="envvar-BROAPT_FILE_BUFFER">
 <span class="sig-name descname"><span class="pre">BROAPT_FILE_BUFFER</span></span><a class="headerlink" href="#envvar-BROAPT_FILE_BUFFER" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code> (<code class="docutils literal notranslate"><span class="pre">uint64</span></code>)</p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">Files::reassembly_buffer_size</span></code> (Bro script)</p>
 </dd>
 </dl>
@@ -581,10 +578,10 @@ can be any of <code class="docutils literal notranslate"><span class="pre">dtls<
 <dt class="sig sig-object std" id="envvar-BROAPT_SIZE_LIMIT">
 <span class="sig-name descname"><span class="pre">BROAPT_SIZE_LIMIT</span></span><a class="headerlink" href="#envvar-BROAPT_SIZE_LIMIT" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code> (<code class="docutils literal notranslate"><span class="pre">uint64</span></code>)</p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">FileExtract::default_limit</span></code> (Bro script)</p>
 </dd>
 </dl>
@@ -595,10 +592,10 @@ can be any of <code class="docutils literal notranslate"><span class="pre">dtls<
 <dt class="sig sig-object std" id="envvar-BROAPT_HOOK_CPU">
 <span class="sig-name descname"><span class="pre">BROAPT_HOOK_CPU</span></span><a class="headerlink" href="#envvar-BROAPT_HOOK_CPU" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p>
 </dd>
 </dl>
@@ -607,19 +604,19 @@ can be any of <code class="docutils literal notranslate"><span class="pre">dtls<
 
 </section>
 <section id="broapt-app-framework">
-<h2>BroAPT-App Framework<a class="headerlink" href="#broapt-app-framework" title="Permalink to this headline">¶</a></h2>
+<h2>BroAPT-App Framework<a class="headerlink" href="#broapt-app-framework" title="Permalink to this heading">¶</a></h2>
 <p>The BroAPT-App framework only supports configuration through environment variables.</p>
 <dl class="std envvar">
 <dt class="sig sig-object std" id="envvar-BROAPT_SCAN_CPU">
 <span class="sig-name descname"><span class="pre">BROAPT_SCAN_CPU</span></span><a class="headerlink" href="#envvar-BROAPT_SCAN_CPU" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
-<dt class="field-odd">Availability</dt>
+<dt class="field-odd">Availability<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bundled implementation</p>
 </dd>
 </dl>
@@ -631,13 +628,13 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_APP_CPU">
 <span class="sig-name descname"><span class="pre">BROAPT_APP_CPU</span></span><a class="headerlink" href="#envvar-BROAPT_APP_CPU" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
-<dt class="field-odd">Availability</dt>
+<dt class="field-odd">Availability<span class="colon">:</span></dt>
 <dd class="field-odd"><p>cluster implementation</p>
 </dd>
 </dl>
@@ -651,13 +648,13 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-3">
 <span class="sig-name descname"><span class="pre">BROAPT_INTERVAL</span></span><a class="headerlink" href="#envvar-3" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p>
 </dd>
-<dt class="field-odd">Availability</dt>
+<dt class="field-odd">Availability<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bundled implementation</p>
 </dd>
 </dl>
@@ -668,13 +665,13 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_APP_INTERVAL">
 <span class="sig-name descname"><span class="pre">BROAPT_APP_INTERVAL</span></span><a class="headerlink" href="#envvar-BROAPT_APP_INTERVAL" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p>
 </dd>
-<dt class="field-odd">Availability</dt>
+<dt class="field-odd">Availability<span class="colon">:</span></dt>
 <dd class="field-odd"><p>cluster implementation</p>
 </dd>
 </dl>
@@ -685,10 +682,10 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-4">
 <span class="sig-name descname"><span class="pre">BROAPT_MAX_RETRY</span></span><a class="headerlink" href="#envvar-4" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">3</span></code></p>
 </dd>
 </dl>
@@ -699,10 +696,10 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-5">
 <span class="sig-name descname"><span class="pre">BROAPT_API_ROOT</span></span><a class="headerlink" href="#envvar-5" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">/api/</span></code></p>
 </dd>
 </dl>
@@ -713,10 +710,10 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-6">
 <span class="sig-name descname"><span class="pre">BROAPT_API_LOGS</span></span><a class="headerlink" href="#envvar-6" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">/var/log/bro/api/</span></code></p>
 </dd>
 </dl>
@@ -727,10 +724,10 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_NAME_HOST">
 <span class="sig-name descname"><span class="pre">BROAPT_NAME_HOST</span></span><a class="headerlink" href="#envvar-BROAPT_NAME_HOST" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (hostname)</p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">localhost</span></code></p>
 </dd>
 </dl>
@@ -741,10 +738,10 @@ number of system CPUs will be used.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_NAME_PORT">
 <span class="sig-name descname"><span class="pre">BROAPT_NAME_PORT</span></span><a class="headerlink" href="#envvar-BROAPT_NAME_PORT" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code> (port number)</p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5000</span></code></p>
 </dd>
 </dl>
@@ -808,7 +805,7 @@ number of system CPUs will be used.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 

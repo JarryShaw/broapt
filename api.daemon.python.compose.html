@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Docker Watchdog &#8212; BroAPT 2020.03.14 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,9 +35,9 @@
           <div class="body" role="main">
             
   <section id="docker-watchdog">
-<h1>Docker Watchdog<a class="headerlink" href="#docker-watchdog" title="Permalink to this headline">¶</a></h1>
+<h1>Docker Watchdog<a class="headerlink" href="#docker-watchdog" title="Permalink to this heading">¶</a></h1>
 <dl class="field-list simple">
-<dt class="field-odd">File location</dt>
+<dt class="field-odd">File location<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p>Bundled implementation: <code class="docutils literal notranslate"><span class="pre">source/server/python/compose.py</span></code></p></li>
 <li><p>Cluster implementation: <code class="docutils literal notranslate"><span class="pre">cluster/daemon/python/compose.py</span></code></p></li>
@@ -67,7 +68,7 @@ to exit. And gracefully stop the Docker containers through
 <dd><p>Supervise the status of Docker containers while the system is running,
 i.e. <a class="reference internal" href="#compose.UP_FLAG" title="compose.UP_FLAG"><code class="xref py py-data docutils literal notranslate"><span class="pre">UP_FLAG</span></code></a> is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#compose.ComposeWarning" title="compose.ComposeWarning"><strong>ComposeWarning</strong></a> – If fail to poll status of Docker containers.</p>
 </dd>
 </dl>
@@ -110,7 +111,7 @@ for <a class="reference internal" href="api.daemon.python.const.html#const.KILL_
 <dt class="sig sig-object py" id="compose.ComposeWarning">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">ComposeWarning</span></span><a class="headerlink" href="#compose.ComposeWarning" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Bases</dt>
+<dt class="field-odd">Bases<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Warning</p>
 </dd>
 </dl>
@@ -180,7 +181,7 @@ for <a class="reference internal" href="api.daemon.python.const.html#const.KILL_
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 

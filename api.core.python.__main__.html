@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>System Entrypoint &#8212; BroAPT 2020.03.14 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,9 +35,9 @@
           <div class="body" role="main">
             
   <section id="system-entrypoint">
-<h1>System Entrypoint<a class="headerlink" href="#system-entrypoint" title="Permalink to this headline">¶</a></h1>
+<h1>System Entrypoint<a class="headerlink" href="#system-entrypoint" title="Permalink to this heading">¶</a></h1>
 <dl class="field-list simple">
-<dt class="field-odd">File location</dt>
+<dt class="field-odd">File location<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p>Bundled implementation: <code class="docutils literal notranslate"><span class="pre">source/client/python/__main__.py</span></code></p></li>
 <li><p>Cluster implementation: <code class="docutils literal notranslate"><span class="pre">cluster/core/source/python/__main__.py</span></code></p></li>
@@ -47,7 +48,7 @@
 as a module where the <code class="docutils literal notranslate"><span class="pre">__main__.py</span></code> will be considered as the entrypoint.</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="main__.PCAP_MGC">
-<span id="__main__.PCAP_MGC"></span><span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">PCAP_MGC</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(b'\xa1\xb2\x3c\x4d',</span>
+<span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">PCAP_MGC</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(b'\xa1\xb2\x3c\x4d',</span>
 <span class="pre">b'\xa1\xb2\xc3\xd4',</span>
 <span class="pre">b'\x4d\x3c\xb2\xa1',</span>
 <span class="pre">b'\xd4\xc3\xb2\xa1',</span>
@@ -64,16 +65,16 @@ as a module where the <code class="docutils literal notranslate"><span class="pr
 
 <dl class="py function">
 <dt class="sig sig-object py" id="main__.is_pcap">
-<span id="__main__.is_pcap"></span><span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">is_pcap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main__.is_pcap" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">is_pcap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main__.is_pcap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if <code class="docutils literal notranslate"><span class="pre">file</span></code> is a valid PCAP file with help of <a class="reference external" href="https://pypi.org/project/python-libmagic"><code class="docutils literal notranslate"><span class="pre">libmagic</span></code></a>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Path of the file to be checked.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>If is a valid PCAP file.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
 </dd>
 </dl>
@@ -81,13 +82,13 @@ as a module where the <code class="docutils literal notranslate"><span class="pr
 
 <dl class="py function">
 <dt class="sig sig-object py" id="main__.listdir">
-<span id="__main__.listdir"></span><span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">listdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main__.listdir" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">listdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main__.listdir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch all files under <code class="docutils literal notranslate"><span class="pre">path</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Path to be fetched.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
@@ -95,7 +96,7 @@ as a module where the <code class="docutils literal notranslate"><span class="pr
 
 <dl class="py function">
 <dt class="sig sig-object py" id="main__.parse_args">
-<span id="__main__.parse_args"></span><span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">parse_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main__.parse_args" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">parse_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main__.parse_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse command line arguments (path to PCAP files) and fetch valid
 PCAP files.</p>
 <div class="admonition note">
@@ -104,13 +105,13 @@ PCAP files.</p>
 <a class="reference internal" href="#main__.listdir" title="__main__.listdir"><code class="xref py py-func docutils literal notranslate"><span class="pre">listdir()</span></code></a>.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>argv</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – Command line arguments.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of valid PCAP files.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
@@ -118,17 +119,17 @@ PCAP files.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="main__.check_history">
-<span id="__main__.check_history"></span><span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">check_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main__.check_history" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">check_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main__.check_history" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check processed PCAP files.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Processed PCAP files will be recorded at <a class="reference internal" href="api.daemon.python.const.html#const.FILE" title="const.FILE"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.FILE</span></code></a>.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List of processed PCAP files.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
@@ -136,7 +137,7 @@ PCAP files.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="main__.main_with_args">
-<span id="__main__.main_with_args"></span><span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">main_with_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main__.main_with_args" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">main_with_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main__.main_with_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the BroAPT system <strong>with</strong> command line arguments.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -144,10 +145,10 @@ PCAP files.</p>
 given by the command line arguments are processed.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Exit code.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
 </dd>
 </dl>
@@ -155,7 +156,7 @@ given by the command line arguments are processed.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="main__.main_with_no_args">
-<span id="__main__.main_with_no_args"></span><span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">main_with_no_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main__.main_with_no_args" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">main_with_no_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main__.main_with_no_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the BroAPT system <strong>without</strong> command line arguments.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -166,13 +167,13 @@ indefinitely.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="main__.main">
-<span id="__main__.main"></span><span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main__.main" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main__.main" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the BroAPT-App framework under the context of <a class="reference internal" href="api.core.python.remote.html#remote.remote_proc" title="remote.remote_proc"><code class="xref py py-func docutils literal notranslate"><span class="pre">remote.remote_proc()</span></code></a>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Exit code.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
 </dd>
 </dl>
@@ -248,7 +249,7 @@ indefinitely.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 

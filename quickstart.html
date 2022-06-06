@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Quickstart &#8212; BroAPT 2020.03.14 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,9 +35,9 @@
           <div class="body" role="main">
             
   <section id="quickstart">
-<h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
+<h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this heading">¶</a></h1>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h2>
 <p>Installation of the BroAPT system is rather simple. Just clone the repository
 or download the tarball, then voilà, it’s ready to go.</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># from GitHub (active repository)</span>
@@ -47,9 +48,9 @@ git clone https://gitlab.sjtu.edu.cn/bysj/2019bysj.git
 </div>
 </section>
 <section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h2>
 <section id="broaptd-service">
-<h3><code class="docutils literal notranslate"><span class="pre">broaptd</span></code> Service<a class="headerlink" href="#broaptd-service" title="Permalink to this headline">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">broaptd</span></code> Service<a class="headerlink" href="#broaptd-service" title="Permalink to this heading">¶</a></h3>
 <p>On Linux systems, you can register a System V service for <code class="docutils literal notranslate"><span class="pre">broaptd</span></code>, the
 main entrypoint of the BroAPT system, a.k.a the CLI of BroAPT-Daemon server.</p>
 <div class="admonition important">
@@ -134,7 +135,7 @@ sudo systemctl <span class="nb">enable</span> broaptd.service
 </ol>
 </section>
 <section id="docker-image">
-<h3>Docker Image<a class="headerlink" href="#docker-image" title="Permalink to this headline">¶</a></h3>
+<h3>Docker Image<a class="headerlink" href="#docker-image" title="Permalink to this heading">¶</a></h3>
 <p>The BroAPT Docker images can be found on <a class="reference external" href="https://hub.docker.com/r/jsnbzh/broapt">Docker Hub</a> now.</p>
 <ul class="simple">
 <li><p>Bundled implementation: <code class="docutils literal notranslate"><span class="pre">jsnbzh/broapt:latest</span></code></p></li>
@@ -147,16 +148,16 @@ sudo systemctl <span class="nb">enable</span> broaptd.service
 </ul>
 </section>
 <section id="docker-compose">
-<h3>Docker Compose<a class="headerlink" href="#docker-compose" title="Permalink to this headline">¶</a></h3>
+<h3>Docker Compose<a class="headerlink" href="#docker-compose" title="Permalink to this heading">¶</a></h3>
 <p>Even though the <code class="docutils literal notranslate"><span class="pre">broaptd</span></code> will already manage the Docker containers of
 the BroAPT system through Docker Compose, you might wish to check by yourself.</p>
 <section id="bundled-implementation">
-<h4>Bundled Implementation<a class="headerlink" href="#bundled-implementation" title="Permalink to this headline">¶</a></h4>
+<h4>Bundled Implementation<a class="headerlink" href="#bundled-implementation" title="Permalink to this heading">¶</a></h4>
 <p>For bundled implementation, there is only one Docker container service called
 <code class="docutils literal notranslate"><span class="pre">broapt</span></code>. You can refer to the Docker Compose file at <code class="docutils literal notranslate"><span class="pre">source/docker/docker-compose.${system}.yml</span></code>.</p>
 </section>
 <section id="cluster-implementation">
-<h4>Cluster Implementation<a class="headerlink" href="#cluster-implementation" title="Permalink to this headline">¶</a></h4>
+<h4>Cluster Implementation<a class="headerlink" href="#cluster-implementation" title="Permalink to this heading">¶</a></h4>
 <p>For cluster implementation, there are two Docker container services: <code class="docutils literal notranslate"><span class="pre">core</span></code>
 for the BroAPT-Core framework and <code class="docutils literal notranslate"><span class="pre">app</span></code> for the BroAPT-App framework. You
 can refer to the Docker Compose file at <code class="docutils literal notranslate"><span class="pre">cluster/docker/docker-compose.${system}.yml</span></code>.</p>
@@ -164,7 +165,7 @@ can refer to the Docker Compose file at <code class="docutils literal notranslat
 </section>
 </section>
 <section id="repository-structure">
-<h2>Repository Structure<a class="headerlink" href="#repository-structure" title="Permalink to this headline">¶</a></h2>
+<h2>Repository Structure<a class="headerlink" href="#repository-structure" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>/broapt/
 ├── LICENSE             # CC license
 ├── LICENSE.bsd         # BSD license
@@ -240,7 +241,7 @@ can refer to the Docker Compose file at <code class="docutils literal notranslat
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 

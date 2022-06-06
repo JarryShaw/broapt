@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Bro Logs Processing &#8212; BroAPT 2020.03.14 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,9 +35,9 @@
           <div class="body" role="main">
             
   <section id="bro-logs-processing">
-<h1>Bro Logs Processing<a class="headerlink" href="#bro-logs-processing" title="Permalink to this headline">¶</a></h1>
+<h1>Bro Logs Processing<a class="headerlink" href="#bro-logs-processing" title="Permalink to this heading">¶</a></h1>
 <dl class="field-list simple">
-<dt class="field-odd">File location</dt>
+<dt class="field-odd">File location<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p>Bundled implementation: <code class="docutils literal notranslate"><span class="pre">source/client/python/remote.py</span></code></p></li>
 <li><p>Cluster implementation: <code class="docutils literal notranslate"><span class="pre">cluster/core/source/python/remote.py</span></code></p></li>
@@ -44,7 +45,7 @@
 </dd>
 </dl>
 <section id="hook-mainloop">
-<h2>Hook Mainloop<a class="headerlink" href="#hook-mainloop" title="Permalink to this headline">¶</a></h2>
+<h2>Hook Mainloop<a class="headerlink" href="#hook-mainloop" title="Permalink to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="remote.remote_proc">
 <span class="sig-prename descclassname"><span class="pre">remote.</span></span><span class="sig-name descname"><span class="pre">remote_proc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#remote.remote_proc" title="Permalink to this definition">¶</a></dt>
@@ -70,7 +71,7 @@ process to gracefully exit.</p>
 <dt class="sig sig-object py" id="remote.remote_logs">
 <span class="sig-prename descclassname"><span class="pre">remote.</span></span><span class="sig-name descname"><span class="pre">remote_logs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#remote.remote_logs" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Availability</dt>
+<dt class="field-odd">Availability<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bundled implementation</p>
 </dd>
 </dl>
@@ -82,7 +83,7 @@ on them.</p>
 break from the loop and execute registered Python hooks for <em>closing</em>
 (<a class="reference internal" href="api.core.python.sites.html#sites.EXIT" title="sites.EXIT"><code class="xref py py-data docutils literal notranslate"><span class="pre">sites.EXIT</span></code></a>).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#remote.HookWarning" title="remote.HookWarning"><strong>HookWarning</strong></a> – If hook execution failed.</p>
 </dd>
 </dl>
@@ -92,7 +93,7 @@ break from the loop and execute registered Python hooks for <em>closing</em>
 <dt class="sig sig-object py" id="remote.remote">
 <span class="sig-prename descclassname"><span class="pre">remote.</span></span><span class="sig-name descname"><span class="pre">remote</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#remote.remote" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Availability</dt>
+<dt class="field-odd">Availability<span class="colon">:</span></dt>
 <dd class="field-odd"><p>cluster implementation</p>
 </dd>
 </dl>
@@ -103,7 +104,7 @@ on them.</p>
 break from the loop and execute registered Python hooks for <em>closing</em>
 (<a class="reference internal" href="api.core.python.sites.html#sites.EXIT" title="sites.EXIT"><code class="xref py py-data docutils literal notranslate"><span class="pre">sites.EXIT</span></code></a>).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#remote.HookWarning" title="remote.HookWarning"><strong>HookWarning</strong></a> – If hook execution failed.</p>
 </dd>
 </dl>
@@ -114,7 +115,7 @@ break from the loop and execute registered Python hooks for <em>closing</em>
 <span class="sig-name descname"><span class="pre">hook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrapper function for running registered Python hooks.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>log_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Root folder of Bro logs.</p>
 </dd>
 </dl>
@@ -136,12 +137,12 @@ break from the loop and execute registered Python hooks for <em>closing</em>
 
 </section>
 <section id="warnings">
-<h2>Warnings<a class="headerlink" href="#warnings" title="Permalink to this headline">¶</a></h2>
+<h2>Warnings<a class="headerlink" href="#warnings" title="Permalink to this heading">¶</a></h2>
 <dl class="py exception">
 <dt class="sig sig-object py" id="remote.HookWarning">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">remote.</span></span><span class="sig-name descname"><span class="pre">HookWarning</span></span><a class="headerlink" href="#remote.HookWarning" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Bases</dt>
+<dt class="field-odd">Bases<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Warning" title="(in Python v3.10)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Warning</span></code></a></p>
 </dd>
 </dl>
@@ -150,14 +151,14 @@ break from the loop and execute registered Python hooks for <em>closing</em>
 
 </section>
 <section id="signal-handling">
-<h2>Signal Handling<a class="headerlink" href="#signal-handling" title="Permalink to this headline">¶</a></h2>
+<h2>Signal Handling<a class="headerlink" href="#signal-handling" title="Permalink to this heading">¶</a></h2>
 <section id="bundled-implementation">
-<h3>Bundled Implementation<a class="headerlink" href="#bundled-implementation" title="Permalink to this headline">¶</a></h3>
+<h3>Bundled Implementation<a class="headerlink" href="#bundled-implementation" title="Permalink to this heading">¶</a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="remote.join_logs">
 <span class="sig-prename descclassname"><span class="pre">remote.</span></span><span class="sig-name descname"><span class="pre">join_logs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#remote.join_logs" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Availability</dt>
+<dt class="field-odd">Availability<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bundled implementation</p>
 </dd>
 </dl>
@@ -172,7 +173,7 @@ break from the loop and execute registered Python hooks for <em>closing</em>
 <dt class="sig sig-object py" id="remote.JOIN_LOGS">
 <span class="sig-prename descclassname"><span class="pre">remote.</span></span><span class="sig-name descname"><span class="pre">JOIN_LOGS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">multiprocessing.Value('B',</span> <span class="pre">False)</span></em><a class="headerlink" href="#remote.JOIN_LOGS" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Availability</dt>
+<dt class="field-odd">Availability<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bundled implementation</p>
 </dd>
 </dl>
@@ -181,12 +182,12 @@ break from the loop and execute registered Python hooks for <em>closing</em>
 
 </section>
 <section id="cluster-implementation">
-<h3>Cluster Implementation<a class="headerlink" href="#cluster-implementation" title="Permalink to this headline">¶</a></h3>
+<h3>Cluster Implementation<a class="headerlink" href="#cluster-implementation" title="Permalink to this heading">¶</a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="remote.join">
 <span class="sig-prename descclassname"><span class="pre">remote.</span></span><span class="sig-name descname"><span class="pre">join</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#remote.join" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Availability</dt>
+<dt class="field-odd">Availability<span class="colon">:</span></dt>
 <dd class="field-odd"><p>cluster implementation</p>
 </dd>
 </dl>
@@ -201,7 +202,7 @@ break from the loop and execute registered Python hooks for <em>closing</em>
 <dt class="sig sig-object py" id="remote.JOIN">
 <span class="sig-prename descclassname"><span class="pre">remote.</span></span><span class="sig-name descname"><span class="pre">JOIN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">multiprocessing.Value('B',</span> <span class="pre">False)</span></em><a class="headerlink" href="#remote.JOIN" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Availability</dt>
+<dt class="field-odd">Availability<span class="colon">:</span></dt>
 <dd class="field-odd"><p>cluster implementation</p>
 </dd>
 </dl>
@@ -273,7 +274,7 @@ break from the loop and execute registered Python hooks for <em>closing</em>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 

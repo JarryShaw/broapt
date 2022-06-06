@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Internal Frameworks &#8212; BroAPT 2020.03.14 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,7 +35,7 @@
           <div class="body" role="main">
             
   <section id="internal-frameworks">
-<h1>Internal Frameworks<a class="headerlink" href="#internal-frameworks" title="Permalink to this headline">¶</a></h1>
+<h1>Internal Frameworks<a class="headerlink" href="#internal-frameworks" title="Permalink to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="broapt-core.html">BroAPT-Core Extration Framework</a><ul>
@@ -98,7 +99,7 @@ detection as described in the request, and send the detection report
 back to the BroAPT-App framework.</p></li>
 </ol>
 <section id="implementation-details">
-<h2>Implementation Details<a class="headerlink" href="#implementation-details" title="Permalink to this headline">¶</a></h2>
+<h2>Implementation Details<a class="headerlink" href="#implementation-details" title="Permalink to this heading">¶</a></h2>
 <p>In first draft design, the BroAPT system was implemented in a cluster manner,
 comparing to current bundled distribution, i.e. the BroAPT-Core framework and
 BroAPT-App framework are two separate Docker containers. However, two
@@ -111,7 +112,7 @@ talking about the BroAPT system internal implementation details.</p>
 <p>Through internal module name may vary between two implementations, the main
 implementation source codes is, nevertheless, identical in both implementations.</p>
 <section id="cluster-implementation">
-<h3>Cluster Implementation<a class="headerlink" href="#cluster-implementation" title="Permalink to this headline">¶</a></h3>
+<h3>Cluster Implementation<a class="headerlink" href="#cluster-implementation" title="Permalink to this heading">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For source codes, please go to <a class="reference external" href="https://github.com/JarryShaw/BroAPT/tree/master/source/"><code class="docutils literal notranslate"><span class="pre">/source/</span></code></a> folder.</p>
@@ -124,7 +125,7 @@ is in an Ubuntu 16.04 container, with better compatibility for detection tools.<
 temporary listing files.</p>
 </section>
 <section id="bundled-implementation">
-<h3>Bundled Implementation<a class="headerlink" href="#bundled-implementation" title="Permalink to this headline">¶</a></h3>
+<h3>Bundled Implementation<a class="headerlink" href="#bundled-implementation" title="Permalink to this heading">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For source codes, please go to <a class="reference external" href="https://github.com/JarryShaw/BroAPT/tree/master/cluster/"><code class="docutils literal notranslate"><span class="pre">/cluster/</span></code></a> folder.</p>
@@ -190,7 +191,7 @@ BroAPT-App framework are running in a CentOS 7 container.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 

@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Remote Detection &#8212; BroAPT 2020.03.14 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,9 +35,9 @@
           <div class="body" role="main">
             
   <section id="remote-detection">
-<h1>Remote Detection<a class="headerlink" href="#remote-detection" title="Permalink to this headline">¶</a></h1>
+<h1>Remote Detection<a class="headerlink" href="#remote-detection" title="Permalink to this heading">¶</a></h1>
 <dl class="field-list simple">
-<dt class="field-odd">File location</dt>
+<dt class="field-odd">File location<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p>Bundled implementation: <code class="docutils literal notranslate"><span class="pre">source/client/python/scan.py</span></code></p></li>
 <li><p>Cluster implementation: <code class="docutils literal notranslate"><span class="pre">cluster/app/source/python/remote.py</span></code></p></li>
@@ -44,28 +45,28 @@
 </dd>
 </dl>
 <section id="bundled-implementation">
-<h2>Bundled Implementation<a class="headerlink" href="#bundled-implementation" title="Permalink to this headline">¶</a></h2>
+<h2>Bundled Implementation<a class="headerlink" href="#bundled-implementation" title="Permalink to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="scan.remote">
 <span class="sig-prename descclassname"><span class="pre">scan.</span></span><span class="sig-name descname"><span class="pre">remote</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="api.app.python.__main__.html#scan.Entry" title="scan.Entry"><span class="pre">Entry</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">api</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.API" title="cfgparser.API"><span class="pre">API</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scan.remote" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Availability</dt>
+<dt class="field-odd">Availability<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bundled implementation</p>
 </dd>
 </dl>
 <p>Request the BroAPT-Daemon server to perform <em>remote</em> detection.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>entry</strong> (<a class="reference internal" href="api.app.python.__main__.html#scan.Entry" title="scan.Entry"><em>Entry</em></a>) – Extracted file to be processed.</p></li>
 <li><p><strong>mime</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – MIME type.</p></li>
 <li><p><strong>api</strong> (<a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.API" title="cfgparser.API"><em>API</em></a>) – API entry from <code class="docutils literal notranslate"><span class="pre">api.yml</span></code>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Exit code (<a class="reference internal" href="api.daemon.python.const.html#const.EXIT_SUCCESS" title="const.EXIT_SUCCESS"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.EXIT_SUCCESS</span></code></a> or <a class="reference internal" href="api.daemon.python.const.html#const.EXIT_FAILURE" title="const.EXIT_FAILURE"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.EXIT_FAILURE</span></code></a>).</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
 </dd>
 </dl>
@@ -73,12 +74,12 @@
 
 </section>
 <section id="cluster-implementation">
-<h2>Cluster Implementation<a class="headerlink" href="#cluster-implementation" title="Permalink to this headline">¶</a></h2>
+<h2>Cluster Implementation<a class="headerlink" href="#cluster-implementation" title="Permalink to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="remote.remote">
 <span class="sig-prename descclassname"><span class="pre">remote.</span></span><span class="sig-name descname"><span class="pre">remote</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="api.app.python.__main__.html#scan.Entry" title="scan.Entry"><span class="pre">Entry</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">api</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.API" title="cfgparser.API"><span class="pre">API</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#remote.remote" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Availability</dt>
+<dt class="field-odd">Availability<span class="colon">:</span></dt>
 <dd class="field-odd"><p>cluster implementation</p>
 </dd>
 </dl>
@@ -152,7 +153,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 

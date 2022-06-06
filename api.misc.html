@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Miscellaneous &amp; Auxiliary &#8212; BroAPT 2020.03.14 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -33,13 +34,13 @@
           <div class="body" role="main">
             
   <section id="miscellaneous-auxiliary">
-<h1>Miscellaneous &amp; Auxiliary<a class="headerlink" href="#miscellaneous-auxiliary" title="Permalink to this headline">¶</a></h1>
+<h1>Miscellaneous &amp; Auxiliary<a class="headerlink" href="#miscellaneous-auxiliary" title="Permalink to this heading">¶</a></h1>
 <section id="mime-extension-mappings">
-<h2>MIME-Extension Mappings<a class="headerlink" href="#mime-extension-mappings" title="Permalink to this headline">¶</a></h2>
+<h2>MIME-Extension Mappings<a class="headerlink" href="#mime-extension-mappings" title="Permalink to this heading">¶</a></h2>
 <section id="generate-mappings">
-<h3>Generate Mappings<a class="headerlink" href="#generate-mappings" title="Permalink to this headline">¶</a></h3>
+<h3>Generate Mappings<a class="headerlink" href="#generate-mappings" title="Permalink to this heading">¶</a></h3>
 <dl class="field-list simple">
-<dt class="field-odd">File location</dt>
+<dt class="field-odd">File location<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p>Bundled implementation: <code class="docutils literal notranslate"><span class="pre">source/utils/mime2ext.py</span></code></p></li>
 <li><p>Cluster implementation: <code class="docutils literal notranslate"><span class="pre">cluster/utils/mime2ext.py</span></code></p></li>
@@ -54,10 +55,10 @@
 <dt class="sig sig-object std" id="envvar-BROAPT_FORCE_UPDATE">
 <span class="sig-name descname"><span class="pre">BROAPT_FORCE_UPDATE</span></span><a class="headerlink" href="#envvar-BROAPT_FORCE_UPDATE" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd>
 </dl>
@@ -73,9 +74,9 @@ dump the mappings to corresponding <code class="docutils literal notranslate"><s
 corresponding file extensions.</p>
 </section>
 <section id="fix-missing-mappings">
-<h3>Fix Missing Mappings<a class="headerlink" href="#fix-missing-mappings" title="Permalink to this headline">¶</a></h3>
+<h3>Fix Missing Mappings<a class="headerlink" href="#fix-missing-mappings" title="Permalink to this heading">¶</a></h3>
 <dl class="field-list simple">
-<dt class="field-odd">File location</dt>
+<dt class="field-odd">File location<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p>Bundled implementation: <code class="docutils literal notranslate"><span class="pre">source/utils/fix-missing.py</span></code></p></li>
 <li><p>Cluster implementation: <code class="docutils literal notranslate"><span class="pre">cluster/utils/fix-missing.py</span></code></p></li>
@@ -90,10 +91,10 @@ corresponding file extensions.</p>
 <dt class="sig sig-object std" id="envvar-BROAPT_LOGS_PATH">
 <span class="sig-name descname"><span class="pre">BROAPT_LOGS_PATH</span></span><a class="headerlink" href="#envvar-BROAPT_LOGS_PATH" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
 </dd>
-<dt class="field-even">Default</dt>
+<dt class="field-even">Default<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">/var/log/bro/</span></code></p>
 </dd>
 </dl>
@@ -108,11 +109,11 @@ database with these found-missing MIME types.</p>
 </section>
 </section>
 <section id="bro-script-composers">
-<h2>Bro Script Composers<a class="headerlink" href="#bro-script-composers" title="Permalink to this headline">¶</a></h2>
+<h2>Bro Script Composers<a class="headerlink" href="#bro-script-composers" title="Permalink to this heading">¶</a></h2>
 <section id="http-method-registry">
-<h3>HTTP Method Registry<a class="headerlink" href="#http-method-registry" title="Permalink to this headline">¶</a></h3>
+<h3>HTTP Method Registry<a class="headerlink" href="#http-method-registry" title="Permalink to this heading">¶</a></h3>
 <dl class="field-list simple">
-<dt class="field-odd">File location</dt>
+<dt class="field-odd">File location<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">source/utils/http-methods.py</span></code></p>
 </dd>
 </dl>
@@ -126,9 +127,9 @@ registry to the BroAPT system in Bro script <code class="docutils literal notran
 and update the builtin <code class="docutils literal notranslate"><span class="pre">HTTP::http_methods</span></code> with the fetched data.</p>
 </section>
 <section id="http-message-headers">
-<h3>HTTP Message Headers<a class="headerlink" href="#http-message-headers" title="Permalink to this headline">¶</a></h3>
+<h3>HTTP Message Headers<a class="headerlink" href="#http-message-headers" title="Permalink to this heading">¶</a></h3>
 <dl class="field-list simple">
-<dt class="field-odd">File location</dt>
+<dt class="field-odd">File location<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">source/utils/http-header-names.py</span></code></p>
 </dd>
 </dl>
@@ -142,9 +143,9 @@ header registry to the BroAPT system in Bro script <code class="docutils literal
 and update the builtin <code class="docutils literal notranslate"><span class="pre">HTTP::header_names</span></code> with the fetched data.</p>
 </section>
 <section id="ftp-commands-extensions">
-<h3>FTP Commands &amp; Extensions<a class="headerlink" href="#ftp-commands-extensions" title="Permalink to this headline">¶</a></h3>
+<h3>FTP Commands &amp; Extensions<a class="headerlink" href="#ftp-commands-extensions" title="Permalink to this heading">¶</a></h3>
 <dl class="field-list simple">
-<dt class="field-odd">File location</dt>
+<dt class="field-odd">File location<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">source/utils/ftp-commands.py</span></code></p>
 </dd>
 </dl>
@@ -218,7 +219,7 @@ and update the builtin <code class="docutils literal notranslate"><span class="p
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
