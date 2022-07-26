@@ -25,6 +25,7 @@ extract_files/
 vendor/bro*
 
 gitlab
+_build
 
 # Created by https://www.gitignore.io/api/visualstudiocode,xcode,python,macos,linux
 # Edit at https://www.gitignore.io/?templates=visualstudiocode,xcode,python,macos,linux

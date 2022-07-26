@@ -135,5 +135,5 @@
     ],
     "python.pythonPath": ".venv/bin/python",
     "python.linting.pylintEnabled": true,
-    "restructuredtext.confPath": "${workspaceFolder}/docs/conf.py"
+    "esbonio.sphinx.confDir": "${workspaceFolder}/docs/source/conf.py"
 }
