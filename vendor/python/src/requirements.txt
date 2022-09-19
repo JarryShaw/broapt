@@ -8,7 +8,7 @@ certifi==2022.9.14
 chardet==5.0.0
 dataclasses==0.8
 file-magic==0.4.1
-idna==3.3
+idna==3.4
 numpy==1.23.3
 pandas==1.4.4
 python-dateutil==2.8.2
