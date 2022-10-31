@@ -1,13 +1,13 @@
 # Python packages
-pip==22.2.2
-setuptools==65.4.1
-wheel==0.37.1
+pip==22.3
+setuptools==65.5.0
+wheel==0.38.0
 
 # Python dependencies
 dataclasses==0.8
 file-magic==0.4.1
-numpy==1.23.3
-pandas==1.5.0
+numpy==1.23.4
+pandas==1.5.1
 python-dateutil==2.8.2
-pytz==2022.4
+pytz==2022.5
 six==1.16.0
