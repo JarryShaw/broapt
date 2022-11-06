@@ -14,6 +14,7 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Module Entry" href="api.daemon.python.__init__.html" />
@@ -42,19 +43,105 @@ documentation at <a class="reference internal" href="broapt-app.html"><span clas
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api.daemon.python.__init__.html">Module Entry</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.__main__.html">System Entrypoint</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.cli.html">Command Line Interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.compose.html">Docker Watchdog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.const.html">Common Constants</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.daemon.html">Flask Application</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.daemon.html#url-routing">URL Routing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.daemon.html#error-handlers">Error Handlers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.daemon.html#dataclasses">Dataclasses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.daemon.html#constants">Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.__main__.html">System Entrypoint</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.__main__.html#run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.process.html">Detection Process</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.util.html">Auxiliaries &amp; Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.cli.html">Command Line Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.cli.html#parse_args"><code class="docutils literal notranslate"><span class="pre">parse_args()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.cli.html#parse_env"><code class="docutils literal notranslate"><span class="pre">parse_env()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.compose.html">Docker Watchdog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.compose.html#compose.docker_compose"><code class="docutils literal notranslate"><span class="pre">compose.docker_compose()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.compose.html#compose.watch_container"><code class="docutils literal notranslate"><span class="pre">compose.watch_container()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.compose.html#compose.start_container"><code class="docutils literal notranslate"><span class="pre">compose.start_container()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.compose.html#compose.stop_container"><code class="docutils literal notranslate"><span class="pre">compose.stop_container()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.compose.html#compose.flask_exit"><code class="docutils literal notranslate"><span class="pre">compose.flask_exit()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.compose.html#compose.register"><code class="docutils literal notranslate"><span class="pre">compose.register()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.compose.html#compose.UP_FLAG"><code class="docutils literal notranslate"><span class="pre">compose.UP_FLAG</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.compose.html#compose.ComposeWarning"><code class="docutils literal notranslate"><span class="pre">compose.ComposeWarning</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.const.html">Common Constants</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.const.html#const.KILL_SIGNAL"><code class="docutils literal notranslate"><span class="pre">const.KILL_SIGNAL</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.const.html#const.SERVER_NAME_HOST"><code class="docutils literal notranslate"><span class="pre">const.SERVER_NAME_HOST</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.const.html#const.SERVER_NAME_PORT"><code class="docutils literal notranslate"><span class="pre">const.SERVER_NAME_PORT</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.const.html#const.DOCKER_COMPOSE"><code class="docutils literal notranslate"><span class="pre">const.DOCKER_COMPOSE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.const.html#const.DUMP_PATH"><code class="docutils literal notranslate"><span class="pre">const.DUMP_PATH</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.const.html#const.LOGS_PATH"><code class="docutils literal notranslate"><span class="pre">const.LOGS_PATH</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.const.html#const.API_LOGS"><code class="docutils literal notranslate"><span class="pre">const.API_LOGS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.const.html#const.API_ROOT"><code class="docutils literal notranslate"><span class="pre">const.API_ROOT</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.const.html#const.INTERVAL"><code class="docutils literal notranslate"><span class="pre">const.INTERVAL</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.const.html#const.MAX_RETRY"><code class="docutils literal notranslate"><span class="pre">const.MAX_RETRY</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.const.html#const.EXIT_SUCCESS"><code class="docutils literal notranslate"><span class="pre">const.EXIT_SUCCESS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.const.html#const.EXIT_FAILURE"><code class="docutils literal notranslate"><span class="pre">const.EXIT_FAILURE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.const.html#const.FILE"><code class="docutils literal notranslate"><span class="pre">const.FILE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.const.html#const.FAIL"><code class="docutils literal notranslate"><span class="pre">const.FAIL</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.daemon.html">Flask Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.daemon.html#url-routing">URL Routing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.root"><code class="docutils literal notranslate"><span class="pre">daemon.root()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.help_"><code class="docutils literal notranslate"><span class="pre">daemon.help_()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.list_"><code class="docutils literal notranslate"><span class="pre">daemon.list_()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#get_none"><code class="docutils literal notranslate"><span class="pre">get_none()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#get"><code class="docutils literal notranslate"><span class="pre">get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.scan"><code class="docutils literal notranslate"><span class="pre">daemon.scan()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#delete_none"><code class="docutils literal notranslate"><span class="pre">delete_none()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#delete"><code class="docutils literal notranslate"><span class="pre">delete()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.daemon.html#error-handlers">Error Handlers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.invalid_id"><code class="docutils literal notranslate"><span class="pre">daemon.invalid_id()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.invalid_info"><code class="docutils literal notranslate"><span class="pre">daemon.invalid_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.id_not_found"><code class="docutils literal notranslate"><span class="pre">daemon.id_not_found()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.daemon.html#dataclasses">Dataclasses</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.INFO"><code class="docutils literal notranslate"><span class="pre">daemon.INFO</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.INFO.name"><code class="docutils literal notranslate"><span class="pre">daemon.INFO.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.INFO.uuid"><code class="docutils literal notranslate"><span class="pre">daemon.INFO.uuid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.INFO.mime"><code class="docutils literal notranslate"><span class="pre">daemon.INFO.mime</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.INFO.report"><code class="docutils literal notranslate"><span class="pre">daemon.INFO.report</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.INFO.inited"><code class="docutils literal notranslate"><span class="pre">daemon.INFO.inited</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.INFO.locked"><code class="docutils literal notranslate"><span class="pre">daemon.INFO.locked</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.INFO.workdir"><code class="docutils literal notranslate"><span class="pre">daemon.INFO.workdir</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.INFO.environ"><code class="docutils literal notranslate"><span class="pre">daemon.INFO.environ</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.INFO.install"><code class="docutils literal notranslate"><span class="pre">daemon.INFO.install</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.INFO.scripts"><code class="docutils literal notranslate"><span class="pre">daemon.INFO.scripts</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.daemon.html#constants">Constants</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.app"><code class="docutils literal notranslate"><span class="pre">daemon.app</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.HELP_v1_0"><code class="docutils literal notranslate"><span class="pre">daemon.HELP_v1_0</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.__help__"><code class="docutils literal notranslate"><span class="pre">daemon.__help__</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.manager"><code class="docutils literal notranslate"><span class="pre">daemon.manager</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.RUNNING"><code class="docutils literal notranslate"><span class="pre">daemon.RUNNING</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.SCANNED"><code class="docutils literal notranslate"><span class="pre">daemon.SCANNED</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.APILOCK"><code class="docutils literal notranslate"><span class="pre">daemon.APILOCK</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.daemon.python.daemon.html#daemon.APIINIT"><code class="docutils literal notranslate"><span class="pre">daemon.APIINIT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.process.html">Detection Process</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.process.html#process.process"><code class="docutils literal notranslate"><span class="pre">process.process()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.process.html#process.make_env"><code class="docutils literal notranslate"><span class="pre">process.make_env()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.process.html#process.make_cwd"><code class="docutils literal notranslate"><span class="pre">process.make_cwd()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.process.html#process.init"><code class="docutils literal notranslate"><span class="pre">process.init()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.process.html#process.run"><code class="docutils literal notranslate"><span class="pre">process.run()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.daemon.python.util.html">Auxiliaries &amp; Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.util.html#utils.suppress"><code class="docutils literal notranslate"><span class="pre">utils.suppress()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.util.html#utils.file_lock"><code class="docutils literal notranslate"><span class="pre">utils.file_lock()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.util.html#utils.print_file"><code class="docutils literal notranslate"><span class="pre">utils.print_file()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.daemon.python.util.html#utils.temp_env"><code class="docutils literal notranslate"><span class="pre">utils.temp_env()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </div>
 <p>For deployment issues, please refer to <a class="reference internal" href="quickstart.html"><span class="doc">quickstart</span></a>.</p>

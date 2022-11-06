@@ -14,6 +14,7 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Bro Logs Processing" href="api.core.python.remote.html" />
@@ -46,26 +47,26 @@
 </dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="process.process">
-<span class="sig-prename descclassname"><span class="pre">process.</span></span><span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#process.process" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">process.</span></span><span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#process.process" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process PCAP file with Bro IDS and put the root folder to Bro
 logs into <a class="reference internal" href="api.core.python.const.html#const.QUEUE_LOGS" title="const.QUEUE_LOGS"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.QUEUE_LOGS</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Path to PCAP file.</p>
+<dd class="field-odd"><p><strong>file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Path to PCAP file.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="communicate">
-<span class="sig-name descname"><span class="pre">communicate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#communicate" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">communicate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#communicate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if extracted files exist based on <code class="docutils literal notranslate"><span class="pre">extracted</span></code> field from
 the <code class="docutils literal notranslate"><span class="pre">files.log</span></code>.</p>
 <p>In <strong>bundled implementation</strong>, then put the files into
 <a class="reference internal" href="api.app.python.const.html#const.QUEUE_DUMP" title="const.QUEUE_DUMP"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.QUEUE_DUMP</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>log_root</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Root folder to Bro logs.</p>
+<dd class="field-odd"><p><strong>log_root</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Root folder to Bro logs.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#process.ExtractWarning" title="process.ExtractWarning"><strong>ExtractWarning</strong></a> – When supposedly extracted file not found.</p>
@@ -75,19 +76,19 @@ the <code class="docutils literal notranslate"><span class="pre">files.log</span
 
 <dl class="py data">
 <dt class="sig sig-object py" id="process.SALT_LOCK">
-<span class="sig-prename descclassname"><span class="pre">process.</span></span><span class="sig-name descname"><span class="pre">SALT_LOCK</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Lock" title="(in Python v3.10)"><span class="pre">multiprocessing.Lock</span></a></em><a class="headerlink" href="#process.SALT_LOCK" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">process.</span></span><span class="sig-name descname"><span class="pre">SALT_LOCK</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Lock" title="(in Python v3.11)"><span class="pre">multiprocessing.Lock</span></a></em><a class="headerlink" href="#process.SALT_LOCK" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lock for updating <code class="docutils literal notranslate"><span class="pre">config.bro</span></code> with <code class="xref py py-func docutils literal notranslate"><span class="pre">compsoe.file_salt()</span></code>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="process.STDOUT_LOCK">
-<span class="sig-prename descclassname"><span class="pre">process.</span></span><span class="sig-name descname"><span class="pre">STDOUT_LOCK</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Lock" title="(in Python v3.10)"><span class="pre">multiprocessing.Lock</span></a></em><a class="headerlink" href="#process.STDOUT_LOCK" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">process.</span></span><span class="sig-name descname"><span class="pre">STDOUT_LOCK</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Lock" title="(in Python v3.11)"><span class="pre">multiprocessing.Lock</span></a></em><a class="headerlink" href="#process.STDOUT_LOCK" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lock for writing to the <code class="docutils literal notranslate"><span class="pre">stdout</span></code> <em>replica</em> <a class="reference internal" href="api.core.python.const.html#const.STDOUT" title="const.STDOUT"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.STDOUT</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="process.STDERR_LOCK">
-<span class="sig-prename descclassname"><span class="pre">process.</span></span><span class="sig-name descname"><span class="pre">STDERR_LOCK</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Lock" title="(in Python v3.10)"><span class="pre">multiprocessing.Lock</span></a></em><a class="headerlink" href="#process.STDERR_LOCK" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">process.</span></span><span class="sig-name descname"><span class="pre">STDERR_LOCK</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Lock" title="(in Python v3.11)"><span class="pre">multiprocessing.Lock</span></a></em><a class="headerlink" href="#process.STDERR_LOCK" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lock for writing to the <code class="docutils literal notranslate"><span class="pre">stderr</span></code> <em>replica</em> <a class="reference internal" href="api.core.python.const.html#const.STDERR" title="const.STDERR"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.STDERR</span></code></a>.</p>
 </dd></dl>
 
@@ -96,7 +97,7 @@ the <code class="docutils literal notranslate"><span class="pre">files.log</span
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">process.</span></span><span class="sig-name descname"><span class="pre">ExtractWarning</span></span><a class="headerlink" href="#process.ExtractWarning" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Bases<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Warning" title="(in Python v3.10)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Warning</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Warning" title="(in Python v3.11)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Warning</span></code></a></p>
 </dd>
 </dl>
 <p>Extraction warning.</p>

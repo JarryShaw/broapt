@@ -14,6 +14,7 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="API Config Parser" href="api.app.python.cfgparser.html" />
@@ -108,19 +109,19 @@ considered as the entrypoint.</p>
 <p>A <a class="reference external" href="https://www.python.org/dev/peps/pep-0557">dataclass</a> for parsed MIME type.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scan.MIME.media_type">
-<span class="sig-name descname"><span class="pre">media_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><a class="headerlink" href="#scan.MIME.media_type" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">media_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#scan.MIME.media_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Media type.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scan.MIME.subtype">
-<span class="sig-name descname"><span class="pre">subtype</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><a class="headerlink" href="#scan.MIME.subtype" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">subtype</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#scan.MIME.subtype" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subtype.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scan.MIME.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><a class="headerlink" href="#scan.MIME.name" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#scan.MIME.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>MIME type.</p>
 </dd></dl>
 
@@ -151,13 +152,13 @@ considered as the entrypoint.</p>
 <p>A <a class="reference external" href="https://www.python.org/dev/peps/pep-0557">dataclass</a> for extracted file entry.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scan.Entry.path">
-<span class="sig-name descname"><span class="pre">path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><a class="headerlink" href="#scan.Entry.path" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#scan.Entry.path" title="Permalink to this definition">¶</a></dt>
 <dd><p>File path.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scan.Entry.uuid">
-<span class="sig-name descname"><span class="pre">uuid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><a class="headerlink" href="#scan.Entry.uuid" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">uuid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#scan.Entry.uuid" title="Permalink to this definition">¶</a></dt>
 <dd><p>UUID parsed from file.</p>
 </dd></dl>
 
@@ -169,7 +170,7 @@ considered as the entrypoint.</p>
 
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This <a class="reference external" href="https://www.python.org/dev/peps/pep-0557">dataclass</a> supports ordering with power of <a class="reference external" href="https://docs.python.org/3/library/functools.html#functools.total_ordering"><a class="reference external" href="https://docs.python.org/3/library/functools.html#functools.total_ordering" title="(in Python v3.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">functools.total_ordering()</span></code></a></a>.</p>
+<p>This <a class="reference external" href="https://www.python.org/dev/peps/pep-0557">dataclass</a> supports ordering with power of <a class="reference external" href="https://docs.python.org/3/library/functools.html#functools.total_ordering"><a class="reference external" href="https://docs.python.org/3/library/functools.html#functools.total_ordering" title="(in Python v3.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">functools.total_ordering()</span></code></a></a>.</p>
 </div>
 </dd></dl>
 
@@ -194,7 +195,7 @@ considered as the entrypoint.</p>
 <h3><code class="xref py py-mod docutils literal notranslate"><span class="pre">scan</span></code> Module<a class="headerlink" href="#scan-module" title="Permalink to this heading">¶</a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="scan.scan">
-<span class="sig-prename descclassname"><span class="pre">scan.</span></span><span class="sig-name descname"><span class="pre">scan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scan.scan" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">scan.</span></span><span class="sig-name descname"><span class="pre">scan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scan.scan" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Availability<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bundled implementation</p>
@@ -209,7 +210,7 @@ considered as the entrypoint.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="scan.lookup">
-<span class="sig-prename descclassname"><span class="pre">scan.</span></span><span class="sig-name descname"><span class="pre">lookup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scan.lookup" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">scan.</span></span><span class="sig-name descname"><span class="pre">lookup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scan.lookup" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Availability<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bundled implementation</p>
@@ -218,13 +219,13 @@ considered as the entrypoint.</p>
 <p>Fetch all extracted files to be processed from the given path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Path to extracted files.</p>
+<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Path to extracted files.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of extracted files.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -286,7 +287,7 @@ break from the loop.</p>
 <h2>Cluster Implementation<a class="headerlink" href="#cluster-implementation" title="Permalink to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="main__.listdir">
-<span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">listdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main__.listdir" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">__main__.</span></span><span class="sig-name descname"><span class="pre">listdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main__.listdir" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Availability<span class="colon">:</span></dt>
 <dd class="field-odd"><p>cluster implementation</p>
@@ -295,7 +296,7 @@ break from the loop.</p>
 <p>Fetch and parse all extracted files in the given path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Path to extracted files.</p>
+<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Path to extracted files.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of parsed <a class="reference internal" href="#scan.Entry" title="scan.Entry"><code class="xref py py-class docutils literal notranslate"><span class="pre">entry</span></code></a> for extracted files.</p>
@@ -324,7 +325,7 @@ break from the loop.</p>
 <dd class="field-odd"><p>List of processed extracted files.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+<dd class="field-even"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -343,7 +344,7 @@ break from the loop.</p>
 <dd class="field-odd"><p>Exit code.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
 </dd>
 </dl>
 <div class="admonition seealso">

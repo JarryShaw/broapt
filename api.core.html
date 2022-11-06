@@ -14,6 +14,7 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Module Entry" href="api.core.bro.__load__.html" />
@@ -58,39 +59,189 @@ documentation at <a class="reference internal" href="broapt-core.html"><span cla
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api.core.python.__init__.html">Module Entry</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.core.python.__main__.html">System Entrypoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.core.python.__main__.html">System Entrypoint</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.__main__.html#main__.PCAP_MGC"><code class="docutils literal notranslate"><span class="pre">__main__.PCAP_MGC</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.__main__.html#main__.is_pcap"><code class="docutils literal notranslate"><span class="pre">__main__.is_pcap()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.__main__.html#main__.listdir"><code class="docutils literal notranslate"><span class="pre">__main__.listdir()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.__main__.html#main__.parse_args"><code class="docutils literal notranslate"><span class="pre">__main__.parse_args()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.__main__.html#main__.check_history"><code class="docutils literal notranslate"><span class="pre">__main__.check_history()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.__main__.html#main__.main_with_args"><code class="docutils literal notranslate"><span class="pre">__main__.main_with_args()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.__main__.html#main__.main_with_no_args"><code class="docutils literal notranslate"><span class="pre">__main__.main_with_no_args()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.__main__.html#main__.main"><code class="docutils literal notranslate"><span class="pre">__main__.main()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api.core.python.compose.html">Bro Script Composer</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api.core.python.compose.html#introduction">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.core.python.compose.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.compose.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.compose.html#compose.file_salt"><code class="docutils literal notranslate"><span class="pre">compose.file_salt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.compose.html#compose.compose"><code class="docutils literal notranslate"><span class="pre">compose.compose()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.compose.html#compose.escape"><code class="docutils literal notranslate"><span class="pre">compose.escape()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="api.core.python.compose.html#constants">Constants</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api.core.python.compose.html#auxiliaries">Auxiliaries</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.core.python.compose.html#bro-configs">Bro Configs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.core.python.compose.html#subsitute-patterns">Subsitute Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.compose.html#auxiliaries">Auxiliaries</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.ROOT"><code class="docutils literal notranslate"><span class="pre">compose.ROOT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.BOOLEAN_STATES"><code class="docutils literal notranslate"><span class="pre">compose.BOOLEAN_STATES</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.compose.html#bro-configs">Bro Configs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.LOGS_PATH"><code class="docutils literal notranslate"><span class="pre">compose.LOGS_PATH</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.PCAP_PATH"><code class="docutils literal notranslate"><span class="pre">compose.PCAP_PATH</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.MIME_MODE"><code class="docutils literal notranslate"><span class="pre">compose.MIME_MODE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.HASH_MODE_MD5"><code class="docutils literal notranslate"><span class="pre">compose.HASH_MODE_MD5</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.HASH_MODE_SHA1"><code class="docutils literal notranslate"><span class="pre">compose.HASH_MODE_SHA1</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.HASH_MODE_SHA256"><code class="docutils literal notranslate"><span class="pre">compose.HASH_MODE_SHA256</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.X509_MODE"><code class="docutils literal notranslate"><span class="pre">compose.X509_MODE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.ENTROPY_MODE"><code class="docutils literal notranslate"><span class="pre">compose.ENTROPY_MODE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.DUMP_PATH"><code class="docutils literal notranslate"><span class="pre">compose.DUMP_PATH</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.SIZE_LIMIT"><code class="docutils literal notranslate"><span class="pre">compose.SIZE_LIMIT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.JSON_MODE"><code class="docutils literal notranslate"><span class="pre">compose.JSON_MODE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.LOAD_MIME"><code class="docutils literal notranslate"><span class="pre">compose.LOAD_MIME</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.LOAD_PROTOCOL"><code class="docutils literal notranslate"><span class="pre">compose.LOAD_PROTOCOL</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.compose.html#subsitute-patterns">Subsitute Patterns</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.FILE_TEMP"><code class="docutils literal notranslate"><span class="pre">compose.FILE_TEMP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.MIME_REGEX"><code class="docutils literal notranslate"><span class="pre">compose.MIME_REGEX</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.LOGS_REGEX"><code class="docutils literal notranslate"><span class="pre">compose.LOGS_REGEX</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.HASH_REGEX_MD5"><code class="docutils literal notranslate"><span class="pre">compose.HASH_REGEX_MD5</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.HASH_REGEX_SHA1"><code class="docutils literal notranslate"><span class="pre">compose.HASH_REGEX_SHA1</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.HASH_REGEX_SHA256"><code class="docutils literal notranslate"><span class="pre">compose.HASH_REGEX_SHA256</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.X509_REGEX"><code class="docutils literal notranslate"><span class="pre">compose.X509_REGEX</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.ENTR_REGEX"><code class="docutils literal notranslate"><span class="pre">compose.ENTR_REGEX</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.JSON_REGEX"><code class="docutils literal notranslate"><span class="pre">compose.JSON_REGEX</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.SALT_REGEX"><code class="docutils literal notranslate"><span class="pre">compose.SALT_REGEX</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.FILE_REGEX"><code class="docutils literal notranslate"><span class="pre">compose.FILE_REGEX</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.PATH_REGEX"><code class="docutils literal notranslate"><span class="pre">compose.PATH_REGEX</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.SIZE_REGEX"><code class="docutils literal notranslate"><span class="pre">compose.SIZE_REGEX</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.compose.html#compose.LOAD_REGEX"><code class="docutils literal notranslate"><span class="pre">compose.LOAD_REGEX</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api.core.python.const.html">Common Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.core.python.const.html">Common Constants</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.const.html#const.ROOT"><code class="docutils literal notranslate"><span class="pre">const.ROOT</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.const.html#const.BOOLEAN_STATES"><code class="docutils literal notranslate"><span class="pre">const.BOOLEAN_STATES</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.const.html#const.CPU_CNT"><code class="docutils literal notranslate"><span class="pre">const.CPU_CNT</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.const.html#const.INTERVAL"><code class="docutils literal notranslate"><span class="pre">const.INTERVAL</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.const.html#const.DUMP_PATH"><code class="docutils literal notranslate"><span class="pre">const.DUMP_PATH</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.const.html#const.PCAP_PATH"><code class="docutils literal notranslate"><span class="pre">const.PCAP_PATH</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.const.html#const.LOGS_PATH"><code class="docutils literal notranslate"><span class="pre">const.LOGS_PATH</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.const.html#const.MIME_MODE"><code class="docutils literal notranslate"><span class="pre">const.MIME_MODE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.const.html#const.BARE_MODE"><code class="docutils literal notranslate"><span class="pre">const.BARE_MODE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.const.html#const.NO_CHKSUM"><code class="docutils literal notranslate"><span class="pre">const.NO_CHKSUM</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.const.html#const.HOOK_CPU"><code class="docutils literal notranslate"><span class="pre">const.HOOK_CPU</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.const.html#const.FILE"><code class="docutils literal notranslate"><span class="pre">const.FILE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.const.html#const.TIME"><code class="docutils literal notranslate"><span class="pre">const.TIME</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.const.html#const.STDOUT"><code class="docutils literal notranslate"><span class="pre">const.STDOUT</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.const.html#const.STDERR"><code class="docutils literal notranslate"><span class="pre">const.STDERR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.const.html#const.QUEUE_LOGS"><code class="docutils literal notranslate"><span class="pre">const.QUEUE_LOGS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.const.html#const.QUEUE"><code class="docutils literal notranslate"><span class="pre">const.QUEUE</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api.core.python.logparser.html">Bro Log Parser</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api.core.python.logparser.html#dataclasses">Dataclasses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.core.python.logparser.html#field-parsers">Field Parsers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.core.python.logparser.html#log-parsers">Log Parsers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.core.python.logparser.html#module-entry">Module Entry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.logparser.html#dataclasses">Dataclasses</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.TEXTInfo"><code class="docutils literal notranslate"><span class="pre">logparser.TEXTInfo</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.logparser.html#logparser.TEXTInfo.format"><code class="docutils literal notranslate"><span class="pre">logparser.TEXTInfo.format</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.logparser.html#logparser.TEXTInfo.path"><code class="docutils literal notranslate"><span class="pre">logparser.TEXTInfo.path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.logparser.html#logparser.TEXTInfo.open"><code class="docutils literal notranslate"><span class="pre">logparser.TEXTInfo.open</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.logparser.html#logparser.TEXTInfo.close"><code class="docutils literal notranslate"><span class="pre">logparser.TEXTInfo.close</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.logparser.html#logparser.TEXTInfo.context"><code class="docutils literal notranslate"><span class="pre">logparser.TEXTInfo.context</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.logparser.html#logparser.TEXTInfo.exit_with_error"><code class="docutils literal notranslate"><span class="pre">logparser.TEXTInfo.exit_with_error</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api.core.python.process.html">Extraction Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.JSONInfo"><code class="docutils literal notranslate"><span class="pre">logparser.JSONInfo</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.logparser.html#logparser.JSONInfo.format"><code class="docutils literal notranslate"><span class="pre">logparser.JSONInfo.format</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.logparser.html#logparser.JSONInfo.context"><code class="docutils literal notranslate"><span class="pre">logparser.JSONInfo.context</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.logparser.html#field-parsers">Field Parsers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.set_separator"><code class="docutils literal notranslate"><span class="pre">logparser.set_separator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.empty_field"><code class="docutils literal notranslate"><span class="pre">logparser.empty_field</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.unset_field"><code class="docutils literal notranslate"><span class="pre">logparser.unset_field</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.set_parser"><code class="docutils literal notranslate"><span class="pre">logparser.set_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.vector_parser"><code class="docutils literal notranslate"><span class="pre">logparser.vector_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.str_parser"><code class="docutils literal notranslate"><span class="pre">logparser.str_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.port_parser"><code class="docutils literal notranslate"><span class="pre">logparser.port_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.int_parser"><code class="docutils literal notranslate"><span class="pre">logparser.int_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.count_parser"><code class="docutils literal notranslate"><span class="pre">logparser.count_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.addr_parser"><code class="docutils literal notranslate"><span class="pre">logparser.addr_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.subnet_parser"><code class="docutils literal notranslate"><span class="pre">logparser.subnet_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.time_parser"><code class="docutils literal notranslate"><span class="pre">logparser.time_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.float_parser"><code class="docutils literal notranslate"><span class="pre">logparser.float_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.interval_parser"><code class="docutils literal notranslate"><span class="pre">logparser.interval_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.enum_parser"><code class="docutils literal notranslate"><span class="pre">logparser.enum_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.bool_parser"><code class="docutils literal notranslate"><span class="pre">logparser.bool_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.type_parser"><code class="docutils literal notranslate"><span class="pre">logparser.type_parser</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.logparser.html#log-parsers">Log Parsers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.parse_text"><code class="docutils literal notranslate"><span class="pre">logparser.parse_text()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#id0"><code class="docutils literal notranslate"><span class="pre">logparser.parse_text()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.parse"><code class="docutils literal notranslate"><span class="pre">logparser.parse()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.logparser.html#module-entry">Module Entry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.logparser.html#logparser.main"><code class="docutils literal notranslate"><span class="pre">logparser.main()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.core.python.process.html">Extraction Process</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.process.html#process.process"><code class="docutils literal notranslate"><span class="pre">process.process()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.process.html#communicate"><code class="docutils literal notranslate"><span class="pre">communicate()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.process.html#process.SALT_LOCK"><code class="docutils literal notranslate"><span class="pre">process.SALT_LOCK</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.process.html#process.STDOUT_LOCK"><code class="docutils literal notranslate"><span class="pre">process.STDOUT_LOCK</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.process.html#process.STDERR_LOCK"><code class="docutils literal notranslate"><span class="pre">process.STDERR_LOCK</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.process.html#process.ExtractWarning"><code class="docutils literal notranslate"><span class="pre">process.ExtractWarning</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api.core.python.remote.html">Bro Logs Processing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api.core.python.remote.html#hook-mainloop">Hook Mainloop</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.core.python.remote.html#warnings">Warnings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.remote.html#hook-mainloop">Hook Mainloop</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.remote.html#remote.remote_proc"><code class="docutils literal notranslate"><span class="pre">remote.remote_proc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.remote.html#remote.remote_logs"><code class="docutils literal notranslate"><span class="pre">remote.remote_logs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.remote.html#remote.remote"><code class="docutils literal notranslate"><span class="pre">remote.remote()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.remote.html#hook"><code class="docutils literal notranslate"><span class="pre">hook()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.remote.html#wrapper_logs"><code class="docutils literal notranslate"><span class="pre">wrapper_logs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.remote.html#wrapper_func"><code class="docutils literal notranslate"><span class="pre">wrapper_func()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.remote.html#warnings">Warnings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.remote.html#remote.HookWarning"><code class="docutils literal notranslate"><span class="pre">remote.HookWarning</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="api.core.python.remote.html#signal-handling">Signal Handling</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api.core.python.remote.html#bundled-implementation">Bundled Implementation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.core.python.remote.html#cluster-implementation">Cluster Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.remote.html#bundled-implementation">Bundled Implementation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.remote.html#remote.join_logs"><code class="docutils literal notranslate"><span class="pre">remote.join_logs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.remote.html#remote.JOIN_LOGS"><code class="docutils literal notranslate"><span class="pre">remote.JOIN_LOGS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.core.python.remote.html#cluster-implementation">Cluster Implementation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.remote.html#remote.join"><code class="docutils literal notranslate"><span class="pre">remote.join()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.core.python.remote.html#remote.JOIN"><code class="docutils literal notranslate"><span class="pre">remote.JOIN</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api.core.python.utils.html">Auxiliaries &amp; Utilities</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.core.python.sites.html">Site Customisations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.core.python.utils.html">Auxiliaries &amp; Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.utils.html#utils.suppress"><code class="docutils literal notranslate"><span class="pre">utils.suppress()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.utils.html#utils.file_lock"><code class="docutils literal notranslate"><span class="pre">utils.file_lock()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.utils.html#utils.print_file"><code class="docutils literal notranslate"><span class="pre">utils.print_file()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.utils.html#utils.redirect"><code class="docutils literal notranslate"><span class="pre">utils.redirect()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.utils.html#utils.is_nan"><code class="docutils literal notranslate"><span class="pre">utils.is_nan()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.core.python.sites.html">Site Customisations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.sites.html#sites.HOOK"><code class="docutils literal notranslate"><span class="pre">sites.HOOK</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.core.python.sites.html#sites.EXIT"><code class="docutils literal notranslate"><span class="pre">sites.EXIT</span></code></a></li>
+</ul>
+</li>
 </ul>
 </div>
 </section>

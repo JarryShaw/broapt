@@ -14,6 +14,7 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Module Entry" href="api.app.python.__init__.html" />
@@ -45,10 +46,33 @@ documentation at <a class="reference internal" href="broapt-app.html"><span clas
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api.app.python.__init__.html">Module Entry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.app.python.__main__.html">System Entrypoint</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api.app.python.__main__.html#constants">Constants</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.app.python.__main__.html#dataclasses">Dataclasses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.__main__.html#constants">Constants</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.__main__.html#main__.FILE_REGEX"><code class="docutils literal notranslate"><span class="pre">__main__.FILE_REGEX</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.__main__.html#dataclasses">Dataclasses</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.__main__.html#scan.MIME"><code class="docutils literal notranslate"><span class="pre">scan.MIME</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.app.python.__main__.html#scan.MIME.media_type"><code class="docutils literal notranslate"><span class="pre">scan.MIME.media_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.app.python.__main__.html#scan.MIME.subtype"><code class="docutils literal notranslate"><span class="pre">scan.MIME.subtype</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.app.python.__main__.html#scan.MIME.name"><code class="docutils literal notranslate"><span class="pre">scan.MIME.name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.__main__.html#main__.MIME"><code class="docutils literal notranslate"><span class="pre">__main__.MIME</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.__main__.html#scan.Entry"><code class="docutils literal notranslate"><span class="pre">scan.Entry</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.app.python.__main__.html#scan.Entry.path"><code class="docutils literal notranslate"><span class="pre">scan.Entry.path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.app.python.__main__.html#scan.Entry.uuid"><code class="docutils literal notranslate"><span class="pre">scan.Entry.uuid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.app.python.__main__.html#scan.Entry.mime"><code class="docutils literal notranslate"><span class="pre">scan.Entry.mime</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.__main__.html#main__.Entry"><code class="docutils literal notranslate"><span class="pre">__main__.Entry</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="api.app.python.__main__.html#bundled-implementation">Bundled Implementation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api.app.python.__main__.html#scan-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">scan</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.__main__.html#scan-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">scan</span></code> Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.app.python.__main__.html#scan.scan"><code class="docutils literal notranslate"><span class="pre">scan.scan()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.app.python.__main__.html#scan.lookup"><code class="docutils literal notranslate"><span class="pre">scan.lookup()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="api.app.python.__main__.html#remote-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">remote</span></code> Module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="api.app.python.__main__.html#framework-mainloop">Framework Mainloop</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api.app.python.__main__.html#signal-handling">Signal Handling</a></li>
@@ -56,28 +80,115 @@ documentation at <a class="reference internal" href="broapt-app.html"><span clas
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="api.app.python.__main__.html#cluster-implementation">Cluster Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.__main__.html#cluster-implementation">Cluster Implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.__main__.html#main__.listdir"><code class="docutils literal notranslate"><span class="pre">__main__.listdir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.__main__.html#main__.check_history"><code class="docutils literal notranslate"><span class="pre">__main__.check_history()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.__main__.html#main__.main"><code class="docutils literal notranslate"><span class="pre">__main__.main()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.app.python.cfgparser.html">API Config Parser</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api.app.python.cfgparser.html#dataclasses">Dataclasses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.app.python.cfgparser.html#functions">Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.app.python.cfgparser.html#constants">Constants</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.app.python.cfgparser.html#exceptions">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.cfgparser.html#dataclasses">Dataclasses</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.API"><code class="docutils literal notranslate"><span class="pre">cfgparser.API</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.API.workdir"><code class="docutils literal notranslate"><span class="pre">cfgparser.API.workdir</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.API.environ"><code class="docutils literal notranslate"><span class="pre">cfgparser.API.environ</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.API.install"><code class="docutils literal notranslate"><span class="pre">cfgparser.API.install</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.API.scripts"><code class="docutils literal notranslate"><span class="pre">cfgparser.API.scripts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.API.report"><code class="docutils literal notranslate"><span class="pre">cfgparser.API.report</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.API.remote"><code class="docutils literal notranslate"><span class="pre">cfgparser.API.remote</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.API.shared"><code class="docutils literal notranslate"><span class="pre">cfgparser.API.shared</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.API.inited"><code class="docutils literal notranslate"><span class="pre">cfgparser.API.inited</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.API.locked"><code class="docutils literal notranslate"><span class="pre">cfgparser.API.locked</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api.app.python.const.html">Common Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.cfgparser.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.parse_cmd"><code class="docutils literal notranslate"><span class="pre">cfgparser.parse_cmd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.parse"><code class="docutils literal notranslate"><span class="pre">cfgparser.parse()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.cfgparser.html#constants">Constants</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.MEDIA_TYPE"><code class="docutils literal notranslate"><span class="pre">cfgparser.MEDIA_TYPE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.API_DICT"><code class="docutils literal notranslate"><span class="pre">cfgparser.API_DICT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.API_LOCK"><code class="docutils literal notranslate"><span class="pre">cfgparser.API_LOCK</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.API_INIT"><code class="docutils literal notranslate"><span class="pre">cfgparser.API_INIT</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.cfgparser.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.ConfigError"><code class="docutils literal notranslate"><span class="pre">cfgparser.ConfigError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.DefaultNotFoundError"><code class="docutils literal notranslate"><span class="pre">cfgparser.DefaultNotFoundError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.cfgparser.html#cfgparser.ReportNotFoundError"><code class="docutils literal notranslate"><span class="pre">cfgparser.ReportNotFoundError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.app.python.const.html">Common Constants</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.const.html#const.ROOT"><code class="docutils literal notranslate"><span class="pre">const.ROOT</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.const.html#const.CPU_CNT"><code class="docutils literal notranslate"><span class="pre">const.CPU_CNT</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.const.html#const.INTERVAL"><code class="docutils literal notranslate"><span class="pre">const.INTERVAL</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.const.html#const.MAX_RETRY"><code class="docutils literal notranslate"><span class="pre">const.MAX_RETRY</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.const.html#const.EXIT_SUCCESS"><code class="docutils literal notranslate"><span class="pre">const.EXIT_SUCCESS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.const.html#const.EXIT_FAILURE"><code class="docutils literal notranslate"><span class="pre">const.EXIT_FAILURE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.const.html#const.LOGS_PATH"><code class="docutils literal notranslate"><span class="pre">const.LOGS_PATH</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.const.html#const.DUMP_PATH"><code class="docutils literal notranslate"><span class="pre">const.DUMP_PATH</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.const.html#const.API_ROOT"><code class="docutils literal notranslate"><span class="pre">const.API_ROOT</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.const.html#const.API_LOGS"><code class="docutils literal notranslate"><span class="pre">const.API_LOGS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.const.html#const.API_DICT"><code class="docutils literal notranslate"><span class="pre">const.API_DICT</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.const.html#const.SERVER_NAME_HOST"><code class="docutils literal notranslate"><span class="pre">const.SERVER_NAME_HOST</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.const.html#const.SERVER_NAME_PORT"><code class="docutils literal notranslate"><span class="pre">const.SERVER_NAME_PORT</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.const.html#const.SERVER_NAME"><code class="docutils literal notranslate"><span class="pre">const.SERVER_NAME</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.const.html#const.DUMP"><code class="docutils literal notranslate"><span class="pre">const.DUMP</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.const.html#const.FAIL"><code class="docutils literal notranslate"><span class="pre">const.FAIL</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.const.html#const.FILE_REGEX"><code class="docutils literal notranslate"><span class="pre">const.FILE_REGEX</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.const.html#const.MIME_REGEX"><code class="docutils literal notranslate"><span class="pre">const.MIME_REGEX</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.const.html#const.QUEUE_DUMP"><code class="docutils literal notranslate"><span class="pre">const.QUEUE_DUMP</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api.app.python.process.html">Detection Process</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api.app.python.process.html#bundled-implementation">Bundled Implementation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.app.python.process.html#cluster-implementation">Cluster Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.process.html#bundled-implementation">Bundled Implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.process.html#scan.process"><code class="docutils literal notranslate"><span class="pre">scan.process()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.process.html#scan.make_env"><code class="docutils literal notranslate"><span class="pre">scan.make_env()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.process.html#scan.make_cwd"><code class="docutils literal notranslate"><span class="pre">scan.make_cwd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.process.html#scan.init"><code class="docutils literal notranslate"><span class="pre">scan.init()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.process.html#scan.run"><code class="docutils literal notranslate"><span class="pre">scan.run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.process.html#scan.issue"><code class="docutils literal notranslate"><span class="pre">scan.issue()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.process.html#scan.APIWarning"><code class="docutils literal notranslate"><span class="pre">scan.APIWarning</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.process.html#scan.APIError"><code class="docutils literal notranslate"><span class="pre">scan.APIError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.process.html#cluster-implementation">Cluster Implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.process.html#process.process"><code class="docutils literal notranslate"><span class="pre">process.process()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.process.html#process.make_env"><code class="docutils literal notranslate"><span class="pre">process.make_env()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.process.html#process.make_cwd"><code class="docutils literal notranslate"><span class="pre">process.make_cwd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.process.html#process.init"><code class="docutils literal notranslate"><span class="pre">process.init()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.process.html#process.run"><code class="docutils literal notranslate"><span class="pre">process.run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.process.html#process.issue"><code class="docutils literal notranslate"><span class="pre">process.issue()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.process.html#utils.APIWarning"><code class="docutils literal notranslate"><span class="pre">utils.APIWarning</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.process.html#utils.APIError"><code class="docutils literal notranslate"><span class="pre">utils.APIError</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.app.python.remote.html">Remote Detection</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api.app.python.remote.html#bundled-implementation">Bundled Implementation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.app.python.remote.html#cluster-implementation">Cluster Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.remote.html#bundled-implementation">Bundled Implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.remote.html#scan.remote"><code class="docutils literal notranslate"><span class="pre">scan.remote()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api.app.python.utils.html">Auxiliaries &amp; Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.remote.html#cluster-implementation">Cluster Implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.app.python.remote.html#remote.remote"><code class="docutils literal notranslate"><span class="pre">remote.remote()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.app.python.utils.html">Auxiliaries &amp; Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.utils.html#utils.suppress"><code class="docutils literal notranslate"><span class="pre">utils.suppress()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.utils.html#utils.file_lock"><code class="docutils literal notranslate"><span class="pre">utils.file_lock()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.utils.html#utils.temp_env"><code class="docutils literal notranslate"><span class="pre">utils.temp_env()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.app.python.utils.html#utils.print_file"><code class="docutils literal notranslate"><span class="pre">utils.print_file()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </div>
 </section>
