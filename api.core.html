@@ -258,24 +258,24 @@ make the life a little bit better.</p>
 </dl>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
 
-<span class="nb">set</span> -aex
+<span class="nb">set</span><span class="w"> </span>-aex
 
 <span class="c1"># change curdir</span>
-<span class="nb">cd</span> /broapt
+<span class="nb">cd</span><span class="w"> </span>/broapt
 
 <span class="c1"># load environs</span>
-<span class="k">if</span> <span class="o">[</span> -f .env <span class="o">]</span> <span class="p">;</span> <span class="k">then</span>
-    <span class="nb">source</span> .env
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span>.env<span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">source</span><span class="w"> </span>.env
 <span class="k">fi</span>
 
 <span class="c1"># compose Bro scripts</span>
-/usr/bin/python3.6 python/compose.py
+/usr/bin/python3.6<span class="w"> </span>python/compose.py
 
 <span class="c1"># run scripts</span>
-/usr/bin/python3.6 python <span class="nv">$@</span>
+/usr/bin/python3.6<span class="w"> </span>python<span class="w"> </span><span class="nv">$@</span>
 
 <span class="c1"># sleep</span>
-sleep infinity
+sleep<span class="w"> </span>infinity
 </pre></div>
 </div>
 </section>
@@ -288,24 +288,24 @@ sleep infinity
 </dl>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
 
-<span class="nb">set</span> -aex
+<span class="nb">set</span><span class="w"> </span>-aex
 
 <span class="c1"># change cwd</span>
-<span class="nb">cd</span> /source
+<span class="nb">cd</span><span class="w"> </span>/source
 
 <span class="c1"># load environs</span>
-<span class="k">if</span> <span class="o">[</span> -f .env <span class="o">]</span> <span class="p">;</span> <span class="k">then</span>
-    <span class="nb">source</span> .env
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span>.env<span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">source</span><span class="w"> </span>.env
 <span class="k">fi</span>
 
 <span class="c1"># compose Bro scripts</span>
-/usr/bin/python3.6 python/compose.py
+/usr/bin/python3.6<span class="w"> </span>python/compose.py
 
 <span class="c1"># run scripts</span>
-/usr/bin/python3.6 python <span class="nv">$@</span>
+/usr/bin/python3.6<span class="w"> </span>python<span class="w"> </span><span class="nv">$@</span>
 
 <span class="c1"># sleep</span>
-sleep infinity
+sleep<span class="w"> </span>infinity
 </pre></div>
 </div>
 </section>

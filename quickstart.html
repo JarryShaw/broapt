@@ -42,9 +42,9 @@
 <p>Installation of the BroAPT system is rather simple. Just clone the repository
 or download the tarball, then voilà, it’s ready to go.</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># from GitHub (active repository)</span>
-git clone https://github.com/JarryShaw/BroAPT.git
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/JarryShaw/BroAPT.git
 <span class="c1"># or from GitLab (authentication required)</span>
-git clone https://gitlab.sjtu.edu.cn/bysj/2019bysj.git
+git<span class="w"> </span>clone<span class="w"> </span>https://gitlab.sjtu.edu.cn/bysj/2019bysj.git
 </pre></div>
 </div>
 </section>
@@ -64,9 +64,9 @@ See <em class="manpage"><a class="manpage reference external" href="https://linu
 <ol class="arabic" start="0">
 <li><p>Install the <code class="docutils literal notranslate"><span class="pre">broaptd</span></code> binary:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># from bundled implementation</span>
-sudo cp source/server/bin/broapt.linux /usr/local/bin/broaptd
+sudo<span class="w"> </span>cp<span class="w"> </span>source/server/bin/broapt.linux<span class="w"> </span>/usr/local/bin/broaptd
 <span class="c1"># from cluster implementation</span>
-sudo cp cluster/daemon/bin/broapt.linux /usr/local/bin/broaptd
+sudo<span class="w"> </span>cp<span class="w"> </span>cluster/daemon/bin/broapt.linux<span class="w"> </span>/usr/local/bin/broaptd
 </pre></div>
 </div>
 <p>The binary is built using <code class="docutils literal notranslate"><span class="pre">PyInstaller</span></code>. Should you wish to build a suitable
@@ -109,27 +109,27 @@ binary for your target system, please refer to the <code class="docutils literal
 </li>
 <li><p>Create a System V service file at <code class="docutils literal notranslate"><span class="pre">/etc/systemd/system/broaptd.service</span></code>
 (works on Ubuntu 18.04):</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[Unit]</span><span class="w"></span>
-<span class="na">Description</span><span class="o">=</span><span class="s">BroAPT Daemon</span><span class="w"></span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">BroAPT Daemon</span>
 
-<span class="k">[Service]</span><span class="w"></span>
-<span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/local/bin/broaptd --env /etc/sysconfig/broaptd</span><span class="w"></span>
-<span class="na">ExecReload</span><span class="o">=</span><span class="s">/usr/bin/kill -INT $MAINPID</span><span class="w"></span>
-<span class="na">Restart</span><span class="o">=</span><span class="s">always</span><span class="w"></span>
-<span class="na">RestartSec</span><span class="o">=</span><span class="s">60s</span><span class="w"></span>
+<span class="k">[Service]</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/local/bin/broaptd --env /etc/sysconfig/broaptd</span>
+<span class="na">ExecReload</span><span class="o">=</span><span class="s">/usr/bin/kill -INT $MAINPID</span>
+<span class="na">Restart</span><span class="o">=</span><span class="s">always</span>
+<span class="na">RestartSec</span><span class="o">=</span><span class="s">60s</span>
 
-<span class="k">[Install]</span><span class="w"></span>
-<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span><span class="w"></span>
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
 </pre></div>
 </div>
 </li>
 <li><p>Reload daemon and enable <code class="docutils literal notranslate"><span class="pre">broaptd</span></code> service:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo systemctl daemon-reload
-sudo systemctl <span class="nb">enable</span> broaptd.service
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>systemctl<span class="w"> </span>daemon-reload
+sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>broaptd.service
 </pre></div>
 </div>
 <p>You may wish to check if its running now:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo systemctl status broaptd.service
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>broaptd.service
 </pre></div>
 </div>
 </li>
