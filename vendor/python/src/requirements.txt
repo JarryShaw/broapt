@@ -1,19 +1,19 @@
 # Python packages
 pip==22.3.1
-setuptools==65.6.3
+setuptools==67.0.0
 wheel==0.38.4
 
 # Python dependencies
-certifi==2022.9.24
+certifi==2022.12.7
 chardet==5.1.0
 dataclasses==0.8
 file-magic==0.4.1
 idna==3.4
-numpy==1.23.5
-pandas==1.5.2
+numpy==1.24.1
+pandas==1.5.3
 python-dateutil==2.8.2
-pytz==2022.6
+pytz==2022.7.1
 PyYAML==6.0
-requests==2.28.1
+requests==2.28.2
 six==1.16.0
-urllib3==1.26.13
+urllib3==1.26.14
