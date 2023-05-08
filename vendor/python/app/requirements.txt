@@ -4,7 +4,7 @@ setuptools==67.7.2
 wheel==0.40.0
 
 # Python dependencies
-certifi==2022.12.7
+certifi==2023.5.7
 chardet==5.1.0
 dataclasses==0.8
 idna==3.4
