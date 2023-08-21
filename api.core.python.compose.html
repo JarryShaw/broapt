@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,9 +8,9 @@
     <title>Bro Script Composer &#8212; BroAPT 2020.03.14 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=f7e2a9a4"></script>
+    <script src="_static/documentation_options.js?v=628af7cf"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Common Constants" href="api.core.python.const.html" />
@@ -32,7 +32,7 @@
           <div class="body" role="main">
             
   <section id="bro-script-composer">
-<h1>Bro Script Composer<a class="headerlink" href="#bro-script-composer" title="Permalink to this heading">¶</a></h1>
+<h1>Bro Script Composer<a class="headerlink" href="#bro-script-composer" title="Link to this heading">¶</a></h1>
 <dl class="field-list simple">
 <dt class="field-odd">File location<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -47,7 +47,7 @@
 It is <strong>NOT</strong> meant to be an <em>importable</em> module of the BroAPT system.</p>
 </div>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
 <p>As we can config what MIME types to extract through the <span class="target" id="index-0"></span><a class="reference internal" href="configuration.html#envvar-BROAPT_LOAD_MIME"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BROAPT_LOAD_MIME</span></code></a>
 environment variable, the BroAPT-Core framework will automatically generate the
 Bro scripts based on this environment variable and many others.</p>
@@ -90,17 +90,17 @@ metrics and to load the scripts as specified in the environment variables.</p>
 </div>
 </section>
 <section id="functions">
-<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h2>
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="compose.file_salt">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">file_salt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#compose.file_salt" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">file_salt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#compose.file_salt" title="Link to this definition">¶</a></dt>
 <dd><p>Update the <code class="docutils literal notranslate"><span class="pre">config.bro</span></code> (<a class="reference internal" href="api.core.bro.config.html"><span class="doc">Configurations</span></a>) with provided <code class="docutils literal notranslate"><span class="pre">uid</span></code>
 as <code class="docutils literal notranslate"><span class="pre">file_salt</span></code>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="compose.compose">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">compose</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compose.compose" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">compose</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#compose.compose" title="Link to this definition">¶</a></dt>
 <dd><p>Compose Bro scripts with environment variables defined.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -110,7 +110,7 @@ as <code class="docutils literal notranslate"><span class="pre">file_salt</span>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="compose.escape">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">escape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mime_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#compose.escape" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">escape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mime_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#compose.escape" title="Link to this definition">¶</a></dt>
 <dd><p>Escape <em>shell</em>-like <code class="docutils literal notranslate"><span class="pre">mime_type</span></code> pattern to regular expression.</p>
 <div class="admonition caution">
 <p class="admonition-title">Caution</p>
@@ -124,12 +124,12 @@ whilst in Python 3.7, it will only escape characters defined in
 
 </section>
 <section id="constants">
-<h2>Constants<a class="headerlink" href="#constants" title="Permalink to this heading">¶</a></h2>
+<h2>Constants<a class="headerlink" href="#constants" title="Link to this heading">¶</a></h2>
 <section id="auxiliaries">
-<h3>Auxiliaries<a class="headerlink" href="#auxiliaries" title="Permalink to this heading">¶</a></h3>
+<h3>Auxiliaries<a class="headerlink" href="#auxiliaries" title="Link to this heading">¶</a></h3>
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.ROOT">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">ROOT</span></span><a class="headerlink" href="#compose.ROOT" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">ROOT</span></span><a class="headerlink" href="#compose.ROOT" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
@@ -143,16 +143,16 @@ whilst in Python 3.7, it will only escape characters defined in
 <span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">BOOLEAN_STATES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'1':</span> <span class="pre">True,</span>&#160;&#160;&#160; <span class="pre">'0':</span> <span class="pre">False,</span>
 <span class="pre">'yes':</span> <span class="pre">True,</span>&#160; <span class="pre">'no':</span> <span class="pre">False,</span>
 <span class="pre">'true':</span> <span class="pre">True,</span> <span class="pre">'false':</span> <span class="pre">False,</span>
-<span class="pre">'on':</span> <span class="pre">True,</span>&#160;&#160; <span class="pre">'off':</span> <span class="pre">False}</span></em><a class="headerlink" href="#compose.BOOLEAN_STATES" title="Permalink to this definition">¶</a></dt>
+<span class="pre">'on':</span> <span class="pre">True,</span>&#160;&#160; <span class="pre">'off':</span> <span class="pre">False}</span></em><a class="headerlink" href="#compose.BOOLEAN_STATES" title="Link to this definition">¶</a></dt>
 <dd><p>Mapping of boolean states, c.f. <a class="reference external" href="https://docs.python.org/3/library/configparser.html"><code class="docutils literal notranslate"><span class="pre">configparser</span></code></a>.</p>
 </dd></dl>
 
 </section>
 <section id="bro-configs">
-<h3>Bro Configs<a class="headerlink" href="#bro-configs" title="Permalink to this heading">¶</a></h3>
+<h3>Bro Configs<a class="headerlink" href="#bro-configs" title="Link to this heading">¶</a></h3>
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.LOGS_PATH">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">LOGS_PATH</span></span><a class="headerlink" href="#compose.LOGS_PATH" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">LOGS_PATH</span></span><a class="headerlink" href="#compose.LOGS_PATH" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
@@ -166,7 +166,7 @@ whilst in Python 3.7, it will only escape characters defined in
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.PCAP_PATH">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">PCAP_PATH</span></span><a class="headerlink" href="#compose.PCAP_PATH" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">PCAP_PATH</span></span><a class="headerlink" href="#compose.PCAP_PATH" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
@@ -180,7 +180,7 @@ whilst in Python 3.7, it will only escape characters defined in
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.MIME_MODE">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">MIME_MODE</span></span><a class="headerlink" href="#compose.MIME_MODE" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">MIME_MODE</span></span><a class="headerlink" href="#compose.MIME_MODE" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
@@ -194,7 +194,7 @@ whilst in Python 3.7, it will only escape characters defined in
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.HASH_MODE_MD5">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">HASH_MODE_MD5</span></span><a class="headerlink" href="#compose.HASH_MODE_MD5" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">HASH_MODE_MD5</span></span><a class="headerlink" href="#compose.HASH_MODE_MD5" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
@@ -208,7 +208,7 @@ whilst in Python 3.7, it will only escape characters defined in
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.HASH_MODE_SHA1">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">HASH_MODE_SHA1</span></span><a class="headerlink" href="#compose.HASH_MODE_SHA1" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">HASH_MODE_SHA1</span></span><a class="headerlink" href="#compose.HASH_MODE_SHA1" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
@@ -222,7 +222,7 @@ whilst in Python 3.7, it will only escape characters defined in
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.HASH_MODE_SHA256">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">HASH_MODE_SHA256</span></span><a class="headerlink" href="#compose.HASH_MODE_SHA256" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">HASH_MODE_SHA256</span></span><a class="headerlink" href="#compose.HASH_MODE_SHA256" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
@@ -236,7 +236,7 @@ whilst in Python 3.7, it will only escape characters defined in
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.X509_MODE">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">X509_MODE</span></span><a class="headerlink" href="#compose.X509_MODE" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">X509_MODE</span></span><a class="headerlink" href="#compose.X509_MODE" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
@@ -250,7 +250,7 @@ whilst in Python 3.7, it will only escape characters defined in
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.ENTROPY_MODE">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">ENTROPY_MODE</span></span><a class="headerlink" href="#compose.ENTROPY_MODE" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">ENTROPY_MODE</span></span><a class="headerlink" href="#compose.ENTROPY_MODE" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
@@ -264,7 +264,7 @@ whilst in Python 3.7, it will only escape characters defined in
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.DUMP_PATH">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">DUMP_PATH</span></span><a class="headerlink" href="#compose.DUMP_PATH" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">DUMP_PATH</span></span><a class="headerlink" href="#compose.DUMP_PATH" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> (path)</p>
@@ -290,7 +290,7 @@ whilst in Python 3.7, it will only escape characters defined in
 </div></blockquote>
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.SIZE_LIMIT">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">SIZE_LIMIT</span></span><a class="headerlink" href="#compose.SIZE_LIMIT" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">SIZE_LIMIT</span></span><a class="headerlink" href="#compose.SIZE_LIMIT" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code> (<code class="docutils literal notranslate"><span class="pre">uint64</span></code>)</p>
@@ -304,7 +304,7 @@ whilst in Python 3.7, it will only escape characters defined in
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.JSON_MODE">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">JSON_MODE</span></span><a class="headerlink" href="#compose.JSON_MODE" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">JSON_MODE</span></span><a class="headerlink" href="#compose.JSON_MODE" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
@@ -318,7 +318,7 @@ whilst in Python 3.7, it will only escape characters defined in
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.LOAD_MIME">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">LOAD_MIME</span></span><a class="headerlink" href="#compose.LOAD_MIME" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">LOAD_MIME</span></span><a class="headerlink" href="#compose.LOAD_MIME" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">List[str]</span></code> (<em>case-insensitive</em>)</p>
@@ -332,7 +332,7 @@ whilst in Python 3.7, it will only escape characters defined in
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.LOAD_PROTOCOL">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">LOAD_PROTOCOL</span></span><a class="headerlink" href="#compose.LOAD_PROTOCOL" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">LOAD_PROTOCOL</span></span><a class="headerlink" href="#compose.LOAD_PROTOCOL" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">List[str]</span></code> (<em>case-insensitive</em>)</p>
@@ -347,10 +347,10 @@ can be any of <code class="docutils literal notranslate"><span class="pre">dtls<
 
 </section>
 <section id="subsitute-patterns">
-<h3>Subsitute Patterns<a class="headerlink" href="#subsitute-patterns" title="Permalink to this heading">¶</a></h3>
+<h3>Subsitute Patterns<a class="headerlink" href="#subsitute-patterns" title="Link to this heading">¶</a></h3>
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.FILE_TEMP">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">FILE_TEMP</span></span><a class="headerlink" href="#compose.FILE_TEMP" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">FILE_TEMP</span></span><a class="headerlink" href="#compose.FILE_TEMP" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">Tuple[str]</span></code></p>
@@ -361,7 +361,7 @@ can be any of <code class="docutils literal notranslate"><span class="pre">dtls<
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.MIME_REGEX">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">MIME_REGEX</span></span><a class="headerlink" href="#compose.MIME_REGEX" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">MIME_REGEX</span></span><a class="headerlink" href="#compose.MIME_REGEX" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
@@ -372,7 +372,7 @@ can be any of <code class="docutils literal notranslate"><span class="pre">dtls<
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.LOGS_REGEX">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">LOGS_REGEX</span></span><a class="headerlink" href="#compose.LOGS_REGEX" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">LOGS_REGEX</span></span><a class="headerlink" href="#compose.LOGS_REGEX" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
@@ -383,7 +383,7 @@ can be any of <code class="docutils literal notranslate"><span class="pre">dtls<
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.HASH_REGEX_MD5">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">HASH_REGEX_MD5</span></span><a class="headerlink" href="#compose.HASH_REGEX_MD5" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">HASH_REGEX_MD5</span></span><a class="headerlink" href="#compose.HASH_REGEX_MD5" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
@@ -394,7 +394,7 @@ can be any of <code class="docutils literal notranslate"><span class="pre">dtls<
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.HASH_REGEX_SHA1">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">HASH_REGEX_SHA1</span></span><a class="headerlink" href="#compose.HASH_REGEX_SHA1" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">HASH_REGEX_SHA1</span></span><a class="headerlink" href="#compose.HASH_REGEX_SHA1" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
@@ -405,7 +405,7 @@ can be any of <code class="docutils literal notranslate"><span class="pre">dtls<
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.HASH_REGEX_SHA256">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">HASH_REGEX_SHA256</span></span><a class="headerlink" href="#compose.HASH_REGEX_SHA256" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">HASH_REGEX_SHA256</span></span><a class="headerlink" href="#compose.HASH_REGEX_SHA256" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
@@ -416,7 +416,7 @@ can be any of <code class="docutils literal notranslate"><span class="pre">dtls<
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.X509_REGEX">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">X509_REGEX</span></span><a class="headerlink" href="#compose.X509_REGEX" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">X509_REGEX</span></span><a class="headerlink" href="#compose.X509_REGEX" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
@@ -427,7 +427,7 @@ can be any of <code class="docutils literal notranslate"><span class="pre">dtls<
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.ENTR_REGEX">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">ENTR_REGEX</span></span><a class="headerlink" href="#compose.ENTR_REGEX" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">ENTR_REGEX</span></span><a class="headerlink" href="#compose.ENTR_REGEX" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
@@ -438,7 +438,7 @@ can be any of <code class="docutils literal notranslate"><span class="pre">dtls<
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.JSON_REGEX">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">JSON_REGEX</span></span><a class="headerlink" href="#compose.JSON_REGEX" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">JSON_REGEX</span></span><a class="headerlink" href="#compose.JSON_REGEX" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
@@ -449,7 +449,7 @@ can be any of <code class="docutils literal notranslate"><span class="pre">dtls<
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.SALT_REGEX">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">SALT_REGEX</span></span><a class="headerlink" href="#compose.SALT_REGEX" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">SALT_REGEX</span></span><a class="headerlink" href="#compose.SALT_REGEX" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
@@ -460,7 +460,7 @@ can be any of <code class="docutils literal notranslate"><span class="pre">dtls<
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.FILE_REGEX">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">FILE_REGEX</span></span><a class="headerlink" href="#compose.FILE_REGEX" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">FILE_REGEX</span></span><a class="headerlink" href="#compose.FILE_REGEX" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
@@ -471,7 +471,7 @@ can be any of <code class="docutils literal notranslate"><span class="pre">dtls<
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.PATH_REGEX">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">PATH_REGEX</span></span><a class="headerlink" href="#compose.PATH_REGEX" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">PATH_REGEX</span></span><a class="headerlink" href="#compose.PATH_REGEX" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
@@ -482,7 +482,7 @@ can be any of <code class="docutils literal notranslate"><span class="pre">dtls<
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.SIZE_REGEX">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">SIZE_REGEX</span></span><a class="headerlink" href="#compose.SIZE_REGEX" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">SIZE_REGEX</span></span><a class="headerlink" href="#compose.SIZE_REGEX" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>
@@ -493,7 +493,7 @@ can be any of <code class="docutils literal notranslate"><span class="pre">dtls<
 
 <dl class="py data">
 <dt class="sig sig-object py" id="compose.LOAD_REGEX">
-<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">LOAD_REGEX</span></span><a class="headerlink" href="#compose.LOAD_REGEX" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">compose.</span></span><span class="sig-name descname"><span class="pre">LOAD_REGEX</span></span><a class="headerlink" href="#compose.LOAD_REGEX" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">re.Pattern</span></code></p>

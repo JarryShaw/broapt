@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,9 +8,9 @@
     <title>API Reference &#8212; BroAPT 2020.03.14 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=f7e2a9a4"></script>
+    <script src="_static/documentation_options.js?v=628af7cf"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="BroAPT-Core Framework" href="api.core.html" />
@@ -32,7 +32,7 @@
           <div class="body" role="main">
             
   <section id="api-reference">
-<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this heading">¶</a></h1>
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading">¶</a></h1>
 <p>As discussed previously, the BroAPT system has two different implementation
 architectures. They are similar in overall concepts and processing, but may
 various in underlying internal source codes. We’ll try to break down into
@@ -169,7 +169,7 @@ scripts for the BroAPT system in <em>humans</em> way.</p>
 </ul>
 </div>
 <section id="system-runtime">
-<h2>System Runtime<a class="headerlink" href="#system-runtime" title="Permalink to this heading">¶</a></h2>
+<h2>System Runtime<a class="headerlink" href="#system-runtime" title="Link to this heading">¶</a></h2>
 <p>The whole BroAPT folder in the Docker container (<strong>of bundled implementation</strong>)
 at runtime would be like:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span># project root
@@ -276,7 +276,7 @@ it will be loaded and saved into current runtime scope (<code class="docutils li
 </ol>
 </section>
 <section id="developer-notes">
-<h2>Developer Notes<a class="headerlink" href="#developer-notes" title="Permalink to this heading">¶</a></h2>
+<h2>Developer Notes<a class="headerlink" href="#developer-notes" title="Link to this heading">¶</a></h2>
 <p>Since the BroAPT system was not intended for packaging and distribution,
 we didn’t provide a <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> to wrap everything as a <code class="docutils literal notranslate"><span class="pre">broapt</span></code> module.
 However, in a quite <em>hacky</em> way, we injected the <code class="docutils literal notranslate"><span class="pre">sys.path</span></code> import path,

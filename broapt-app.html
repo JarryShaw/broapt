@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,9 +8,9 @@
     <title>BroAPT-App Detection Framework &#8212; BroAPT 2020.03.14 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=f7e2a9a4"></script>
+    <script src="_static/documentation_options.js?v=628af7cf"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="API Reference" href="api.html" />
@@ -32,7 +32,7 @@
           <div class="body" role="main">
             
   <section id="broapt-app-detection-framework">
-<h1>BroAPT-App Detection Framework<a class="headerlink" href="#broapt-app-detection-framework" title="Permalink to this heading">¶</a></h1>
+<h1>BroAPT-App Detection Framework<a class="headerlink" href="#broapt-app-detection-framework" title="Link to this heading">¶</a></h1>
 <p>The BroAPT-App framework processes extracted files, perform malware detection
 upon those files with detection API configured through the configuration file.</p>
 <img alt="BroAPT-App Detection Framework" src="_images/BroAPT.008.png" />
@@ -101,7 +101,7 @@ microframework. At the moment it supports following APIs:</p>
 </li>
 </ol>
 <section id="mime-specific-api-configuration">
-<h2>MIME Specific API Configuration<a class="headerlink" href="#mime-specific-api-configuration" title="Permalink to this heading">¶</a></h2>
+<h2>MIME Specific API Configuration<a class="headerlink" href="#mime-specific-api-configuration" title="Link to this heading">¶</a></h2>
 <p>In the BroAPT-App framework, we used an API configuration file to provide the BroAPT
 system with MIME specific detection mechanism. The configuration file is written in
 YAML, inspired by Docker Compose and Travis CI.</p>
@@ -268,10 +268,10 @@ apt-get<span class="w"> </span>clean
 </ol>
 </section>
 <section id="integrated-detection-services">
-<h2>Integrated Detection Services<a class="headerlink" href="#integrated-detection-services" title="Permalink to this heading">¶</a></h2>
+<h2>Integrated Detection Services<a class="headerlink" href="#integrated-detection-services" title="Link to this heading">¶</a></h2>
 <p>At the moment, the BroAPT system had integrated six detection solusions.</p>
 <section id="default-detection-powered-by-virustotal">
-<h3>Default Detection powered by VirusTotal<a class="headerlink" href="#default-detection-powered-by-virustotal" title="Permalink to this heading">¶</a></h3>
+<h3>Default Detection powered by VirusTotal<a class="headerlink" href="#default-detection-powered-by-virustotal" title="Link to this heading">¶</a></h3>
 <p><a class="reference external" href="https://www.virustotal.com">VirusTotal</a> aggregates many antivirus products and online scan engines to check
 for viruses that the user’s own antivirus may have missed, or to verify against
 any false positives.</p>
@@ -294,7 +294,7 @@ mechanism in case of missing configuration. The configuration is as below:</p>
 </div>
 </section>
 <section id="android-apk-detection-powered-by-andropytool">
-<h3>Android APK Detection powered by AndroPyTool<a class="headerlink" href="#android-apk-detection-powered-by-andropytool" title="Permalink to this heading">¶</a></h3>
+<h3>Android APK Detection powered by AndroPyTool<a class="headerlink" href="#android-apk-detection-powered-by-andropytool" title="Link to this heading">¶</a></h3>
 <p><a class="reference external" href="https://github.com/alexMyG/AndroPyTool">AndroPyTool</a> is a tool for extracting static and dynamic features from Android
 APKs. It combines different well-known Android apps analysis tools such as DroidBox,
 FlowDroid, Strace, AndroGuard or VirusTotal analysis. Provided a source directory
@@ -322,7 +322,7 @@ detection using AndroPyTool Docker image on APK files then send the report back 
 BroAPT-App framework for records.</p>
 </section>
 <section id="office-document-detection-powered-by-maliciousmacrobot">
-<h3>Office Document Detection powered by MaliciousMacroBot<a class="headerlink" href="#office-document-detection-powered-by-maliciousmacrobot" title="Permalink to this heading">¶</a></h3>
+<h3>Office Document Detection powered by MaliciousMacroBot<a class="headerlink" href="#office-document-detection-powered-by-maliciousmacrobot" title="Link to this heading">¶</a></h3>
 <p><a class="reference external" href="https://github.com/egaus/MaliciousMacroBot">MaliciousMacroBot</a> is to provide a powerful malicious file triage tool for cyber
 responders; help fill existing detection gaps for malicious office documents, which
 are still a very prevalent attack vector today; deliver a new avenue for threat
@@ -361,7 +361,7 @@ set the <code class="docutils literal notranslate"><span class="pre">shared</spa
 that at runtime, such detection method will be <em>process-safe</em>.</p>
 </section>
 <section id="linux-elf-detection-powered-by-elf-parser">
-<h3>Linux ELF Detection powered by ELF Parser<a class="headerlink" href="#linux-elf-detection-powered-by-elf-parser" title="Permalink to this heading">¶</a></h3>
+<h3>Linux ELF Detection powered by ELF Parser<a class="headerlink" href="#linux-elf-detection-powered-by-elf-parser" title="Link to this heading">¶</a></h3>
 <p><a class="reference external" href="http://elfparser.com">ELF Parser</a> is designed for static ELF analysis. It can quickly determine the
 capabilities of an ELF binary through static analysis, then discover if the binary
 is known malware or a possible threat without ever executing the file.</p>
@@ -382,7 +382,7 @@ only. The configuration is as below:</p>
 </div>
 </section>
 <section id="common-linux-malware-detection-powered-by-lmd">
-<h3>Common Linux Malware Detection powered by LMD<a class="headerlink" href="#common-linux-malware-detection-powered-by-lmd" title="Permalink to this heading">¶</a></h3>
+<h3>Common Linux Malware Detection powered by LMD<a class="headerlink" href="#common-linux-malware-detection-powered-by-lmd" title="Link to this heading">¶</a></h3>
 <p><a class="reference external" href="https://www.rfxn.com/projects/linux-malware-detect">Linux Malware Detect</a> (LMD) is a malware scanner for Linux, that is designed around
 the threats faced in shared hosted environments. It uses threat data from network edge
 intrusion detection systems to extract malware that is actively being used in attacks
@@ -413,7 +413,7 @@ easily exported to any number of detection tools such as ClamAV.</p>
 </div>
 </section>
 <section id="malicious-javascript-detection-powered-by-jast">
-<h3>Malicious JavaScript Detection powered by JaSt<a class="headerlink" href="#malicious-javascript-detection-powered-by-jast" title="Permalink to this heading">¶</a></h3>
+<h3>Malicious JavaScript Detection powered by JaSt<a class="headerlink" href="#malicious-javascript-detection-powered-by-jast" title="Link to this heading">¶</a></h3>
 <p><a class="reference external" href="https://github.com/Aurore54F/JaSt">JaSt</a> is a low-overhead solution that combines the extraction of features from
 the abstract syntax tree with a random forest classifier to detect malicious JavaScript
 instances. It is based on a frequency analysis of specific patterns, which are either
