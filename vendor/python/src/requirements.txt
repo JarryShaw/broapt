@@ -10,7 +10,7 @@ dataclasses==0.8
 file-magic==0.4.1
 idna==3.4
 numpy==1.26.1
-pandas==2.1.1
+pandas==2.1.2
 python-dateutil==2.8.2
 pytz==2023.3.post1
 PyYAML==6.0.1
