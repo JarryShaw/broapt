@@ -6,7 +6,7 @@ wheel==0.42.0
 # Python dependencies
 dataclasses==0.8
 file-magic==0.4.1
-numpy==1.26.2
+numpy==1.26.3
 pandas==2.1.4
 python-dateutil==2.8.2
 pytz==2023.3.post1
