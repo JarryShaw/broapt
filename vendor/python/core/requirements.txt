@@ -8,6 +8,6 @@ dataclasses==0.8
 file-magic==0.4.1
 numpy==1.26.4
 pandas==2.2.1
-python-dateutil==2.8.2
+python-dateutil==2.9.0.post0
 pytz==2023.3.post1
 six==1.16.0
