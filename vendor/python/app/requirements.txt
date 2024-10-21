@@ -1,13 +1,13 @@
 # Python packages
-pip==24.1
-setuptools==70.1.0
-wheel==0.43.0
+pip==24.2
+setuptools==75.2.0
+wheel==0.44.0
 
 # Python dependencies
-certifi==2024.6.2
+certifi==2024.8.30
 chardet==5.2.0
 dataclasses==0.8
-idna==3.7
-PyYAML==6.0.1
+idna==3.10
+PyYAML==6.0.2
 requests==2.32.3
-urllib3==2.2.2
+urllib3==2.2.3
