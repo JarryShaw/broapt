@@ -1,7 +1,7 @@
 # Python packages
 pip==25.0
 setuptools==75.8.0
-wheel==0.43.0
+wheel==0.45.1
 
 # Python dependencies
 certifi==2024.6.2
