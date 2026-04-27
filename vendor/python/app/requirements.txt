@@ -9,5 +9,5 @@ chardet==7.4.3
 dataclasses==0.8
 idna==3.13
 PyYAML==6.0.3
-requests==2.32.3
+requests==2.33.1
 urllib3==2.2.2
