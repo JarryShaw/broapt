@@ -8,6 +8,6 @@ certifi==2026.4.22
 chardet==7.4.3
 dataclasses==0.8
 idna==3.14
-PyYAML==6.0.1
+PyYAML==6.0.3
 requests==2.32.3
 urllib3==2.2.2
