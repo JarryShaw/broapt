@@ -9,7 +9,7 @@ chardet==7.4.3
 dataclasses==0.8
 file-magic==0.4.1
 idna==3.18
-numpy==2.0.0
+numpy==2.5.0
 pandas==2.2.2
 python-dateutil==2.9.0.post0
 pytz==2024.1
