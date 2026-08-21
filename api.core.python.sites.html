@@ -5,12 +5,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Site Customisations &#8212; BroAPT 2020.03.14 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
-    <script src="_static/documentation_options.js?v=628af7cf"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <title>Site Customisations &#8212; BroAPT 2026.08.21 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=57362fe7"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="BroAPT-App Framework" href="api.app.html" />
@@ -46,7 +47,7 @@
 You may register your customised Python hooks in the <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file.</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="sites.HOOK">
-<span class="sig-prename descclassname"><span class="pre">sites.</span></span><span class="sig-name descname"><span class="pre">HOOK</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#sites.HOOK" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sites.</span></span><span class="sig-name descname"><span class="pre">HOOK</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sites.HOOK" title="Link to this definition">¶</a></dt>
 <dd><p>Registry for <em>processing</em> hooks.</p>
 <p>Registered function should take the path to the folder of Bro logs as
 a single parameter, return values will be ignored. Such functions will
@@ -55,7 +56,7 @@ be called on each Bro log folder generated from PCAP files.</p>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="sites.EXIT">
-<span class="sig-prename descclassname"><span class="pre">sites.</span></span><span class="sig-name descname"><span class="pre">EXIT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#sites.EXIT" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sites.</span></span><span class="sig-name descname"><span class="pre">EXIT</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#sites.EXIT" title="Link to this definition">¶</a></dt>
 <dd><p>Registry for <em>closing</em> hooks.</p>
 <p>Registered function should take <strong>NO</strong> parameters, return values will
 be ignored. Such functions will be called before the system exits.</p>
@@ -88,7 +89,16 @@ be ignored. Such functions will be called before the system exits.</p>
 
 
 
-<h3>Navigation</h3>
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configurations</a></li>
@@ -117,16 +127,6 @@ be ignored. Such functions will be called before the system exits.</p>
   </ul></li>
 </ul>
 </div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -140,7 +140,7 @@ be ignored. Such functions will be called before the system exits.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &#169;2020, Jarry Shaw.
+      &#169;2020-2026, Jarry Shaw.
       
       |
       <a href="_sources/api.core.python.sites.rst.txt"
@@ -149,7 +149,7 @@ be ignored. Such functions will be called before the system exits.</p>
 
     
     <a href="https://github.com/JarryShaw/broapt" class="github">
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+        <img src="_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
     </a>
     
 
