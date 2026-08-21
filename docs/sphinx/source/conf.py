@@ -18,11 +18,11 @@
 # -- Project information -----------------------------------------------------
 
 project = 'BroAPT'
-copyright = '2020, Jarry Shaw'
+copyright = '2020-2026, Jarry Shaw'
 author = 'Jarry Shaw'
 
 # The full version, including alpha/beta/rc tags
-release = '2020.03.14'
+release = '2026.08.21'
 
 
 # -- General configuration ---------------------------------------------------
@@ -32,7 +32,7 @@ release = '2020.03.14'
 # ones.
 extensions = [
     'sphinx.ext.intersphinx',
-    'sphinx.ext.autodoc', 'sphinx.ext.autodoc.typehints',
+    'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
 ]
 
@@ -40,7 +40,6 @@ intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
     'zlogging': ('https://zlogging.jarryshaw.me/en/latest/', None),
     'zeek': ('https://docs.zeek.org/en/stable/', None),
-    'bro': ('https://docs.zeek.org/en/stable/', None),
 }
 
 autodoc_typehints = 'description'

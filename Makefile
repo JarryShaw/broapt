@@ -2,9 +2,15 @@
 
 -include .env
 
+PIPENV_CACHE_DIR ?= $(CURDIR)/.cache/pipenv
+PIP_CACHE_DIR ?= $(CURDIR)/.cache/pip
+override PIPENV_CLEAR :=
+
 export PIPENV_VENV_IN_PROJECT
 export PIPENV_MAX_DEPTH
 export PIPENV_CLEAR
+export PIPENV_CACHE_DIR
+export PIP_CACHE_DIR
 
 setup:
 	$(MAKE) -C source setup
@@ -37,7 +43,7 @@ clean:
 	$(MAKE) -C source clean
 
 pipenv-init:
-	pipenv --python 3.7
+	pipenv --python 3.14
 	pipenv install --dev
 
 pipenv-update:

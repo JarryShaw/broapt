@@ -6,21 +6,27 @@ on:
 
 name: Create Release
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Create Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v3.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ github.ref }}
-          release_name: BroAPT ${{ github.ref }}
-          body: ${{ join(github.event.commits.*.message, '\n') }}
+          generate_release_notes: true
+          tag_name: ${{ github.ref_name }}
+          name: BroAPT ${{ github.ref_name }}
           draft: false
           prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}

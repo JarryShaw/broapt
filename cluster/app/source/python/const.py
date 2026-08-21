@@ -44,7 +44,7 @@ if DUMP_PATH is None:
     try:
         DUMP_PATH = subprocess.check_output(['bro', '-e', 'print(FileExtract::prefix)'],
                                             stderr=subprocess.DEVNULL, encoding='utf-8').strip()
-    except subprocess.CalledProcessError:
+    except (OSError, subprocess.CalledProcessError):
         DUMP_PATH = './extract_files/'
 
 # parse API

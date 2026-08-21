@@ -27,14 +27,13 @@ rstcheck = "*"
 pyinstaller = "*"
 
 [packages]
-dataclasses = "*"
+dataclasses = {version = "*", markers = "python_version < '3.7'"}
 file-magic = "*"
 Flask = {extras = ["dotenv"],version = "*"}
 mmbot = "*"
 pandas = "*"
 PyYAML = "*"
 yara = "*"
-zlogging = "*"
 
 [requires]
-python_version = "3"
+python_version = "3.14"

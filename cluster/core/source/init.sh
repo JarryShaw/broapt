@@ -11,10 +11,10 @@ if [ -f .env ] ; then
 fi
 
 # compose Bro scripts
-/usr/bin/python3.6 python/compose.py
+python3 python/compose.py
 
 # run scripts
-/usr/bin/python3.6 python $@
+python3 python "$@"
 
 # sleep
 sleep infinity
