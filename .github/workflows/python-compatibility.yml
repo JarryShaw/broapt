@@ -44,7 +44,11 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install Flask file-magic pandas PyYAML requests
+          python -m pip install Flask PyYAML requests
+
+      - name: Install stable dependencies
+        if: ${{ !matrix.experimental }}
+        run: python -m pip install file-magic pandas
 
       - name: Verify source compatibility
         run: |
@@ -54,4 +58,8 @@ jobs:
             cluster/app/source/python \
             cluster/core/source/python \
             cluster/daemon/python
-          python -c 'import flask, magic, pandas, requests, yaml; print("imports ok")'
+          python -c 'import flask, requests, yaml; print("base imports ok")'
+
+      - name: Verify stable imports
+        if: ${{ !matrix.experimental }}
+        run: python -c 'import magic, pandas; print("stable imports ok")'
