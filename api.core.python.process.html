@@ -45,26 +45,26 @@
 </dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="process.process">
-<span class="sig-prename descclassname"><span class="pre">process.</span></span><span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#process.process" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">process.</span></span><span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#process.process" title="Link to this definition">¶</a></dt>
 <dd><p>Process PCAP file with Bro IDS and put the root folder to Bro
 logs into <a class="reference internal" href="api.core.python.const.html#const.QUEUE_LOGS" title="const.QUEUE_LOGS"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.QUEUE_LOGS</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to PCAP file.</p>
+<dd class="field-odd"><p><strong>file</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to PCAP file.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="communicate">
-<span class="sig-name descname"><span class="pre">communicate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#communicate" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">communicate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#communicate" title="Link to this definition">¶</a></dt>
 <dd><p>Check if extracted files exist based on <code class="docutils literal notranslate"><span class="pre">extracted</span></code> field from
 the <code class="docutils literal notranslate"><span class="pre">files.log</span></code>.</p>
 <p>In <strong>bundled implementation</strong>, then put the files into
 <a class="reference internal" href="api.app.python.const.html#const.QUEUE_DUMP" title="const.QUEUE_DUMP"><code class="xref py py-data docutils literal notranslate"><span class="pre">const.QUEUE_DUMP</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>log_root</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Root folder to Bro logs.</p>
+<dd class="field-odd"><p><strong>log_root</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Root folder to Bro logs.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#process.ExtractWarning" title="process.ExtractWarning"><strong>ExtractWarning</strong></a> – When supposedly extracted file not found.</p>
@@ -95,7 +95,7 @@ the <code class="docutils literal notranslate"><span class="pre">files.log</span
 <span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">process.</span></span><span class="sig-name descname"><span class="pre">ExtractWarning</span></span><a class="headerlink" href="#process.ExtractWarning" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Bases<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Warning" title="(in Python v3.14)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Warning</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#Warning" title="(in Python v3.14)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Warning</span></code></a></p>
 </dd>
 </dl>
 <p>Extraction warning.</p>
